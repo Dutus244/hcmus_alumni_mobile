@@ -41,23 +41,23 @@ class _WelcomeState extends State<Welcome> {
                     _page(
                         1,
                         context,
-                        "Next",
-                        "Welcome back!",
-                        "Explore new features and opportunities in the alumni community.",
+                        "Tiếp tục",
+                        "Chào mừng trở lại!",
+                        "Khám phá các tính năng và cơ hội mới với cộng đồng cựu sinh viên.",
                         "assets/images/welcome1.png"),
                     _page(
                         2,
                         context,
-                        "Next",
-                        "Discover new apps",
-                        "Learn how our app can help you stay connected and thrive after college.",
+                        "Tiếp tục",
+                        "Khám phá ứng dụng mới",
+                        "Tìm hiểu cách ứng dụng có thể giúp bạn duy trì kết nối và phát triển sau đại học.",
                         "assets/images/welcome2.png"),
                     _page(
                         3,
                         context,
-                        "Get started",
-                        "Start your journey",
-                        "Log in or register to experience the full app features and join the alumni community.",
+                        "Bắt đầu",
+                        "Bắt đầu hành trình của bạn",
+                        "Đăng nhập hoặc đăng ký để trải nghiệm các tính năng đầy đủ của ứng dụng.",
                         "assets/images/welcome3.png"),
                   ],
                 ),
@@ -127,8 +127,8 @@ class _WelcomeState extends State<Welcome> {
               );
             } else {
               // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyHomePage()));
-              // Navigator.of(context)
-              //     .pushNamedAndRemoveUntil("signIn", (route) => false);
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil("signIn", (route) => false);
             }
           },
           child: Container(
@@ -152,7 +152,7 @@ class _WelcomeState extends State<Welcome> {
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16.sp,
-                    fontWeight: FontWeight.normal),
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
