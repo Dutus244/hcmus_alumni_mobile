@@ -73,8 +73,8 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 25.w, right: 25.w),
-                  height: 14.h,
+                  padding: EdgeInsets.only(left: 25.w, right: 25.w, top: 10.h),
+                  height: 24.h,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -91,7 +91,9 @@ class _SignInState extends State<SignIn> {
                 buildLogInAndRegButton("ĐĂNG NHẬP", "login", () {
                   SignInController(context: context).handleSignIn("email");
                 }),
-                buildLogInAndRegButton("ĐĂNG KÝ", "register", () {}),
+                buildLogInAndRegButton("ĐĂNG KÝ", "register", () {
+                  Navigator.of(context).pushNamed("register");
+                }),
               ],
             ),
           ),

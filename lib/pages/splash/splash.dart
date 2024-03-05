@@ -1,4 +1,4 @@
-import 'dart:async'; // Import the async library for using Timer
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,6 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    // Start a timer to navigate after 2 seconds
     Timer(Duration(seconds: 2), () {
       Navigator.of(context)
           .pushNamedAndRemoveUntil("welcome", (route) => false);
@@ -33,15 +32,19 @@ class _SplashState extends State<Splash> {
       color: AppColors.primaryBackground,
       child: Scaffold(
         body: BlocBuilder<SplashBloc, SplashState>(builder: (context, state) {
-          return Center(
-            child: Container(
-              width: 345.w,
-              height: 345.w,
-              child: Image.asset(
-                "assets/images/logos/logo.png",
-                fit: BoxFit.cover,
+          return Row(
+            children: [
+              Center(
+                child: Container(
+                  width: 345.w,
+                  height: 345.w,
+                  child: Image.asset(
+                    "assets/images/logos/logo.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-            ),
+            ],
           );
         }),
       ),
