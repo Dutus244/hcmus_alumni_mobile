@@ -9,7 +9,8 @@ class RegisterState {
     this.rePassword = "",
   });
 
-  RegisterState copyWith({String? email, String? password, String? rePassword}) {
+  RegisterState copyWith(
+      {String? email, String? password, String? rePassword}) {
     return RegisterState(
       email: email ?? this.email,
       password: password ?? this.password,

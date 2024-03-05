@@ -7,6 +7,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     on<EmailEvent>(_emailEvent);
     on<PasswordEvent>(_passwordEvent);
     on<RememberLoginEvent>(_rememberLoginEvent);
+    on<SignInResetEvent>(_signInResetEvent);
   }
 
   void _emailEvent(EmailEvent event, Emitter<SignInState> emit) {
@@ -17,7 +18,12 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     emit(state.copyWith(password: event.password));
   }
 
-  void _rememberLoginEvent(RememberLoginEvent event, Emitter<SignInState> emit) {
+  void _rememberLoginEvent(
+      RememberLoginEvent event, Emitter<SignInState> emit) {
     emit(state.copyWith(rememberLogin: event.rememberLogin));
+  }
+
+  void _signInResetEvent(SignInResetEvent event, Emitter<SignInState> emit) {
+    emit(SignInState()); // Reset the state to its initial state
   }
 }

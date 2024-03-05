@@ -1,15 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../common/values/colors.dart';
 
 Widget buildTextField(String hintText, String textType, String iconName,
-    void Function(String value)? func) {
+    void Function(String value)? func1, void Function()? func2) {
   return Container(
       width: 325.w,
       height: 40.h,
-      margin: EdgeInsets.only(bottom: 20.h),
+      margin: EdgeInsets.only(bottom: 20.h, top: 30.h),
       decoration: BoxDecoration(
         color: AppColors.primaryBackground,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
@@ -18,17 +18,11 @@ Widget buildTextField(String hintText, String textType, String iconName,
       child: Row(
         children: [
           Container(
-            width: 16.w,
-            height: 16.w,
-            margin: EdgeInsets.only(left: 17.w),
-            child: Image.asset("assets/icons/$iconName.png"),
-          ),
-          Container(
-            width: 270.w,
+            width: 200.w,
             height: 40.h,
-            padding: EdgeInsets.only(top: 10.h),
+            padding: EdgeInsets.only(top: 10.h, left: 17.w),
             child: TextField(
-              onChanged: (value) => func!(value),
+              onChanged: (value) => func1!(value),
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 hintText: hintText,
@@ -52,15 +46,43 @@ Widget buildTextField(String hintText, String textType, String iconName,
                 fontSize: 12.sp,
               ),
               autocorrect: false,
-              obscureText: textType == "email" ? false : true,
-              maxLength: 30,
+              obscureText: textType == "password" ? true : false,
+              maxLength: 10,
+            ),
+          ),
+          GestureDetector(
+            onTap: func2,
+            child: Container(
+              padding: EdgeInsets.only(left: 20.w),
+              width: 100.w,
+              height: 50.h,
+              child: Row(
+                children: [
+                  Container(
+                    width: 16.w,
+                    height: 16.w,
+                    margin: EdgeInsets.only(right: 10.w),
+                    child: Image.asset("assets/icons/$iconName.png"),
+                  ),
+                  Text(
+                    "Gửi lại",
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: AppColors.primaryText,
+                      decorationColor: AppColors.primaryText,
+                      decoration: TextDecoration.underline,
+                      fontSize: 12.sp,
+                    ),
+                  )
+                ],
+              ),
             ),
           )
         ],
       ));
 }
 
-Widget buildLogInAndRegButton(
+Widget buildVerifyAndBackButton(
     String buttonName, String buttonType, void Function()? func) {
   return GestureDetector(
     onTap: func,
@@ -68,14 +90,14 @@ Widget buildLogInAndRegButton(
       width: 325.w,
       height: 50.h,
       margin: EdgeInsets.only(
-          left: 25.w, right: 25.w, top: buttonType == "register" ? 30.h : 20.h),
+          left: 25.w, right: 25.w, top: buttonType == "verify" ? 80.h : 20.h),
       decoration: BoxDecoration(
-          color: buttonType == "register"
+          color: buttonType == "verify"
               ? AppColors.primaryElement
               : AppColors.primarySecondaryElement,
           borderRadius: BorderRadius.circular(15.w),
           border: Border.all(
-            color: buttonType == "register"
+            color: buttonType == "verify"
                 ? Colors.transparent
                 : AppColors.primaryFourthElementText,
           ),
@@ -94,7 +116,7 @@ Widget buildLogInAndRegButton(
               fontFamily: 'Roboto',
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              color: buttonType == "register"
+              color: buttonType == "verify"
                   ? AppColors.primaryBackground
                   : AppColors.primaryElement),
         ),

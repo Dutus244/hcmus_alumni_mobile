@@ -100,9 +100,10 @@ class _WelcomeState extends State<Welcome> {
           child: Text(
             "${title}",
             style: TextStyle(
+                fontFamily: 'Roboto',
                 color: AppColors.primaryText,
                 fontSize: 24.sp,
-                fontWeight: FontWeight.normal),
+                fontWeight: FontWeight.bold),
           ),
         ),
         Container(
@@ -112,7 +113,8 @@ class _WelcomeState extends State<Welcome> {
             "${subTitle}",
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: AppColors.primaryFourthElementText,
+                fontFamily: 'Roboto',
+                color: AppColors.primaryText,
                 fontSize: 14.sp,
                 fontWeight: FontWeight.normal),
           ),
@@ -150,6 +152,7 @@ class _WelcomeState extends State<Welcome> {
               child: Text(
                 "${buttonName}",
                 style: TextStyle(
+                    fontFamily: 'Roboto',
                     color: Colors.white,
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold),
