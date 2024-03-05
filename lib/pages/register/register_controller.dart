@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hcmus_alumni_mobile/pages/register/bloc/register_events.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import 'bloc/register_blocs.dart';
@@ -9,26 +10,26 @@ class RegisterController {
 
   const RegisterController({required this.context});
 
-  Future<void> handleRegister(String type) async {
+  Future<void> handleRegister() async {
     try {
-      if (type == "email") {
-        final state = context.read<RegisterBloc>().state;
-        String emailAddress = state.email;
-        String password = state.password;
-        String rePassword = state.rePassword;
-        if (emailAddress.isEmpty) {
-          toastInfo(msg: "Bạn phải điền email");
-          return;
-        }
-        if (password.isEmpty) {
-          toastInfo(msg: "Bạn phải điền password");
-          return;
-        }
-        if (rePassword.isEmpty) {
-          toastInfo(msg: "Bạn phải điền password");
-          return;
-        }
+      final state = context.read<RegisterBloc>().state;
+      String email = state.email;
+      String password = state.password;
+      String rePassword = state.rePassword;
+      if (email.isEmpty) {
+        toastInfo(msg: "Bạn phải điền email");
+        return;
       }
+      if (password.isEmpty) {
+        toastInfo(msg: "Bạn phải điền password");
+        return;
+      }
+      if (rePassword.isEmpty) {
+        toastInfo(msg: "Bạn phải điền password");
+        return;
+      }
+      context.read<RegisterBloc>().add(RegisterResetEvent());
+      Navigator.of(context).pushNamed("emailVerification", arguments: email);
     } catch (e) {}
   }
 }

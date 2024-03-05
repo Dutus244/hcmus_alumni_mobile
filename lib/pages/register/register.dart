@@ -25,69 +25,73 @@ class _RegisterState extends State<Register> {
         color: AppColors.primaryBackground,
         child: SafeArea(
             child: Scaffold(
-              backgroundColor: AppColors.primaryBackground,
-              body: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 25.w, right: 25.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Center(
-                            child: Container(
-                              width: 230.w,
-                              height: 230.w,
-                              child: Image.asset(
-                                "assets/images/logos/logo.png",
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+          backgroundColor: AppColors.primaryBackground,
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 25.w, right: 25.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 230.w,
+                          height: 230.w,
+                          child: Image.asset(
+                            "assets/images/logos/logo.png",
+                            fit: BoxFit.cover,
                           ),
-                          Center(
-                              child: Container(
-                                padding: EdgeInsets.only(bottom: 15.h),
-                                child: Text(
-                                  "ĐĂNG KÝ",
-                                  style: TextStyle(
-                                    color: AppColors.primaryText,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17.sp,
-                                  ),
-                                ),
-                              )),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          buildTextField("Email", "email", "email", (value) {
-                            context.read<RegisterBloc>().add(EmailEvent(value));
-                          }),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          buildTextField("Mật khẩu", "password", "lock", (value) {
-                            context.read<RegisterBloc>().add(PasswordEvent(value));
-                          }),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          buildTextField("Nhập lại mật khẩu", "rePassword", "lock", (value) {
-                            context.read<RegisterBloc>().add(RePasswordEvent(value));
-                          }),
-                        ],
+                        ),
                       ),
-                    ),
-                    buildLogInAndRegButton("ĐĂNG KÝ", "register", () {
-                      RegisterController(context: context).handleRegister("email");
-                    }),
-                    buildLogInAndRegButton("ĐĂNG NHẬP", "login", () {
-                      Navigator.of(context).pushNamed("signIn");
-                    }),
-                  ],
+                      Center(
+                          child: Container(
+                        padding: EdgeInsets.only(bottom: 15.h),
+                        child: Text(
+                          "ĐĂNG KÝ",
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            color: AppColors.primaryText,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17.sp,
+                          ),
+                        ),
+                      )),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      buildTextField("Email", "email", "email", (value) {
+                        context.read<RegisterBloc>().add(EmailEvent(value));
+                      }),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      buildTextField("Mật khẩu", "password", "lock", (value) {
+                        context.read<RegisterBloc>().add(PasswordEvent(value));
+                      }),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      buildTextField("Nhập lại mật khẩu", "rePassword", "lock",
+                          (value) {
+                        context
+                            .read<RegisterBloc>()
+                            .add(RePasswordEvent(value));
+                      }),
+                    ],
+                  ),
                 ),
-              ),
-            )),
+                buildLogInAndRegButton("ĐĂNG KÝ", "register", () {
+                  RegisterController(context: context).handleRegister();
+                }),
+                buildLogInAndRegButton("ĐĂNG NHẬP", "login", () {
+                  Navigator.of(context).pushNamed("signIn");
+                }),
+              ],
+            ),
+          ),
+        )),
       );
     });
   }

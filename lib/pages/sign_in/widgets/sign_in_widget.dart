@@ -14,7 +14,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
           ? EdgeInsets.only(bottom: 20.h)
           : EdgeInsets.only(bottom: 10.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.primaryBackground,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -50,7 +50,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
               ),
               style: TextStyle(
                 color: AppColors.primaryText,
-                fontFamily: "Avenir",
+                fontFamily: 'Roboto',
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
               ),
@@ -73,6 +73,7 @@ Widget forgotPassword() {
         child: Text(
           "Quên mật khẩu?",
           style: TextStyle(
+            fontFamily: 'Roboto',
             color: AppColors.primaryText,
             decorationColor: AppColors.primaryText,
             decoration: TextDecoration.underline,
@@ -110,6 +111,7 @@ Widget rememberLogin(BuildContext context, void Function(bool value)? func) {
           child: Text(
             "Ghi nhớ đăng nhập",
             style: TextStyle(
+              fontFamily: 'Roboto',
               color: Colors.black,
               decorationColor: Colors.black,
               decoration: TextDecoration.underline,
@@ -122,7 +124,8 @@ Widget rememberLogin(BuildContext context, void Function(bool value)? func) {
   );
 }
 
-Widget buildLogInAndRegButton(String buttonName, String buttonType, void Function()? func) {
+Widget buildLogInAndRegButton(
+    String buttonName, String buttonType, void Function()? func) {
   return GestureDetector(
     onTap: func,
     child: Container(
@@ -152,6 +155,7 @@ Widget buildLogInAndRegButton(String buttonName, String buttonType, void Functio
         child: Text(
           buttonName,
           style: TextStyle(
+              fontFamily: 'Roboto',
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
               color: buttonType == "login"

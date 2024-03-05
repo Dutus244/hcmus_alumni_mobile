@@ -51,6 +51,7 @@ class _SignInState extends State<SignIn> {
                         child: Text(
                           "ĐĂNG NHẬP",
                           style: TextStyle(
+                            fontFamily: 'Roboto',
                             color: AppColors.primaryText,
                             fontWeight: FontWeight.bold,
                             fontSize: 17.sp,
@@ -89,7 +90,7 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 buildLogInAndRegButton("ĐĂNG NHẬP", "login", () {
-                  SignInController(context: context).handleSignIn("email");
+                  SignInController(context: context).handleSignIn();
                 }),
                 buildLogInAndRegButton("ĐĂNG KÝ", "register", () {
                   Navigator.of(context).pushNamed("register");
