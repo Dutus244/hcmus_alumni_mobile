@@ -2,25 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hcmus_alumni_mobile/pages/alumni_verification/widgets/alumni_verification_widget.dart';
+import 'package:hcmus_alumni_mobile/pages/change_password_forgot/bloc/change_password_forgot_events.dart';
 
 import '../../common/values/colors.dart';
-import 'alumni_verification_controller.dart';
-import 'bloc/alumni_verification_blocs.dart';
-import 'bloc/alumni_verification_events.dart';
-import 'bloc/alumni_verification_states.dart';
+import 'bloc/change_password_forgot_blocs.dart';
+import 'bloc/change_password_forgot_states.dart';
+import 'change_password_forgot_controller.dart';
+import 'widgets/change_password_forgot_widget.dart';
 
-class AlumniVerification extends StatefulWidget {
-  const AlumniVerification({super.key});
+class ChangePasswordForgot extends StatefulWidget {
+  const ChangePasswordForgot({super.key});
 
   @override
-  State<AlumniVerification> createState() => _AlumniVerificationState();
+  State<ChangePasswordForgot> createState() => _ChangePasswordForgotState();
 }
 
-class _AlumniVerificationState extends State<AlumniVerification> {
+class _ChangePasswordForgotState extends State<ChangePasswordForgot> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AlumniVerificationBloc, AlumniVerificationState>(builder: (context, state) {
+    return BlocBuilder<ChangePasswordForgotBloc, ChangePasswordForgotState>(builder: (context, state) {
       return Container(
         color: AppColors.primaryBackground,
         child: SafeArea(
@@ -49,7 +49,7 @@ class _AlumniVerificationState extends State<AlumniVerification> {
                               child: Container(
                                 padding: EdgeInsets.only(bottom: 15.h),
                                 child: Text(
-                                  "XÁC THỰC CỰU SINH VIÊN",
+                                  "THAY ĐỔI MẬT KHẨU",
                                   style: TextStyle(
                                     fontFamily: 'Roboto',
                                     color: AppColors.primaryText,
@@ -61,33 +61,28 @@ class _AlumniVerificationState extends State<AlumniVerification> {
                           SizedBox(
                             height: 5.h,
                           ),
-                          buildTextField("Họ và tên", "fullName", "user", (value) {
-                            context.read<AlumniVerificationBloc>().add(FullNameEvent(value));
+                          buildTextField("Mật khẩu mới", "password", "lock", (value) {
+                            context
+                                .read<ChangePasswordForgotBloc>()
+                                .add(PasswordEvent(value));
                           }),
                           SizedBox(
                             height: 5.h,
                           ),
-                          buildTextField("MSSV", "studentId", "user", (value) {
-                            context.read<AlumniVerificationBloc>().add(StudentIdEvent(value));
+                          buildTextField("Nhập lại mật khẩu mới", "password", "lock", (value) {
+                            context
+                                .read<ChangePasswordForgotBloc>()
+                                .add(RePasswordEvent(value));
                           }),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          buildTextFieldStartYear("Năm nhập học", "startYear", "user",
-                                  (value) {
-                                context
-                                    .read<AlumniVerificationBloc>()
-                                    .add(StartYearEvent(value));
-                              }),
                         ],
                       ),
                     ),
-                    buildLogInAndRegButton("XÁC THỰC", "verify", () {
-                      AlumniVerificationController(context: context)
-                          .hanldeAlumniVerification();
+                    buildLogInAndRegButton("THAY ĐỔI", "change", () {
+                      ChangePasswordForgotController(context: context).hanldeChangePassword();
                     }),
-                    buildLogInAndRegButton("BỎ QUA", "skip", () {
-                      context.read<AlumniVerificationBloc>().add(AlumniVerificationResetEvent());
+                    buildLogInAndRegButton("THOÁT", "back", () {
+                      context.read<ChangePasswordForgotBloc>().add(ChangePasswordForgotResetEvent());
+                      Navigator.of(context).pushNamed("forgotPassword");
                     }),
                   ],
                 ),

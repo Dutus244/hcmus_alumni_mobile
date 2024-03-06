@@ -6,6 +6,8 @@ import 'package:hcmus_alumni_mobile/pages/splash/bloc/splash_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/welcome/bloc/welcome_blocs.dart';
 
 import 'alumni_verification/bloc/alumni_verification_blocs.dart';
+import 'change_password_forgot/bloc/change_password_forgot_blocs.dart';
+import 'forgot_password/bloc/forgot_password_blocs.dart';
 
 class AppBlocProviders {
   static get allBlocProviders => [
@@ -26,6 +28,12 @@ class AppBlocProviders {
         ),
         BlocProvider(
           create: (context) => AlumniVerificationBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ForgotPasswordBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ChangePasswordForgotBloc(),
         ),
       ];
 }

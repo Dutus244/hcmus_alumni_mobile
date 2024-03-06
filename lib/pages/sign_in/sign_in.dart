@@ -85,7 +85,10 @@ class _SignInState extends State<SignIn> {
                             .read<SignInBloc>()
                             .add(RememberLoginEvent(value));
                       }),
-                      forgotPassword(),
+                      forgotPassword((){
+                        context.read<SignInBloc>().add(SignInResetEvent());
+                        Navigator.of(context).pushNamed("forgotPassword");
+                      }),
                     ],
                   ),
                 ),
@@ -93,6 +96,7 @@ class _SignInState extends State<SignIn> {
                   SignInController(context: context).handleSignIn();
                 }),
                 buildLogInAndRegButton("ĐĂNG KÝ", "register", () {
+                  context.read<SignInBloc>().add(SignInResetEvent());
                   Navigator.of(context).pushNamed("register");
                 }),
               ],
