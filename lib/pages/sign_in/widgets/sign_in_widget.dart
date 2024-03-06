@@ -63,13 +63,13 @@ Widget buildTextField(String hintText, String textType, String iconName,
       ));
 }
 
-Widget forgotPassword() {
+Widget forgotPassword(void Function()? func) {
   return Container(
     width: 100.w,
     height: 30.h,
     padding: EdgeInsets.only(left: 15.w),
     child: GestureDetector(
-        onTap: () {},
+        onTap: func,
         child: Text(
           "Quên mật khẩu?",
           style: TextStyle(

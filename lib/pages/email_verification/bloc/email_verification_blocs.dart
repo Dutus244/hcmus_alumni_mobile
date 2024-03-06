@@ -7,9 +7,14 @@ class EmailVerificationBloc
     extends Bloc<EmailVerificationEvent, EmailVerificationState> {
   EmailVerificationBloc() : super(EmailVerificationState()) {
     on<CodeEvent>(_codeEvent);
+    on<EmailVerificationResetEvent>(_emailVerificationResetEvent);
   }
 
   void _codeEvent(CodeEvent event, Emitter<EmailVerificationState> emit) {
     emit(state.copyWith(code: event.code));
+  }
+
+  void _emailVerificationResetEvent(EmailVerificationResetEvent event, Emitter<EmailVerificationState> emit) {
+    emit(EmailVerificationState());
   }
 }

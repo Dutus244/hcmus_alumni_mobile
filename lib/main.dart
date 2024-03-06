@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_verification/alumni_verification.dart';
 import 'package:hcmus_alumni_mobile/pages/bloc_providers.dart';
+import 'package:hcmus_alumni_mobile/pages/change_password_forgot/change_password_forgot.dart';
 import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification.dart';
+import 'package:hcmus_alumni_mobile/pages/forgot_password/forgot_password.dart';
 import 'package:hcmus_alumni_mobile/pages/register/register.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
@@ -37,6 +39,8 @@ class MyApp extends StatelessWidget {
               "register": (context) => const Register(),
               "emailVerification": (context) => const EmailVerification(),
               "alumniVerification": (context) => const AlumniVerification(),
+              "forgotPassword": (context) => const ForgotPassword(),
+              "changePasswordForgot": (context) => const ChangePasswordForgot(),
             },
           ),
         ));

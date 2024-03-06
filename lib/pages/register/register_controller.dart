@@ -20,16 +20,29 @@ class RegisterController {
         toastInfo(msg: "Bạn phải điền email");
         return;
       }
+      if (!isValidEmail(email)) {
+        toastInfo(msg: "Email không hợp lệ");
+        return;
+      }
       if (password.isEmpty) {
-        toastInfo(msg: "Bạn phải điền password");
+        toastInfo(msg: "Bạn phải điền mật khẩu");
         return;
       }
       if (rePassword.isEmpty) {
-        toastInfo(msg: "Bạn phải điền password");
+        toastInfo(msg: "Bạn phải điền nhập lại mật khẩu");
+        return;
+      }
+      if (rePassword != password) {
+        toastInfo(msg: "Mật khẩu không khớp");
         return;
       }
       context.read<RegisterBloc>().add(RegisterResetEvent());
       Navigator.of(context).pushNamed("emailVerification", arguments: email);
     } catch (e) {}
+  }
+
+  bool isValidEmail(String email) {
+    final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
   }
 }

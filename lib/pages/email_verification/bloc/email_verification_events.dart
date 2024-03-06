@@ -7,3 +7,5 @@ class CodeEvent extends EmailVerificationEvent {
 
   const CodeEvent(this.code);
 }
+
+class EmailVerificationResetEvent extends EmailVerificationEvent {}

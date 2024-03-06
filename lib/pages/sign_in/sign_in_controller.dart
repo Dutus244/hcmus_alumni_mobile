@@ -19,11 +19,20 @@ class SignInController {
         toastInfo(msg: "Bạn phải điền email");
         return;
       }
+      if (!isValidEmail(email)) {
+        toastInfo(msg: "Email không hợp lệ");
+        return;
+      }
       if (password.isEmpty) {
-        toastInfo(msg: "Bạn phải điền password");
+        toastInfo(msg: "Bạn phải điền mật khẩu");
         return;
       }
       context.read<SignInBloc>().add(SignInResetEvent());
     } catch (e) {}
+  }
+
+  bool isValidEmail(String email) {
+    final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
   }
 }
