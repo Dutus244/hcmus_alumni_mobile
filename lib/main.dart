@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/bloc_providers.dart';
+import 'package:hcmus_alumni_mobile/pages/landing/landing.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
 import 'package:hcmus_alumni_mobile/pages/welcome/welcome.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
             routes: {
               "welcome": (context) => const Welcome(),
               "signIn": (context) => const SignIn(),
+              "landing": (context) => const Landing(),
             },
           ),
         ));

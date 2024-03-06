@@ -24,6 +24,8 @@ class SignInController {
           toastInfo(msg: "Bạn phải điền password");
           return;
         }
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil("landing", (route) => false);
       }
     } catch (e) {}
   }
