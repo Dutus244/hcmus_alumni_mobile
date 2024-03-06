@@ -9,7 +9,10 @@ class AppColors {
       Color.fromARGB(255, 247, 247, 249);
 
   /// main widget color blue
-  static const Color primaryElement = Color.fromARGB(255, 61, 61, 216);
+  static const Color primaryElement = Color.fromARGB(255, 5, 90, 188);
+
+  /// main widget second color blue
+  static const Color primarySecondaryElement = Color.fromARGB(255, 230, 240, 251);
 
   /// main text color black
   static const Color primaryText = Color.fromARGB(255, 0, 0, 0);

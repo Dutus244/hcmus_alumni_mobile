@@ -1,22 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hcmus_alumni_mobile/pages/register/bloc/register_events.dart';
 
 import '../../common/widgets/flutter_toast.dart';
-import 'bloc/sign_in_blocs.dart';
-import 'bloc/sign_in_events.dart';
+import 'bloc/register_blocs.dart';
 
-class SignInController {
+class RegisterController {
   final BuildContext context;
 
-  const SignInController({required this.context});
+  const RegisterController({required this.context});
 
-  Future<void> handleSignIn() async {
+  Future<void> handleRegister() async {
     try {
-      if (type == "email") {
-        // BlocProvider.of<SignInBloc>(context).state
-      final state = context.read<SignInBloc>().state;
+      final state = context.read<RegisterBloc>().state;
       String email = state.email;
       String password = state.password;
+      String rePassword = state.rePassword;
       if (email.isEmpty) {
         toastInfo(msg: "Bạn phải điền email");
         return;
@@ -29,9 +28,16 @@ class SignInController {
         toastInfo(msg: "Bạn phải điền mật khẩu");
         return;
       }
-      context.read<SignInBloc>().add(SignInResetEvent());
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil("landing", (route) => false);
+      if (rePassword.isEmpty) {
+        toastInfo(msg: "Bạn phải điền nhập lại mật khẩu");
+        return;
+      }
+      if (rePassword != password) {
+        toastInfo(msg: "Mật khẩu không khớp");
+        return;
+      }
+      context.read<RegisterBloc>().add(RegisterResetEvent());
+      Navigator.of(context).pushNamed("emailVerification", arguments: email);
     } catch (e) {}
   }
 

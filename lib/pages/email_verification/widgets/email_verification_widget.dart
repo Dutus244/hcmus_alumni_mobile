@@ -1,18 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hcmus_alumni_mobile/pages/sign_in/bloc/sign_in_blocs.dart';
 
 import '../../../common/values/colors.dart';
 
 Widget buildTextField(String hintText, String textType, String iconName,
-    void Function(String value)? func) {
+    void Function(String value)? func1, void Function()? func2) {
   return Container(
       width: 325.w,
       height: 40.h,
-      margin: textType == "email"
-          ? EdgeInsets.only(bottom: 20.h)
-          : EdgeInsets.only(bottom: 10.h),
+      margin: EdgeInsets.only(bottom: 20.h, top: 30.h),
       decoration: BoxDecoration(
         color: AppColors.primaryBackground,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
@@ -21,17 +18,11 @@ Widget buildTextField(String hintText, String textType, String iconName,
       child: Row(
         children: [
           Container(
-            width: 16.w,
-            height: 16.w,
-            margin: EdgeInsets.only(left: 17.w),
-            child: Image.asset("assets/icons/$iconName.png"),
-          ),
-          Container(
-            width: 270.w,
+            width: 200.w,
             height: 40.h,
-            padding: EdgeInsets.only(top: 10.h),
+            padding: EdgeInsets.only(top: 10.h, left: 17.w),
             child: TextField(
-              onChanged: (value) => func!(value),
+              onChanged: (value) => func1!(value),
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 hintText: hintText,
@@ -49,82 +40,49 @@ Widget buildTextField(String hintText, String textType, String iconName,
                 counterText: '',
               ),
               style: TextStyle(
-                color: AppColors.primaryText,
                 fontFamily: 'Roboto',
+                color: AppColors.primaryText,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
               ),
               autocorrect: false,
-              obscureText: textType == "password" ? true : false,
-              maxLength: 30,
+              obscureText: false,
+              maxLength: 10,
+            ),
+          ),
+          GestureDetector(
+            onTap: func2,
+            child: Container(
+              padding: EdgeInsets.only(left: 20.w),
+              width: 100.w,
+              height: 50.h,
+              child: Row(
+                children: [
+                  Container(
+                    width: 16.w,
+                    height: 16.w,
+                    margin: EdgeInsets.only(right: 10.w),
+                    child: Image.asset("assets/icons/$iconName.png"),
+                  ),
+                  Text(
+                    "Gửi lại",
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: AppColors.primaryText,
+                      decorationColor: AppColors.primaryText,
+                      decoration: TextDecoration.underline,
+                      fontSize: 12.sp,
+                    ),
+                  )
+                ],
+              ),
             ),
           )
         ],
       ));
 }
 
-Widget forgotPassword(void Function()? func) {
-  return Container(
-    width: 100.w,
-    height: 30.h,
-    padding: EdgeInsets.only(left: 15.w),
-    child: GestureDetector(
-        onTap: func,
-        child: Text(
-          "Quên mật khẩu?",
-          style: TextStyle(
-            fontFamily: 'Roboto',
-            color: AppColors.primaryText,
-            decorationColor: AppColors.primaryText,
-            decoration: TextDecoration.underline,
-            fontSize: 10.sp,
-          ),
-        )),
-  );
-}
-
-Widget rememberLogin(BuildContext context, void Function(bool value)? func) {
-  return Container(
-    width: 135.w,
-    height: 30.h,
-    child: Row(
-      children: [
-        Container(
-          width: 16.w,
-          height: 16.w,
-          margin: EdgeInsets.only(left: 0.w, right: 10.w),
-          child: Checkbox(
-            checkColor: AppColors.primaryBackground,
-            fillColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
-                if (states.contains(MaterialState.selected)) {
-                  return AppColors.primaryElement; // Selected color
-                }
-                return Colors.transparent; // Unselected color
-              },
-            ),
-            onChanged: (value) => func!(value!),
-            value: BlocProvider.of<SignInBloc>(context).state.rememberLogin,
-          ),
-        ),
-        Container(
-          child: Text(
-            "Ghi nhớ đăng nhập",
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              color: Colors.black,
-              decorationColor: Colors.black,
-              decoration: TextDecoration.underline,
-              fontSize: 10.sp,
-            ),
-          ),
-        )
-      ],
-    ),
-  );
-}
-
-Widget buildLogInAndRegButton(
+Widget buildVerifyAndBackButton(
     String buttonName, String buttonType, void Function()? func) {
   return GestureDetector(
     onTap: func,
@@ -132,14 +90,14 @@ Widget buildLogInAndRegButton(
       width: 325.w,
       height: 50.h,
       margin: EdgeInsets.only(
-          left: 25.w, right: 25.w, top: buttonType == "login" ? 50.h : 20.h),
+          left: 25.w, right: 25.w, top: buttonType == "verify" ? 50.h : 20.h),
       decoration: BoxDecoration(
-          color: buttonType == "login"
+          color: buttonType == "verify"
               ? AppColors.primaryElement
               : AppColors.primarySecondaryElement,
           borderRadius: BorderRadius.circular(15.w),
           border: Border.all(
-            color: buttonType == "login"
+            color: buttonType == "verify"
                 ? Colors.transparent
                 : AppColors.primaryFourthElementText,
           ),
@@ -158,7 +116,7 @@ Widget buildLogInAndRegButton(
               fontFamily: 'Roboto',
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              color: buttonType == "login"
+              color: buttonType == "verify"
                   ? AppColors.primaryBackground
                   : AppColors.primaryElement),
         ),

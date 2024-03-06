@@ -2,25 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in_controller.dart';
-import 'package:hcmus_alumni_mobile/pages/sign_in/widgets/sign_in_widget.dart';
+import 'package:hcmus_alumni_mobile/pages/register/register_controller.dart';
 
 import '../../common/values/colors.dart';
-import 'bloc/sign_in_blocs.dart';
-import 'bloc/sign_in_events.dart';
-import 'bloc/sign_in_states.dart';
+import 'bloc/register_blocs.dart';
+import 'bloc/register_events.dart';
+import 'bloc/register_states.dart';
+import 'widgets/register_widget.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SignInBloc, SignInState>(builder: (context, state) {
+    return BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
       return Container(
         color: AppColors.primaryBackground,
         child: SafeArea(
@@ -49,7 +49,7 @@ class _SignInState extends State<SignIn> {
                           child: Container(
                         padding: EdgeInsets.only(bottom: 15.h),
                         child: Text(
-                          "ĐĂNG NHẬP",
+                          "ĐĂNG KÝ",
                           style: TextStyle(
                             fontFamily: 'Roboto',
                             color: AppColors.primaryText,
@@ -62,42 +62,32 @@ class _SignInState extends State<SignIn> {
                         height: 5.h,
                       ),
                       buildTextField("Email", "email", "email", (value) {
-                        context.read<SignInBloc>().add(EmailEvent(value));
+                        context.read<RegisterBloc>().add(EmailEvent(value));
                       }),
                       SizedBox(
                         height: 5.h,
                       ),
                       buildTextField("Mật khẩu", "password", "lock", (value) {
-                        context.read<SignInBloc>().add(PasswordEvent(value));
+                        context.read<RegisterBloc>().add(PasswordEvent(value));
                       }),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 25.w, right: 25.w, top: 10.h),
-                  height: 24.h,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      rememberLogin(context, (value) {
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      buildTextField("Nhập lại mật khẩu", "rePassword", "lock",
+                          (value) {
                         context
-                            .read<SignInBloc>()
-                            .add(RememberLoginEvent(value));
-                      }),
-                      forgotPassword((){
-                        context.read<SignInBloc>().add(SignInResetEvent());
-                        Navigator.of(context).pushNamed("forgotPassword");
+                            .read<RegisterBloc>()
+                            .add(RePasswordEvent(value));
                       }),
                     ],
                   ),
                 ),
-                buildLogInAndRegButton("ĐĂNG NHẬP", "login", () {
-                  SignInController(context: context).handleSignIn();
-                }),
                 buildLogInAndRegButton("ĐĂNG KÝ", "register", () {
-                  context.read<SignInBloc>().add(SignInResetEvent());
-                  Navigator.of(context).pushNamed("register");
+                  RegisterController(context: context).handleRegister();
+                }),
+                buildLogInAndRegButton("ĐĂNG NHẬP", "login", () {
+                  context.read<RegisterBloc>().add(RegisterResetEvent());
+                  Navigator.of(context).pushNamed("signIn");
                 }),
               ],
             ),
