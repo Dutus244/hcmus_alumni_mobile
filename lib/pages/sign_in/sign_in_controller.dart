@@ -12,6 +12,8 @@ class SignInController {
 
   Future<void> handleSignIn() async {
     try {
+      if (type == "email") {
+        // BlocProvider.of<SignInBloc>(context).state
       final state = context.read<SignInBloc>().state;
       String email = state.email;
       String password = state.password;
@@ -28,6 +30,8 @@ class SignInController {
         return;
       }
       context.read<SignInBloc>().add(SignInResetEvent());
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil("landing", (route) => false);
     } catch (e) {}
   }
 
