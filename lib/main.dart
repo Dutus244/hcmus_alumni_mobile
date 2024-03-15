@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hcmus_alumni_mobile/pages/alumni_verification/alumni_verification.dart';
-import 'package:hcmus_alumni_mobile/pages/bloc_providers.dart';
-import 'package:hcmus_alumni_mobile/pages/landing/landing.dart';
-import 'package:hcmus_alumni_mobile/pages/change_password_forgot/change_password_forgot.dart';
-import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification.dart';
-import 'package:hcmus_alumni_mobile/pages/forgot_password/forgot_password.dart';
-import 'package:hcmus_alumni_mobile/pages/register/register.dart';
-import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
-import 'package:hcmus_alumni_mobile/pages/welcome/welcome.dart';
+
+import 'common/routes/pages.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-        providers: AppBlocProviders.allBlocProviders,
+        providers: [...AppPages.allBlocProviders(context)],
         child: ScreenUtilInit(
           builder: (context, child) => MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -33,17 +26,8 @@ class MyApp extends StatelessWidget {
               elevation: 0,
               backgroundColor: Colors.white,
             )),
-            home: Splash(),
-            routes: {
-              "welcome": (context) => const Welcome(),
-              "signIn": (context) => const SignIn(),
-              "landing": (context) => const Landing(),
-              "register": (context) => const Register(),
-              "emailVerification": (context) => const EmailVerification(),
-              "alumniVerification": (context) => const AlumniVerification(),
-              "forgotPassword": (context) => const ForgotPassword(),
-              "changePasswordForgot": (context) => const ChangePasswordForgot(),
-            },
+            home: const Splash(),
+            onGenerateRoute: AppPages.GenerateRouteSettings,
           ),
         ));
   }

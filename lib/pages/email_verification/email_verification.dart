@@ -94,7 +94,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                 }),
                 buildVerifyAndBackButton("TRỞ VỀ", "back", () {
                   context.read<EmailVerificationBloc>().add(EmailVerificationResetEvent());
-                  Navigator.of(context).pushNamed("register");
+                  Navigator.of(context).pushNamed("/register");
                 }),
               ],
             ),

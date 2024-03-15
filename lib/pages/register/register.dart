@@ -87,7 +87,7 @@ class _RegisterState extends State<Register> {
                 }),
                 buildLogInAndRegButton("ĐĂNG NHẬP", "login", () {
                   context.read<RegisterBloc>().add(RegisterResetEvent());
-                  Navigator.of(context).pushNamed("signIn");
+                  Navigator.of(context).pushNamed("/signIn");
                 }),
               ],
             ),

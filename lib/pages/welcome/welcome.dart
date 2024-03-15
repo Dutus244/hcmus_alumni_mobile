@@ -130,7 +130,7 @@ class _WelcomeState extends State<Welcome> {
             } else {
               // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyHomePage()));
               Navigator.of(context)
-                  .pushNamedAndRemoveUntil("signIn", (route) => false);
+                  .pushNamedAndRemoveUntil("/signIn", (route) => false);
             }
           },
           child: Container(
@@ -138,16 +138,9 @@ class _WelcomeState extends State<Welcome> {
             width: 325.w,
             height: 50.h,
             decoration: BoxDecoration(
-                color: AppColors.primaryElement,
-                borderRadius: BorderRadius.all(Radius.circular(15.w)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 10,
-                    blurRadius: 20,
-                    offset: Offset(0, 1),
-                  )
-                ]),
+              color: AppColors.primaryElement,
+              borderRadius: BorderRadius.all(Radius.circular(15.w)),
+            ),
             child: Center(
               child: Text(
                 "${buttonName}",

@@ -11,28 +11,24 @@ class SignInController {
   const SignInController({required this.context});
 
   Future<void> handleSignIn() async {
-    try {
-      if (type == "email") {
-        // BlocProvider.of<SignInBloc>(context).state
-      final state = context.read<SignInBloc>().state;
-      String email = state.email;
-      String password = state.password;
-      if (email.isEmpty) {
-        toastInfo(msg: "Bạn phải điền email");
-        return;
-      }
-      if (!isValidEmail(email)) {
-        toastInfo(msg: "Email không hợp lệ");
-        return;
-      }
-      if (password.isEmpty) {
-        toastInfo(msg: "Bạn phải điền mật khẩu");
-        return;
-      }
-      context.read<SignInBloc>().add(SignInResetEvent());
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil("landing", (route) => false);
-    } catch (e) {}
+    final state = context.read<SignInBloc>().state;
+    String email = state.email;
+    String password = state.password;
+    if (email.isEmpty) {
+      toastInfo(msg: "Bạn phải điền email");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      toastInfo(msg: "Email không hợp lệ");
+      return;
+    }
+    if (password.isEmpty) {
+      toastInfo(msg: "Bạn phải điền mật khẩu");
+      return;
+    }
+    context.read<SignInBloc>().add(SignInResetEvent());
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
   }
 
   bool isValidEmail(String email) {

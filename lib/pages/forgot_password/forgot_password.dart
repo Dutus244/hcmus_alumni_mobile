@@ -86,7 +86,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         }),
                         buildVerifyAndBackButton("TRỞ VỀ", "back", () {
                           context.read<ForgotPasswordBloc>().add(ForgotPasswordResetEvent());
-                          Navigator.of(context).pushNamed("signIn");
+                          Navigator.of(context).pushNamed("/signIn");
                         }),
                       ],
                     ),
