@@ -30,7 +30,7 @@ class ForgotPasswordController {
         return;
       }
       context.read<ForgotPasswordBloc>().add(ForgotPasswordResetEvent());
-      Navigator.of(context).pushNamed("changePasswordForgot");
+      Navigator.of(context).pushNamed("/changePasswordForgot");
     } catch (e) {}
   }
 }

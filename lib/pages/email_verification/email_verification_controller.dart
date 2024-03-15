@@ -24,6 +24,6 @@ class EmailVerificationController {
       }
     } catch (e) {}
     context.read<EmailVerificationBloc>().add(EmailVerificationResetEvent());
-    Navigator.of(context).pushNamed("alumniVerification");
+    Navigator.of(context).pushNamed("/alumniVerification");
   }
 }

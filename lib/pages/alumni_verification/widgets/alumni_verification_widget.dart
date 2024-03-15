@@ -58,8 +58,8 @@ Widget buildTextField(String hintText, String textType, String iconName,
       ));
 }
 
-Widget buildTextFieldStartYear(String hintText, String textType, String iconName,
-    void Function(int value)? func) {
+Widget buildTextFieldStartYear(String hintText, String textType,
+    String iconName, void Function(int value)? func) {
   return Container(
       width: 325.w,
       height: 40.h,
@@ -82,7 +82,7 @@ Widget buildTextFieldStartYear(String hintText, String textType, String iconName
             height: 40.h,
             padding: EdgeInsets.only(top: 10.h),
             child: TextField(
-              onChanged: (value) => func!(value as int),
+              onChanged: (value) => func!(int.parse(value)),
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 hintText: hintText,
@@ -123,23 +123,16 @@ Widget buildLogInAndRegButton(
       margin: EdgeInsets.only(
           left: 25.w, right: 25.w, top: buttonType == "verify" ? 30.h : 20.h),
       decoration: BoxDecoration(
+        color: buttonType == "verify"
+            ? AppColors.primaryElement
+            : AppColors.primarySecondaryElement,
+        borderRadius: BorderRadius.circular(15.w),
+        border: Border.all(
           color: buttonType == "verify"
-              ? AppColors.primaryElement
-              : AppColors.primarySecondaryElement,
-          borderRadius: BorderRadius.circular(15.w),
-          border: Border.all(
-            color: buttonType == "verify"
-                ? Colors.transparent
-                : AppColors.primaryFourthElementText,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 10,
-              offset: Offset(0, 5),
-            )
-          ]),
+              ? Colors.transparent
+              : AppColors.primaryFourthElementText,
+        ),
+      ),
       child: Center(
         child: Text(
           buttonName,

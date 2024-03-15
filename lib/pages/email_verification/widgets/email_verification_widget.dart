@@ -92,23 +92,16 @@ Widget buildVerifyAndBackButton(
       margin: EdgeInsets.only(
           left: 25.w, right: 25.w, top: buttonType == "verify" ? 50.h : 20.h),
       decoration: BoxDecoration(
+        color: buttonType == "verify"
+            ? AppColors.primaryElement
+            : AppColors.primarySecondaryElement,
+        borderRadius: BorderRadius.circular(15.w),
+        border: Border.all(
           color: buttonType == "verify"
-              ? AppColors.primaryElement
-              : AppColors.primarySecondaryElement,
-          borderRadius: BorderRadius.circular(15.w),
-          border: Border.all(
-            color: buttonType == "verify"
-                ? Colors.transparent
-                : AppColors.primaryFourthElementText,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 10,
-              offset: Offset(0, 5),
-            )
-          ]),
+              ? Colors.transparent
+              : AppColors.primaryFourthElementText,
+        ),
+      ),
       child: Center(
         child: Text(
           buttonName,

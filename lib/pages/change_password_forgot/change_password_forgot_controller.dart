@@ -28,7 +28,7 @@ class ChangePasswordForgotController {
         return;
       }
       context.read<ChangePasswordForgotBloc>().add(ChangePasswordForgotResetEvent());
-      // Navigator.of(context).pushNamed("changePasswordForgot");
+      Navigator.of(context).pushNamed("/signIn");
     } catch (e) {}
   }
 }

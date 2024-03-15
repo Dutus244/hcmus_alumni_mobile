@@ -88,6 +88,8 @@ class _AlumniVerificationState extends State<AlumniVerification> {
                     }),
                     buildLogInAndRegButton("BỎ QUA", "skip", () {
                       context.read<AlumniVerificationBloc>().add(AlumniVerificationResetEvent());
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
                     }),
                   ],
                 ),

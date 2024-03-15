@@ -37,7 +37,7 @@ class RegisterController {
         return;
       }
       context.read<RegisterBloc>().add(RegisterResetEvent());
-      Navigator.of(context).pushNamed("emailVerification", arguments: email);
+      Navigator.of(context).pushNamed("/emailVerification", arguments: email);
     } catch (e) {}
   }
 

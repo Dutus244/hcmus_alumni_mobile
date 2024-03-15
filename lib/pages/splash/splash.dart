@@ -22,7 +22,7 @@ class _SplashState extends State<Splash> {
     super.initState();
     Timer(Duration(seconds: 2), () {
       Navigator.of(context)
-          .pushNamedAndRemoveUntil("welcome", (route) => false);
+          .pushNamedAndRemoveUntil("/welcome", (route) => false);
     });
   }
 

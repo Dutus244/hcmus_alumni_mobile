@@ -87,7 +87,7 @@ class _SignInState extends State<SignIn> {
                       }),
                       forgotPassword((){
                         context.read<SignInBloc>().add(SignInResetEvent());
-                        Navigator.of(context).pushNamed("forgotPassword");
+                        Navigator.of(context).pushNamed("/forgotPassword");
                       }),
                     ],
                   ),
@@ -97,7 +97,7 @@ class _SignInState extends State<SignIn> {
                 }),
                 buildLogInAndRegButton("ĐĂNG KÝ", "register", () {
                   context.read<SignInBloc>().add(SignInResetEvent());
-                  Navigator.of(context).pushNamed("register");
+                  Navigator.of(context).pushNamed("/register");
                 }),
               ],
             ),

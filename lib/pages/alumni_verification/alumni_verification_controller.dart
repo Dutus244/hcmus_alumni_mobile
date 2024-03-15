@@ -29,6 +29,8 @@ class AlumniVerificationController {
         return;
       }
       context.read<AlumniVerificationBloc>().add(AlumniVerificationResetEvent());
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
     } catch (e) {}
   }
 }
