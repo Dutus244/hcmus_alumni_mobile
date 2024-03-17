@@ -40,6 +40,10 @@ dependencies:
   dots_indicator:
   intl:
   fluttertoast: ^8.2.4
+  shared_preferences: ^2.2.2
+  image_picker: ^1.0.7
+  image_cropper: ^5.0.1
+  http: ^1.2.0
 
 dev_dependencies:
   flutter_test:

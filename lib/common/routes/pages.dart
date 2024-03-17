@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hcmus_alumni_mobile/pages/alumni_information/alumni_information.dart';
+import 'package:hcmus_alumni_mobile/pages/alumni_information/bloc/alumni_information_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_verification/alumni_verification.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_verification/bloc/alumni_verification_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/application_page/application_page.dart';
@@ -67,6 +69,12 @@ class AppPages {
           page: const AlumniVerification(),
           bloc: BlocProvider(
             create: (_) => AlumniVerificationBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.ALUMNI_INFORMATION,
+          page: const AlumniInformation(),
+          bloc: BlocProvider(
+            create: (_) => AlumniInformationBloc(),
           )),
       PageEntity(
           route: AppRoutes.FORGOT_PASSWORD,

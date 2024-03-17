@@ -9,6 +9,7 @@ import 'alumni_verification_controller.dart';
 import 'bloc/alumni_verification_blocs.dart';
 import 'bloc/alumni_verification_events.dart';
 import 'bloc/alumni_verification_states.dart';
+import 'dart:io';
 
 class AlumniVerification extends StatefulWidget {
   const AlumniVerification({super.key});
@@ -19,83 +20,115 @@ class AlumniVerification extends StatefulWidget {
 
 class _AlumniVerificationState extends State<AlumniVerification> {
   @override
+  void initState() {
+    super.initState();
+    context.read<AlumniVerificationBloc>().add(AlumniVerificationResetEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AlumniVerificationBloc, AlumniVerificationState>(builder: (context, state) {
-      return Container(
-        color: AppColors.primaryBackground,
-        child: SafeArea(
-            child: Scaffold(
-              backgroundColor: AppColors.primaryBackground,
-              body: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(left: 25.w, right: 25.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Center(
-                            child: Container(
-                              width: 230.w,
-                              height: 230.w,
-                              child: Image.asset(
-                                "assets/images/logos/logo.png",
-                                fit: BoxFit.cover,
-                              ),
+    return PopScope(
+      canPop: false, // prevent back
+      onPopInvoked: (_) async {
+        Navigator.of(context).pushNamed("/alumniInformation");
+      },
+      child: BlocBuilder<AlumniVerificationBloc, AlumniVerificationState>(
+          builder: (context, state) {
+        return Container(
+          color: AppColors.primaryBackground,
+          child: SafeArea(
+              child: Scaffold(
+            backgroundColor: AppColors.primaryBackground,
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 25.w, right: 25.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Container(
+                            width: 230.w,
+                            height: 230.w,
+                            child: Image.asset(
+                              "assets/images/logos/logo.png",
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          Center(
-                              child: Container(
-                                padding: EdgeInsets.only(bottom: 15.h),
-                                child: Text(
-                                  "XÁC THỰC CỰU SINH VIÊN",
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    color: AppColors.primaryText,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17.sp,
-                                  ),
-                                ),
-                              )),
-                          SizedBox(
-                            height: 5.h,
+                        ),
+                        Center(
+                            child: Container(
+                          padding: EdgeInsets.only(bottom: 5.h),
+                          child: Text(
+                            "BẮT ĐẦU",
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              color: AppColors.primaryText,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17.sp,
+                            ),
                           ),
-                          buildTextField("Họ và tên", "fullName", "user", (value) {
-                            context.read<AlumniVerificationBloc>().add(FullNameEvent(value));
-                          }),
-                          SizedBox(
-                            height: 5.h,
+                        )),
+                        Center(
+                            child: Container(
+                          padding: EdgeInsets.only(bottom: 10.h),
+                          child: Text(
+                            "Hãy thiết lập hồ sơ của bạn. Những thông tin này sẽ giúp chúng tôi xét duyệt tài khoản của bạn.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              color: AppColors.primaryText,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 12.sp,
+                            ),
                           ),
-                          buildTextField("MSSV", "studentId", "user", (value) {
-                            context.read<AlumniVerificationBloc>().add(StudentIdEvent(value));
-                          }),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          buildTextFieldStartYear("Năm nhập học", "startYear", "user",
-                                  (value) {
-                                context
-                                    .read<AlumniVerificationBloc>()
-                                    .add(StartYearEvent(value));
-                              }),
-                        ],
-                      ),
+                        )),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        buildTextField("Mã số sinh viên", "studentId", "user",
+                            (value) {
+                          context
+                              .read<AlumniVerificationBloc>()
+                              .add(StudentIdEvent(value));
+                        }),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        buildTextFieldStartYear(
+                            "Năm nhập học", "startYear", "user", (value) {
+                          context
+                              .read<AlumniVerificationBloc>()
+                              .add(StartYearEvent(value));
+                        }),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        buildTextField("Trang cá nhân Facebook/ Linkedin",
+                            "socialMediaLink", "user", (value) {
+                          context
+                              .read<AlumniVerificationBloc>()
+                              .add(SocialMediaLinkEvent(value));
+                        }),
+                      ],
                     ),
-                    buildLogInAndRegButton("XÁC THỰC", "verify", () {
-                      AlumniVerificationController(context: context)
-                          .hanldeAlumniVerification();
-                    }),
-                    buildLogInAndRegButton("BỎ QUA", "skip", () {
-                      context.read<AlumniVerificationBloc>().add(AlumniVerificationResetEvent());
-                      Navigator.of(context)
-                          .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
-                    }),
-                  ],
-                ),
+                  ),
+                  buildLogInAndRegButton("XÁC THỰC", "verify", () {
+                    AlumniVerificationController(context: context)
+                        .hanldeAlumniVerification();
+                  }),
+                  buildLogInAndRegButton("BỎ QUA", "skip", () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        "/applicationPage", (route) => false);
+                  }),
+                ],
               ),
-            )),
-      );
-    });
+            ),
+          )),
+        );
+      }),
+    );
   }
 }

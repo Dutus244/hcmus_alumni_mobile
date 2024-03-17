@@ -26,12 +26,13 @@ Widget buildTextField(String hintText, String textType, String iconName,
           Container(
             width: 270.w,
             height: 40.h,
-            padding: EdgeInsets.only(top: 10.h),
+            padding: EdgeInsets.only(top: 2.h, left: 10.w),
             child: TextField(
               onChanged: (value) => func!(value),
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 hintText: hintText,
+                contentPadding: EdgeInsets.zero,
                 border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 enabledBorder: const OutlineInputBorder(
@@ -53,7 +54,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
               ),
               autocorrect: false,
               obscureText: textType == "email" ? false : true,
-              maxLength: 30,
+              maxLength: 50,
             ),
           )
         ],

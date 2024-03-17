@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import 'bloc/sign_in_blocs.dart';
-import 'bloc/sign_in_events.dart';
+import 'package:http/http.dart' as http;
 
 class SignInController {
   final BuildContext context;
@@ -26,7 +26,23 @@ class SignInController {
       toastInfo(msg: "Bạn phải điền mật khẩu");
       return;
     }
-    context.read<SignInBloc>().add(SignInResetEvent());
+
+    // Test api
+    // var url = Uri.parse(
+    //     'http://localhost:4000/auth/signin'); // Sử dụng http, không phải https
+    // var params = {"username": "student15", "password": "1"};
+    //
+    // try {
+    //   var response = await http.post(url, body: params);
+    //
+    //   if (response.statusCode == 200) {
+    //     print('Response body: ${response.body}');
+    //   } else {
+    //     print('Request failed with status: ${response.statusCode}');
+    //   }
+    // } catch (error, stacktrace) {
+    //   print("Exception occurred: $error\nStackTrace: $stacktrace");
+    // }
     Navigator.of(context)
         .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
   }

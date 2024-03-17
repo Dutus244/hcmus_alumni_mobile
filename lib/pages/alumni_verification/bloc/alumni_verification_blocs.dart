@@ -5,14 +5,14 @@ import 'alumni_verification_states.dart';
 
 class AlumniVerificationBloc extends Bloc<AlumniVerificationEvent, AlumniVerificationState> {
   AlumniVerificationBloc() : super(AlumniVerificationState()) {
-    on<FullNameEvent>(_fullNameEvent);
+    on<SocialMediaLinkEvent>(_socialMediaLinkEvent);
     on<StudentIdEvent>(_studentIdEvent);
     on<StartYearEvent>(_startYearEvent);
-    on<AlumniVerificationResetEvent>(_registerResetEvent);
+    on<AlumniVerificationResetEvent>(_alumniVerificationResetEvent);
   }
 
-  void _fullNameEvent(FullNameEvent event, Emitter<AlumniVerificationState> emit) {
-    emit(state.copyWith(fullName: event.fullName));
+  void _socialMediaLinkEvent(SocialMediaLinkEvent event, Emitter<AlumniVerificationState> emit) {
+    emit(state.copyWith(socialMediaLink: event.socialMediaLink));
   }
 
   void _studentIdEvent(StudentIdEvent event, Emitter<AlumniVerificationState> emit) {
@@ -23,7 +23,7 @@ class AlumniVerificationBloc extends Bloc<AlumniVerificationEvent, AlumniVerific
     emit(state.copyWith(startYear: event.startYear));
   }
 
-  void _registerResetEvent(AlumniVerificationResetEvent event, Emitter<AlumniVerificationState> emit) {
+  void _alumniVerificationResetEvent(AlumniVerificationResetEvent event, Emitter<AlumniVerificationState> emit) {
     emit(AlumniVerificationState()); // Reset the state to its initial state
   }
 }

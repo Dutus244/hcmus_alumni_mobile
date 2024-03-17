@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import 'bloc/forgot_password_blocs.dart';
-import 'bloc/forgot_password_events.dart';
 
 class ForgotPasswordController {
   final BuildContext context;
@@ -29,7 +28,6 @@ class ForgotPasswordController {
         toastInfo(msg: "Bạn phải điền mã xác thực");
         return;
       }
-      context.read<ForgotPasswordBloc>().add(ForgotPasswordResetEvent());
       Navigator.of(context).pushNamed("/changePasswordForgot");
     } catch (e) {}
   }

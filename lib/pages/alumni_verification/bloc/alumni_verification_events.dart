@@ -2,10 +2,10 @@ abstract class AlumniVerificationEvent {
   const AlumniVerificationEvent();
 }
 
-class FullNameEvent extends AlumniVerificationEvent {
-  final String fullName;
+class SocialMediaLinkEvent extends AlumniVerificationEvent {
+  final String socialMediaLink;
 
-  const FullNameEvent(this.fullName);
+  const SocialMediaLinkEvent(this.socialMediaLink);
 }
 
 class StudentIdEvent extends AlumniVerificationEvent {

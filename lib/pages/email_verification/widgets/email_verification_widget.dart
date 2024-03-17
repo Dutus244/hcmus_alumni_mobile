@@ -20,12 +20,13 @@ Widget buildTextField(String hintText, String textType, String iconName,
           Container(
             width: 200.w,
             height: 40.h,
-            padding: EdgeInsets.only(top: 10.h, left: 17.w),
+            padding: EdgeInsets.only(top: 2.h, left: 20.w),
             child: TextField(
               onChanged: (value) => func1!(value),
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 hintText: hintText,
+                contentPadding: EdgeInsets.zero,
                 border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 enabledBorder: const OutlineInputBorder(
