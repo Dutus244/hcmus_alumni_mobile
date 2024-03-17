@@ -20,12 +20,13 @@ Widget buildTextFieldEmail(String hintText, String textType, String iconName,
           Container(
             width: 235.w,
             height: 40.h,
-            padding: EdgeInsets.only(top: 10.h, left: 17.w),
+            padding: EdgeInsets.only(top: 2.h, left: 20.w),
             child: TextField(
               onChanged: (value) => func1!(value),
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 hintText: hintText,
+                contentPadding: EdgeInsets.zero,
                 border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 enabledBorder: const OutlineInputBorder(
@@ -47,7 +48,7 @@ Widget buildTextFieldEmail(String hintText, String textType, String iconName,
               ),
               autocorrect: false,
               obscureText: false,
-              maxLength: 29,
+              maxLength: 50,
             ),
           ),
           GestureDetector(
@@ -98,12 +99,13 @@ Widget buildTextField(String hintText, String textType, String iconName,
           Container(
             width: 270.w,
             height: 40.h,
-            padding: EdgeInsets.only(top: 10.h, left: 17.w),
+            padding: EdgeInsets.only(top: 2.h, left: 20.w),
             child: TextField(
               onChanged: (value) => func!(value),
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 hintText: hintText,
+                contentPadding: EdgeInsets.zero,
                 border: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 enabledBorder: const OutlineInputBorder(
@@ -125,7 +127,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
               ),
               autocorrect: false,
               obscureText: false,
-              maxLength: 30,
+              maxLength: 8,
             ),
           )
         ],

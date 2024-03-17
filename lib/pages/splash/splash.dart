@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hcmus_alumni_mobile/common/values/constants.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/bloc/splash_blocs.dart';
 
 import '../../common/values/colors.dart';
+import '../../global.dart';
 import 'bloc/splash_states.dart';
 
 class Splash extends StatefulWidget {
@@ -21,8 +23,15 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 2), () {
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil("/welcome", (route) => false);
+      if (Global.storageService.getDeviceFirstOpen()) {
+        Global.storageService.setBool(AppConstants.STORAGE_DEVICE_OPEN_FIRST_TIME, false);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil("/welcome", (route) => false);
+      }
+      else {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil("/signIn", (route) => false);
+      }
     });
   }
 

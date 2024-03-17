@@ -3,27 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in_controller.dart';
-import 'package:hcmus_alumni_mobile/pages/sign_in/widgets/sign_in_widget.dart';
+import 'package:hcmus_alumni_mobile/pages/alumni_information/alumni_information_controller.dart';
+import 'package:hcmus_alumni_mobile/pages/alumni_information/bloc/alumni_information_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/alumni_information/bloc/alumni_information_events.dart';
+import 'package:hcmus_alumni_mobile/pages/alumni_information/bloc/alumni_information_states.dart';
+import 'package:hcmus_alumni_mobile/pages/alumni_information/widgets/alumni_information_widget.dart';
 
 import '../../common/values/colors.dart';
-import 'bloc/sign_in_blocs.dart';
-import 'bloc/sign_in_events.dart';
-import 'bloc/sign_in_states.dart';
 import 'dart:io';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class AlumniInformation extends StatefulWidget {
+  const AlumniInformation({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<AlumniInformation> createState() => _AlumniInformationState();
 }
 
-class _SignInState extends State<SignIn> {
+class _AlumniInformationState extends State<AlumniInformation> {
   @override
   void initState() {
     super.initState();
-    context.read<SignInBloc>().add(SignInResetEvent());
+    context.read<AlumniInformationBloc>().add(AlumniInformationResetEvent());
   }
 
   @override
@@ -53,7 +53,8 @@ class _SignInState extends State<SignIn> {
         }
         return shouldExit ?? false;
       },
-      child: BlocBuilder<SignInBloc, SignInState>(builder: (context, state) {
+      child: BlocBuilder<AlumniInformationBloc, AlumniInformationState>(
+          builder: (context, state) {
         return Container(
           color: AppColors.primaryBackground,
           child: SafeArea(
@@ -80,9 +81,9 @@ class _SignInState extends State<SignIn> {
                         ),
                         Center(
                             child: Container(
-                          padding: EdgeInsets.only(bottom: 15.h),
+                          padding: EdgeInsets.only(bottom: 5.h),
                           child: Text(
-                            "ĐĂNG NHẬP",
+                            "BẮT ĐẦU",
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               color: AppColors.primaryText,
@@ -91,44 +92,43 @@ class _SignInState extends State<SignIn> {
                             ),
                           ),
                         )),
+                        Center(
+                            child: Container(
+                          padding: EdgeInsets.only(bottom: 10.h),
+                          child: Text(
+                            "Hãy thiết lập hồ sơ của bạn. Những thông tin này sẽ giúp chúng tôi xét duyệt tài khoản của bạn.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              color: AppColors.primaryText,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                        )),
                         SizedBox(
                           height: 5.h,
                         ),
-                        buildTextField("Email *", "email", "email", (value) {
-                          context.read<SignInBloc>().add(EmailEvent(value));
-                        }),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        buildTextField("Mật khẩu *", "password", "lock", (value) {
-                          context.read<SignInBloc>().add(PasswordEvent(value));
-                        }),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 25.w, right: 25.w, top: 10.h),
-                    height: 24.h,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        rememberLogin(context, (value) {
+                        chooseAvatar(context, (value) {
                           context
-                              .read<SignInBloc>()
-                              .add(RememberLoginEvent(value));
+                              .read<AlumniInformationBloc>()
+                              .add(AvatarEvent(value));
                         }),
-                        forgotPassword((){
-                          Navigator.of(context).pushNamed("/forgotPassword");
+                        SizedBox(
+                          height: 25.h,
+                        ),
+                        buildTextField("Họ và tên *", "fullName", "user",
+                            (value) {
+                          context
+                              .read<AlumniInformationBloc>()
+                              .add(FullNameEvent(value));
                         }),
                       ],
                     ),
                   ),
-                  buildLogInAndRegButton("ĐĂNG NHẬP", "login", () {
-                    SignInController(context: context).handleSignIn();
-                  }),
-                  buildLogInAndRegButton("ĐĂNG KÝ", "register", () {
-                    Navigator.of(context).pushNamed("/register");
+                  buildLogInAndRegButton("TIẾP TỤC", "verify", () {
+                    AlumniInformationController(context: context)
+                        .hanldeAlumniInformation();
                   }),
                 ],
               ),

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import 'bloc/change_password_forgot_blocs.dart';
-import 'bloc/change_password_forgot_events.dart';
 
 class ChangePasswordForgotController {
   final BuildContext context;
@@ -27,8 +26,8 @@ class ChangePasswordForgotController {
         toastInfo(msg: "Mật khẩu không khớp");
         return;
       }
-      context.read<ChangePasswordForgotBloc>().add(ChangePasswordForgotResetEvent());
-      Navigator.of(context).pushNamed("/signIn");
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil("/signIn", (route) => false);
     } catch (e) {}
   }
 }

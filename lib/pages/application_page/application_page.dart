@@ -19,7 +19,8 @@ class ApplicationPage extends StatefulWidget {
 class _ApplicationPageState extends State<ApplicationPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ApplicationPageBloc, ApplicationPageState>(builder: (context, state){
+    return BlocBuilder<ApplicationPageBloc, ApplicationPageState>(
+        builder: (context, state) {
       return Container(
         color: AppColors.primaryBackground,
         child: SafeArea(
@@ -33,6 +34,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
                     topLeft: Radius.circular(20.h),
                     topRight: Radius.circular(20.h),
                   ),
+                  color: AppColors.primarySecondaryElement,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.1),
@@ -43,15 +45,16 @@ class _ApplicationPageState extends State<ApplicationPage> {
               child: BottomNavigationBar(
                 elevation: 0,
                 type: BottomNavigationBarType.fixed,
-                showUnselectedLabels: true,
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
                 currentIndex: state.index,
                 onTap: (value) {
-                  context.read<ApplicationPageBloc>().add(TriggerApplicationPageEvent(value));
+                  context
+                      .read<ApplicationPageBloc>()
+                      .add(TriggerApplicationPageEvent(value));
                 },
                 selectedItemColor: AppColors.primaryElement,
                 unselectedItemColor: AppColors.primaryText,
-                selectedLabelStyle: TextStyle(fontSize: 10.sp),
-                unselectedLabelStyle: TextStyle(fontSize: 10.sp),
                 items: bottomTabs,
               ),
             ),

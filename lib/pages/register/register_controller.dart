@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hcmus_alumni_mobile/pages/register/bloc/register_events.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import 'bloc/register_blocs.dart';
@@ -36,7 +35,6 @@ class RegisterController {
         toastInfo(msg: "Mật khẩu không khớp");
         return;
       }
-      context.read<RegisterBloc>().add(RegisterResetEvent());
       Navigator.of(context).pushNamed("/emailVerification", arguments: email);
     } catch (e) {}
   }

@@ -9,6 +9,7 @@ import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification_
 import 'package:hcmus_alumni_mobile/pages/email_verification/widgets/email_verification_widget.dart';
 
 import '../../common/values/colors.dart';
+import 'dart:io';
 
 class EmailVerification extends StatefulWidget {
   const EmailVerification({super.key});
@@ -19,88 +20,101 @@ class EmailVerification extends StatefulWidget {
 
 class _EmailVerificationState extends State<EmailVerification> {
   @override
+  void initState() {
+    super.initState();
+    context.read<EmailVerificationBloc>().add(EmailVerificationResetEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     final email = ModalRoute.of(context)?.settings.arguments;
-    return BlocBuilder<EmailVerificationBloc, EmailVerificationState>(
-        builder: (context, state) {
-      return Container(
-        color: AppColors.primaryBackground,
-        child: SafeArea(
-            child: Scaffold(
-          backgroundColor: AppColors.primaryBackground,
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(left: 25.w, right: 25.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Container(
-                          width: 230.w,
-                          height: 230.w,
-                          child: Image.asset(
-                            "assets/images/logos/logo.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Center(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (_) async {
+        Navigator.of(context).pushNamed("/register");
+      },
+      child: BlocBuilder<EmailVerificationBloc, EmailVerificationState>(
+          builder: (context, state) {
+        return Container(
+          color: AppColors.primaryBackground,
+          child: SafeArea(
+              child: Scaffold(
+            backgroundColor: AppColors.primaryBackground,
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 25.w, right: 25.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
                           child: Container(
-                        padding: EdgeInsets.only(bottom: 5.h),
-                        child: Text(
-                          "XÁC THỰC NGƯỜI DÙNG",
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            color: AppColors.primaryText,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17.sp,
+                            width: 230.w,
+                            height: 230.w,
+                            child: Image.asset(
+                              "assets/images/logos/logo.png",
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      )),
-                      Center(
-                          child: Container(
-                            padding: EdgeInsets.only(left: 5.w, right: 5.w),
-                        child: Text(
-                          "Mã xác thực đã được gửi đến ${email}",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            color: AppColors.primaryElement,
-                            fontWeight: FontWeight.normal,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 11.sp,
+                        Center(
+                            child: Container(
+                          padding: EdgeInsets.only(bottom: 5.h),
+                          child: Text(
+                            "XÁC THỰC NGƯỜI DÙNG",
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              color: AppColors.primaryText,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17.sp,
+                            ),
                           ),
+                        )),
+                        Center(
+                            child: Container(
+                          padding: EdgeInsets.only(left: 5.w, right: 5.w),
+                          child: Text(
+                            "Mã xác thực đã được gửi đến ${email}",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              color: AppColors.primaryElement,
+                              fontWeight: FontWeight.normal,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 11.sp,
+                            ),
+                          ),
+                        )),
+                        SizedBox(
+                          height: 5.h,
                         ),
-                      )),
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      buildTextField("Mã xác thực", "code", "send", (value) {
-                        context
-                            .read<EmailVerificationBloc>()
-                            .add(CodeEvent(value));
-                      }, () {
-                        EmailVerificationController(context: context)
-                            .hanldeResendCode(email.toString());
-                      }),
-                    ],
+                        buildTextField("Mã xác thực  *", "code", "send",
+                            (value) {
+                          context
+                              .read<EmailVerificationBloc>()
+                              .add(CodeEvent(value));
+                        }, () {
+                          EmailVerificationController(context: context)
+                              .hanldeResendCode(email.toString());
+                        }),
+                      ],
+                    ),
                   ),
-                ),
-                buildVerifyAndBackButton("XÁC THỰC", "verify", () {
-                  EmailVerificationController(context: context).hanldeEmailVerification();
-                }),
-                buildVerifyAndBackButton("TRỞ VỀ", "back", () {
-                  context.read<EmailVerificationBloc>().add(EmailVerificationResetEvent());
-                  Navigator.of(context).pushNamed("/register");
-                }),
-              ],
+                  buildVerifyAndBackButton("XÁC THỰC", "verify", () {
+                    EmailVerificationController(context: context)
+                        .hanldeEmailVerification();
+                  }),
+                  buildVerifyAndBackButton("TRỞ VỀ", "back", () {
+                    Navigator.of(context).pushNamed("/register");
+                  }),
+                ],
+              ),
             ),
-          ),
-        )),
-      );
-    });
+          )),
+        );
+      }),
+    );
   }
 }

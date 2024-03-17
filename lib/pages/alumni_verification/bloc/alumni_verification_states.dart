@@ -1,18 +1,18 @@
 class AlumniVerificationState {
-  final String fullName;
+  final String socialMediaLink;
   final String studentId;
   final int startYear;
 
   const AlumniVerificationState({
-    this.fullName = "",
+    this.socialMediaLink = "",
     this.studentId = "",
-    this.startYear = 2000,
+    this.startYear = 0,
   });
 
   AlumniVerificationState copyWith(
-      {String? fullName, String? studentId, int? startYear}) {
+      {String? socialMediaLink, String? studentId, int? startYear}) {
     return AlumniVerificationState(
-      fullName: fullName ?? this.fullName,
+      socialMediaLink: socialMediaLink ?? this.socialMediaLink,
       studentId: studentId ?? this.studentId,
       startYear: startYear ?? this.startYear,
     );
