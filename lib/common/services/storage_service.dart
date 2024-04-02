@@ -21,7 +21,19 @@ class StorageService {
     return _prefs.getBool(AppConstants.STORAGE_DEVICE_OPEN_FIRST_TIME) ?? true;
   }
 
+  bool getUserIsLoggedIn() {
+    return _prefs.getBool(AppConstants.STORAGE_USER_IS_LOGGED_IN) ?? false;
+  }
+
   String getUserAuthToken() {
     return _prefs.getString(AppConstants.STORAGE_USER_AUTH_TOKEN) ?? '';
+  }
+
+  String getUserEmail() {
+    return _prefs.getString(AppConstants.STORAGE_USER_EMAIL) ?? '';
+  }
+
+  String getUserPassword() {
+    return _prefs.getString(AppConstants.STORAGE_USER_PASSWORD) ?? '';
   }
 }

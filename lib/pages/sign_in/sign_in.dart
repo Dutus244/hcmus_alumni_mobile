@@ -31,27 +31,8 @@ class _SignInState extends State<SignIn> {
     return PopScope(
       canPop: false, // prevent back
       onPopInvoked: (_) async {
-        final shouldExit = await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Thoát ứng dụng'),
-            content: Text('Bạn có muốn thoát ứng dụng?'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text('Huỷ'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: Text('Thoát'),
-              ),
-            ],
-          ),
-        );
-        if (shouldExit) {
-          SystemNavigator.pop();
-        }
-        return shouldExit ?? false;
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
       },
       child: BlocBuilder<SignInBloc, SignInState>(builder: (context, state) {
         return Container(

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../common/values/constants.dart';
 import '../../common/widgets/flutter_toast.dart';
+import '../../global.dart';
 import 'bloc/register_blocs.dart';
 
 class RegisterController {
@@ -35,7 +37,11 @@ class RegisterController {
         toastInfo(msg: "Mật khẩu không khớp");
         return;
       }
-      Navigator.of(context).pushNamed("/emailVerification", arguments: email);
+      Global.storageService
+          .setString(AppConstants.STORAGE_USER_EMAIL, email);
+      Global.storageService
+          .setString(AppConstants.STORAGE_USER_PASSWORD, password);
+      Navigator.of(context).pushNamed("/emailVerification");
     } catch (e) {}
   }
 

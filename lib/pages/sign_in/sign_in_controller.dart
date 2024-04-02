@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../../common/values/constants.dart';
 import '../../common/widgets/flutter_toast.dart';
+import '../../global.dart';
 import 'bloc/sign_in_blocs.dart';
 import 'package:http/http.dart' as http;
 
@@ -27,24 +30,27 @@ class SignInController {
       return;
     }
 
-    // Test api
-    // var url = Uri.parse(
-    //     'http://localhost:4000/auth/signin'); // Sử dụng http, không phải https
-    // var params = {"username": "student15", "password": "1"};
-    //
-    // try {
-    //   var response = await http.post(url, body: params);
-    //
-    //   if (response.statusCode == 200) {
-    //     print('Response body: ${response.body}');
-    //   } else {
-    //     print('Request failed with status: ${response.statusCode}');
-    //   }
-    // } catch (error, stacktrace) {
-    //   print("Exception occurred: $error\nStackTrace: $stacktrace");
-    // }
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
+    var url = Uri.parse('${dotenv.env['API_URL']}/auth/login');
+    final map = <String, dynamic>{};
+    map['email'] = email;
+    map['pass'] = password;
+
+    try {
+      var response = await http.post(url, body: map);
+
+      if (response.statusCode == 200) {
+        Global.storageService
+            .setString(AppConstants.STORAGE_USER_AUTH_TOKEN, response.body);
+        Global.storageService
+            .setBool(AppConstants.STORAGE_USER_IS_LOGGED_IN, true);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
+      } else {
+        toastInfo(msg: "Email hoặc mật khẩu bị sai");
+      }
+    } catch (error, stacktrace) {
+      toastInfo(msg: "Có lỗi xảy ra");
+    }
   }
 
   bool isValidEmail(String email) {
