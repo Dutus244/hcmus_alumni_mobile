@@ -12,7 +12,6 @@ class AlumniInformationBloc extends Bloc<AlumniInformationEvent, AlumniInformati
   }
 
   void _avatarEvent(AvatarEvent event, Emitter<AlumniInformationState> emit) {
-    print(event.avatar);
     emit(state.copyWith(avatar: event.avatar));
   }
 

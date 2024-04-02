@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hcmus_alumni_mobile/pages/advise_page/advise_page.dart';
 import 'package:hcmus_alumni_mobile/pages/home_page/home_page.dart';
 
 import '../../../common/values/colors.dart';
@@ -7,8 +8,8 @@ import '../../../common/values/colors.dart';
 Widget buildPage(int index) {
   List<Widget> _widget = [
     const HomePage(),
-    Center(child: Text('Home2')),
-    Center(child: Text('Home3')),
+    const HomePage(),
+    const AdvisePage(),
     Center(child: Text('Home4')),
     Center(child: Text('Home5')),
   ];
@@ -33,7 +34,7 @@ var bottomTabs = [
         ),
       )),
   BottomNavigationBarItem(
-      label: "Tin tức/Sự kiện",
+      label: "Tin tức/Sự kiện/Gương thành công",
       icon: SizedBox(
         width: 20.w,
         height: 20.h,
@@ -48,17 +49,32 @@ var bottomTabs = [
         ),
       )),
   BottomNavigationBarItem(
-      label: "Gương thành công",
+      label: "Tư vấn/Cố vấn",
       icon: SizedBox(
         width: 20.w,
         height: 20.h,
-        child: Image.asset("assets/icons/hall_of_fame1.png"),
+        child: Image.asset("assets/icons/advise1.png"),
       ),
       activeIcon: SizedBox(
         width: 20.w,
         height: 20.h,
         child: Image.asset(
-          "assets/icons/hall_of_fame2.png",
+          "assets/icons/advise2.png",
+          color: AppColors.primaryElement,
+        ),
+      )),
+  BottomNavigationBarItem(
+      label: "Nhóm",
+      icon: SizedBox(
+        width: 20.w,
+        height: 20.h,
+        child: Image.asset("assets/icons/group1.png"),
+      ),
+      activeIcon: SizedBox(
+        width: 20.w,
+        height: 20.h,
+        child: Image.asset(
+          "assets/icons/group2.png",
           color: AppColors.primaryElement,
         ),
       )),
@@ -74,21 +90,6 @@ var bottomTabs = [
         height: 20.h,
         child: Image.asset(
           "assets/icons/notification2.png",
-          color: AppColors.primaryElement,
-        ),
-      )),
-  BottomNavigationBarItem(
-      label: "Tài khoản",
-      icon: SizedBox(
-        width: 20.w,
-        height: 20.h,
-        child: Image.asset("assets/icons/account1.png"),
-      ),
-      activeIcon: SizedBox(
-        width: 20.w,
-        height: 20.h,
-        child: Image.asset(
-          "assets/icons/account2.png",
           color: AppColors.primaryElement,
         ),
       )),

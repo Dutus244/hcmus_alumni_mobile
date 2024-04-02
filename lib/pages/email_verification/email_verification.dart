@@ -11,6 +11,9 @@ import 'package:hcmus_alumni_mobile/pages/email_verification/widgets/email_verif
 import '../../common/values/colors.dart';
 import 'dart:io';
 
+import '../../common/values/constants.dart';
+import '../../global.dart';
+
 class EmailVerification extends StatefulWidget {
   const EmailVerification({super.key});
 
@@ -23,11 +26,12 @@ class _EmailVerificationState extends State<EmailVerification> {
   void initState() {
     super.initState();
     context.read<EmailVerificationBloc>().add(EmailVerificationResetEvent());
+    EmailVerificationController(context: context)
+        .handleResendCode();
   }
 
   @override
   Widget build(BuildContext context) {
-    final email = ModalRoute.of(context)?.settings.arguments;
     return PopScope(
       canPop: false,
       onPopInvoked: (_) async {
@@ -76,7 +80,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                             child: Container(
                           padding: EdgeInsets.only(left: 5.w, right: 5.w),
                           child: Text(
-                            "Mã xác thực đã được gửi đến ${email}",
+                            "Mã xác thực đã được gửi đến ${Global.storageService.getUserEmail()}",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'Roboto',
@@ -97,14 +101,14 @@ class _EmailVerificationState extends State<EmailVerification> {
                               .add(CodeEvent(value));
                         }, () {
                           EmailVerificationController(context: context)
-                              .hanldeResendCode(email.toString());
+                              .handleResendCode();
                         }),
                       ],
                     ),
                   ),
                   buildVerifyAndBackButton("XÁC THỰC", "verify", () {
                     EmailVerificationController(context: context)
-                        .hanldeEmailVerification();
+                        .handleEmailVerification();
                   }),
                   buildVerifyAndBackButton("TRỞ VỀ", "back", () {
                     Navigator.of(context).pushNamed("/register");
