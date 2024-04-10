@@ -40,8 +40,8 @@ AppBar buildAppBar(BuildContext context) {
             padding: EdgeInsets.only(
                 left: Global.storageService.getUserIsLoggedIn() ? 30.w : 43.w),
             child: SizedBox(
-              width: 100.w,
-              height: 100.h,
+              width: 120.w,
+              height: 120.h,
               child: Image.asset("assets/images/logos/logo.png"),
             ),
           ),
@@ -76,56 +76,7 @@ AppBar buildAppBar(BuildContext context) {
   );
 }
 
-Widget buildCreatePostButton() {
-  return Container(
-    height: 40.h,
-    padding: EdgeInsets.only(top: 0.h, bottom: 5.h, left: 10.w),
-    child: Row(
-      children: [
-        GestureDetector(
-          child: Container(
-            width: 300.w,
-            height: 30.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.w),
-              border: Border.all(
-                color: Colors.grey.withOpacity(0.5),
-              ),
-            ),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              // Căn giữa theo chiều dọc
-              child: Container(
-                padding: EdgeInsets.only(left: 10.w),
-                child: Text(
-                  'Bạn đang muốn được tư vấn điều gì?',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.normal,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            height: 40.h,
-            width: 40.w,
-            padding: EdgeInsets.only(left: 10.w),
-            child: Image.asset(
-              'assets/icons/image.png',
-            ),
-          ),
-        )
-      ],
-    ),
-  );
-}
-
-Widget listEvent() {
+Widget listEvent(BuildContext context) {
   return Container(
     padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
     child: Column(
@@ -149,7 +100,13 @@ Widget listEvent() {
             Container(
               margin: EdgeInsets.only(right: 15.w),
               child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      "/applicationPage",
+                      (route) => false,
+                      arguments: {"route": 1, "secondRoute": 1},
+                    );
+                  },
                   child: Text(
                     "Xem tất cả",
                     style: TextStyle(
@@ -209,7 +166,7 @@ Widget event() {
     child: Stack(
       children: [
         Container(
-          width: 100.w,
+          width: 340.w,
           height: 150.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(2.0)),
@@ -223,14 +180,14 @@ Widget event() {
         Align(
           alignment: Alignment.bottomLeft,
           child: Container(
-            width: 100.w,
-            padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 24.h),
+            width: 340.w,
+            padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 35.h),
             child: Text(
               'Lễ tốt nghiệp thạc sĩ, tiến sĩ 2023',
               maxLines: 3,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 9.sp,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Roboto',
               ),
@@ -240,14 +197,14 @@ Widget event() {
         Align(
           alignment: Alignment.bottomLeft,
           child: Container(
-            width: 100.w,
-            padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 14.h),
+            width: 340.w,
+            padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 20.h),
             child: Text(
               '01/04/2023 - 10:00',
-              maxLines: 3,
+              maxLines: 1,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 7.sp,
+                fontSize: 11.sp,
                 fontWeight: FontWeight.normal,
                 fontFamily: 'Roboto',
               ),
@@ -257,14 +214,14 @@ Widget event() {
         Align(
           alignment: Alignment.bottomLeft,
           child: Container(
-            width: 100.w,
+            width: 340.w,
             padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 5.h),
             child: Text(
               'Hội trường I - CS NVC',
-              maxLines: 3,
+              maxLines: 1,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 7.sp,
+                fontSize: 11.sp,
                 fontWeight: FontWeight.normal,
                 fontFamily: 'Roboto',
               ),
@@ -276,7 +233,7 @@ Widget event() {
   );
 }
 
-Widget listNews() {
+Widget listNews(BuildContext context) {
   return Container(
     margin: EdgeInsets.only(top: 5.h, left: 5.w, right: 5.w),
     padding: EdgeInsets.only(top: 10.h, left: 5.w, right: 5.w),
@@ -308,7 +265,13 @@ Widget listNews() {
             Container(
               margin: EdgeInsets.only(right: 5.w),
               child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      "/applicationPage",
+                      (route) => false,
+                      arguments: {"route": 1, "secondRoute": 0},
+                    );
+                  },
                   child: Text(
                     "Xem tất cả",
                     style: TextStyle(
@@ -346,6 +309,9 @@ Widget listNews() {
             news(),
           ],
         ),
+        Container(
+          height: 5.h,
+        )
       ],
     ),
   );
@@ -445,7 +411,7 @@ Widget listHof() {
           height: 5.h,
         ),
         SizedBox(
-          height: 150.h, // Đặt chiều cao cho ListView
+          height: 120.h, // Đặt chiều cao cho ListView
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
@@ -530,3 +496,107 @@ Widget hof() {
   );
 }
 
+Widget advise() {
+  return Container(
+    padding: EdgeInsets.only(top: 0.h, bottom: 5.h),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              padding: EdgeInsets.only(left: 10.w),
+              child: Text(
+                'Tư vấn/Cố vấn',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14.sp,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Container(
+          height: 5.h,
+        ),
+        Stack(
+          children: [
+            Container(
+              height: 100.h,
+              margin: EdgeInsets.only(top: 0.h, left: 10.w, right: 10.w),
+              decoration: BoxDecoration(
+                color: AppColors.primarySecondaryElement,
+                borderRadius: BorderRadius.circular(15.w),
+                border: Border.all(
+                  color: AppColors.primarySecondaryElement,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                margin: EdgeInsets.only(top: 10.h, left: 20.w, right: 10.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.h), // Adjust as desired
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/test1.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                width: 160.w,
+                height: 80.h,
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                margin: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
+                width: 150.w,
+                child: Text(
+                  'Giải đáp thắc mắc và tư vấn cùng đội ngũ sinh viên xịn xò',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11.sp,
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: (){},
+                child: Container(
+                  width: 100.w,
+                  height: 30.h,
+                  margin: EdgeInsets.only(top: 55.h, left: 20.w, right: 45.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryElement,
+                    borderRadius: BorderRadius.circular(15.w),
+                    border: Border.all(
+                      color: Colors.transparent,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Tư vấn',
+                      style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryBackground),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        )
+      ],
+    ),
+  );
+}

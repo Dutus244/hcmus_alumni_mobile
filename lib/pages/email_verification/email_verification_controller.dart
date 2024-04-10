@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 
 import '../../global.dart';
+import 'dart:convert';
 
 class EmailVerificationController {
   final BuildContext context;
@@ -70,7 +71,7 @@ class EmailVerificationController {
 
       try {
         var response = await http.post(url, body: map);
-        print(response.body);
+
         if (response.statusCode == 200) {
           var url = Uri.parse('${dotenv.env['API_URL']}/auth/signup');
           final map = <String, dynamic>{};
@@ -79,8 +80,7 @@ class EmailVerificationController {
 
           try {
             var response = await http.post(url, body: map);
-
-            if (response.statusCode == 200) {
+            if (response.statusCode == 201) {
               var url = Uri.parse('${dotenv.env['API_URL']}/auth/login');
               final map = <String, dynamic>{};
               map['email'] = email;
@@ -88,10 +88,13 @@ class EmailVerificationController {
 
               try {
                 var response = await http.post(url, body: map);
-
                 if (response.statusCode == 200) {
-                  Global.storageService.setString(
-                      AppConstants.STORAGE_USER_AUTH_TOKEN, response.body);
+                  Map<String, dynamic> jsonMap = json.decode(response.body);
+                  String jwtToken = jsonMap['jwt'];
+                  Global.storageService
+                      .setString(AppConstants.STORAGE_USER_AUTH_TOKEN, jwtToken);
+                  Global.storageService
+                      .setBool(AppConstants.STORAGE_USER_IS_LOGGED_IN, true);
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       "/alumniInformation", (route) => false);
                 } else {

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hcmus_alumni_mobile/pages/advise_page/advise_page.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_information/alumni_information.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_information/bloc/alumni_information_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_verification/alumni_verification.dart';
@@ -13,6 +14,9 @@ import 'package:hcmus_alumni_mobile/pages/email_verification/bloc/email_verifica
 import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/bloc/forgot_password_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/forgot_password.dart';
+import 'package:hcmus_alumni_mobile/pages/home_page/home_page.dart';
+import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/news_event_page/news_event_page.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/bloc/splash_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
@@ -39,13 +43,6 @@ class AppPages {
           bloc: BlocProvider(
             create: (_) => WelcomeBloc(),
           )),
-      PageEntity(
-        route: AppRoutes.APPLICATION_PAGE,
-        page: const ApplicationPage(),
-        bloc: BlocProvider(
-          create: (_) => ApplicationPageBloc(),
-        )
-      ),
       PageEntity(
           route: AppRoutes.SIGN_IN,
           page: const SignIn(),
@@ -88,6 +85,30 @@ class AppPages {
           bloc: BlocProvider(
             create: (_) => ChangePasswordForgotBloc(),
           )),
+      PageEntity(
+          route: AppRoutes.APPLICATION_PAGE,
+          page: const ApplicationPage(),
+          bloc: BlocProvider(
+            create: (_) => ApplicationPageBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.HOME_PAGE,
+          page: const HomePage(),
+          bloc: BlocProvider(
+            create: (_) => ApplicationPageBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.NEWS_EVENT_PAGE,
+          page: NewsEventPage(page: 0,),
+          bloc: BlocProvider(
+            create: (_) => NewsEventPageBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.ADVISE_PAGE,
+          page: const AdvisePage(),
+          bloc: BlocProvider(
+            create: (_) => ApplicationPageBloc(),
+          )),
     ];
   }
 
@@ -102,13 +123,14 @@ class AppPages {
   }
 
   static MaterialPageRoute GenerateRouteSettings(RouteSettings settings) {
-    if (settings.name!=null){
+    if (settings.name != null) {
       var result = routes().where((element) => element.route == settings.name);
-      if(result.isNotEmpty) {
-        return MaterialPageRoute(builder: (_)=>result.first.page, settings: settings);
+      if (result.isNotEmpty) {
+        return MaterialPageRoute(
+            builder: (_) => result.first.page, settings: settings);
       }
     }
-    return MaterialPageRoute(builder: (_)=>SignIn(), settings: settings);
+    return MaterialPageRoute(builder: (_) => SignIn(), settings: settings);
   }
 }
 

@@ -5,9 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_information/alumni_information.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_verification/alumni_verification.dart';
 import 'package:hcmus_alumni_mobile/pages/application_page/application_page.dart';
-import 'package:hcmus_alumni_mobile/pages/landing/landing.dart';
+import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_events.dart';
+import 'package:hcmus_alumni_mobile/pages/news_event_page/news_event_page.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
+import 'package:hcmus_alumni_mobile/pages/welcome/welcome.dart';
 
 import 'common/routes/pages.dart';
 import 'global.dart';

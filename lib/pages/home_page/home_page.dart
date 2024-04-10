@@ -8,7 +8,6 @@ import 'package:hcmus_alumni_mobile/pages/home_page/widgets/home_page_widget.dar
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -45,27 +44,21 @@ class _HomePageState extends State<HomePage> {
         appBar: buildAppBar(context),
         backgroundColor: AppColors.primaryBackground,
         body: Container(
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 5.h,
-                    color: AppColors.primarySecondaryElement,
-                  ),
-                  listEvent(),
-                  listNews(),
-                  Container(
-                    height: 5.h,
-                  ),
-                  listHof(),
-                ],
-              ),
-            ]
-          ),
+          child: ListView(scrollDirection: Axis.vertical, children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                listEvent(context),
+                listNews(context),
+                Container(
+                  height: 5.h,
+                ),
+                listHof(),
+                advise(),
+              ],
+            ),
+          ]),
         ),
       ),
     );
