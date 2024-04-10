@@ -288,11 +288,12 @@ Widget post(BuildContext context) {
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.only(top: 3.h, bottom: 3.h),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Center(
                 child: Container(
+                  margin: EdgeInsets.only(left: 40.w),
                   child: Row(
                     children: [
                       Container(
@@ -318,6 +319,7 @@ Widget post(BuildContext context) {
               ),
               Center(
                 child: Container(
+                  margin: EdgeInsets.only(right: 40.w),
                   child: Row(
                     children: [
                       Container(
@@ -329,31 +331,6 @@ Widget post(BuildContext context) {
                         padding: EdgeInsets.only(left: 5.w),
                         child: Text(
                           'Bình luận',
-                          style: TextStyle(
-                            color: AppColors.primaryText,
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: 'Roboto',
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Center(
-                child: Container(
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 20.h,
-                        width: 20.w,
-                        child: Image.asset('assets/icons/share.png'),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 5.w),
-                        child: Text(
-                          'Chia sẻ',
                           style: TextStyle(
                             color: AppColors.primaryText,
                             fontSize: 10.sp,

@@ -1,7 +1,6 @@
 class AppRoutes {
   static const SPLASH = "/splash";
   static const WELCOME = "/welcome";
-  static const APPLICATION_PAGE = "/applicationPage";
   static const SIGN_IN = "/signIn";
   static const REGISTER = "/register";
   static const EMAIL_VERIFICATION = "/emailVerification";
@@ -9,4 +8,10 @@ class AppRoutes {
   static const ALUMNI_INFORMATION = "/alumniInformation";
   static const FORGOT_PASSWORD = "/forgotPassword";
   static const CHANGE_FORGOT_PASSWORD = "/changePasswordForgot";
+
+  static const APPLICATION_PAGE = "/applicationPage";
+  static const APPLICATION_PAGE1 = "/applicationPage1";
+  static const HOME_PAGE = "/homePage";
+  static const NEWS_EVENT_PAGE = "/newsEventPage";
+  static const ADVISE_PAGE = "/advisePage";
 }

@@ -46,6 +46,8 @@ dependencies:
   http: ^1.2.0
   expandable_text: ^2.3.0
   flutter_dotenv: ^5.1.0
+  flutter_html: ^2.2.1
+
 
 dev_dependencies:
   flutter_test:

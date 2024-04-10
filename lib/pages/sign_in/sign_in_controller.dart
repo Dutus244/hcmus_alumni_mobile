@@ -7,6 +7,7 @@ import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'bloc/sign_in_blocs.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignInController {
   final BuildContext context;
@@ -39,8 +40,10 @@ class SignInController {
       var response = await http.post(url, body: map);
 
       if (response.statusCode == 200) {
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        String jwtToken = jsonMap['jwt'];
         Global.storageService
-            .setString(AppConstants.STORAGE_USER_AUTH_TOKEN, response.body);
+            .setString(AppConstants.STORAGE_USER_AUTH_TOKEN, jwtToken);
         Global.storageService
             .setBool(AppConstants.STORAGE_USER_IS_LOGGED_IN, true);
         Navigator.of(context)
