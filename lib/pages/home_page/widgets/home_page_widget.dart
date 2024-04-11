@@ -36,13 +36,22 @@ AppBar buildAppBar(BuildContext context) {
                     ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.only(
-                left: Global.storageService.getUserIsLoggedIn() ? 30.w : 43.w),
-            child: SizedBox(
-              width: 120.w,
-              height: 120.h,
-              child: Image.asset("assets/images/logos/logo.png"),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/applicationPage",
+                    (route) => false,
+                arguments: {"route": 0, "secondRoute": 0},
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.only(
+                  left: Global.storageService.getUserIsLoggedIn() ? 30.w : 43.w),
+              child: SizedBox(
+                width: 120.w,
+                height: 120.h,
+                child: Image.asset("assets/images/logos/logo.png"),
+              ),
             ),
           ),
           Row(
@@ -369,7 +378,7 @@ Widget news() {
   );
 }
 
-Widget listHof() {
+Widget listHof(BuildContext context) {
   return Container(
     padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
     child: Column(
@@ -382,7 +391,7 @@ Widget listHof() {
             Container(
               padding: EdgeInsets.only(left: 10.w),
               child: Text(
-                'Sinh viên tiêu biểu',
+                'Gương thành công',
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontWeight: FontWeight.bold,
@@ -393,7 +402,9 @@ Widget listHof() {
             Container(
               margin: EdgeInsets.only(right: 15.w),
               child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil("/hofPage", (route) => false,);
+                  },
                   child: Text(
                     "Xem tất cả",
                     style: TextStyle(
@@ -496,7 +507,7 @@ Widget hof() {
   );
 }
 
-Widget advise() {
+Widget advise(BuildContext context) {
   return Container(
     padding: EdgeInsets.only(top: 0.h, bottom: 5.h),
     child: Column(

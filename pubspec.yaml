@@ -47,6 +47,7 @@ dependencies:
   expandable_text: ^2.3.0
   flutter_dotenv: ^5.1.0
   flutter_html: ^2.2.1
+  flutter_svg: ^0.22.0
 
 
 dev_dependencies:

@@ -91,8 +91,8 @@ class EmailVerificationController {
                 if (response.statusCode == 200) {
                   Map<String, dynamic> jsonMap = json.decode(response.body);
                   String jwtToken = jsonMap['jwt'];
-                  Global.storageService
-                      .setString(AppConstants.STORAGE_USER_AUTH_TOKEN, jwtToken);
+                  Global.storageService.setString(
+                      AppConstants.STORAGE_USER_AUTH_TOKEN, jwtToken);
                   Global.storageService
                       .setBool(AppConstants.STORAGE_USER_IS_LOGGED_IN, true);
                   Navigator.of(context).pushNamedAndRemoveUntil(

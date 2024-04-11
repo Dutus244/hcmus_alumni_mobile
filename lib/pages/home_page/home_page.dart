@@ -54,8 +54,8 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   height: 5.h,
                 ),
-                listHof(),
-                advise(),
+                listHof(context),
+                advise(context),
               ],
             ),
           ]),

@@ -10,8 +10,8 @@ class AppRoutes {
   static const CHANGE_FORGOT_PASSWORD = "/changePasswordForgot";
 
   static const APPLICATION_PAGE = "/applicationPage";
-  static const APPLICATION_PAGE1 = "/applicationPage1";
   static const HOME_PAGE = "/homePage";
   static const NEWS_EVENT_PAGE = "/newsEventPage";
   static const ADVISE_PAGE = "/advisePage";
+  static const HOF_PAGE = "/hofPage";
 }
