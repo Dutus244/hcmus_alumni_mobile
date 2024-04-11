@@ -8,7 +8,8 @@ class NewsEventPageBloc extends Bloc<NewsEventPageEvent, NewsEventPageState> {
     on<NewsEventPageIndexEvent>(_newsEventPageIndexEvent);
   }
 
-  void _newsEventPageIndexEvent(NewsEventPageIndexEvent event, Emitter<NewsEventPageState> emit) {
+  void _newsEventPageIndexEvent(
+      NewsEventPageIndexEvent event, Emitter<NewsEventPageState> emit) {
     emit(state.copyWith(page: event.page));
   }
 }

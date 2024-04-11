@@ -58,48 +58,49 @@ class _NewsEventPageState extends State<NewsEventPage> {
       },
       child: BlocBuilder<NewsEventPageBloc, NewsEventPageState>(
           builder: (context, state) {
-            return Container(
-              child: Scaffold(
-                appBar: buildAppBar(context),
-                backgroundColor: AppColors.primaryBackground,
-                body: Container(
-                  child: ListView(scrollDirection: Axis.vertical, children: [
-                    Container(
-                      height: 275.h * 4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          buildButtonChooseNewsOrEvent(context, (value){
-                            pageController.animateToPage(
-                              value,
-                              duration: const Duration(milliseconds: 500),
-                              curve: Curves.decelerate,
-                            );
-                          }),
-                          Container(
-                            height: 10.h,
-                          ),
-                          Expanded(
-                            child: PageView(
-                              controller: pageController,
-                            onPageChanged: (index) {
-                              BlocProvider.of<NewsEventPageBloc>(context).add(NewsEventPageIndexEvent(index));
-                            },
-                            children: [
-                              listNews(),
-                              listEvent(),
-                            ],
-                          ),
-                          ),
-                        ],
+        return Container(
+          child: Scaffold(
+            appBar: buildAppBar(context),
+            backgroundColor: AppColors.primaryBackground,
+            body: Container(
+              child: ListView(scrollDirection: Axis.vertical, children: [
+                Container(
+                  height: 275.h * 4,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      buildButtonChooseNewsOrEvent(context, (value) {
+                        pageController.animateToPage(
+                          value,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.decelerate,
+                        );
+                      }),
+                      Container(
+                        height: 10.h,
                       ),
-                    ),
-                  ]),
+                      Expanded(
+                        child: PageView(
+                          controller: pageController,
+                          onPageChanged: (index) {
+                            BlocProvider.of<NewsEventPageBloc>(context)
+                                .add(NewsEventPageIndexEvent(index));
+                          },
+                          children: [
+                            listNews(),
+                            listEvent(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }),
+              ]),
+            ),
+          ),
+        );
+      }),
     );
   }
 }

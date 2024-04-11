@@ -27,24 +27,33 @@ AppBar buildAppBar(BuildContext context) {
               },
               child: Global.storageService.getUserIsLoggedIn()
                   ? CircleAvatar(
-                      radius: 10,
-                      child: null,
-                      backgroundImage: AssetImage("assets/images/test1.png"),
-                    )
+                radius: 10,
+                child: null,
+                backgroundImage: AssetImage("assets/images/test1.png"),
+              )
                   : Container(
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/icons/login.png"))),
-                    ),
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/icons/login.png"))),
+              ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.only(
-                left: Global.storageService.getUserIsLoggedIn() ? 30.w : 43.w),
-            child: SizedBox(
-              width: 100.w,
-              height: 100.h,
-              child: Image.asset("assets/images/logos/logo.png"),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/applicationPage",
+                    (route) => false,
+                arguments: {"route": 0, "secondRoute": 0},
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.only(
+                  left: Global.storageService.getUserIsLoggedIn() ? 30.w : 43.w),
+              child: SizedBox(
+                width: 120.w,
+                height: 120.h,
+                child: Image.asset("assets/images/logos/logo.png"),
+              ),
             ),
           ),
           Row(

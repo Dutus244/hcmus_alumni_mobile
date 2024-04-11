@@ -36,12 +36,22 @@ AppBar buildAppBar(BuildContext context) {
               ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.only(left: Global.storageService.getUserIsLoggedIn() ? 30.w : 43.w),
-            child: SizedBox(
-              width: 100.w,
-              height: 100.h,
-              child: Image.asset("assets/images/logos/logo.png"),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/applicationPage",
+                    (route) => false,
+                arguments: {"route": 0, "secondRoute": 0},
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.only(
+                  left: Global.storageService.getUserIsLoggedIn() ? 30.w : 43.w),
+              child: SizedBox(
+                width: 120.w,
+                height: 120.h,
+                child: Image.asset("assets/images/logos/logo.png"),
+              ),
             ),
           ),
           Row(

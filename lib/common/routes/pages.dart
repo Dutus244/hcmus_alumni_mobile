@@ -14,6 +14,8 @@ import 'package:hcmus_alumni_mobile/pages/email_verification/bloc/email_verifica
 import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/bloc/forgot_password_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/forgot_password.dart';
+import 'package:hcmus_alumni_mobile/pages/hof_page/bloc/hof_page_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/hof_page/hof_page.dart';
 import 'package:hcmus_alumni_mobile/pages/home_page/home_page.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/news_event_page.dart';
@@ -109,6 +111,13 @@ class AppPages {
           bloc: BlocProvider(
             create: (_) => ApplicationPageBloc(),
           )),
+      PageEntity(
+          route: AppRoutes.HOF_PAGE,
+          page: const HofPage(),
+          bloc: BlocProvider(
+          create: (_) => HofPageBloc(),
+        )
+      ),
     ];
   }
 
