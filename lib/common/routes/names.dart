@@ -14,4 +14,8 @@ class AppRoutes {
   static const NEWS_EVENT_PAGE = "/newsEventPage";
   static const ADVISE_PAGE = "/advisePage";
   static const HOF_PAGE = "/hofPage";
+
+  static const NEWS_DETAIL = "/newsDetail";
+  static const NEWS_DETAIL_WRITE_COMMENT = "/newsDetailWriteComment";
+  static const EVENT_DETAIL = "/eventDetail";
 }

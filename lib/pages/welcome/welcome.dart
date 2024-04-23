@@ -130,7 +130,7 @@ class _WelcomeState extends State<Welcome> {
             } else {
               // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyHomePage()));
               Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage", (route) => false);
+                  "/signIn", (route) => false);
             }
           },
           child: Container(
