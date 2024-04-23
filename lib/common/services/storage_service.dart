@@ -25,6 +25,10 @@ class StorageService {
     return _prefs.getBool(AppConstants.STORAGE_USER_IS_LOGGED_IN) ?? false;
   }
 
+  bool getUserRememberLogin() {
+    return _prefs.getBool(AppConstants.STORAGE_USER_REMEMBER_LOGIN) ?? false;
+  }
+
   String getUserAuthToken() {
     return _prefs.getString(AppConstants.STORAGE_USER_AUTH_TOKEN) ?? '';
   }

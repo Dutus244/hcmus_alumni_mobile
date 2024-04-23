@@ -3,87 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/common/values/colors.dart';
 
+import '../../../common/values/fonts.dart';
 import '../../../global.dart';
-
-AppBar buildAppBar(BuildContext context) {
-  return AppBar(
-    backgroundColor: AppColors.primaryBackground,
-    title: Container(
-      height: 40.h,
-      margin: EdgeInsets.only(left: 0.w, right: 0.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: Global.storageService.getUserIsLoggedIn() ? 30.w : 17.w,
-            height: Global.storageService.getUserIsLoggedIn() ? 30.h : 17.w,
-            margin: EdgeInsets.only(),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed("/signIn");
-              },
-              child: Global.storageService.getUserIsLoggedIn()
-                  ? CircleAvatar(
-                radius: 10,
-                child: null,
-                backgroundImage: AssetImage("assets/images/test1.png"),
-              )
-                  : Container(
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/icons/login.png"))),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/applicationPage",
-                    (route) => false,
-                arguments: {"route": 0, "secondRoute": 0},
-              );
-            },
-            child: Container(
-              padding: EdgeInsets.only(
-                  left: Global.storageService.getUserIsLoggedIn() ? 30.w : 43.w),
-              child: SizedBox(
-                width: 120.w,
-                height: 120.h,
-                child: Image.asset("assets/images/logos/logo.png"),
-              ),
-            ),
-          ),
-          Row(
-            children: [
-              GestureDetector(
-                child: Container(
-                  width: 17.w,
-                  height: 17.h,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/icons/search.png"))),
-                ),
-              ),
-              SizedBox(
-                width: 20.w,
-              ),
-              GestureDetector(
-                child: Container(
-                  width: 17.w,
-                  height: 17.h,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/icons/chat.png"))),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    ),
-  );
-}
 
 Widget buildCreatePostButton() {
   return Container(

@@ -8,87 +8,6 @@ import '../../../common/values/colors.dart';
 import '../../../global.dart';
 import '../bloc/hof_page_blocs.dart';
 
-AppBar buildAppBar(BuildContext context) {
-  return AppBar(
-    backgroundColor: AppColors.primaryBackground,
-    title: Container(
-      height: 40.h,
-      margin: EdgeInsets.only(left: 0.w, right: 0.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: Global.storageService.getUserIsLoggedIn() ? 30.w : 17.w,
-            height: Global.storageService.getUserIsLoggedIn() ? 30.h : 17.w,
-            margin: EdgeInsets.only(),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed("/signIn");
-              },
-              child: Global.storageService.getUserIsLoggedIn()
-                  ? CircleAvatar(
-                      radius: 10,
-                      child: null,
-                      backgroundImage: AssetImage("assets/images/test1.png"),
-                    )
-                  : Container(
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("assets/icons/login.png"))),
-                    ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/applicationPage",
-                (route) => false,
-                arguments: {"route": 0, "secondRoute": 0},
-              );
-            },
-            child: Container(
-              padding: EdgeInsets.only(
-                  left:
-                      Global.storageService.getUserIsLoggedIn() ? 30.w : 43.w),
-              child: SizedBox(
-                width: 120.w,
-                height: 120.h,
-                child: Image.asset("assets/images/logos/logo.png"),
-              ),
-            ),
-          ),
-          Row(
-            children: [
-              GestureDetector(
-                child: Container(
-                  width: 17.w,
-                  height: 17.h,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/icons/search.png"))),
-                ),
-              ),
-              SizedBox(
-                width: 20.w,
-              ),
-              GestureDetector(
-                child: Container(
-                  width: 17.w,
-                  height: 17.h,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/icons/chat.png"))),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    ),
-  );
-}
-
 Widget buildTextField(String hintText, String textType, String iconName,
     void Function(String value)? func1, void Function()? func2) {
   return Container(
@@ -168,28 +87,34 @@ Widget buttonClearFilter(void Function()? func) {
         width: 20.w,
         height: 20.h,
         padding: EdgeInsets.all(10),
-        child: SvgPicture.asset("assets/icons/clear_filter.svg", width: 20.w, height: 20.h, color: AppColors.primaryElement,),
+        child: SvgPicture.asset(
+          "assets/icons/clear_filter.svg",
+          width: 20.w,
+          height: 20.h,
+          color: AppColors.primaryElement,
+        ),
       ),
     ),
   );
 }
 
-
-Widget dropdownButtonFaculty(
-    List<String> faculties, BuildContext context, void Function(String value)? func) {
+Widget dropdownButtonFaculty(List<String> faculties, BuildContext context,
+    void Function(String value)? func) {
   List<DropdownMenuItem<String>> items = List.generate(
     faculties.length,
-        (int index) {
+    (int index) {
       return DropdownMenuItem<String>(
         value: faculties[index],
         child: Container(
           padding: EdgeInsets.only(left: 5.w),
-          child: Text(faculties[index], style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 12.sp,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryElement
-          ),),
+          child: Text(
+            faculties[index],
+            style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryElement),
+          ),
         ),
       );
     },
@@ -228,7 +153,9 @@ Widget dropdownButtonFaculty(
       child: DropdownButton<String>(
           isExpanded: true, // Đặt isExpanded thành true
           items: items,
-          value: BlocProvider.of<HofPageBloc>(context).state.faculty == "" ? null : BlocProvider.of<HofPageBloc>(context).state.faculty,
+          value: BlocProvider.of<HofPageBloc>(context).state.faculty == ""
+              ? null
+              : BlocProvider.of<HofPageBloc>(context).state.faculty,
           onChanged: (value) {
             if (value != null) {
               func!(value);
@@ -238,22 +165,23 @@ Widget dropdownButtonFaculty(
   );
 }
 
-
-Widget dropdownButtonGraduationYear(
-    List<String> graduationYear, BuildContext context, void Function(String value)? func) {
+Widget dropdownButtonGraduationYear(List<String> graduationYear,
+    BuildContext context, void Function(String value)? func) {
   List<DropdownMenuItem<String>> items = List.generate(
     graduationYear.length,
-        (int index) {
+    (int index) {
       return DropdownMenuItem<String>(
         value: graduationYear[index],
         child: Container(
           padding: EdgeInsets.only(left: 5.w),
-          child: Text(graduationYear[index], style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 12.sp,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryElement
-          ),),
+          child: Text(
+            graduationYear[index],
+            style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryElement),
+          ),
         ),
       );
     },
@@ -291,7 +219,10 @@ Widget dropdownButtonGraduationYear(
     child: Center(
       child: DropdownButton<String>(
           items: items,
-          value: BlocProvider.of<HofPageBloc>(context).state.graduationYear == "" ? null : BlocProvider.of<HofPageBloc>(context).state.graduationYear,
+          value:
+              BlocProvider.of<HofPageBloc>(context).state.graduationYear == ""
+                  ? null
+                  : BlocProvider.of<HofPageBloc>(context).state.graduationYear,
           onChanged: (value) {
             if (value != null) {
               func!(value);

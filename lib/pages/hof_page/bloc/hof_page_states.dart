@@ -9,7 +9,8 @@ class HofPageState {
     this.graduationYear = "",
   });
 
-  HofPageState copyWith({String? name, String? faculty, String? graduationYear}) {
+  HofPageState copyWith(
+      {String? name, String? faculty, String? graduationYear}) {
     return HofPageState(
       name: name ?? this.name,
       faculty: faculty ?? this.faculty,

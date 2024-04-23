@@ -31,7 +31,7 @@ class _SplashState extends State<Splash> {
       else {
         Global.storageService.setBool(AppConstants.STORAGE_USER_IS_LOGGED_IN, false);
         Navigator.of(context)
-            .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
+            .pushNamedAndRemoveUntil("/signIn", (route) => false);
       }
     });
   }

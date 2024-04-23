@@ -5,7 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_information/alumni_information.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_verification/alumni_verification.dart';
 import 'package:hcmus_alumni_mobile/pages/application_page/application_page.dart';
+import 'package:hcmus_alumni_mobile/pages/event_detail/event_detail.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/hof_page.dart';
+import 'package:hcmus_alumni_mobile/pages/news_detail/news_detail.dart';
+import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/news_detail_write_comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_events.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/news_event_page.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in.dart';
@@ -37,7 +40,7 @@ class MyApp extends StatelessWidget {
               elevation: 0,
               backgroundColor: Colors.white,
             )),
-            home: const HofPage(),
+            home: Splash(),
             onGenerateRoute: AppPages.GenerateRouteSettings,
           ),
         ));

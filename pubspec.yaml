@@ -46,8 +46,9 @@ dependencies:
   http: ^1.2.0
   expandable_text: ^2.3.0
   flutter_dotenv: ^5.1.0
-  flutter_html: ^2.2.1
+  flutter_html: ^3.0.0-alpha.3
   flutter_svg: ^0.22.0
+  popover: ^0.3.0
 
 
 dev_dependencies:
@@ -101,6 +102,17 @@ flutter:
     - family: Roboto
       fonts:
         - asset: assets/fonts/Roboto-Regular.ttf
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-Regular.ttf
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Regular.ttf
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-VariableFont_wght.ttf
+        - asset: assets/fonts/Montserrat-Bold.ttf
+          weight: 700
 
   #
   # For details regarding fonts from package dependencies,

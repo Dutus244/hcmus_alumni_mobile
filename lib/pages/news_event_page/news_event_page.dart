@@ -2,13 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_events.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_states.dart';
 
 import '../../common/values/colors.dart';
+import '../../common/widgets/app_bar.dart';
 import '../news_event_page/widgets/news_event_page_widget.dart';
+import 'news_event_page_controller.dart';
 
 class NewsEventPage extends StatefulWidget {
   final int page; // Biến page cần được khai báo và truyền vào từ bên ngoài
@@ -20,13 +21,33 @@ class NewsEventPage extends StatefulWidget {
 
 class _NewsEventPageState extends State<NewsEventPage> {
   late PageController pageController; // Không khởi tạo ở đây
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     // Khởi tạo pageController trong initState
     pageController = PageController(initialPage: widget.page);
-    context.read<NewsEventPageBloc>().add(NewsEventPageIndexEvent(widget.page));
+    context.read<NewsEventPageBloc>().add(PageEvent(widget.page));
+    _scrollController.addListener(_onScroll);
+    NewsEventPageController(context: context).handleLoadNewsData(
+        BlocProvider.of<NewsEventPageBloc>(context).state.indexNews);
+    NewsEventPageController(context: context).handleLoadEventData(
+        BlocProvider.of<NewsEventPageBloc>(context).state.indexEvent);
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    if (currentScroll >= (maxScroll * 0.9)) {
+      if (BlocProvider.of<NewsEventPageBloc>(context).state.page == 0) {
+        NewsEventPageController(context: context).handleLoadNewsData(
+            BlocProvider.of<NewsEventPageBloc>(context).state.indexNews);
+      } else {
+        NewsEventPageController(context: context).handleLoadEventData(
+            BlocProvider.of<NewsEventPageBloc>(context).state.indexEvent);
+      }
+    }
   }
 
   @override
@@ -60,44 +81,11 @@ class _NewsEventPageState extends State<NewsEventPage> {
           builder: (context, state) {
         return Container(
           child: Scaffold(
-            appBar: buildAppBar(context),
+            appBar: buildAppBar(context, 'Tin tức & Sự kiện'),
             backgroundColor: AppColors.primaryBackground,
-            body: Container(
-              child: ListView(scrollDirection: Axis.vertical, children: [
-                Container(
-                  height: 275.h * 4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      buildButtonChooseNewsOrEvent(context, (value) {
-                        pageController.animateToPage(
-                          value,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.decelerate,
-                        );
-                      }),
-                      Container(
-                        height: 10.h,
-                      ),
-                      Expanded(
-                        child: PageView(
-                          controller: pageController,
-                          onPageChanged: (index) {
-                            BlocProvider.of<NewsEventPageBloc>(context)
-                                .add(NewsEventPageIndexEvent(index));
-                          },
-                          children: [
-                            listNews(),
-                            listEvent(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ]),
-            ),
+            body: BlocProvider.of<NewsEventPageBloc>(context).state.page == 0
+                ? listNews(context, _scrollController)
+                : listEvent(context, _scrollController),
           ),
         );
       }),

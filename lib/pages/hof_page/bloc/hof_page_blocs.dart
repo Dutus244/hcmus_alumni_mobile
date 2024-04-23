@@ -25,8 +25,7 @@ class HofPageBloc extends Bloc<HofPageEvent, HofPageState> {
     emit(state.copyWith(graduationYear: event.graduationYear));
   }
 
-  void _clearFilterEvent(
-     ClearFilterEvent event, Emitter<HofPageState> emit) {
+  void _clearFilterEvent(ClearFilterEvent event, Emitter<HofPageState> emit) {
     emit(state.copyWith(faculty: "", graduationYear: ""));
   }
 
