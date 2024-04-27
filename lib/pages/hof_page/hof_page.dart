@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,52 +21,39 @@ class HofPage extends StatefulWidget {
 }
 
 class _HofPageState extends State<HofPage> {
+  late PageController pageController; // Không khởi tạo ở đây
+  final _scrollController = ScrollController();
+  bool _isFetchingData = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+    HofPageController(context: context).handleLoadHofData(
+        0);
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    if (currentScroll >= (maxScroll * 0.9) && !_isFetchingData) {
+      _isFetchingData = true;
+      Timer(Duration(seconds: 1), () {
+        _isFetchingData = false;
+      });
+
+      HofPageController(context: context).handleLoadHofData(
+          BlocProvider.of<HofPageBloc>(context).state.indexHof);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HofPageBloc, HofPageState>(builder: (context, state) {
       return Scaffold(
         appBar: buildAppBar(context, 'Gương thành công'),
         backgroundColor: AppColors.primaryBackground,
-        body: Container(
-          child: ListView(scrollDirection: Axis.vertical, children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Center(
-                    child: buildTextField(
-                        'Tìm gương thành công', 'search', 'search', (value) {
-                  context.read<HofPageBloc>().add(NameEvent(value));
-                }, () {
-                  HofPageController(context: context).handleSearch();
-                })),
-                Row(
-                  children: [
-                    buttonClearFilter(() {
-                      context.read<HofPageBloc>().add(ClearFilterEvent());
-                    }),
-                    dropdownButtonFaculty([
-                      'Công nghệ thông tin',
-                      'Khoa học & Công nghệ Vật liệu'
-                    ], context, (value) {
-                      context.read<HofPageBloc>().add(FacultyEvent(value));
-                    }),
-                    dropdownButtonGraduationYear(['2020', '2021'], context,
-                        (value) {
-                      context
-                          .read<HofPageBloc>()
-                          .add(GraduationYearEvent(value));
-                    })
-                  ],
-                ),
-                Container(
-                  height: 10.h,
-                ),
-                listHof(),
-              ],
-            ),
-          ]),
-        ),
+        body: Container(child: listHof(context, _scrollController)),
       );
     });
   }

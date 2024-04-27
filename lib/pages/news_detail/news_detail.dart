@@ -5,7 +5,9 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_events.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_states.dart';
+import 'package:hcmus_alumni_mobile/pages/news_detail/news_detail_controller.dart';
 import 'package:popover/popover.dart';
 import '../../common/values/colors.dart';
 import '../../common/widgets/app_bar.dart';
@@ -20,8 +22,12 @@ class NewsDetail extends StatefulWidget {
 }
 
 class _NewsDetailState extends State<NewsDetail> {
-  late News
-      news; // Đánh dấu biến news là non-nullable và sẽ được gán giá trị sau
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  late String id;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +36,10 @@ class _NewsDetailState extends State<NewsDetail> {
     var route = 0;
     if (args != null) {
       route = args["route"];
-      news = args["news"] as News; // Gán giá trị cho biến news
+      id = args["id"];
+      NewsDetailController(context: context).handleGetNews(id);
+      NewsDetailController(context: context).handleGetComment(id, 0);
+      NewsDetailController(context: context).handleGetRelatedNews(id);
     }
 
     return PopScope(
@@ -53,9 +62,17 @@ class _NewsDetailState extends State<NewsDetail> {
                 child: ListView(
                   scrollDirection: Axis.vertical,
                   children: [
-                    newsContent(context, news),
-                    listComment(context),
-                    listRelatedNews(),
+                    newsContent(context,
+                        BlocProvider.of<NewsDetailBloc>(context).state.news),
+                    listComment(
+                        context,
+                        BlocProvider.of<NewsDetailBloc>(context).state.news,
+                        BlocProvider.of<NewsDetailBloc>(context).state.comment),
+                    listRelatedNews(
+                        context,
+                        BlocProvider.of<NewsDetailBloc>(context)
+                            .state
+                            .relatedNews),
                   ],
                 ),
               ),

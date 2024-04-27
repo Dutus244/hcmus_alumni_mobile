@@ -7,6 +7,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   HomePageBloc() : super(HomePageState()) {
     on<EventEvent>(_eventEvent);
     on<NewsEvent>(_newsEvent);
+    on<HallOfFameEvent>(_hallOfFameEvent);
   }
 
   void _eventEvent(EventEvent event, Emitter<HomePageState> emit) {
@@ -15,5 +16,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
   void _newsEvent(NewsEvent event, Emitter<HomePageState> emit) {
     emit(state.copyWith(news: event.news));
+  }
+
+  void _hallOfFameEvent(HallOfFameEvent event, Emitter<HomePageState> emit) {
+    emit(state.copyWith(hallOfFame: event.hallOfFame));
   }
 }

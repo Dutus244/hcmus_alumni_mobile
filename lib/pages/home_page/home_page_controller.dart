@@ -9,6 +9,7 @@ import '../../global.dart';
 import 'package:http/http.dart' as http;
 
 import '../../model/event_response.dart';
+import '../../model/hall_of_fame_response.dart';
 import 'bloc/home_page_blocs.dart';
 import 'bloc/home_page_events.dart';
 
@@ -22,65 +23,65 @@ class HomePageController {
     var endpoint = '/events';
     var page = '0';
     var pageSize = '6';
-
     var token = Global.storageService.getUserAuthToken();
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+    };
 
+    try {
+      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
+      var response = await http.get(url, headers: headers);
+      var responseBody = utf8.decode(response.bodyBytes);
+      if (response.statusCode == 200) {
+        var jsonMap = json.decode(responseBody);
+        var eventResponse = EventResponse.fromJson(jsonMap);
+        context.read<HomePageBloc>().add(EventEvent(eventResponse.event));
+      } else {}
+    } catch (error, stacktrace) {}
+  }
+
+  Future<void> handleLoadNewsData() async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/news/hot';
+    var limit = '6';
+    var token = Global.storageService.getUserAuthToken();
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token', // Include bearer token in the headers
+    };
+
+    try {
+      var url = Uri.parse('$apiUrl$endpoint?limit=$limit');
+      var response = await http.get(url, headers: headers);
+      var responseBody = utf8.decode(response.bodyBytes);
+      if (response.statusCode == 200) {
+        var jsonMap = json.decode(responseBody);
+        var newsResponse = NewsResponse.fromJson(jsonMap);
+        context.read<HomePageBloc>().add(NewsEvent(newsResponse.news));
+      } else {}
+    } catch (error, stacktrace) {}
+  }
+
+  Future<void> handleLoadHallOfFameData() async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/hof';
+    var page = '0';
+    var pageSize = '6';
+    var token = Global.storageService.getUserAuthToken();
     var headers = <String, String>{
       'Authorization': 'Bearer $token', // Include bearer token in the headers
     };
 
     try {
       var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
-
-      // Specify UTF-8 encoding for decoding response
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
-
       if (response.statusCode == 200) {
-        // Convert the JSON string to a Map
         var jsonMap = json.decode(responseBody);
-
-        // Pass the Map to the fromJson method
-        var eventResponse = EventResponse.fromJson(jsonMap);
-        context.read<HomePageBloc>().add(EventEvent(eventResponse.event));
-      } else {
-        // Handle other status codes if needed
-      }
-    } catch (error, stacktrace) {
-      // Handle errors
-    }
-  }
-
-  Future<void> handleLoadNewsData() async {
-    var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/news/hot';
-    var param = '6';
-
-    var token = Global.storageService.getUserAuthToken();
-
-    var headers = <String, String>{
-      'Authorization': 'Bearer $token', // Include bearer token in the headers
-    };
-
-    try {
-      var url = Uri.parse('$apiUrl$endpoint?limit=$param');
-
-      // Specify UTF-8 encoding for decoding response
-      var response = await http.get(url, headers: headers);
-      var responseBody = utf8.decode(response.bodyBytes);
-
-      if (response.statusCode == 200) {
-        // Convert the JSON string to a Map
-        var jsonMap = json.decode(responseBody);
-
-        // Pass the Map to the fromJson method
-        var newsResponse = NewsResponse.fromJson(jsonMap);
-        context.read<HomePageBloc>().add(NewsEvent(newsResponse.news));
-      } else {
-        // Handle other status codes if needed
-      }
-    } catch (error, stacktrace) {
-      // Handle errors
-    }
+        var hallOfFameResponse = HallOfFameResponse.fromJson(jsonMap);
+        context
+            .read<HomePageBloc>()
+            .add(HallOfFameEvent(hallOfFameResponse.hallOfFame));
+      } else {}
+    } catch (error, stacktrace) {}
   }
 }

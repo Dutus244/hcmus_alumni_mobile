@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_verification/widgets/alumni_verification_widget.dart';
 
 import '../../common/values/colors.dart';
+import '../../common/values/fonts.dart';
 import 'alumni_verification_controller.dart';
 import 'bloc/alumni_verification_blocs.dart';
 import 'bloc/alumni_verification_events.dart';
@@ -64,7 +65,7 @@ class _AlumniVerificationState extends State<AlumniVerification> {
                           child: Text(
                             "BẮT ĐẦU",
                             style: TextStyle(
-                              fontFamily: 'Roboto',
+                              fontFamily: AppFonts.Header0,
                               color: AppColors.primaryText,
                               fontWeight: FontWeight.bold,
                               fontSize: 17.sp,
@@ -78,7 +79,7 @@ class _AlumniVerificationState extends State<AlumniVerification> {
                             "Hãy thiết lập hồ sơ của bạn. Những thông tin này sẽ giúp chúng tôi xét duyệt tài khoản của bạn.",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontFamily: 'Roboto',
+                              fontFamily: AppFonts.Header3,
                               color: AppColors.primaryText,
                               fontWeight: FontWeight.normal,
                               fontSize: 12.sp,

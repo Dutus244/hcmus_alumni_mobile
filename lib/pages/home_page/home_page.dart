@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     HomePageController(context: context).handleLoadEventData();
     HomePageController(context: context).handleLoadNewsData();
+    HomePageController(context: context).handleLoadHallOfFameData();
   }
 
   @override
@@ -76,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       height: 5.h,
                     ),
-                    listHof(context),
+                    listHof(context, BlocProvider.of<HomePageBloc>(context).state.hallOfFame),
                     advise(context),
                   ],
                 ),

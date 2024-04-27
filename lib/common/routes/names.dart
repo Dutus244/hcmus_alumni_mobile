@@ -17,5 +17,7 @@ class AppRoutes {
 
   static const NEWS_DETAIL = "/newsDetail";
   static const NEWS_DETAIL_WRITE_COMMENT = "/newsDetailWriteComment";
+  static const NEWS_DETAIL_WRITE_CHILDREN_COMMENT = "/newsDetailWriteChildrenComment";
   static const EVENT_DETAIL = "/eventDetail";
+  static const HOF_DETAIL = "/hofDetail";
 }

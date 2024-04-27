@@ -1,9 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/bloc/news_detail_write_comment_states.dart';
+import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/news_detail_write_comment_controller.dart';
 
 import '../../common/values/colors.dart';
+import '../../common/values/fonts.dart';
 import '../../common/widgets/app_bar.dart';
+import '../../model/news.dart';
+import '../news_detail_write_comment/bloc/news_detail_write_comment_events.dart';
+import 'bloc/news_detail_write_comment_blocs.dart';
 import 'widgets/news_detail_write_comment_widget.dart';
 
 class NewsDetailWriteComment extends StatefulWidget {
@@ -15,96 +22,77 @@ class NewsDetailWriteComment extends StatefulWidget {
 
 class _NewsDetailWriteCommentState extends State<NewsDetailWriteComment> {
   @override
+  void initState() {
+    super.initState();
+    context.read<NewsDetailWriteCommentBloc>().add(NewsDetailWriteCommentResetEvent());
+  }
+
+  late News news;
+
+  @override
   Widget build(BuildContext context) {
+    Map<String, dynamic>? args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    if (args != null) {
+      news = args["news"];
+    }
+
     return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/newsDetail",
-          (route) => false,
-        );
-      },
-      child: Scaffold(
-        appBar: buildAppBar(context, 'Tin tức'),
-        backgroundColor: AppColors.primaryBackground,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ListView(
-                scrollDirection: Axis.vertical,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
-                    child: Text(
-                      'Từ học trò tỉnh lẻ thành giáo sư đại học Mỹ',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.normal,
-                        color: AppColors.primaryText,
-                      ),
-                    ),
+        canPop: false, // prevent back
+        onPopInvoked: (_) async {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            "/newsDetail",
+            (route) => false,
+            arguments: {
+              "route": 1,
+              "id": news.id,
+            },
+          );
+        },
+        child: BlocBuilder<NewsDetailWriteCommentBloc,
+            NewsDetailWriteCommentState>(builder: (context, state) {
+          return Scaffold(
+            appBar: buildAppBar(context, 'Tin tức'),
+            backgroundColor: AppColors.primaryBackground,
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ListView(
+                    scrollDirection: Axis.vertical,
+                    children: [
+                      header(news),
+                      buildTextField('Bình luận của bạn', 'comment', '',
+                          (value) {
+                        context
+                            .read<NewsDetailWriteCommentBloc>()
+                            .add(CommentEvent(value));
+                      }),
+                    ],
                   ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
-                    child: Text(
-                      'Gửi bình luận',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryText,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10.h),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 35.w,
-                          height: 35.h,
-                          margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                          child: GestureDetector(
-                              onTap: () {
-                                // Xử lý khi người dùng tap vào hình ảnh
-                              },
-                              child: CircleAvatar(
-                                radius: 10,
-                                child: null,
-                                backgroundImage:
-                                    AssetImage("assets/images/test1.png"),
-                              )),
-                        ),
-                        Text(
-                          'Đặng Nguyễn Duy',
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: AppColors.primaryText,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Roboto',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  buildTextField(
-                      'Bình luận của bạn', 'comment', '', (value) {}),
-                ],
-              ),
+                ),
+                navigation(
+                    () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        "/newsDetail",
+                        (route) => false,
+                        arguments: {
+                          "route": 1,
+                          "id": news.id,
+                        },
+                      );
+                    },
+                    BlocProvider.of<NewsDetailWriteCommentBloc>(context)
+                        .state
+                        .comment,
+                    () {
+                      NewsDetailWriteCommentController(context: context)
+                          .handleLoadWriteComment(news.id);
+                    }),
+              ],
             ),
-            navigation(() {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/newsDetail",
-                (route) => false,
-              );
-            }),
-          ],
-        ),
-      ),
-    );
+          );
+        }));
   }
 }

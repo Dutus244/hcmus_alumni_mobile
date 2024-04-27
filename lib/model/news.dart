@@ -12,6 +12,7 @@ class News {
   final String content;
   final String thumbnail;
   final int views;
+  final int childrenCommentNumber;
   final String updateAt;
   final String publishedAt;
   final List<Tags> tags;
@@ -26,6 +27,7 @@ class News {
     this.thumbnail,
     this.content,
     this.views,
+    this.childrenCommentNumber,
     this.updateAt,
     this.publishedAt,
     this.tags,
@@ -41,6 +43,7 @@ class News {
         thumbnail = json["thumbnail"],
         content = json["content"],
         views = json["views"].toInt(),
+        childrenCommentNumber = json["childrenCommentNumber"].toInt(),
         updateAt = json["updateAt"],
         publishedAt = json["publishedAt"],
         tags = TagsResponse.fromJson(json).tags,

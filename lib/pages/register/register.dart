@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/register/register_controller.dart';
 
 import '../../common/values/colors.dart';
+import '../../common/values/fonts.dart';
 import 'bloc/register_blocs.dart';
 import 'bloc/register_events.dart';
 import 'bloc/register_states.dart';
@@ -63,7 +64,7 @@ class _RegisterState extends State<Register> {
                           child: Text(
                             "ĐĂNG KÝ",
                             style: TextStyle(
-                              fontFamily: 'Roboto',
+                              fontFamily: AppFonts.Header0,
                               color: AppColors.primaryText,
                               fontWeight: FontWeight.bold,
                               fontSize: 17.sp,

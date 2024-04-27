@@ -7,6 +7,7 @@ import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in_controller.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/widgets/sign_in_widget.dart';
 
 import '../../common/values/colors.dart';
+import '../../common/values/fonts.dart';
 import '../../global.dart';
 import 'bloc/sign_in_blocs.dart';
 import 'bloc/sign_in_events.dart';
@@ -95,7 +96,7 @@ class _SignInState extends State<SignIn> {
                           child: Text(
                             "ĐĂNG NHẬP",
                             style: TextStyle(
-                              fontFamily: 'Roboto',
+                              fontFamily: AppFonts.Header0,
                               color: AppColors.primaryText,
                               fontWeight: FontWeight.bold,
                               fontSize: 17.sp,

@@ -3,23 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/common/values/colors.dart';
+import 'package:hcmus_alumni_mobile/model/comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_states.dart';
+import 'package:hcmus_alumni_mobile/pages/news_detail/news_detail_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:popover/popover.dart';
 
+import '../../../common/function/handle_html_content.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
 import '../../../model/news.dart';
 import '../bloc/news_detail_events.dart';
-
-String replaceHeightAttribute(String original) {
-  return original.replaceAllMapped(
-    RegExp(r'(<img[^>]+)(h=)', caseSensitive: false),
-    (match) => '${match.group(1)}_${match.group(1)}',
-  );
-}
 
 FontSize getContentFontSize(double value) {
   switch (value) {
@@ -41,17 +39,17 @@ FontSize getContentFontSize(double value) {
 double getTimeFontSize(double value) {
   switch (value) {
     case 0:
-      return 8.sp;
-    case 20:
       return 9.sp;
-    case 40:
+    case 20:
       return 10.sp;
-    case 60:
+    case 40:
       return 11.sp;
-    case 80:
+    case 60:
       return 12.sp;
+    case 80:
+      return 13.sp;
     default:
-      return 10.sp; // Trường hợp mặc định
+      return 11.sp; // Trường hợp mặc định
   }
 }
 
@@ -106,261 +104,296 @@ String getLabelFontSize(double value) {
   }
 }
 
-Widget newsContent(BuildContext context, News news) {
-  String htmlContent = news.content;
+Widget newsContent(BuildContext context, News? news) {
+  if (news == null) {
+    return loadingWidget();
+  } else {
+    String htmlContent = news.content;
+    String htmlFix = '';
+    htmlFix = handleHtmlContent(htmlContent);
 
-  String htmlFix = '';
-
-  htmlFix = "<span>" + replaceHeightAttribute(htmlContent) + "</span>";
-
-  DateTime dateTime = DateTime.parse(news.publishedAt);
-  String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
-
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      Container(
-        padding: EdgeInsets.only(top: 5.h, left: 10.w),
-        child: Row(
-          children: [
-            Row(
-              children: [
-                SvgPicture.asset(
-                  "assets/icons/clock.svg",
-                  width: 12.w,
-                  height: 12.h,
-                  color: AppColors.primarySecondaryText,
-                ),
-                Container(
-                  width: 2.w,
-                ),
-                Text(
-                  formattedDate,
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header3,
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                    fontSize: getTimeFontSize(
-                        BlocProvider.of<NewsDetailBloc>(context)
-                            .state
-                            .fontSize),
-                  ),
-                ),
-              ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 5.h, left: 10.w),
+          child: Text(
+            "Khoa " + news.faculty.name,
+            style: TextStyle(
+              fontFamily: AppFonts.Header3,
+              color: Color.fromARGB(255, 51, 58, 73),
+              fontWeight: FontWeight.w500,
+              fontSize: getFacultyFontSize(
+                  BlocProvider.of<NewsDetailBloc>(context).state.fontSize),
             ),
-            Container(
-              width: 10.w,
-            ),
-            Row(
-              children: [
-                SvgPicture.asset(
-                  "assets/icons/view.svg",
-                  width: 12.w,
-                  height: 12.h,
-                  color: AppColors.primarySecondaryText,
-                ),
-                Container(
-                  width: 2.w,
-                ),
-                Text(
-                  news.views.toString(),
-                  maxLines: 2,
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header3,
-                    fontSize: getTimeFontSize(
-                        BlocProvider.of<NewsDetailBloc>(context)
-                            .state
-                            .fontSize),
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-      Container(
-        padding: EdgeInsets.only(top: 5.h, left: 10.w),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              "assets/icons/tag.svg",
-              width: 12.w,
-              height: 12.h,
-              color: AppColors.primarySecondaryText,
-            ),
-            for (int i = 0; i < news.tags.length; i += 1)
-              Container(
-                margin: EdgeInsets.only(left: 5.w),
-                child: Text(
-                  news.tags[i].name,
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header3,
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.normal,
-                    color: Color.fromARGB(255, 5, 90, 188),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-      Container(
-        padding: EdgeInsets.only(top: 5.h, left: 10.w),
-        child: Text(
-          "Khoa " + news.faculty.name,
-          style: TextStyle(
-            fontFamily: AppFonts.Header3,
-            color: Color.fromARGB(255, 51, 58, 73),
-            fontWeight: FontWeight.w500,
-            fontSize: getFacultyFontSize(
-                BlocProvider.of<NewsDetailBloc>(context).state.fontSize),
           ),
         ),
-      ),
-      Container(
-        padding: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
-        child: Text(
-          news.title,
-          style: TextStyle(
-            fontFamily: AppFonts.Header2,
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: getTitleFontSize(
-                BlocProvider.of<NewsDetailBloc>(context).state.fontSize),
+        Container(
+          padding: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
+          child: Text(
+            news.title,
+            style: TextStyle(
+              fontFamily: AppFonts.Header2,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: getTitleFontSize(
+                  BlocProvider.of<NewsDetailBloc>(context).state.fontSize),
+            ),
           ),
         ),
-      ),
-      Container(
-        padding: EdgeInsets.only(top: 0.h, left: 5.w, right: 5.w),
-        child: Html(
-          data: htmlFix,
-          style: {
-            "span": Style(
-                fontSize: getContentFontSize(
-                    BlocProvider.of<NewsDetailBloc>(context).state.fontSize),
-                fontFamily:
-                    BlocProvider.of<NewsDetailBloc>(context).state.fontFamily)
-          },
-        ),
-      ),
-    ],
-  );
-}
-
-Widget listComment(BuildContext context) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      GestureDetector(
-        onTap: () {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/newsDetailWriteComment",
-            (route) => false,
-          );
-        },
-        child: Container(
-            width: 340.w,
-            height: 40.h,
-            margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.w),
-              color: Colors.black.withOpacity(0.1),
-              border: Border.all(
-                color: Colors.transparent,
-              ),
-            ),
-            child: Container(
-              height: 20.h,
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Container(
+          padding: EdgeInsets.only(top: 5.h, left: 10.w),
+          child: Row(
+            children: [
+              Row(
                 children: [
-                  Text(
-                    'Viết bình luận',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black.withOpacity(0.5),
-                    ),
-                  ),
                   SvgPicture.asset(
-                    "assets/icons/send.svg",
-                    width: 15.w,
-                    height: 15.h,
-                    color: Colors.black.withOpacity(0.5),
+                    "assets/icons/clock.svg",
+                    width: 12.w,
+                    height: 12.h,
+                    color: AppColors.primarySecondaryText,
+                  ),
+                  Container(
+                    width: 5.w,
+                  ),
+                  Text(
+                    handleDatetime(news.publishedAt),
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header3,
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: getTimeFontSize(
+                          BlocProvider.of<NewsDetailBloc>(context)
+                              .state
+                              .fontSize),
+                    ),
                   ),
                 ],
               ),
-            )),
-      ),
-      Container(
-        padding: EdgeInsets.only(top: 20.h, left: 10.w, bottom: 10.h),
-        child: Text(
-          "Bình luận (5)",
-          style: TextStyle(
-            fontFamily: 'Roboto',
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 18.sp,
+              Container(
+                width: 10.w,
+              ),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/icons/view.svg",
+                    width: 12.w,
+                    height: 12.h,
+                    color: AppColors.primarySecondaryText,
+                  ),
+                  Container(
+                    width: 5.w,
+                  ),
+                  Text(
+                    news.views.toString(),
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header3,
+                      fontSize: getTimeFontSize(
+                          BlocProvider.of<NewsDetailBloc>(context)
+                              .state
+                              .fontSize),
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
-      ),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          comment(),
-          comment(),
-          comment(),
-        ],
-      ),
-      GestureDetector(
-        onTap: () {},
-        child: Container(
-          width: 340.w,
-          height: 40.h,
-          margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.w),
-            color: AppColors.primaryBackground,
-            border: Border.all(
-              color: Colors.black.withOpacity(0.8),
+        Container(
+          padding: EdgeInsets.only(top: 0.h, left: 5.w, right: 5.w),
+          child: Html(
+            data: htmlFix,
+            style: {
+              "span": Style(
+                  fontSize: getContentFontSize(
+                      BlocProvider.of<NewsDetailBloc>(context).state.fontSize),
+                  fontFamily:
+                      BlocProvider.of<NewsDetailBloc>(context).state.fontFamily)
+            },
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(top: 5.h, left: 20.w, right: 20.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 100.w,
+              ),
+              Text(
+                news.creator.fullName,
+                style: TextStyle(
+                  fontFamily: AppFonts.Header3,
+                  color: Color.fromARGB(255, 51, 58, 73),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14.sp,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(top: 10.h, left: 10.w),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                "assets/icons/tag.svg",
+                width: 12.w,
+                height: 12.h,
+                color: AppColors.primarySecondaryText,
+              ),
+              for (int i = 0; i < news.tags.length; i += 1)
+                Container(
+                  margin: EdgeInsets.only(left: 5.w),
+                  child: Text(
+                    news.tags[i].name,
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header3,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.normal,
+                      color: Color.fromARGB(255, 5, 90, 188),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+Widget listComment(
+    BuildContext context, News? news, List<Comment> commentList) {
+  if (news == null) {
+    return Column(
+      children: [],
+    );
+  } else {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              "/newsDetailWriteComment",
+              (route) => false,
+              arguments: {
+                "news": news,
+              },
+            );
+          },
+          child: Container(
+              width: 340.w,
+              height: 40.h,
+              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.w),
+                color: Color.fromARGB(255, 245, 245, 245),
+                border: Border.all(
+                  color: Colors.transparent,
+                ),
+              ),
+              child: Container(
+                height: 20.h,
+                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Viết bình luận',
+                      style: TextStyle(
+                        fontFamily: AppFonts.Header2,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ),
+                    SvgPicture.asset(
+                      "assets/icons/send.svg",
+                      width: 15.w,
+                      height: 15.h,
+                      color: Colors.black.withOpacity(0.5),
+                    ),
+                  ],
+                ),
+              )),
+        ),
+        Container(
+          padding: EdgeInsets.only(top: 20.h, left: 10.w, bottom: 10.h),
+          child: Text(
+            "Bình luận (${news.childrenCommentNumber})",
+            style: TextStyle(
+              fontFamily: AppFonts.Header1,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 18.sp,
             ),
           ),
-          child: Center(
-            child: Text(
-              'Xem thêm bình luận',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.black.withOpacity(0.8),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            for (int i = 0; i < commentList.length; i += 1)
+              buildCommentWidget(context, news, commentList[i])
+          ],
+        ),
+        if (news.childrenCommentNumber > 5 &&
+            !BlocProvider.of<NewsDetailBloc>(context).state.hasReachedMaxComment)
+          GestureDetector(
+            onTap: () {
+              NewsDetailController(context: context).handleGetComment(news.id,
+                  BlocProvider.of<NewsDetailBloc>(context).state.indexComment);
+            },
+            child: Container(
+              width: 340.w,
+              height: 40.h,
+              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.w),
+                color: Color.fromARGB(255, 230, 240, 251),
+                border: Border.all(
+                  color: Colors.transparent,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  'Xem thêm bình luận',
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header2,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 43, 107, 182),
+                  ),
+                ),
               ),
             ),
           ),
+        Container(
+          height: 20.h,
         ),
-      ),
-      Container(
-        height: 20.h,
-      ),
-      Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w),
-        height: 2.h,
-        color: AppColors.primarySecondaryElement,
-      )
-    ],
-  );
+        Container(
+          margin: EdgeInsets.only(left: 10.w, right: 10.w),
+          height: 2.h,
+          color: AppColors.primarySecondaryElement,
+        )
+      ],
+    );
+  }
 }
 
-Widget comment() {
+Widget buildCommentWidget(BuildContext context, News news, Comment comment) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.h),
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
           height: 35.h,
@@ -378,7 +411,8 @@ Widget comment() {
                     child: CircleAvatar(
                       radius: 10,
                       child: null,
-                      backgroundImage: AssetImage("assets/images/test1.png"),
+                      backgroundImage:
+                          NetworkImage(comment.creator.avatarUrl ?? ""),
                     )),
               ),
               Container(
@@ -386,32 +420,34 @@ Widget comment() {
                 height: 35.h,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Cộng đồng HCMUS',
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: AppColors.primaryText,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto',
+                    Container(
+                      margin: EdgeInsets.only(top: 2.h),
+                      child: Text(
+                        comment.creator.fullName,
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: AppColors.primaryText,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w900,
+                          fontFamily: AppFonts.Header2,
+                        ),
                       ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          '4 ngày',
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: AppColors.primaryText,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: 'Roboto',
-                          ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 2.h),
+                      child: Text(
+                        handleDatetime(comment.updateAt),
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: AppColors.primarySecondaryText,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: AppFonts.Header3,
                         ),
-                      ],
-                    )
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -424,12 +460,12 @@ Widget comment() {
         Container(
           padding: EdgeInsets.only(left: 10.w, right: 10.w),
           child: Text(
-            'Đây là text dài hơn 2 dòng. Khi click vào "Xem thêm", text sẽ được hiển thị đầy đủ. Click vào "Thu gọn" để thu hồi text. 1211121212112112121211212111212',
+            comment.content,
             style: TextStyle(
               color: AppColors.primaryText,
               fontSize: 12.sp,
               fontWeight: FontWeight.normal,
-              fontFamily: 'Roboto',
+              fontFamily: AppFonts.Header3,
             ),
           ),
         ),
@@ -441,7 +477,10 @@ Widget comment() {
               Row(
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      NewsDetailController(context: context)
+                          .handleGetChildrenComment(comment.id);
+                    },
                     child: Container(
                       child: Row(
                         children: [
@@ -455,7 +494,7 @@ Widget comment() {
                             width: 3.w,
                           ),
                           Text(
-                            '2 trả lời',
+                            "${comment.childrenCommentNumber.toString()} trả lời",
                             style: TextStyle(
                               color: Colors.black.withOpacity(0.8),
                               fontSize: 11.sp,
@@ -471,6 +510,16 @@ Widget comment() {
                     width: 50.w,
                   ),
                   GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        "/newsDetailWriteChildrenComment",
+                        (route) => false,
+                        arguments: {
+                          "news": news,
+                          "comment": comment,
+                        },
+                      );
+                    },
                     child: Text(
                       'Trả lời',
                       style: TextStyle(
@@ -485,13 +534,36 @@ Widget comment() {
               ),
             ],
           ),
+        ),
+        Container(
+          padding: EdgeInsets.only(left: 10.w, right: 10.w),
+          child: Column(
+            children: [
+              for (int i = 0; i < comment.childrenComment.length; i += 1)
+                Row(
+                  children: [
+                    VerticalDivider(
+                      width: 1,
+                      thickness: 1,
+                      color: Colors.black, // Adjust color as desired
+                    ),
+                    Expanded(
+                      child: Container(
+                          padding: EdgeInsets.only(left: 0.w, right: 10.w),
+                          child: buildCommentWidget(
+                              context, news, comment.childrenComment[i])),
+                    ),
+                  ],
+                )
+            ],
+          ),
         )
       ],
     ),
   );
 }
 
-Widget listRelatedNews() {
+Widget listRelatedNews(BuildContext context, List<News> newsList) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -501,7 +573,7 @@ Widget listRelatedNews() {
         child: Text(
           "Bài viết liên quan",
           style: TextStyle(
-            fontFamily: 'Roboto',
+            fontFamily: AppFonts.Header2,
             color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 18.sp,
@@ -512,18 +584,29 @@ Widget listRelatedNews() {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          news(),
-          news(),
-          news(),
+          for (int i = 0; i < newsList.length; i += 1)
+            Container(
+              padding: EdgeInsets.only(left: 0.w, right: 0.w),
+              child: news(context, newsList[i]),
+            ),
         ],
       )
     ],
   );
 }
 
-Widget news() {
+Widget news(BuildContext context, News news) {
   return GestureDetector(
-    onTap: () {},
+    onTap: () {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        "/newsDetail",
+        (route) => false,
+        arguments: {
+          "route": 1,
+          "id": news.id,
+        },
+      );
+    },
     child: Container(
       margin: EdgeInsets.only(left: 10.w, right: 10.w),
       child: Column(
@@ -532,26 +615,93 @@ Widget news() {
         children: [
           Container(
             margin: EdgeInsets.only(top: 5.h),
-            child: Text(
-              '15 phút trước',
-              maxLines: 2,
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 10.sp,
-                fontWeight: FontWeight.normal,
-                color: AppColors.primaryText,
-              ),
+            child: Row(
+              children: [
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/clock.svg",
+                      width: 12.w,
+                      height: 12.h,
+                      color: AppColors.primarySecondaryText,
+                    ),
+                    Container(
+                      width: 2.w,
+                    ),
+                    Text(
+                      handleDatetime(news.publishedAt),
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontFamily: AppFonts.Header3,
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.normal,
+                        color: AppColors.primarySecondaryText,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  width: 10.w,
+                ),
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/view.svg",
+                      width: 12.w,
+                      height: 12.h,
+                      color: AppColors.primarySecondaryText,
+                    ),
+                    Container(
+                      width: 2.w,
+                    ),
+                    Text(
+                      news.views.toString(),
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontFamily: AppFonts.Header3,
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.normal,
+                        color: AppColors.primarySecondaryText,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           Container(
             margin: EdgeInsets.only(top: 3.h),
-            height: 40.h,
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  "assets/icons/tag.svg",
+                  width: 12.w,
+                  height: 12.h,
+                  color: AppColors.primarySecondaryText,
+                ),
+                for (int i = 0; i < news.tags.length; i += 1)
+                  Container(
+                    margin: EdgeInsets.only(left: 2.w),
+                    child: Text(
+                      news.tags[i].name,
+                      style: TextStyle(
+                        fontFamily: AppFonts.Header3,
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.normal,
+                        color: Color.fromARGB(255, 5, 90, 188),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 3.h),
             child: Text(
-              'Trương Samuel - Từ học sinh tỉnh lẻ thành giáo sư đại học Mỹ ',
-              maxLines: 2,
+              news.title,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header2,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primaryText,
@@ -562,7 +712,7 @@ Widget news() {
             margin: EdgeInsets.only(top: 3.h),
             height: 33.h,
             child: Text(
-              'TP Vinh muốn thí điểm thu phí dừng, đỗ oto dưới lòng đường, vỉa hè một số tuyến chính theo khung giờ để giảm ùn tắt, đảm bảo trật tự an toàn giao thông',
+              news.summary,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -574,15 +724,45 @@ Widget news() {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 5.h),
-            height: 150.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(2.0)),
-              shape: BoxShape.rectangle,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('assets/images/test1.png'),
-              ),
+            margin: EdgeInsets.only(top: 10.h),
+            child: Stack(
+              children: [
+                Container(
+                  width: 340.w,
+                  height: 150.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.w),
+                    shape: BoxShape.rectangle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(news.thumbnail),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    height: 20.h,
+                    margin: EdgeInsets.only(left: 10.w, top: 5.h),
+                    padding: EdgeInsets.only(
+                        left: 10.w, right: 10.w, bottom: 2.h, top: 2.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.w),
+                      shape: BoxShape.rectangle,
+                      color: AppColors.primaryElement,
+                    ),
+                    child: Text(
+                      news.faculty.name,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: AppFonts.Header3,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Container(
@@ -591,7 +771,10 @@ Widget news() {
           Container(
             height: 1.h,
             color: AppColors.primarySecondaryElement,
-          )
+          ),
+          Container(
+            height: 10.h,
+          ),
         ],
       ),
     ),

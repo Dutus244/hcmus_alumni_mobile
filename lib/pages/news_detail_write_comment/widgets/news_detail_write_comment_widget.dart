@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../common/values/colors.dart';
+import '../../../common/values/fonts.dart';
 import '../../../global.dart';
+import '../../../model/news.dart';
 
 Widget buildTextField(String hintText, String textType, String iconName,
     void Function(String value)? func) {
@@ -55,8 +57,74 @@ Widget buildTextField(String hintText, String textType, String iconName,
       ));
 }
 
-Widget navigation(void Function()? func) {
-  String type = "inactive";
+Widget header(News news) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Container(
+        margin:
+        EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
+        child: Text(
+          news.title,
+          style: TextStyle(
+            fontFamily: AppFonts.Header2,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryText,
+          ),
+        ),
+      ),
+      Container(
+        margin:
+        EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
+        child: Text(
+          'Gửi bình luận',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 20.sp,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryText,
+          ),
+        ),
+      ),
+      Container(
+        margin: EdgeInsets.only(top: 10.h),
+        child: Row(
+          children: [
+            Container(
+              width: 35.w,
+              height: 35.h,
+              margin: EdgeInsets.only(left: 10.w, right: 10.w),
+              child: GestureDetector(
+                  onTap: () {
+                    // Xử lý khi người dùng tap vào hình ảnh
+                  },
+                  child: CircleAvatar(
+                    radius: 10,
+                    child: null,
+                    backgroundImage:
+                    AssetImage("assets/images/test1.png"),
+                  )),
+            ),
+            Text(
+              'Đặng Nguyễn Duy',
+              maxLines: 1,
+              style: TextStyle(
+                color: AppColors.primaryText,
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Roboto',
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+Widget navigation(void Function()? func1, String comment, void Function()? func2) {
   return Container(
     height: 45.h,
     child: Column(
@@ -67,7 +135,7 @@ Widget navigation(void Function()? func) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: func,
+                onTap: func1,
                 child: SvgPicture.asset(
                   "assets/icons/back.svg",
                   width: 25.w,
@@ -76,12 +144,12 @@ Widget navigation(void Function()? func) {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: func2,
                 child: Container(
                   width: 70.w,
                   height: 30.h,
                   decoration: BoxDecoration(
-                    color: type == "active"
+                    color: comment != ""
                         ? AppColors.primaryElement
                         : AppColors.primaryBackground,
                     borderRadius: BorderRadius.circular(15.w),
@@ -100,7 +168,7 @@ Widget navigation(void Function()? func) {
                               fontFamily: 'Roboto',
                               fontSize: 12.sp,
                               fontWeight: FontWeight.bold,
-                              color: type == "active"
+                              color: comment != ""
                                   ? AppColors.primaryBackground
                                   : Colors.black.withOpacity(0.3)),
                         ),
@@ -111,7 +179,7 @@ Widget navigation(void Function()? func) {
                           "assets/icons/send.svg",
                           width: 15.w,
                           height: 15.h,
-                          color: type == "active"
+                          color: comment != ""
                               ? AppColors.primaryBackground
                               : Colors.black.withOpacity(0.5),
                         ),

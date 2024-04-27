@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +24,7 @@ class NewsEventPage extends StatefulWidget {
 class _NewsEventPageState extends State<NewsEventPage> {
   late PageController pageController; // Không khởi tạo ở đây
   final _scrollController = ScrollController();
+  bool _isFetchingData = false;
 
   @override
   void initState() {
@@ -30,16 +33,19 @@ class _NewsEventPageState extends State<NewsEventPage> {
     pageController = PageController(initialPage: widget.page);
     context.read<NewsEventPageBloc>().add(PageEvent(widget.page));
     _scrollController.addListener(_onScroll);
-    NewsEventPageController(context: context).handleLoadNewsData(
-        BlocProvider.of<NewsEventPageBloc>(context).state.indexNews);
-    NewsEventPageController(context: context).handleLoadEventData(
-        BlocProvider.of<NewsEventPageBloc>(context).state.indexEvent);
+    NewsEventPageController(context: context).handleLoadNewsData(0);
+    NewsEventPageController(context: context).handleLoadEventData(0);
   }
 
   void _onScroll() {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
-    if (currentScroll >= (maxScroll * 0.9)) {
+    if (currentScroll >= (maxScroll * 0.9) && !_isFetchingData) {
+      _isFetchingData = true;
+      Timer(Duration(seconds: 1), () {
+        _isFetchingData = false;
+      });
+
       if (BlocProvider.of<NewsEventPageBloc>(context).state.page == 0) {
         NewsEventPageController(context: context).handleLoadNewsData(
             BlocProvider.of<NewsEventPageBloc>(context).state.indexNews);

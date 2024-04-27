@@ -1,9 +1,12 @@
 class Creator {
+  final String? id;
   final String fullName;
+  final String? avatarUrl;
 
-  Creator(
-    this.fullName,
-  );
+  Creator(this.id, this.fullName, this.avatarUrl);
 
-  Creator.fromJson(Map<String, dynamic> json) : fullName = json["fullName"];
+  Creator.fromJson(Map<String, dynamic> json)
+      : id = json["id"],
+        fullName = json["fullName"],
+        avatarUrl = json["avatarUrl"];
 }
