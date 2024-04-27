@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/bloc/sign_in_blocs.dart';
 
 import '../../../common/values/colors.dart';
+import '../../../common/values/fonts.dart';
 
 Widget buildTextField(String hintText, String textType, String iconName,
     void Function(String value)? func) {
@@ -51,7 +52,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
               ),
               style: TextStyle(
                 color: AppColors.primaryText,
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
               ),
@@ -74,7 +75,7 @@ Widget forgotPassword(void Function()? func) {
         child: Text(
           "Quên mật khẩu?",
           style: TextStyle(
-            fontFamily: 'Roboto',
+            fontFamily: AppFonts.Header2,
             color: AppColors.primaryText,
             decorationColor: AppColors.primaryText,
             decoration: TextDecoration.underline,
@@ -112,7 +113,7 @@ Widget rememberLogin(BuildContext context, void Function(bool value)? func) {
           child: Text(
             "Ghi nhớ đăng nhập",
             style: TextStyle(
-              fontFamily: 'Roboto',
+              fontFamily: AppFonts.Header2,
               color: Colors.black,
               decorationColor: Colors.black,
               decoration: TextDecoration.underline,
@@ -149,7 +150,7 @@ Widget buildLogInAndRegButton(
         child: Text(
           buttonName,
           style: TextStyle(
-              fontFamily: 'Roboto',
+              fontFamily: AppFonts.Header1,
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
               color: buttonType == "login"

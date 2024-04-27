@@ -12,6 +12,7 @@ import '../../common/values/colors.dart';
 import 'dart:io';
 
 import '../../common/values/constants.dart';
+import '../../common/values/fonts.dart';
 import '../../global.dart';
 
 class EmailVerification extends StatefulWidget {
@@ -69,7 +70,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                           child: Text(
                             "XÁC THỰC NGƯỜI DÙNG",
                             style: TextStyle(
-                              fontFamily: 'Roboto',
+                              fontFamily: AppFonts.Header0,
                               color: AppColors.primaryText,
                               fontWeight: FontWeight.bold,
                               fontSize: 17.sp,
@@ -83,7 +84,7 @@ class _EmailVerificationState extends State<EmailVerification> {
                             "Mã xác thực đã được gửi đến ${Global.storageService.getUserEmail()}",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontFamily: 'Roboto',
+                              fontFamily: AppFonts.Header3,
                               color: AppColors.primaryElement,
                               fontWeight: FontWeight.normal,
                               fontStyle: FontStyle.italic,

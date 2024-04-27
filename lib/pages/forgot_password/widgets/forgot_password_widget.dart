@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../common/values/colors.dart';
+import '../../../common/values/fonts.dart';
 
 Widget buildTextFieldEmail(String hintText, String textType, String iconName,
     void Function(String value)? func1, void Function()? func2) {
@@ -41,7 +42,7 @@ Widget buildTextFieldEmail(String hintText, String textType, String iconName,
                 counterText: '',
               ),
               style: TextStyle(
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header3,
                 color: AppColors.primaryText,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
@@ -68,7 +69,7 @@ Widget buildTextFieldEmail(String hintText, String textType, String iconName,
                   Text(
                     "Gửi lại",
                     style: TextStyle(
-                      fontFamily: 'Roboto',
+                      fontFamily: AppFonts.Header2,
                       color: AppColors.primaryText,
                       decorationColor: AppColors.primaryText,
                       decoration: TextDecoration.underline,
@@ -120,7 +121,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
                 counterText: '',
               ),
               style: TextStyle(
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header3,
                 color: AppColors.primaryText,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
@@ -158,7 +159,7 @@ Widget buildVerifyAndBackButton(
         child: Text(
           buttonName,
           style: TextStyle(
-              fontFamily: 'Roboto',
+              fontFamily: AppFonts.Header1,
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
               color: buttonType == "verify"

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/model/event.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_events.dart';
@@ -11,6 +12,7 @@ import 'package:intl/intl.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
 import '../../../model/news.dart';
 
@@ -98,19 +100,6 @@ Widget buildButtonChooseNewsOrEvent(
   );
 }
 
-Widget loadingWidget() {
-  return const Center(
-    child: Padding(
-      padding: EdgeInsets.all(4.0),
-      child: SizedBox(
-        height: 30,
-        width: 30,
-        child: CircularProgressIndicator(),
-      ),
-    ),
-  );
-}
-
 Widget listNews(BuildContext context, ScrollController _scrollController) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -137,7 +126,22 @@ Widget listNews(BuildContext context, ScrollController _scrollController) {
                     .state
                     .news
                     .isEmpty) {
-                  return Text("Không có tin tức nào");
+                  return Column(
+                    children: [
+                      buildButtonChooseNewsOrEvent(context, (value) {
+                        context.read<NewsEventPageBloc>().add(PageEvent(1));
+                      }),
+                      Center(child: Container(
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text('Không có dữ liệu', style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: AppFonts.Header2,
+                        ),),
+                      )),
+                    ],
+                  );
                 }
                 if (index >=
                     BlocProvider.of<NewsEventPageBloc>(context)
@@ -183,17 +187,15 @@ Widget listNews(BuildContext context, ScrollController _scrollController) {
 }
 
 Widget news(BuildContext context, News news) {
-  DateTime dateTime = DateTime.parse(news.publishedAt);
-  String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
-
   return GestureDetector(
     onTap: () {
+      // context.read<NewsEventPageBloc>().add(NewsEventPageResetEvent());
       Navigator.of(context).pushNamedAndRemoveUntil(
         "/newsDetail",
         (route) => false,
         arguments: {
           "route": 1,
-          "news": news,
+          "id": news.id,
         },
       );
     },
@@ -219,7 +221,7 @@ Widget news(BuildContext context, News news) {
                       width: 2.w,
                     ),
                     Text(
-                      formattedDate,
+                      handleDatetime(news.publishedAt),
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header3,
@@ -271,7 +273,7 @@ Widget news(BuildContext context, News news) {
                 ),
                 for (int i = 0; i < news.tags.length; i += 1)
                   Container(
-                    margin: EdgeInsets.only(left: 5.w),
+                    margin: EdgeInsets.only(left: 2.w),
                     child: Text(
                       news.tags[i].name,
                       style: TextStyle(
@@ -306,7 +308,7 @@ Widget news(BuildContext context, News news) {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header3,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.normal,
                 color: AppColors.primaryText,
@@ -398,7 +400,22 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                     .state
                     .event
                     .isEmpty) {
-                  return Text("Không có tin tức nào");
+                  return Column(
+                    children: [
+                      buildButtonChooseNewsOrEvent(context, (value) {
+                        context.read<NewsEventPageBloc>().add(PageEvent(0));
+                      }),
+                      Center(child: Container(
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text('Không có dữ liệu', style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: AppFonts.Header2,
+                        ),),
+                      )),
+                    ],
+                  );
                 }
                 if (index >=
                     BlocProvider.of<NewsEventPageBloc>(context)
@@ -444,20 +461,13 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
 }
 
 Widget event(BuildContext context, Event event) {
-  DateTime dateTimePublishedAt = DateTime.parse(event.publishedAt);
-  String formattedDatePublishedAt =
-      DateFormat('dd/MM/yyyy HH:mm').format(dateTimePublishedAt);
-
-  DateTime dateTimeOrganizationTime = DateTime.parse(event.organizationTime);
-  String formattedDateOrganizationTime =
-      DateFormat('dd/MM/yyyy HH:mm').format(dateTimeOrganizationTime);
-
   return GestureDetector(
     onTap: () {
+      // context.read<NewsEventPageBloc>().add(NewsEventPageResetEvent());
       Navigator.of(context).pushNamedAndRemoveUntil(
         "/eventDetail",
         (route) => false,
-        arguments: {"route": 1},
+        arguments: {"route": 1, "event": event},
       );
     },
     child: Container(
@@ -482,7 +492,7 @@ Widget event(BuildContext context, Event event) {
                       width: 2.w,
                     ),
                     Text(
-                      formattedDatePublishedAt,
+                      handleDatetime(event.publishedAt),
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header3,
@@ -560,7 +570,7 @@ Widget event(BuildContext context, Event event) {
                 ),
                 for (int i = 0; i < event.tags.length; i += 1)
                   Container(
-                    margin: EdgeInsets.only(left: 5.w),
+                    margin: EdgeInsets.only(left: 2.w),
                     child: Text(
                       event.tags[i].name,
                       style: TextStyle(
@@ -658,7 +668,7 @@ Widget event(BuildContext context, Event event) {
                     width: 5.w,
                   ),
                   Text(
-                    formattedDateOrganizationTime,
+                    handleDatetime(event.organizationTime),
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: 'Roboto',

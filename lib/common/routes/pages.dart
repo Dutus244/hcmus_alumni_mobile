@@ -15,12 +15,15 @@ import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification.
 import 'package:hcmus_alumni_mobile/pages/event_detail/event_detail.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/bloc/forgot_password_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/forgot_password.dart';
+import 'package:hcmus_alumni_mobile/pages/hof_detail/bloc/hof_detail_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/bloc/hof_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/hof_page.dart';
 import 'package:hcmus_alumni_mobile/pages/home_page/bloc/home_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/home_page/home_page.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/news_detail.dart';
+import 'package:hcmus_alumni_mobile/pages/news_detail_write_children_comment/news_detail_write_children_comment.dart';
+import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/bloc/news_detail_write_comment_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/news_detail_write_comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/news_event_page.dart';
@@ -31,6 +34,8 @@ import 'package:hcmus_alumni_mobile/pages/welcome/bloc/welcome_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/welcome/welcome.dart';
 
 import '../../pages/event_detail/bloc/event_detail_blocs.dart';
+import '../../pages/hof_detail/hof_detail.dart';
+import '../../pages/news_detail_write_children_comment/bloc/news_detail_write_children_comment_blocs.dart';
 import '../../pages/register/bloc/register_blocs.dart';
 import '../../pages/register/register.dart';
 import '../../pages/sign_in/bloc/sign_in_blocs.dart';
@@ -134,15 +139,28 @@ class AppPages {
       PageEntity(
         route: AppRoutes.NEWS_DETAIL_WRITE_COMMENT,
         page: const NewsDetailWriteComment(),
-        // bloc: BlocProvider(
-        //   create: (_) => NewsDetailBloc(),
-        // )
+        bloc: BlocProvider(
+          create: (_) => NewsDetailWriteCommentBloc(),
+        )
+      ),
+      PageEntity(
+          route: AppRoutes.NEWS_DETAIL_WRITE_CHILDREN_COMMENT,
+          page: const NewsDetailWriteChildrenComment(),
+          bloc: BlocProvider(
+            create: (_) => NewsDetailWriteChildrenCommentBloc(),
+          )
       ),
       PageEntity(
           route: AppRoutes.EVENT_DETAIL,
           page: const EventDetail(),
           bloc: BlocProvider(
             create: (_) => EventDetailBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.HOF_DETAIL,
+          page: const HofDetail(),
+          bloc: BlocProvider(
+            create: (_) => HofDetailBloc(),
           )),
     ];
   }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../common/values/colors.dart';
+import '../../../common/values/fonts.dart';
 
 Widget buildTextField(String hintText, String textType, String iconName,
     void Function(String value)? func) {
@@ -47,7 +48,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
                 counterText: '',
               ),
               style: TextStyle(
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header3,
                 color: AppColors.primaryText,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
@@ -85,7 +86,7 @@ Widget buildLogInAndRegButton(
         child: Text(
           buttonName,
           style: TextStyle(
-              fontFamily: 'Roboto',
+              fontFamily: AppFonts.Header1,
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
               color: buttonType == "change"

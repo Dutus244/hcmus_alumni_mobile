@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/change_password_forgot/bloc/change_password_forgot_events.dart';
 
 import '../../common/values/colors.dart';
+import '../../common/values/fonts.dart';
 import 'bloc/change_password_forgot_blocs.dart';
 import 'bloc/change_password_forgot_states.dart';
 import 'change_password_forgot_controller.dart';
@@ -67,7 +68,7 @@ class _ChangePasswordForgotState extends State<ChangePasswordForgot> {
                           child: Text(
                             "THAY ĐỔI MẬT KHẨU",
                             style: TextStyle(
-                              fontFamily: 'Roboto',
+                              fontFamily: AppFonts.Header0,
                               color: AppColors.primaryText,
                               fontWeight: FontWeight.bold,
                               fontSize: 17.sp,

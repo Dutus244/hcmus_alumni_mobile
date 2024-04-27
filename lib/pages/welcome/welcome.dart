@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../common/values/colors.dart';
+import '../../common/values/fonts.dart';
 import 'bloc/welcome_blocs.dart';
 import 'bloc/welcome_events.dart';
 import 'bloc/welcome_states.dart';
@@ -100,7 +101,7 @@ class _WelcomeState extends State<Welcome> {
           child: Text(
             "${title}",
             style: TextStyle(
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header0,
                 color: AppColors.primaryText,
                 fontSize: 24.sp,
                 fontWeight: FontWeight.bold),
@@ -113,7 +114,7 @@ class _WelcomeState extends State<Welcome> {
             "${subTitle}",
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header2,
                 color: AppColors.primaryText,
                 fontSize: 14.sp,
                 fontWeight: FontWeight.normal),
@@ -145,7 +146,7 @@ class _WelcomeState extends State<Welcome> {
               child: Text(
                 "${buttonName}",
                 style: TextStyle(
-                    fontFamily: 'Roboto',
+                    fontFamily: AppFonts.Header1,
                     color: Colors.white,
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold),

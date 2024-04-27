@@ -3,10 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hcmus_alumni_mobile/model/hall_of_fame.dart';
+import 'package:hcmus_alumni_mobile/pages/hof_page/bloc/hof_page_states.dart';
 
 import '../../../common/values/colors.dart';
+import '../../../common/values/fonts.dart';
+import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
 import '../bloc/hof_page_blocs.dart';
+import '../bloc/hof_page_events.dart';
+import '../hof_page_controller.dart';
 
 Widget buildTextField(String hintText, String textType, String iconName,
     void Function(String value)? func1, void Function()? func2) {
@@ -46,7 +52,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
                 counterText: '',
               ),
               style: TextStyle(
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header3,
                 color: AppColors.primaryText,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
@@ -110,7 +116,7 @@ Widget dropdownButtonFaculty(List<String> faculties, BuildContext context,
           child: Text(
             faculties[index],
             style: TextStyle(
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header2,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primaryElement),
@@ -129,7 +135,7 @@ Widget dropdownButtonFaculty(List<String> faculties, BuildContext context,
         child: Text(
           'Khoa',
           style: TextStyle(
-              fontFamily: 'Roboto',
+              fontFamily: AppFonts.Header2,
               fontSize: 12.sp,
               fontWeight: FontWeight.bold,
               color: AppColors.primaryElement),
@@ -139,7 +145,7 @@ Widget dropdownButtonFaculty(List<String> faculties, BuildContext context,
   );
 
   return Container(
-    width: 170.w,
+    width: 200.w,
     height: 40.h,
     margin: EdgeInsets.only(left: 10.w),
     decoration: BoxDecoration(
@@ -177,7 +183,7 @@ Widget dropdownButtonGraduationYear(List<String> graduationYear,
           child: Text(
             graduationYear[index],
             style: TextStyle(
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header2,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primaryElement),
@@ -196,7 +202,7 @@ Widget dropdownButtonGraduationYear(List<String> graduationYear,
         child: Text(
           'Khoá',
           style: TextStyle(
-              fontFamily: 'Roboto',
+              fontFamily: AppFonts.Header2,
               fontSize: 12.sp,
               fontWeight: FontWeight.bold,
               color: AppColors.primaryElement),
@@ -206,7 +212,7 @@ Widget dropdownButtonGraduationYear(List<String> graduationYear,
   );
 
   return Container(
-    width: 100.w,
+    width: 70.w,
     height: 40.h,
     margin: EdgeInsets.only(left: 10.w),
     decoration: BoxDecoration(
@@ -219,10 +225,9 @@ Widget dropdownButtonGraduationYear(List<String> graduationYear,
     child: Center(
       child: DropdownButton<String>(
           items: items,
-          value:
-              BlocProvider.of<HofPageBloc>(context).state.graduationYear == ""
-                  ? null
-                  : BlocProvider.of<HofPageBloc>(context).state.graduationYear,
+          value: BlocProvider.of<HofPageBloc>(context).state.beginningYear == ""
+              ? null
+              : BlocProvider.of<HofPageBloc>(context).state.beginningYear,
           onChanged: (value) {
             if (value != null) {
               func!(value);
@@ -232,22 +237,218 @@ Widget dropdownButtonGraduationYear(List<String> graduationYear,
   );
 }
 
-Widget listHof() {
-  return Container(
-    child: Column(
-      children: [
-        hof(),
-        hof(),
-        hof(),
-        hof(),
-      ],
-    ),
+List<String> listYear() {
+  List<String> year = [];
+  for (int i = 2000; i < 2025; i += 1) {
+    year.add(i.toString());
+  }
+  return year;
+}
+
+Widget listHof(BuildContext context, ScrollController _scrollController) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Expanded(
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount:
+              BlocProvider.of<HofPageBloc>(context).state.hallOfFame.length + 1,
+          itemBuilder: (BuildContext context, int index) {
+            switch (BlocProvider.of<HofPageBloc>(context).state.statusHof) {
+              case Status.loading:
+                return Column(
+                  children: [
+                    Center(
+                        child: buildTextField(
+                            'Tìm gương thành công', 'search', 'search',
+                            (value) {
+                      context.read<HofPageBloc>().add(NameEvent(value));
+                    }, () {
+                      HofPageController(context: context).handleSearchHof();
+                    })),
+                    Row(
+                      children: [
+                        buttonClearFilter(() {
+                          context.read<HofPageBloc>().add(ClearFilterEvent());
+                        }),
+                        dropdownButtonFaculty([
+                          'Công nghệ thông tin',
+                          'Vật lý – Vật lý kỹ thuật',
+                          'Địa chất',
+                          'Toán – Tin học',
+                          'Điện tử - Viễn thông',
+                          'Khoa học & Công nghệ Vật liệu',
+                          'Hóa học',
+                          'Sinh học – Công nghệ Sinh học',
+                          'Môi trường',
+                        ], context, (value) {
+                          context.read<HofPageBloc>().add(FacultyEvent(value));
+                        }),
+                        dropdownButtonGraduationYear(listYear(), context,
+                            (value) {
+                          context
+                              .read<HofPageBloc>()
+                              .add(BeginningYearEvent(value));
+                        })
+                      ],
+                    ),
+                    Container(
+                      height: 10.h,
+                    ),
+                    loadingWidget(),
+                  ],
+                );
+              case Status.success:
+                if (BlocProvider.of<HofPageBloc>(context)
+                    .state
+                    .hallOfFame
+                    .isEmpty) {
+                  return Column(
+                    children: [
+                      Center(
+                          child: buildTextField(
+                              'Tìm gương thành công', 'search', 'search',
+                                  (value) {
+                                context.read<HofPageBloc>().add(NameEvent(value));
+                              }, () {
+                            HofPageController(context: context).handleSearchHof();
+                          })),
+                      Row(
+                        children: [
+                          buttonClearFilter(() {
+                            context.read<HofPageBloc>().add(ClearFilterEvent());
+                          }),
+                          dropdownButtonFaculty([
+                            'Công nghệ thông tin',
+                            'Vật lý – Vật lý kỹ thuật',
+                            'Địa chất',
+                            'Toán – Tin học',
+                            'Điện tử - Viễn thông',
+                            'Khoa học & Công nghệ Vật liệu',
+                            'Hóa học',
+                            'Sinh học – Công nghệ Sinh học',
+                            'Môi trường',
+                          ], context, (value) {
+                            context.read<HofPageBloc>().add(FacultyEvent(value));
+                          }),
+                          dropdownButtonGraduationYear(listYear(), context,
+                                  (value) {
+                                context
+                                    .read<HofPageBloc>()
+                                    .add(BeginningYearEvent(value));
+                              })
+                        ],
+                      ),
+                      Container(
+                        height: 10.h,
+                      ),
+                      Center(child: Container(
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text('Không có dữ liệu', style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: AppFonts.Header2,
+                        ),),
+                      )),
+                    ],
+                  );
+                }
+                if (index >=
+                    BlocProvider.of<HofPageBloc>(context)
+                        .state
+                        .hallOfFame
+                        .length) {
+                  if (BlocProvider.of<HofPageBloc>(context)
+                      .state
+                      .hasReachedMaxHof) {
+                    return SizedBox();
+                  }
+                  // Return something indicating end of list, if needed
+                  return loadingWidget();
+                } else {
+                  if (index == 0) {
+                    // Create a custom widget to combine button and news item
+                    return Column(
+                      children: [
+                        Center(
+                            child: buildTextField(
+                                'Tìm gương thành công', 'search', 'search',
+                                (value) {
+                          context.read<HofPageBloc>().add(NameEvent(value));
+                        }, () {
+                          HofPageController(context: context)
+                              .handleSearchHof();
+                        })),
+                        Row(
+                          children: [
+                            buttonClearFilter(() {
+                              context
+                                  .read<HofPageBloc>()
+                                  .add(ClearFilterEvent());
+                            }),
+                            dropdownButtonFaculty([
+                              'Công nghệ thông tin',
+                              'Vật lý – Vật lý kỹ thuật',
+                              'Địa chất',
+                              'Toán – Tin học',
+                              'Điện tử - Viễn thông',
+                              'Khoa học & Công nghệ Vật liệu',
+                              'Hóa học',
+                              'Sinh học – Công nghệ Sinh học',
+                              'Môi trường',
+                            ], context, (value) {
+                              context
+                                  .read<HofPageBloc>()
+                                  .add(FacultyEvent(value));
+                            }),
+                            dropdownButtonGraduationYear(
+                                listYear(), context, (value) {
+                              context
+                                  .read<HofPageBloc>()
+                                  .add(BeginningYearEvent(value));
+                            })
+                          ],
+                        ),
+                        Container(
+                          height: 10.h,
+                        ),
+                        hof(
+                            context,
+                            BlocProvider.of<HofPageBloc>(context)
+                                .state
+                                .hallOfFame[index]),
+                      ],
+                    );
+                  } else {
+                    return hof(
+                        context,
+                        BlocProvider.of<HofPageBloc>(context)
+                            .state
+                            .hallOfFame[index]);
+                  }
+                }
+            }
+          },
+        ),
+      ),
+    ],
   );
 }
 
-Widget hof() {
+Widget hof(BuildContext context, HallOfFame hallOfFame) {
   return GestureDetector(
-    onTap: () {},
+    onTap: () {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        "/hofDetail",
+            (route) => false,
+        arguments: {
+          "route": 1,
+          "id": hallOfFame.id,
+        },
+      );
+    },
     child: Container(
       margin: EdgeInsets.only(left: 10.w, right: 10.w),
       child: Column(
@@ -255,27 +456,56 @@ Widget hof() {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 5.h),
-            height: 150.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(2.0)),
-              shape: BoxShape.rectangle,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('assets/images/test1.png'),
-              ),
+            margin: EdgeInsets.only(top: 10.h),
+            child: Stack(
+              children: [
+                Container(
+                  width: 340.w,
+                  height: 150.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.w),
+                    shape: BoxShape.rectangle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(hallOfFame.thumbnail),
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    height: 20.h,
+                    margin: EdgeInsets.only(left: 10.w, top: 5.h),
+                    padding: EdgeInsets.only(
+                        left: 10.w, right: 10.w, bottom: 2.h, top: 2.h),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.w),
+                      shape: BoxShape.rectangle,
+                      color: AppColors.primaryElement,
+                    ),
+                    child: Text(
+                      hallOfFame.faculty.name,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: AppFonts.Header3,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 margin: EdgeInsets.only(top: 3.h),
                 child: Text(
-                  'Trương Samuel',
+                  hallOfFame.title,
                   maxLines: 1,
                   style: TextStyle(
-                    fontFamily: 'Roboto',
+                    fontFamily: AppFonts.Header2,
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryText,
@@ -285,18 +515,17 @@ Widget hof() {
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 margin: EdgeInsets.only(top: 3.h),
                 child: Text(
-                  'Khoá 2024 - Khoa Công nghệ Thông tin',
+                  'Khoá ${hallOfFame.beginningYear}',
                   maxLines: 1,
                   style: TextStyle(
-                    fontFamily: 'Roboto',
+                    fontFamily: AppFonts.Header3,
                     fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryText,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primarySecondaryText,
                   ),
                 ),
               ),
@@ -305,11 +534,11 @@ Widget hof() {
           Container(
             margin: EdgeInsets.only(top: 3.h),
             child: Text(
-              'TP Vinh muốn thí điểm thu phí dừng, đỗ oto dưới lòng đường, vỉa hè một số tuyến chính theo khung giờ để giảm ùn tắt, đảm bảo trật tự an toàn giao thông',
-              maxLines: 2,
+              hallOfFame.summary,
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header3,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.normal,
                 color: AppColors.primaryText,

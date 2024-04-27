@@ -21,102 +21,104 @@ class NewsEventPageController {
   const NewsEventPageController({required this.context});
 
   Future<void> handleLoadNewsData(int page) async {
-    if (BlocProvider.of<NewsEventPageBloc>(context).state.hasReachedMaxNews) {
-      return;
+    if (page == 0) {
+      context.read<NewsEventPageBloc>().add(HasReachedMaxNewsEvent(false));
+      context.read<NewsEventPageBloc>().add(IndexNewsEvent(1));
+    } else {
+      if (BlocProvider.of<NewsEventPageBloc>(context).state.hasReachedMaxNews) {
+        return;
+      }
+      context.read<NewsEventPageBloc>().add(IndexNewsEvent(
+          BlocProvider.of<NewsEventPageBloc>(context).state.indexNews + 1));
     }
-    context.read<NewsEventPageBloc>().add(IndexNewsEvent(
-        BlocProvider.of<NewsEventPageBloc>(context).state.indexNews + 1));
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/news';
     var pageSize = 5;
-
     var token = Global.storageService.getUserAuthToken();
 
     var headers = <String, String>{
-      'Authorization': 'Bearer $token', // Include bearer token in the headers
+      'Authorization': 'Bearer $token',
     };
-    await Future.delayed(Duration(seconds: 3));
     try {
       var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
-
-      // Specify UTF-8 encoding for decoding response
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
-        // Convert the JSON string to a Map
         var jsonMap = json.decode(responseBody);
-
-        // Pass the Map to the fromJson method
         var newsResponse = NewsResponse.fromJson(jsonMap);
 
         if (newsResponse.news.isEmpty) {
           context.read<NewsEventPageBloc>().add(HasReachedMaxNewsEvent(true));
+          context
+              .read<NewsEventPageBloc>()
+              .add(StatusEventEvent(Status.success));
           return;
         }
-        List<News> currentList =
-            BlocProvider.of<NewsEventPageBloc>(context).state.news;
 
-        // Create a new list by adding newsResponse.news to the existing list
-        List<News> updatedNewsList = List.of(currentList)
-          ..addAll(newsResponse.news);
-
-        context.read<NewsEventPageBloc>().add(NewsEvent(updatedNewsList));
+        if (page == 0) {
+          context.read<NewsEventPageBloc>().add(NewsEvent(newsResponse.news));
+        } else {
+          List<News> currentList =
+              BlocProvider.of<NewsEventPageBloc>(context).state.news;
+          List<News> updatedNewsList = List.of(currentList)
+            ..addAll(newsResponse.news);
+          context.read<NewsEventPageBloc>().add(NewsEvent(updatedNewsList));
+        }
         context.read<NewsEventPageBloc>().add(StatusNewsEvent(Status.success));
-      } else {
-        // Handle other status codes if needed
-      }
-    } catch (error, stacktrace) {
-      // Handle errors
-    }
+      } else {}
+    } catch (error, stacktrace) {}
   }
 
   Future<void> handleLoadEventData(int page) async {
-    if (BlocProvider.of<NewsEventPageBloc>(context).state.hasReachedMaxEvent) {
-      return;
+    if (page == 0) {
+      context.read<NewsEventPageBloc>().add(HasReachedMaxEventEvent(false));
+      context.read<NewsEventPageBloc>().add(IndexEventEvent(1));
+    } else {
+      if (BlocProvider.of<NewsEventPageBloc>(context)
+          .state
+          .hasReachedMaxEvent) {
+        return;
+      }
+      context.read<NewsEventPageBloc>().add(IndexEventEvent(
+          BlocProvider.of<NewsEventPageBloc>(context).state.indexEvent + 1));
     }
-    context.read<NewsEventPageBloc>().add(IndexEventEvent(
-        BlocProvider.of<NewsEventPageBloc>(context).state.indexEvent + 1));
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/events';
     var pageSize = 5;
-
     var token = Global.storageService.getUserAuthToken();
 
     var headers = <String, String>{
-      'Authorization': 'Bearer $token', // Include bearer token in the headers
+      'Authorization': 'Bearer $token',
     };
-    await Future.delayed(Duration(seconds: 3));
     try {
       var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
-
-      // Specify UTF-8 encoding for decoding response
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
-        // Convert the JSON string to a Map
         var jsonMap = json.decode(responseBody);
-
-        // Pass the Map to the fromJson method
         var eventResponse = EventResponse.fromJson(jsonMap);
 
         if (eventResponse.event.isEmpty) {
           context.read<NewsEventPageBloc>().add(HasReachedMaxEventEvent(true));
+          context
+              .read<NewsEventPageBloc>()
+              .add(StatusEventEvent(Status.success));
           return;
         }
-        List<Event> currentList =
-            BlocProvider.of<NewsEventPageBloc>(context).state.event;
 
-        // Create a new list by adding newsResponse.news to the existing list
-        List<Event> updatedEventList = List.of(currentList)
-          ..addAll(eventResponse.event);
-
-        context.read<NewsEventPageBloc>().add(EventEvent(updatedEventList));
+        if (page == 0) {
+          context
+              .read<NewsEventPageBloc>()
+              .add(EventEvent(eventResponse.event));
+        } else {
+          List<Event> currentList =
+              BlocProvider.of<NewsEventPageBloc>(context).state.event;
+          List<Event> updatedEventList = List.of(currentList)
+            ..addAll(eventResponse.event);
+          context.read<NewsEventPageBloc>().add(EventEvent(updatedEventList));
+        }
         context.read<NewsEventPageBloc>().add(StatusEventEvent(Status.success));
-      } else {
-        // Handle other status codes if needed
-      }
-    } catch (error, stacktrace) {
-      // Handle errors
-    }
+      } else {}
+    } catch (error, stacktrace) {}
   }
 }

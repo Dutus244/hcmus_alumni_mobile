@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/common/values/colors.dart';
 import 'package:hcmus_alumni_mobile/common/values/fonts.dart';
 import 'package:hcmus_alumni_mobile/model/event.dart';
 import 'package:intl/intl.dart';
 
 import '../../../global.dart';
+import '../../../model/hall_of_fame.dart';
 import '../../../model/news.dart';
 
 Widget listEvent(BuildContext context, List<Event> eventList) {
@@ -76,9 +78,6 @@ Widget listEvent(BuildContext context, List<Event> eventList) {
 }
 
 Widget event(BuildContext context, Event event) {
-  DateTime dateTime = DateTime.parse(event.organizationTime);
-  String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
-
   return GestureDetector(
     onTap: () {
       Navigator.of(context).pushNamedAndRemoveUntil(
@@ -86,7 +85,7 @@ Widget event(BuildContext context, Event event) {
         (route) => false,
         arguments: {
           "route": 0,
-          "news": event,
+          "event": event,
         },
       );
     },
@@ -208,7 +207,7 @@ Widget event(BuildContext context, Event event) {
                   width: 5.w,
                 ),
                 Text(
-                  formattedDate,
+                  handleDatetime(event.organizationTime),
                   maxLines: 1,
                   style: TextStyle(
                     color: Colors.white,
@@ -299,9 +298,6 @@ Widget listNews(BuildContext context, List<News> newsList) {
 }
 
 Widget news(BuildContext context, News news) {
-  DateTime dateTime = DateTime.parse(news.publishedAt);
-  String formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
-
   return GestureDetector(
     onTap: () {
       Navigator.of(context).pushNamedAndRemoveUntil(
@@ -309,7 +305,7 @@ Widget news(BuildContext context, News news) {
         (route) => false,
         arguments: {
           "route": 0,
-          "news": news,
+          "id": news.id,
         },
       );
     },
@@ -377,7 +373,7 @@ Widget news(BuildContext context, News news) {
           Align(
             alignment: Alignment.topLeft, // Align to top left
             child: Text(
-              formattedDate,
+              handleDatetime(news.publishedAt),
               style: TextStyle(
                 color: AppColors.primarySecondaryText,
                 fontSize: 10.sp,
@@ -395,7 +391,7 @@ Widget news(BuildContext context, News news) {
   );
 }
 
-Widget listHof(BuildContext context) {
+Widget listHof(BuildContext context, List<HallOfFame> hallOfFameList) {
   return Container(
     padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
     child: Column(
@@ -446,22 +442,11 @@ Widget listHof(BuildContext context) {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              Container(
-                padding: EdgeInsets.only(left: 10.w, right: 5.w),
-                child: hof(),
-              ),
-              Container(
-                padding: EdgeInsets.only(right: 5.w),
-                child: hof(),
-              ),
-              Container(
-                padding: EdgeInsets.only(right: 5.w),
-                child: hof(),
-              ),
-              Container(
-                padding: EdgeInsets.only(right: 5.w),
-                child: hof(),
-              ),
+              for (int i = 0; i < hallOfFameList.length; i += 1)
+                Container(
+                  padding: EdgeInsets.only(left: 10.w, right: 5.w),
+                  child: hof(context, hallOfFameList[i]),
+                ),
             ],
           ),
         )
@@ -470,88 +455,100 @@ Widget listHof(BuildContext context) {
   );
 }
 
-Widget hof() {
-  return Container(
-    margin: EdgeInsets.only(top: 0.h, left: 2.w, right: 2.w),
-    width: 160.w,
-    child: Column(
-      children: [
-        Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.h),
-                // Adjust as desired
-                image: DecorationImage(
-                  image: NetworkImage(
-                      "https://alumni.hcmus.edu.vn/wp-content/uploads/2023/09/under30_2022_Le-Yen-Thanh-e1698137690375.jpg"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              width: 160.w,
-              height: 80.h,
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Container(
-                height: 15.h,
-                margin: EdgeInsets.only(left: 5.w, top: 5.h),
-                padding: EdgeInsets.only(
-                    left: 2.w, right: 2.w, bottom: 2.h, top: 2.h),
+Widget hof(BuildContext context, HallOfFame hallOfFame) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        "/hofDetail",
+            (route) => false,
+        arguments: {
+          "route": 0,
+          "id": hallOfFame.id,
+        },
+      );
+    },
+    child: Container(
+      margin: EdgeInsets.only(top: 0.h, left: 2.w, right: 2.w),
+      width: 160.w,
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.w),
-                  shape: BoxShape.rectangle,
-                  color: AppColors.primaryElement,
+                  borderRadius: BorderRadius.circular(10.h),
+                  // Adjust as desired
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        hallOfFame.thumbnail),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                child: Text(
-                  'Sinh học – Công nghệ Sinh học',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 9.sp,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: AppFonts.Header3,
+                width: 160.w,
+                height: 80.h,
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  height: 15.h,
+                  margin: EdgeInsets.only(left: 5.w, top: 5.h),
+                  padding: EdgeInsets.only(
+                      left: 2.w, right: 2.w, bottom: 2.h, top: 2.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.w),
+                    shape: BoxShape.rectangle,
+                    color: AppColors.primaryElement,
+                  ),
+                  child: Text(
+                    hallOfFame.faculty.name,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 9.sp,
+                      fontWeight: FontWeight.normal,
+                      fontFamily: AppFonts.Header3,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-        Container(
-          height: 5.h,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start, // Center the row content
-          children: [
-            Text(
-              'Lê Yến Thanh',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w600,
-                fontFamily: AppFonts.Header2,
+            ],
+          ),
+          Container(
+            height: 5.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start, // Center the row content
+            children: [
+              Text(
+                hallOfFame.title,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: AppFonts.Header2,
+                ),
               ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start, // Center the row content
-          children: [
-            Text(
-              'Khoá 2014',
-              maxLines: 2,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 10.sp,
-                fontWeight: FontWeight.normal,
-                fontFamily: AppFonts.Header3,
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start, // Center the row content
+            children: [
+              Text(
+                'Khoá ${hallOfFame.beginningYear}',
+                maxLines: 2,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.normal,
+                  fontFamily: AppFonts.Header3,
+                ),
               ),
-            ),
-          ],
-        ),
-        Container(
-          height: 5.h,
-        )
-      ],
+            ],
+          ),
+          Container(
+            height: 5.h,
+          )
+        ],
+      ),
     ),
   );
 }

@@ -7,6 +7,7 @@ import 'package:hcmus_alumni_mobile/pages/forgot_password/forgot_password_contro
 import 'package:hcmus_alumni_mobile/pages/forgot_password/widgets/forgot_password_widget.dart';
 
 import '../../common/values/colors.dart';
+import '../../common/values/fonts.dart';
 import 'bloc/forgot_password_blocs.dart';
 import 'bloc/forgot_password_states.dart';
 import 'dart:io';
@@ -64,7 +65,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                       child: Text(
                                         "QUÊN MẬT KHẨU",
                                         style: TextStyle(
-                                          fontFamily: 'Roboto',
+                                          fontFamily: AppFonts.Header0,
                                           color: AppColors.primaryText,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 17.sp,
