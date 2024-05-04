@@ -345,7 +345,9 @@ Widget listComment(
           ],
         ),
         if (news.childrenCommentNumber > 5 &&
-            !BlocProvider.of<NewsDetailBloc>(context).state.hasReachedMaxComment)
+            !BlocProvider.of<NewsDetailBloc>(context)
+                .state
+                .hasReachedMaxComment)
           GestureDetector(
             onTap: () {
               NewsDetailController(context: context).handleGetComment(news.id,

@@ -9,9 +9,6 @@ import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification_
 import 'package:hcmus_alumni_mobile/pages/email_verification/widgets/email_verification_widget.dart';
 
 import '../../common/values/colors.dart';
-import 'dart:io';
-
-import '../../common/values/constants.dart';
 import '../../common/values/fonts.dart';
 import '../../global.dart';
 
@@ -27,8 +24,7 @@ class _EmailVerificationState extends State<EmailVerification> {
   void initState() {
     super.initState();
     context.read<EmailVerificationBloc>().add(EmailVerificationResetEvent());
-    EmailVerificationController(context: context)
-        .handleResendCode();
+    EmailVerificationController(context: context).handleResendCode();
   }
 
   @override

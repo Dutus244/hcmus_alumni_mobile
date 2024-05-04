@@ -31,7 +31,7 @@ Widget buildCreatePostButton() {
                   'Bạn đang muốn được tư vấn điều gì?',
                   style: TextStyle(
                     color: Colors.black,
-                    fontFamily: 'Roboto',
+                    fontFamily: AppFonts.Header2,
                     fontWeight: FontWeight.normal,
                     fontSize: 12.sp,
                   ),

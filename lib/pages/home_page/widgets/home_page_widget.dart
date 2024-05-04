@@ -85,7 +85,7 @@ Widget event(BuildContext context, Event event) {
         (route) => false,
         arguments: {
           "route": 0,
-          "event": event,
+          "id": event.id,
         },
       );
     },
@@ -460,7 +460,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
     onTap: () {
       Navigator.of(context).pushNamedAndRemoveUntil(
         "/hofDetail",
-            (route) => false,
+        (route) => false,
         arguments: {
           "route": 0,
           "id": hallOfFame.id,
@@ -479,8 +479,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
                   borderRadius: BorderRadius.circular(10.h),
                   // Adjust as desired
                   image: DecorationImage(
-                    image: NetworkImage(
-                        hallOfFame.thumbnail),
+                    image: NetworkImage(hallOfFame.thumbnail),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -516,7 +515,8 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
             height: 5.h,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start, // Center the row content
+            mainAxisAlignment: MainAxisAlignment.start,
+            // Center the row content
             children: [
               Text(
                 hallOfFame.title,
@@ -530,7 +530,8 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
             ],
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.start, // Center the row content
+            mainAxisAlignment: MainAxisAlignment.start,
+            // Center the row content
             children: [
               Text(
                 'Khoá ${hallOfFame.beginningYear}',

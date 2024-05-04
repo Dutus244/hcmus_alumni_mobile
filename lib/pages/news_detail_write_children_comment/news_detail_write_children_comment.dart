@@ -16,14 +16,18 @@ class NewsDetailWriteChildrenComment extends StatefulWidget {
   const NewsDetailWriteChildrenComment({super.key});
 
   @override
-  State<NewsDetailWriteChildrenComment> createState() => _NewsDetailWriteChildrenCommentState();
+  State<NewsDetailWriteChildrenComment> createState() =>
+      _NewsDetailWriteChildrenCommentState();
 }
 
-class _NewsDetailWriteChildrenCommentState extends State<NewsDetailWriteChildrenComment> {
+class _NewsDetailWriteChildrenCommentState
+    extends State<NewsDetailWriteChildrenComment> {
   @override
   void initState() {
     super.initState();
-    context.read<NewsDetailWriteChildrenCommentBloc>().add(NewsDetailWriteChildrenCommentResetEvent());
+    context
+        .read<NewsDetailWriteChildrenCommentBloc>()
+        .add(NewsDetailWriteChildrenCommentResetEvent());
   }
 
   late News news;
@@ -32,7 +36,7 @@ class _NewsDetailWriteChildrenCommentState extends State<NewsDetailWriteChildren
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
-    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       news = args["news"];
       comment = args["comment"];
@@ -43,7 +47,7 @@ class _NewsDetailWriteChildrenCommentState extends State<NewsDetailWriteChildren
         onPopInvoked: (_) async {
           Navigator.of(context).pushNamedAndRemoveUntil(
             "/newsDetail",
-                (route) => false,
+            (route) => false,
             arguments: {
               "route": 1,
               "id": news.id,
@@ -65,19 +69,19 @@ class _NewsDetailWriteChildrenCommentState extends State<NewsDetailWriteChildren
                     children: [
                       header(news, comment),
                       buildTextField('Bình luận của bạn', 'comment', '',
-                              (value) {
-                            context
-                                .read<NewsDetailWriteChildrenCommentBloc>()
-                                .add(CommentEvent(value));
-                          }),
+                          (value) {
+                        context
+                            .read<NewsDetailWriteChildrenCommentBloc>()
+                            .add(CommentEvent(value));
+                      }),
                     ],
                   ),
                 ),
                 navigation(
-                        () {
+                    () {
                       Navigator.of(context).pushNamedAndRemoveUntil(
                         "/newsDetail",
-                            (route) => false,
+                        (route) => false,
                         arguments: {
                           "route": 1,
                           "id": news.id,
@@ -87,7 +91,7 @@ class _NewsDetailWriteChildrenCommentState extends State<NewsDetailWriteChildren
                     BlocProvider.of<NewsDetailWriteChildrenCommentBloc>(context)
                         .state
                         .comment,
-                        () {
+                    () {
                       NewsDetailWriteChildrenCommentController(context: context)
                           .handleLoadWriteComment(news.id, comment.id);
                     }),

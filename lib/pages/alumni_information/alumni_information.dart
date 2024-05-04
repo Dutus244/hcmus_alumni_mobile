@@ -10,7 +10,6 @@ import 'package:hcmus_alumni_mobile/pages/alumni_information/bloc/alumni_informa
 import 'package:hcmus_alumni_mobile/pages/alumni_information/widgets/alumni_information_widget.dart';
 
 import '../../common/values/colors.dart';
-import 'dart:io';
 
 class AlumniInformation extends StatefulWidget {
   const AlumniInformation({super.key});

@@ -147,10 +147,7 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
           child: Html(
             data: htmlFix,
             style: {
-              "span": Style(
-                  fontSize: FontSize.medium,
-                  fontFamily:
-                  "Roboto")
+              "span": Style(fontSize: FontSize.medium, fontFamily: "Roboto")
             },
           ),
         ),

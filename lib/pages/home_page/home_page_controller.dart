@@ -20,16 +20,14 @@ class HomePageController {
 
   Future<void> handleLoadEventData() async {
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/events';
-    var page = '0';
-    var pageSize = '6';
+    var endpoint = '/events/hot';
     var token = Global.storageService.getUserAuthToken();
     var headers = <String, String>{
       'Authorization': 'Bearer $token',
     };
 
     try {
-      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
+      var url = Uri.parse('$apiUrl$endpoint');
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {

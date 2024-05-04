@@ -22,11 +22,6 @@ class NewsDetail extends StatefulWidget {
 }
 
 class _NewsDetailState extends State<NewsDetail> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   late String id;
 
   @override

@@ -74,7 +74,7 @@ class _HofDetailState extends State<HofDetail> {
                 } else {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     "/hofPage",
-                        (route) => false,
+                    (route) => false,
                   );
                 }
               }),

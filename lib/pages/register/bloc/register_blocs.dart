@@ -22,7 +22,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     emit(state.copyWith(rePassword: event.rePassword));
   }
 
-  void _registerResetEvent(RegisterResetEvent event, Emitter<RegisterState> emit) {
+  void _registerResetEvent(
+      RegisterResetEvent event, Emitter<RegisterState> emit) {
     emit(RegisterState()); // Reset the state to its initial state
   }
 }

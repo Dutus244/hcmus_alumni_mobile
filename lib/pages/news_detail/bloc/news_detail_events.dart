@@ -43,6 +43,7 @@ class HasReachedMaxCommentEvent extends NewsDetailEvent {
 
   const HasReachedMaxCommentEvent(this.hasReachedMaxComment);
 }
+
 class RelatedNewsEvent extends NewsDetailEvent {
   final List<News> relatedNews;
 

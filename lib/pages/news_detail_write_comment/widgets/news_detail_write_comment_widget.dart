@@ -46,7 +46,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
               ),
               style: TextStyle(
                 color: AppColors.primaryText,
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
               ),
@@ -63,12 +63,11 @@ Widget header(News news) {
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
       Container(
-        margin:
-        EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
+        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
         child: Text(
           news.title,
           style: TextStyle(
-            fontFamily: AppFonts.Header2,
+            fontFamily: AppFonts.Header1,
             fontSize: 14.sp,
             fontWeight: FontWeight.bold,
             color: AppColors.primaryText,
@@ -76,12 +75,11 @@ Widget header(News news) {
         ),
       ),
       Container(
-        margin:
-        EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
+        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
         child: Text(
           'Gửi bình luận',
           style: TextStyle(
-            fontFamily: 'Roboto',
+            fontFamily: AppFonts.Header2,
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
             color: AppColors.primaryText,
@@ -103,8 +101,7 @@ Widget header(News news) {
                   child: CircleAvatar(
                     radius: 10,
                     child: null,
-                    backgroundImage:
-                    AssetImage("assets/images/test1.png"),
+                    backgroundImage: AssetImage("assets/images/test1.png"),
                   )),
             ),
             Text(
@@ -114,7 +111,7 @@ Widget header(News news) {
                 color: AppColors.primaryText,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header2,
               ),
             ),
           ],
@@ -124,7 +121,8 @@ Widget header(News news) {
   );
 }
 
-Widget navigation(void Function()? func1, String comment, void Function()? func2) {
+Widget navigation(
+    void Function()? func1, String comment, void Function()? func2) {
   return Container(
     height: 45.h,
     child: Column(
@@ -165,7 +163,7 @@ Widget navigation(void Function()? func1, String comment, void Function()? func2
                         Text(
                           'Gửi',
                           style: TextStyle(
-                              fontFamily: 'Roboto',
+                              fontFamily: AppFonts.Header2,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.bold,
                               color: comment != ""

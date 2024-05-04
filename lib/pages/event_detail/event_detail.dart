@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +21,33 @@ class EventDetail extends StatefulWidget {
 }
 
 class _EventDetailState extends State<EventDetail> {
-  late Event event;
+  late String id;
+  late PageController pageController; // Không khởi tạo ở đây
+  final _scrollController = ScrollController();
+  bool _isFetchingData = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Khởi tạo pageController trong initState
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    if (currentScroll >= (maxScroll * 0.9) && !_isFetchingData) {
+      _isFetchingData = true;
+      Timer(Duration(seconds: 1), () {
+        _isFetchingData = false;
+      });
+
+      if (BlocProvider.of<EventDetailBloc>(context).state.page == 1) {
+        EventDetailController(context: context).handleGetParticipant(id,
+            BlocProvider.of<EventDetailBloc>(context).state.indexParticipant);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +56,12 @@ class _EventDetailState extends State<EventDetail> {
     var route = 0;
     if (args != null) {
       route = args["route"];
-      event = args["event"] as Event;
-      EventDetailController(context: context).handleIncreaseView(event.id);
-      EventDetailController(context: context).handleGetRelatedEvent();
+      id = args["id"];
+      EventDetailController(context: context).handleGetEvent(id);
+      // EventDetailController(context: context).handleGetRelatedEvent();
+      EventDetailController(context: context).handleGetComment(id, 0);
+      EventDetailController(context: context).handleCheckIsParticipated(id);
+      EventDetailController(context: context).handleGetParticipant(id, 0);
     }
 
     return PopScope(
@@ -45,31 +76,11 @@ class _EventDetailState extends State<EventDetail> {
         return Scaffold(
           appBar: buildAppBar(context, 'Sự kiện'),
           backgroundColor: AppColors.primaryBackground,
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    buildButtonChooseInfoOrParticipant(context, (value) {
-                      context.read<EventDetailBloc>().add(PageEvent(value));
-                    }),
-                    BlocProvider.of<EventDetailBloc>(context).state.page == 0
-                        ? detail(context, event)
-                        : listParticipant(),
-                  ],
-                ),
-              ),
-              // Container nằm dưới cùng của màn hình
-              navigation(() {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/applicationPage", (route) => false,
-                    arguments: {"route": route, "secondRoute": 1});
-              }),
-            ],
-          ),
+          body: BlocProvider.of<EventDetailBloc>(context).state.page == 0
+              ? detail(context, BlocProvider.of<EventDetailBloc>(context)
+              .state
+              .event,_scrollController, route)
+              : listParticipant(context, _scrollController, route),
         );
       }),
     );

@@ -14,7 +14,8 @@ class EmailVerificationBloc
     emit(state.copyWith(code: event.code));
   }
 
-  void _emailVerificationResetEvent(EmailVerificationResetEvent event, Emitter<EmailVerificationState> emit) {
+  void _emailVerificationResetEvent(
+      EmailVerificationResetEvent event, Emitter<EmailVerificationState> emit) {
     emit(EmailVerificationState());
   }
 }

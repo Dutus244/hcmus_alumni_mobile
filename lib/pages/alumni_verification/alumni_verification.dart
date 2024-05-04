@@ -10,7 +10,6 @@ import 'alumni_verification_controller.dart';
 import 'bloc/alumni_verification_blocs.dart';
 import 'bloc/alumni_verification_events.dart';
 import 'bloc/alumni_verification_states.dart';
-import 'dart:io';
 
 class AlumniVerification extends StatefulWidget {
   const AlumniVerification({super.key});

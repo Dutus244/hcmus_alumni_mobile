@@ -48,6 +48,7 @@ class NewsEventPageController {
         var newsResponse = NewsResponse.fromJson(jsonMap);
 
         if (newsResponse.news.isEmpty) {
+          context.read<NewsEventPageBloc>().add(NewsEvent(newsResponse.news));
           context.read<NewsEventPageBloc>().add(HasReachedMaxNewsEvent(true));
           context
               .read<NewsEventPageBloc>()
@@ -63,6 +64,9 @@ class NewsEventPageController {
           List<News> updatedNewsList = List.of(currentList)
             ..addAll(newsResponse.news);
           context.read<NewsEventPageBloc>().add(NewsEvent(updatedNewsList));
+        }
+        if (newsResponse.news.length < pageSize) {
+          context.read<NewsEventPageBloc>().add(HasReachedMaxNewsEvent(true));
         }
         context.read<NewsEventPageBloc>().add(StatusNewsEvent(Status.success));
       } else {}
@@ -99,6 +103,9 @@ class NewsEventPageController {
         var eventResponse = EventResponse.fromJson(jsonMap);
 
         if (eventResponse.event.isEmpty) {
+          context
+              .read<NewsEventPageBloc>()
+              .add(EventEvent(eventResponse.event));
           context.read<NewsEventPageBloc>().add(HasReachedMaxEventEvent(true));
           context
               .read<NewsEventPageBloc>()
@@ -116,6 +123,9 @@ class NewsEventPageController {
           List<Event> updatedEventList = List.of(currentList)
             ..addAll(eventResponse.event);
           context.read<NewsEventPageBloc>().add(EventEvent(updatedEventList));
+        }
+        if (eventResponse.event.length < pageSize) {
+          context.read<NewsEventPageBloc>().add(HasReachedMaxEventEvent(true));
         }
         context.read<NewsEventPageBloc>().add(StatusEventEvent(Status.success));
       } else {}

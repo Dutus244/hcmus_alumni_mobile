@@ -19,7 +19,8 @@ class ApplicationPage extends StatefulWidget {
 class _ApplicationPageState extends State<ApplicationPage> {
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic>? args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    Map<String, dynamic>? args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     var secondRoute = 0;
     if (args != null) {
       var route = args["route"];

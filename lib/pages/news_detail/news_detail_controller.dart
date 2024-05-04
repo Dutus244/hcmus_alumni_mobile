@@ -66,9 +66,7 @@ class NewsDetailController {
 
         if (commentResponse.comment.isEmpty) {
           if (page == 0) {
-            context
-                .read<NewsDetailBloc>()
-                .add(CommentEvent([]));
+            context.read<NewsDetailBloc>().add(CommentEvent([]));
           }
           context.read<NewsDetailBloc>().add(HasReachedMaxCommentEvent(true));
           return;

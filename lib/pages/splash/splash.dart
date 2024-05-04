@@ -24,12 +24,13 @@ class _SplashState extends State<Splash> {
     super.initState();
     Timer(Duration(seconds: 2), () {
       if (Global.storageService.getDeviceFirstOpen()) {
-        Global.storageService.setBool(AppConstants.STORAGE_DEVICE_OPEN_FIRST_TIME, false);
+        Global.storageService
+            .setBool(AppConstants.STORAGE_DEVICE_OPEN_FIRST_TIME, false);
         Navigator.of(context)
             .pushNamedAndRemoveUntil("/welcome", (route) => false);
-      }
-      else {
-        Global.storageService.setBool(AppConstants.STORAGE_USER_IS_LOGGED_IN, false);
+      } else {
+        Global.storageService
+            .setBool(AppConstants.STORAGE_USER_IS_LOGGED_IN, false);
         Navigator.of(context)
             .pushNamedAndRemoveUntil("/signIn", (route) => false);
       }

@@ -8,7 +8,9 @@ import '../../news_event_page/news_event_page.dart';
 Widget buildPage(int index, int secondIndex) {
   List<Widget> _widget = [
     const HomePage(),
-    NewsEventPage(page: secondIndex,),
+    NewsEventPage(
+      page: secondIndex,
+    ),
     const AdvisePage(),
     Center(child: Text('Home4')),
     Center(child: Text('Home5')),

@@ -309,11 +309,11 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                       Center(
                           child: buildTextField(
                               'Tìm gương thành công', 'search', 'search',
-                                  (value) {
-                                context.read<HofPageBloc>().add(NameEvent(value));
-                              }, () {
-                            HofPageController(context: context).handleSearchHof();
-                          })),
+                              (value) {
+                        context.read<HofPageBloc>().add(NameEvent(value));
+                      }, () {
+                        HofPageController(context: context).handleSearchHof();
+                      })),
                       Row(
                         children: [
                           buttonClearFilter(() {
@@ -330,27 +330,33 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                             'Sinh học – Công nghệ Sinh học',
                             'Môi trường',
                           ], context, (value) {
-                            context.read<HofPageBloc>().add(FacultyEvent(value));
+                            context
+                                .read<HofPageBloc>()
+                                .add(FacultyEvent(value));
                           }),
                           dropdownButtonGraduationYear(listYear(), context,
-                                  (value) {
-                                context
-                                    .read<HofPageBloc>()
-                                    .add(BeginningYearEvent(value));
-                              })
+                              (value) {
+                            context
+                                .read<HofPageBloc>()
+                                .add(BeginningYearEvent(value));
+                          })
                         ],
                       ),
                       Container(
                         height: 10.h,
                       ),
-                      Center(child: Container(
+                      Center(
+                          child: Container(
                         margin: EdgeInsets.only(top: 20.h),
-                        child: Text('Không có dữ liệu', style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header2,
-                        ),),
+                        child: Text(
+                          'Không có dữ liệu',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header2,
+                          ),
+                        ),
                       )),
                     ],
                   );
@@ -378,8 +384,7 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                                 (value) {
                           context.read<HofPageBloc>().add(NameEvent(value));
                         }, () {
-                          HofPageController(context: context)
-                              .handleSearchHof();
+                          HofPageController(context: context).handleSearchHof();
                         })),
                         Row(
                           children: [
@@ -403,8 +408,8 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                                   .read<HofPageBloc>()
                                   .add(FacultyEvent(value));
                             }),
-                            dropdownButtonGraduationYear(
-                                listYear(), context, (value) {
+                            dropdownButtonGraduationYear(listYear(), context,
+                                (value) {
                               context
                                   .read<HofPageBloc>()
                                   .add(BeginningYearEvent(value));
@@ -442,7 +447,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
     onTap: () {
       Navigator.of(context).pushNamedAndRemoveUntil(
         "/hofDetail",
-            (route) => false,
+        (route) => false,
         arguments: {
           "route": 1,
           "id": hallOfFame.id,

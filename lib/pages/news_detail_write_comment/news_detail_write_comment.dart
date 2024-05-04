@@ -24,7 +24,9 @@ class _NewsDetailWriteCommentState extends State<NewsDetailWriteComment> {
   @override
   void initState() {
     super.initState();
-    context.read<NewsDetailWriteCommentBloc>().add(NewsDetailWriteCommentResetEvent());
+    context
+        .read<NewsDetailWriteCommentBloc>()
+        .add(NewsDetailWriteCommentResetEvent());
   }
 
   late News news;

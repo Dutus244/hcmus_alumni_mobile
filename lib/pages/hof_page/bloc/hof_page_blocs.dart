@@ -67,7 +67,11 @@ class HofPageBloc extends Bloc<HofPageEvent, HofPageState> {
   }
 
   void _clearFilterEvent(ClearFilterEvent event, Emitter<HofPageState> emit) {
-    emit(state.copyWith(faculty: "", beginningYear: "", facultySearch: "", beginningYearSearch: ""));
+    emit(state.copyWith(
+        faculty: "",
+        beginningYear: "",
+        facultySearch: "",
+        beginningYearSearch: ""));
   }
 
   void _hofPageResetEvent(HofPageResetEvent event, Emitter<HofPageState> emit) {
@@ -75,7 +79,10 @@ class HofPageBloc extends Bloc<HofPageEvent, HofPageState> {
   }
 
   void _clearResultEvent(ClearResultEvent event, Emitter<HofPageState> emit) {
-    emit(state
-        .copyWith(statusHof: Status.loading, hallOfFame: const [], indexHof: 0, hasReachedMaxHof: false));
+    emit(state.copyWith(
+        statusHof: Status.loading,
+        hallOfFame: const [],
+        indexHof: 0,
+        hasReachedMaxHof: false));
   }
 }
