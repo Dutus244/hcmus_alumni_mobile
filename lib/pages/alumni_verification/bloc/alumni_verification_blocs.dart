@@ -3,7 +3,8 @@ import 'package:hcmus_alumni_mobile/pages/alumni_verification/bloc/alumni_verifi
 
 import 'alumni_verification_states.dart';
 
-class AlumniVerificationBloc extends Bloc<AlumniVerificationEvent, AlumniVerificationState> {
+class AlumniVerificationBloc
+    extends Bloc<AlumniVerificationEvent, AlumniVerificationState> {
   AlumniVerificationBloc() : super(AlumniVerificationState()) {
     on<SocialMediaLinkEvent>(_socialMediaLinkEvent);
     on<StudentIdEvent>(_studentIdEvent);
@@ -11,19 +12,23 @@ class AlumniVerificationBloc extends Bloc<AlumniVerificationEvent, AlumniVerific
     on<AlumniVerificationResetEvent>(_alumniVerificationResetEvent);
   }
 
-  void _socialMediaLinkEvent(SocialMediaLinkEvent event, Emitter<AlumniVerificationState> emit) {
+  void _socialMediaLinkEvent(
+      SocialMediaLinkEvent event, Emitter<AlumniVerificationState> emit) {
     emit(state.copyWith(socialMediaLink: event.socialMediaLink));
   }
 
-  void _studentIdEvent(StudentIdEvent event, Emitter<AlumniVerificationState> emit) {
+  void _studentIdEvent(
+      StudentIdEvent event, Emitter<AlumniVerificationState> emit) {
     emit(state.copyWith(studentId: event.studentId));
   }
 
-  void _startYearEvent(StartYearEvent event, Emitter<AlumniVerificationState> emit) {
+  void _startYearEvent(
+      StartYearEvent event, Emitter<AlumniVerificationState> emit) {
     emit(state.copyWith(startYear: event.startYear));
   }
 
-  void _alumniVerificationResetEvent(AlumniVerificationResetEvent event, Emitter<AlumniVerificationState> emit) {
+  void _alumniVerificationResetEvent(AlumniVerificationResetEvent event,
+      Emitter<AlumniVerificationState> emit) {
     emit(AlumniVerificationState()); // Reset the state to its initial state
   }
 }

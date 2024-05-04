@@ -34,6 +34,10 @@ import 'package:hcmus_alumni_mobile/pages/welcome/bloc/welcome_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/welcome/welcome.dart';
 
 import '../../pages/event_detail/bloc/event_detail_blocs.dart';
+import '../../pages/event_detail_write_children_comment/bloc/event_detail_write_children_comment_blocs.dart';
+import '../../pages/event_detail_write_children_comment/event_detail_write_children_comment.dart';
+import '../../pages/event_detail_write_comment/bloc/event_detail_write_comment_blocs.dart';
+import '../../pages/event_detail_write_comment/event_detail_write_comment.dart';
 import '../../pages/hof_detail/hof_detail.dart';
 import '../../pages/news_detail_write_children_comment/bloc/news_detail_write_children_comment_blocs.dart';
 import '../../pages/register/bloc/register_blocs.dart';
@@ -137,24 +141,34 @@ class AppPages {
             create: (_) => NewsDetailBloc(),
           )),
       PageEntity(
-        route: AppRoutes.NEWS_DETAIL_WRITE_COMMENT,
-        page: const NewsDetailWriteComment(),
-        bloc: BlocProvider(
-          create: (_) => NewsDetailWriteCommentBloc(),
-        )
-      ),
+          route: AppRoutes.NEWS_DETAIL_WRITE_COMMENT,
+          page: const NewsDetailWriteComment(),
+          bloc: BlocProvider(
+            create: (_) => NewsDetailWriteCommentBloc(),
+          )),
       PageEntity(
           route: AppRoutes.NEWS_DETAIL_WRITE_CHILDREN_COMMENT,
           page: const NewsDetailWriteChildrenComment(),
           bloc: BlocProvider(
             create: (_) => NewsDetailWriteChildrenCommentBloc(),
-          )
-      ),
+          )),
       PageEntity(
           route: AppRoutes.EVENT_DETAIL,
           page: const EventDetail(),
           bloc: BlocProvider(
             create: (_) => EventDetailBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.EVENT_DETAIL_WRITE_COMMENT,
+          page: const EventDetailWriteComment(),
+          bloc: BlocProvider(
+            create: (_) => EventDetailWriteCommentBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.EVENT_DETAIL_WRITE_CHILDREN_COMMENT,
+          page: const EventDetailWriteChildrenComment(),
+          bloc: BlocProvider(
+            create: (_) => EventDetailWriteChildrenCommentBloc(),
           )),
       PageEntity(
           route: AppRoutes.HOF_DETAIL,

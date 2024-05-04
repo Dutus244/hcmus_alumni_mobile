@@ -77,7 +77,11 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       height: 5.h,
                     ),
-                    listHof(context, BlocProvider.of<HomePageBloc>(context).state.hallOfFame),
+                    listHof(
+                        context,
+                        BlocProvider.of<HomePageBloc>(context)
+                            .state
+                            .hallOfFame),
                     advise(context),
                   ],
                 ),

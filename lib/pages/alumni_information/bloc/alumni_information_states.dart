@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 class AlumniInformationState {
@@ -10,8 +9,7 @@ class AlumniInformationState {
     this.fullName = "",
   });
 
-  AlumniInformationState copyWith(
-      {File? avatar, String? fullName}) {
+  AlumniInformationState copyWith({File? avatar, String? fullName}) {
     return AlumniInformationState(
       avatar: avatar ?? this.avatar,
       fullName: fullName ?? this.fullName,

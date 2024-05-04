@@ -5,14 +5,20 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
+import 'package:hcmus_alumni_mobile/model/comment.dart';
 import 'package:hcmus_alumni_mobile/model/event.dart';
+import 'package:hcmus_alumni_mobile/model/participant.dart';
+import 'package:hcmus_alumni_mobile/pages/event_detail/bloc/event_detail_events.dart';
 import 'package:intl/intl.dart';
 
 import '../../../common/function/handle_html_content.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
 import '../bloc/event_detail_blocs.dart';
+import '../bloc/event_detail_states.dart';
+import '../event_detail_controller.dart';
 
 Widget buildButtonChooseInfoOrParticipant(
     BuildContext context, void Function(int value)? func) {
@@ -88,14 +94,7 @@ Widget buildButtonChooseInfoOrParticipant(
   );
 }
 
-String replaceHeightAttribute(String original) {
-  return original.replaceAllMapped(
-    RegExp(r'(<img[^>]+)(h=)', caseSensitive: false),
-    (match) => '${match.group(1)}_${match.group(1)}',
-  );
-}
-
-Widget eventContent(Event event) {
+Widget eventContent(BuildContext context, Event event) {
   String htmlContent = event.content;
   String htmlFix = '';
   htmlFix = handleHtmlContent(htmlContent);
@@ -315,31 +314,63 @@ Widget eventContent(Event event) {
         ),
       ),
       Center(
-        child: GestureDetector(
-          onTap: () {},
-          child: Container(
-            width: 165.w,
-            height: 30.h,
-            margin: EdgeInsets.only(top: 10.h),
-            decoration: BoxDecoration(
-              color: AppColors.primaryElement,
-              borderRadius: BorderRadius.circular(15.w),
-              border: Border.all(
-                color: Colors.transparent,
+        child: BlocProvider.of<EventDetailBloc>(context).state.isParticipated
+            ? GestureDetector(
+                onTap: () {
+                  EventDetailController(context: context)
+                      .hanldeExitEvent(event.id);
+                },
+                child: Container(
+                  width: 165.w,
+                  height: 30.h,
+                  margin: EdgeInsets.only(top: 10.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryBackground,
+                    borderRadius: BorderRadius.circular(15.w),
+                    border: Border.all(
+                      color: AppColors.primaryElement,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Bỏ tham gia',
+                      style: TextStyle(
+                          fontFamily: AppFonts.Header2,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryElement),
+                    ),
+                  ),
+                ),
+              )
+            : GestureDetector(
+                onTap: () {
+                  EventDetailController(context: context)
+                      .hanldeJoinEvent(event.id);
+                },
+                child: Container(
+                  width: 165.w,
+                  height: 30.h,
+                  margin: EdgeInsets.only(top: 10.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryElement,
+                    borderRadius: BorderRadius.circular(15.w),
+                    border: Border.all(
+                      color: Colors.transparent,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Tham gia ngay',
+                      style: TextStyle(
+                          fontFamily: AppFonts.Header2,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryBackground),
+                    ),
+                  ),
+                ),
               ),
-            ),
-            child: Center(
-              child: Text(
-                'Tham gia ngay',
-                style: TextStyle(
-                    fontFamily: AppFonts.Header2,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryBackground),
-              ),
-            ),
-          ),
-        ),
       ),
       Container(
         padding: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
@@ -412,130 +443,172 @@ Widget eventContent(Event event) {
   );
 }
 
-Widget detail(BuildContext context, Event event) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      eventContent(event),
-      listComment(context),
-      listRelatedEvent(
-          context, BlocProvider.of<EventDetailBloc>(context).state.relatedEvent)
-    ],
-  );
+Widget detail(BuildContext context, Event? event,
+    ScrollController _scrollController, int route) {
+  if (event == null) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Expanded(
+          child: ListView(
+        controller: _scrollController,
+        children: [
+          buildButtonChooseInfoOrParticipant(context, (value) {
+            context.read<EventDetailBloc>().add(PageEvent(value));
+          }),
+          loadingWidget()
+        ],
+      )),
+      navigation(() {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            "/applicationPage", (route) => false,
+            arguments: {"route": route, "secondRoute": 1});
+      }),
+    ]);
+  } else {
+    return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Expanded(
+          child: ListView(
+        controller: _scrollController,
+        children: [
+          buildButtonChooseInfoOrParticipant(context, (value) {
+            context.read<EventDetailBloc>().add(PageEvent(value));
+          }),
+          eventContent(context, event),
+          listComment(context, event,
+              BlocProvider.of<EventDetailBloc>(context).state.comment),
+          // listRelatedEvent(context,
+          //     BlocProvider.of<EventDetailBloc>(context).state.relatedEvent)
+        ],
+      )),
+      navigation(() {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            "/applicationPage", (route) => false,
+            arguments: {"route": route, "secondRoute": 1});
+      }),
+    ]);
+  }
 }
 
-Widget listComment(BuildContext context) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.start,
-    children: [
-      GestureDetector(
-        onTap: () {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/newsDetailWriteComment",
-            (route) => false,
-          );
-        },
-        child: Container(
-            width: 340.w,
-            height: 40.h,
-            margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.w),
-              color: Color.fromARGB(255, 245, 245, 245),
-              border: Border.all(
-                color: Colors.transparent,
+Widget listComment(
+    BuildContext context, Event? event, List<Comment> commentList) {
+  if (event == null) {
+    return Column(
+      children: [],
+    );
+  } else {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              "/eventDetailWriteComment",
+              (route) => false,
+              arguments: {
+                "event": event,
+              },
+            );
+          },
+          child: Container(
+              width: 340.w,
+              height: 40.h,
+              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.w),
+                color: Color.fromARGB(255, 245, 245, 245),
+                border: Border.all(
+                  color: Colors.transparent,
+                ),
               ),
-            ),
-            child: Container(
-              height: 20.h,
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Viết bình luận',
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header2,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
+              child: Container(
+                height: 20.h,
+                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Viết bình luận',
+                      style: TextStyle(
+                        fontFamily: AppFonts.Header2,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ),
+                    SvgPicture.asset(
+                      "assets/icons/send.svg",
+                      width: 15.w,
+                      height: 15.h,
                       color: Colors.black.withOpacity(0.5),
                     ),
-                  ),
-                  SvgPicture.asset(
-                    "assets/icons/send.svg",
-                    width: 15.w,
-                    height: 15.h,
-                    color: Colors.black.withOpacity(0.5),
-                  ),
-                ],
-              ),
-            )),
-      ),
-      Container(
-        padding: EdgeInsets.only(top: 20.h, left: 10.w, bottom: 10.h),
-        child: Text(
-          "Bình luận (5)",
-          style: TextStyle(
-            fontFamily: AppFonts.Header1,
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 18.sp,
-          ),
+                  ],
+                ),
+              )),
         ),
-      ),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          comment(),
-          comment(),
-          comment(),
-        ],
-      ),
-      GestureDetector(
-        onTap: () {},
-        child: Container(
-          width: 340.w,
-          height: 40.h,
-          margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.w),
-            color: Color.fromARGB(255, 230, 240, 251),
-            border: Border.all(
-              color: Colors.transparent,
-            ),
-          ),
-          child: Center(
-            child: Text(
-              'Xem thêm bình luận',
-              style: TextStyle(
-                fontFamily: AppFonts.Header2,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-                color: Color.fromARGB(255, 43, 107, 182),
-              ),
+        Container(
+          padding: EdgeInsets.only(top: 20.h, left: 10.w, bottom: 10.h),
+          child: Text(
+            "Bình luận (${event.childrenCommentNumber})",
+            style: TextStyle(
+              fontFamily: AppFonts.Header1,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 18.sp,
             ),
           ),
         ),
-      ),
-      Container(
-        height: 20.h,
-      ),
-      Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w),
-        height: 2.h,
-        color: AppColors.primarySecondaryElement,
-      )
-    ],
-  );
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            for (int i = 0; i < commentList.length; i += 1)
+              buildCommentWidget(context, event, commentList[i])
+          ],
+        ),
+        if (event.childrenCommentNumber > 5 &&
+            !BlocProvider.of<EventDetailBloc>(context)
+                .state
+                .hasReachedMaxComment)
+          GestureDetector(
+            onTap: () {
+              EventDetailController(context: context).handleGetComment(event.id,
+                  BlocProvider.of<EventDetailBloc>(context).state.indexComment);
+            },
+            child: Container(
+              width: 340.w,
+              height: 40.h,
+              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.w),
+                color: Color.fromARGB(255, 230, 240, 251),
+                border: Border.all(
+                  color: Colors.transparent,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  'Xem thêm bình luận',
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header2,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 43, 107, 182),
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
 }
 
-Widget comment() {
+Widget buildCommentWidget(BuildContext context, Event event, Comment comment) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.h),
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
           height: 35.h,
@@ -553,7 +626,8 @@ Widget comment() {
                     child: CircleAvatar(
                       radius: 10,
                       child: null,
-                      backgroundImage: AssetImage("assets/images/test1.png"),
+                      backgroundImage:
+                          NetworkImage(comment.creator.avatarUrl ?? ""),
                     )),
               ),
               Container(
@@ -561,32 +635,34 @@ Widget comment() {
                 height: 35.h,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Cộng đồng HCMUS',
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: AppColors.primaryText,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w900,
-                        fontFamily: AppFonts.Header2,
+                    Container(
+                      margin: EdgeInsets.only(top: 2.h),
+                      child: Text(
+                        comment.creator.fullName,
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: AppColors.primaryText,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w900,
+                          fontFamily: AppFonts.Header2,
+                        ),
                       ),
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          '4 ngày',
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: AppColors.primarySecondaryText,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header3,
-                          ),
+                    Container(
+                      margin: EdgeInsets.only(bottom: 2.h),
+                      child: Text(
+                        handleDatetime(comment.updateAt),
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: AppColors.primarySecondaryText,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: AppFonts.Header3,
                         ),
-                      ],
-                    )
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -599,7 +675,7 @@ Widget comment() {
         Container(
           padding: EdgeInsets.only(left: 10.w, right: 10.w),
           child: Text(
-            'Đây là text dài hơn 2 dòng. Khi click vào "Xem thêm", text sẽ được hiển thị đầy đủ. Click vào "Thu gọn" để thu hồi text. 1211121212112112121211212111212',
+            comment.content,
             style: TextStyle(
               color: AppColors.primaryText,
               fontSize: 12.sp,
@@ -616,7 +692,10 @@ Widget comment() {
               Row(
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      EventDetailController(context: context)
+                          .handleGetChildrenComment(comment.id);
+                    },
                     child: Container(
                       child: Row(
                         children: [
@@ -630,12 +709,12 @@ Widget comment() {
                             width: 3.w,
                           ),
                           Text(
-                            '2 trả lời',
+                            "${comment.childrenCommentNumber.toString()} trả lời",
                             style: TextStyle(
                               color: Colors.black.withOpacity(0.8),
                               fontSize: 11.sp,
                               fontWeight: FontWeight.normal,
-                              fontFamily: AppFonts.Header3,
+                              fontFamily: 'Roboto',
                             ),
                           )
                         ],
@@ -646,18 +725,51 @@ Widget comment() {
                     width: 50.w,
                   ),
                   GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        "/eventDetailWriteChildrenComment",
+                        (route) => false,
+                        arguments: {
+                          "event": event,
+                          "comment": comment,
+                        },
+                      );
+                    },
                     child: Text(
                       'Trả lời',
                       style: TextStyle(
                         color: Colors.black.withOpacity(0.8),
                         fontSize: 11.sp,
                         fontWeight: FontWeight.normal,
-                        fontFamily: AppFonts.Header3,
+                        fontFamily: 'Roboto',
                       ),
                     ),
                   ),
                 ],
               ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(left: 10.w, right: 10.w),
+          child: Column(
+            children: [
+              for (int i = 0; i < comment.childrenComment.length; i += 1)
+                Row(
+                  children: [
+                    VerticalDivider(
+                      width: 1,
+                      thickness: 1,
+                      color: Colors.black, // Adjust color as desired
+                    ),
+                    Expanded(
+                      child: Container(
+                          padding: EdgeInsets.only(left: 0.w, right: 10.w),
+                          child: buildCommentWidget(
+                              context, event, comment.childrenComment[i])),
+                    ),
+                  ],
+                )
             ],
           ),
         )
@@ -974,20 +1086,110 @@ Widget event(BuildContext context, Event event) {
   );
 }
 
-Widget listParticipant() {
-  return Container(
-    margin: EdgeInsets.only(top: 10.h),
-    child: Column(
-      children: [
-        participant(),
-        participant(),
-        participant(),
-      ],
-    ),
+Widget listParticipant(
+    BuildContext context, ScrollController _scrollController, int route) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Expanded(
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: BlocProvider.of<EventDetailBloc>(context)
+                  .state
+                  .participant
+                  .length +
+              1,
+          itemBuilder: (BuildContext context, int index) {
+            switch (BlocProvider.of<EventDetailBloc>(context)
+                .state
+                .statusParticipant) {
+              case Status.loading:
+                return Column(
+                  children: [
+                    buildButtonChooseInfoOrParticipant(context, (value) {
+                      context.read<EventDetailBloc>().add(PageEvent(value));
+                    }),
+                    loadingWidget(),
+                  ],
+                );
+              case Status.success:
+                if (BlocProvider.of<EventDetailBloc>(context)
+                    .state
+                    .participant
+                    .isEmpty) {
+                  return Column(
+                    children: [
+                      buildButtonChooseInfoOrParticipant(context, (value) {
+                        context.read<EventDetailBloc>().add(PageEvent(value));
+                      }),
+                      Center(
+                          child: Container(
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text(
+                          'Không có người tham gia',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header2,
+                          ),
+                        ),
+                      )),
+                    ],
+                  );
+                }
+                if (index >=
+                    BlocProvider.of<EventDetailBloc>(context)
+                        .state
+                        .participant
+                        .length) {
+                  if (BlocProvider.of<EventDetailBloc>(context)
+                      .state
+                      .hasReachedMaxParticipant) {
+                    return SizedBox();
+                  }
+                  // Return something indicating end of list, if needed
+                  return loadingWidget();
+                } else {
+                  if (index == 0) {
+                    // Create a custom widget to combine button and news item
+                    return Column(
+                      children: [
+                        buildButtonChooseInfoOrParticipant(context, (value) {
+                          context.read<EventDetailBloc>().add(PageEvent(value));
+                        }),
+                        Container(
+                          height: 10.h,
+                        ),
+                        participant(
+                            context,
+                            BlocProvider.of<EventDetailBloc>(context)
+                                .state
+                                .participant[index]),
+                      ],
+                    );
+                  } else {
+                    return participant(
+                        context,
+                        BlocProvider.of<EventDetailBloc>(context)
+                            .state
+                            .participant[index]);
+                  }
+                }
+            }
+          },
+        ),
+      ),
+      navigation(() {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            "/applicationPage", (route) => false,
+            arguments: {"route": route, "secondRoute": 1});
+      }),
+    ],
   );
 }
 
-Widget participant() {
+Widget participant(BuildContext context, Participant participant) {
   return GestureDetector(
     onTap: () {},
     child: Container(
@@ -1003,14 +1205,14 @@ Widget participant() {
                 child: CircleAvatar(
                   radius: 10,
                   child: null,
-                  backgroundImage: AssetImage("assets/images/test1.png"),
+                  backgroundImage: NetworkImage(participant.avatarUrl),
                 ),
               ),
               Container(
                 width: 10.w,
               ),
               Text(
-                'Nguyễn Duy',
+                participant.fullName,
                 style: TextStyle(
                   color: AppColors.primaryText,
                   fontSize: 12.sp,
@@ -1020,15 +1222,6 @@ Widget participant() {
               )
             ],
           ),
-          Text(
-            'Người tạo sự kiện',
-            style: TextStyle(
-              color: AppColors.primaryText,
-              fontSize: 12.sp,
-              fontWeight: FontWeight.normal,
-              fontFamily: 'Roboto',
-            ),
-          )
         ],
       ),
     ),

@@ -29,8 +29,7 @@ class _HofPageState extends State<HofPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    HofPageController(context: context).handleLoadHofData(
-        0);
+    HofPageController(context: context).handleLoadHofData(0);
   }
 
   void _onScroll() {

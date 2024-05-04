@@ -7,8 +7,7 @@ class ChangePasswordForgotState {
     this.rePassword = "",
   });
 
-  ChangePasswordForgotState copyWith(
-      {String? password, String? rePassword}) {
+  ChangePasswordForgotState copyWith({String? password, String? rePassword}) {
     return ChangePasswordForgotState(
       password: password ?? this.password,
       rePassword: rePassword ?? this.rePassword,

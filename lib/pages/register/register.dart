@@ -33,7 +33,8 @@ class _RegisterState extends State<Register> {
       onPopInvoked: (_) async {
         Navigator.of(context).pushNamed("/signIn");
       },
-      child: BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+      child:
+          BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
         return Container(
           color: AppColors.primaryBackground,
           child: SafeArea(
@@ -80,13 +81,17 @@ class _RegisterState extends State<Register> {
                         SizedBox(
                           height: 5.h,
                         ),
-                        buildTextField("Mật khẩu *", "password", "lock", (value) {
-                          context.read<RegisterBloc>().add(PasswordEvent(value));
+                        buildTextField("Mật khẩu *", "password", "lock",
+                            (value) {
+                          context
+                              .read<RegisterBloc>()
+                              .add(PasswordEvent(value));
                         }),
                         SizedBox(
                           height: 5.h,
                         ),
-                        buildTextField("Nhập lại mật khẩu *", "rePassword", "lock",
+                        buildTextField(
+                            "Nhập lại mật khẩu *", "rePassword", "lock",
                             (value) {
                           context
                               .read<RegisterBloc>()

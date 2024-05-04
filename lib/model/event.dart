@@ -12,6 +12,7 @@ class Event {
   final String thumbnail;
   final int views;
   final int participants;
+  final int childrenCommentNumber;
   final String updateAt;
   final String publishedAt;
   final List<Tags> tags;
@@ -27,6 +28,7 @@ class Event {
       this.thumbnail,
       this.content,
       this.views,
+      this.childrenCommentNumber,
       this.participants,
       this.updateAt,
       this.publishedAt,
@@ -44,6 +46,7 @@ class Event {
         content = json["content"],
         views = json["views"].toInt(),
         participants = json["participants"].toInt(),
+        childrenCommentNumber = json["childrenCommentNumber"].toInt(),
         updateAt = json["updateAt"],
         publishedAt = json["publishedAt"],
         tags = TagsResponse.fromJson(json).tags,

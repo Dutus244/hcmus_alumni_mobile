@@ -19,7 +19,8 @@ class ForgotPasswordBloc
     emit(state.copyWith(code: event.code));
   }
 
-  void _forgotPasswordResetEvent(ForgotPasswordResetEvent event, Emitter<ForgotPasswordState> emit) {
+  void _forgotPasswordResetEvent(
+      ForgotPasswordResetEvent event, Emitter<ForgotPasswordState> emit) {
     emit(ForgotPasswordState()); // Reset the state to its initial state
   }
 }

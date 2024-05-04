@@ -131,14 +131,18 @@ Widget listNews(BuildContext context, ScrollController _scrollController) {
                       buildButtonChooseNewsOrEvent(context, (value) {
                         context.read<NewsEventPageBloc>().add(PageEvent(1));
                       }),
-                      Center(child: Container(
+                      Center(
+                          child: Container(
                         margin: EdgeInsets.only(top: 20.h),
-                        child: Text('Không có dữ liệu', style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header2,
-                        ),),
+                        child: Text(
+                          'Không có dữ liệu',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header2,
+                          ),
+                        ),
                       )),
                     ],
                   );
@@ -405,14 +409,18 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                       buildButtonChooseNewsOrEvent(context, (value) {
                         context.read<NewsEventPageBloc>().add(PageEvent(0));
                       }),
-                      Center(child: Container(
+                      Center(
+                          child: Container(
                         margin: EdgeInsets.only(top: 20.h),
-                        child: Text('Không có dữ liệu', style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header2,
-                        ),),
+                        child: Text(
+                          'Không có dữ liệu',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header2,
+                          ),
+                        ),
                       )),
                     ],
                   );
@@ -467,7 +475,7 @@ Widget event(BuildContext context, Event event) {
       Navigator.of(context).pushNamedAndRemoveUntil(
         "/eventDetail",
         (route) => false,
-        arguments: {"route": 1, "event": event},
+        arguments: {"route": 1, "id": event.id},
       );
     },
     child: Container(

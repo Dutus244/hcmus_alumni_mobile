@@ -37,8 +37,7 @@ class RegisterController {
         toastInfo(msg: "Mật khẩu không khớp");
         return;
       }
-      Global.storageService
-          .setString(AppConstants.STORAGE_USER_EMAIL, email);
+      Global.storageService.setString(AppConstants.STORAGE_USER_EMAIL, email);
       Global.storageService
           .setString(AppConstants.STORAGE_USER_PASSWORD, password);
       Navigator.of(context).pushNamed("/emailVerification");
