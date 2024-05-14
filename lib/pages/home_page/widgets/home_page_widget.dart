@@ -617,7 +617,15 @@ Widget advise(BuildContext context) {
             Align(
               alignment: Alignment.centerRight,
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/writePostAdvise",
+                        (route) => false,
+                    arguments: {
+                      "route": 0,
+                    },
+                  );
+                },
                 child: Container(
                   width: 100.w,
                   height: 30.h,

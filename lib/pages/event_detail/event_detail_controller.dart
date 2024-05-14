@@ -114,14 +114,34 @@ class EventDetailController {
         List<Comment> currentList =
             BlocProvider.of<EventDetailBloc>(context).state.comment;
 
-        for (int i = 0; i < currentList.length; i += 1) {
-          if (currentList[i].id == commentId) {
-            currentList[i].fetchChildrenComments(jsonMap);
-          }
+        // Tìm bình luận cha trong toàn bộ cây bình luận
+        Comment? parentComment = findParentComment(currentList, commentId);
+
+        // Nếu tìm thấy bình luận cha, thêm các bình luận con vào nó
+        if (parentComment != null) {
+          await parentComment.fetchChildrenComments(jsonMap);
         }
+
         context.read<EventDetailBloc>().add(CommentEvent(currentList));
       } else {}
     } catch (error, stacktrace) {}
+  }
+
+  // Hàm đệ qui để tìm bình luận cha trong toàn bộ cây bình luận
+  Comment? findParentComment(List<Comment> comments, String commentId) {
+    for (var comment in comments) {
+      if (comment.id == commentId) {
+        return comment; // Bình luận hiện tại là bình luận cha
+      }
+      // Kiểm tra các bình luận con của bình luận hiện tại
+      if (comment.childrenComment.isNotEmpty) {
+        var parent = findParentComment(comment.childrenComment, commentId);
+        if (parent != null) {
+          return parent; // Bình luận cha được tìm thấy trong các bình luận con
+        }
+      }
+    }
+    return null; // Không tìm thấy bình luận cha
   }
 
   Future<void> handleGetRelatedEvent() async {
@@ -202,6 +222,7 @@ class EventDetailController {
       var url = Uri.parse('$apiUrl$endpoint');
 
       var response = await http.post(url, headers: headers, body: body);
+
       if (response.statusCode == 201) {
         context.read<EventDetailBloc>().add(IsParticipatedEvent(true));
       } else {

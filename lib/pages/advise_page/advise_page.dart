@@ -1,10 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hcmus_alumni_mobile/pages/advise_page/widgets/advise_page_widget.dart';
 
 import '../../common/values/colors.dart';
 import '../../common/widgets/app_bar.dart';
+import 'advise_page_controller.dart';
+import 'bloc/advise_page_blocs.dart';
+import 'bloc/advise_page_states.dart';
+import 'dart:io' show Platform, exit;
 
 class AdvisePage extends StatefulWidget {
   const AdvisePage({super.key});
@@ -14,27 +21,70 @@ class AdvisePage extends StatefulWidget {
 }
 
 class _AdvisePageState extends State<AdvisePage> {
+  late PageController pageController; // Không khởi tạo ở đây
+  final _scrollController = ScrollController();
+  bool _isFetchingData = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+    AdvisePageController(context: context).handleLoadPostData(0);
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    if (currentScroll >= (maxScroll * 0.9) && !_isFetchingData) {
+      _isFetchingData = true;
+      Timer(Duration(seconds: 1), () {
+        _isFetchingData = false;
+      });
+
+      AdvisePageController(context: context).handleLoadPostData(
+          BlocProvider.of<AdvisePageBloc>(context).state.indexPost);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(context, 'Tư vấn & Cố vấn'),
-      backgroundColor: AppColors.primaryBackground,
-      body: Container(
-        child: ListView(scrollDirection: Axis.vertical, children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              buildCreatePostButton(),
-              Container(
-                height: 5.h,
-                color: AppColors.primarySecondaryElement,
+    return PopScope(
+      canPop: false, // prevent back
+      onPopInvoked: (_) async {
+        final shouldExit = await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Thoát ứng dụng'),
+            content: Text('Bạn có muốn thoát ứng dụng?'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text('Huỷ'),
               ),
-              listPost(context),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text('Thoát'),
+              ),
             ],
           ),
-        ]),
-      ),
+        );
+        if (shouldExit) {
+          if (Platform.isAndroid) {
+            SystemNavigator.pop();
+          } else if (Platform.isIOS) {
+            exit(0);
+          }
+        }
+        return shouldExit ?? false;
+      },
+      child: BlocBuilder<AdvisePageBloc, AdvisePageState>(
+          builder: (context, state) {
+        return Scaffold(
+          appBar: buildAppBar(context, 'Tư vấn & Cố vấn'),
+          backgroundColor: AppColors.primaryBackground,
+          body: Container(child: listPost(context, _scrollController)),
+        );
+      }),
     );
   }
 }

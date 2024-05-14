@@ -22,4 +22,8 @@ class AppRoutes {
   static const EVENT_DETAIL_WRITE_COMMENT = "/eventDetailWriteComment";
   static const EVENT_DETAIL_WRITE_CHILDREN_COMMENT = "/eventDetailWriteChildrenComment";
   static const HOF_DETAIL = "/hofDetail";
+  static const WRITE_POST_ADVISE = "/writePostAdvise";
+  static const EDIT_POST_ADVISE = "/editPostAdvise";
+  static const LIST_INTERACT_POST_ADVISE = "/listInteractPostAdvise";
+  static const LIST_COMMENT_POST_ADVISE = "/listCommentPostAdvise";
 }

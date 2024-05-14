@@ -49,7 +49,7 @@ dependencies:
   flutter_html: ^3.0.0-alpha.3
   flutter_svg: ^0.22.0
   popover: ^0.3.0
-
+  multi_dropdown: ^2.1.4
 
 dev_dependencies:
   flutter_test:

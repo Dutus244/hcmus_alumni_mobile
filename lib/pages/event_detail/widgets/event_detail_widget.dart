@@ -562,7 +562,7 @@ Widget listComment(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             for (int i = 0; i < commentList.length; i += 1)
-              buildCommentWidget(context, event, commentList[i])
+              buildCommentWidget(context, event, commentList[i], 0)
           ],
         ),
         if (event.childrenCommentNumber > 5 &&
@@ -603,7 +603,8 @@ Widget listComment(
   }
 }
 
-Widget buildCommentWidget(BuildContext context, Event event, Comment comment) {
+Widget buildCommentWidget(
+    BuildContext context, Event event, Comment comment, int index) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.h),
     child: Column(
@@ -627,7 +628,7 @@ Widget buildCommentWidget(BuildContext context, Event event, Comment comment) {
                       radius: 10,
                       child: null,
                       backgroundImage:
-                          NetworkImage(comment.creator.avatarUrl ?? ""),
+                      NetworkImage(comment.creator.avatarUrl ?? ""),
                     )),
               ),
               Container(
@@ -674,6 +675,7 @@ Widget buildCommentWidget(BuildContext context, Event event, Comment comment) {
         ),
         Container(
           padding: EdgeInsets.only(left: 10.w, right: 10.w),
+          width: (340 - 10 * index).w,
           child: Text(
             comment.content,
             style: TextStyle(
@@ -684,95 +686,91 @@ Widget buildCommentWidget(BuildContext context, Event event, Comment comment) {
             ),
           ),
         ),
-        Container(
-          margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 7.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      EventDetailController(context: context)
-                          .handleGetChildrenComment(comment.id);
-                    },
-                    child: Container(
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/comment.svg",
-                            width: 11.w,
-                            height: 11.h,
-                            color: Colors.black.withOpacity(0.8),
-                          ),
-                          Container(
-                            width: 3.w,
-                          ),
-                          Text(
-                            "${comment.childrenCommentNumber.toString()} trả lời",
-                            style: TextStyle(
+        if (index <= 1)
+          Container(
+            margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        EventDetailController(context: context)
+                            .handleGetChildrenComment(comment.id);
+                      },
+                      child: Container(
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/comment.svg",
+                              width: 11.w,
+                              height: 11.h,
                               color: Colors.black.withOpacity(0.8),
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.normal,
-                              fontFamily: 'Roboto',
                             ),
-                          )
-                        ],
+                            Container(
+                              width: 3.w,
+                            ),
+                            Text(
+                              "${comment.childrenCommentNumber.toString()} trả lời",
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'Roboto',
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: 50.w,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        "/eventDetailWriteChildrenComment",
-                        (route) => false,
-                        arguments: {
-                          "event": event,
-                          "comment": comment,
-                        },
-                      );
-                    },
-                    child: Text(
-                      'Trả lời',
-                      style: TextStyle(
-                        color: Colors.black.withOpacity(0.8),
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Roboto',
+                    Container(
+                      width: 50.w,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          "/eventDetailWriteChildrenComment",
+                              (route) => false,
+                          arguments: {
+                            "event": event,
+                            "comment": comment,
+                          },
+                        );
+                      },
+                      child: Text(
+                        'Trả lời',
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.8),
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Roboto',
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
         Container(
-          padding: EdgeInsets.only(left: 10.w, right: 10.w),
+          padding: EdgeInsets.only(left: 10.w),
           child: Column(
             children: [
               for (int i = 0; i < comment.childrenComment.length; i += 1)
-                Row(
-                  children: [
-                    VerticalDivider(
-                      width: 1,
-                      thickness: 1,
-                      color: Colors.black, // Adjust color as desired
-                    ),
-                    Expanded(
-                      child: Container(
-                          padding: EdgeInsets.only(left: 0.w, right: 10.w),
-                          child: buildCommentWidget(
-                              context, event, comment.childrenComment[i])),
-                    ),
-                  ],
-                )
+                IntrinsicHeight(
+                    child: Row(
+                      children: [
+                        Container(width: 1, color: Colors.black),
+                        // This is divider
+                        Container(
+                            child: buildCommentWidget(context, event,
+                                comment.childrenComment[i], index + 1)),
+                      ],
+                    ))
             ],
           ),
-        )
+        ),
       ],
     ),
   );
@@ -1217,7 +1215,7 @@ Widget participant(BuildContext context, Participant participant) {
                   color: AppColors.primaryText,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w900,
-                  fontFamily: 'Roboto',
+                  fontFamily: AppFonts.Header2,
                 ),
               )
             ],

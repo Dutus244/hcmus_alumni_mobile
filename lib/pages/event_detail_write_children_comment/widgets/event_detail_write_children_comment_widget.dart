@@ -252,7 +252,7 @@ Widget navigation(
                 ),
               ),
               GestureDetector(
-                onTap: func2,
+                onTap: comment != "" ? func2 : (){},
                 child: Container(
                   width: 70.w,
                   height: 30.h,

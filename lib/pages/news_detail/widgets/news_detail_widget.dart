@@ -9,13 +9,11 @@ import 'package:hcmus_alumni_mobile/model/comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_states.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/news_detail_controller.dart';
-import 'package:intl/intl.dart';
 import 'package:popover/popover.dart';
 
 import '../../../common/function/handle_html_content.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
-import '../../../global.dart';
 import '../../../model/news.dart';
 import '../bloc/news_detail_events.dart';
 
@@ -32,7 +30,7 @@ FontSize getContentFontSize(double value) {
     case 80:
       return FontSize.xxLarge;
     default:
-      return FontSize.medium; // Trường hợp mặc định
+      return FontSize.medium;
   }
 }
 
@@ -49,7 +47,7 @@ double getTimeFontSize(double value) {
     case 80:
       return 13.sp;
     default:
-      return 11.sp; // Trường hợp mặc định
+      return 11.sp;
   }
 }
 
@@ -341,7 +339,7 @@ Widget listComment(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             for (int i = 0; i < commentList.length; i += 1)
-              buildCommentWidget(context, news, commentList[i])
+              buildCommentWidget(context, news, commentList[i], 0)
           ],
         ),
         if (news.childrenCommentNumber > 5 &&
@@ -390,7 +388,8 @@ Widget listComment(
   }
 }
 
-Widget buildCommentWidget(BuildContext context, News news, Comment comment) {
+Widget buildCommentWidget(
+    BuildContext context, News news, Comment comment, int index) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.h),
     child: Column(
@@ -461,6 +460,7 @@ Widget buildCommentWidget(BuildContext context, News news, Comment comment) {
         ),
         Container(
           padding: EdgeInsets.only(left: 10.w, right: 10.w),
+          width: (340 - 10 * index).w,
           child: Text(
             comment.content,
             style: TextStyle(
@@ -471,8 +471,9 @@ Widget buildCommentWidget(BuildContext context, News news, Comment comment) {
             ),
           ),
         ),
-        Container(
-          margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 7.h),
+        if (index <= 1)
+          Container(
+          margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -515,7 +516,7 @@ Widget buildCommentWidget(BuildContext context, News news, Comment comment) {
                     onTap: () {
                       Navigator.of(context).pushNamedAndRemoveUntil(
                         "/newsDetailWriteChildrenComment",
-                        (route) => false,
+                            (route) => false,
                         arguments: {
                           "news": news,
                           "comment": comment,
@@ -537,29 +538,25 @@ Widget buildCommentWidget(BuildContext context, News news, Comment comment) {
             ],
           ),
         ),
-        Container(
-          padding: EdgeInsets.only(left: 10.w, right: 10.w),
+        if (comment.childrenComment.length > 0)
+          Container(
+          padding: EdgeInsets.only(left: 10.w, bottom: 10.h),
           child: Column(
             children: [
               for (int i = 0; i < comment.childrenComment.length; i += 1)
-                Row(
+                IntrinsicHeight(
+                    child: Row(
                   children: [
-                    VerticalDivider(
-                      width: 1,
-                      thickness: 1,
-                      color: Colors.black, // Adjust color as desired
-                    ),
-                    Expanded(
-                      child: Container(
-                          padding: EdgeInsets.only(left: 0.w, right: 10.w),
-                          child: buildCommentWidget(
-                              context, news, comment.childrenComment[i])),
-                    ),
+                    Container(width: 1, color: Colors.black),
+                    // This is divider
+                    Container(
+                        child: buildCommentWidget(context, news,
+                            comment.childrenComment[i], index + 1)),
                   ],
-                )
+                ))
             ],
           ),
-        )
+        ),
       ],
     ),
   );
