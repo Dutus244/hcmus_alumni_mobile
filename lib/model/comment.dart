@@ -5,7 +5,7 @@ class Comment {
   final Creator creator;
   final String content;
   final int childrenCommentNumber;
-  late List<Comment> childrenComment = []; // Initialize empty list
+  late List<Comment> childrenComment = [];
   final String createAt;
   final String updateAt;
 

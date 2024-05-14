@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/hof_page_controller.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/widgets/hof_page_widget.dart';
 
 import '../../common/values/colors.dart';
 import '../../common/widgets/app_bar.dart';
 import 'bloc/hof_page_blocs.dart';
-import 'bloc/hof_page_events.dart';
 import 'bloc/hof_page_states.dart';
 
 class HofPage extends StatefulWidget {
@@ -48,12 +46,20 @@ class _HofPageState extends State<HofPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HofPageBloc, HofPageState>(builder: (context, state) {
-      return Scaffold(
-        appBar: buildAppBar(context, 'Gương thành công'),
-        backgroundColor: AppColors.primaryBackground,
-        body: Container(child: listHof(context, _scrollController)),
-      );
-    });
+    return PopScope(
+      canPop: false, // prevent back
+      onPopInvoked: (_) async {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            "/applicationPage", (route) => false,
+            arguments: {"route": 0, "secondRoute": 1});
+      },
+      child: BlocBuilder<HofPageBloc, HofPageState>(builder: (context, state) {
+        return Scaffold(
+          appBar: buildAppBar(context, 'Gương thành công'),
+          backgroundColor: AppColors.primaryBackground,
+          body: Container(child: listHof(context, _scrollController)),
+        );
+      }),
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hcmus_alumni_mobile/pages/advise_page/advise_page.dart';
+import 'package:hcmus_alumni_mobile/pages/advise_page/bloc/advise_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_information/alumni_information.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_information/bloc/alumni_information_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_verification/alumni_verification.dart';
@@ -10,6 +11,7 @@ import 'package:hcmus_alumni_mobile/pages/application_page/application_page.dart
 import 'package:hcmus_alumni_mobile/pages/application_page/bloc/application_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/change_password_forgot/bloc/change_password_forgot_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/change_password_forgot/change_password_forgot.dart';
+import 'package:hcmus_alumni_mobile/pages/edit_post_advise/bloc/edit_post_advise_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/email_verification/bloc/email_verification_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification.dart';
 import 'package:hcmus_alumni_mobile/pages/event_detail/event_detail.dart';
@@ -20,6 +22,8 @@ import 'package:hcmus_alumni_mobile/pages/hof_page/bloc/hof_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/hof_page.dart';
 import 'package:hcmus_alumni_mobile/pages/home_page/bloc/home_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/home_page/home_page.dart';
+import 'package:hcmus_alumni_mobile/pages/list_react_post_advise/bloc/list_interact_post_advise_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/list_react_post_advise/list_interact_post_advise.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/news_detail.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail_write_children_comment/news_detail_write_children_comment.dart';
@@ -32,17 +36,22 @@ import 'package:hcmus_alumni_mobile/pages/splash/bloc/splash_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
 import 'package:hcmus_alumni_mobile/pages/welcome/bloc/welcome_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/welcome/welcome.dart';
+import 'package:hcmus_alumni_mobile/pages/write_post_advise/write_post_advise.dart';
 
+import '../../pages/edit_post_advise/edit_post_advise.dart';
 import '../../pages/event_detail/bloc/event_detail_blocs.dart';
 import '../../pages/event_detail_write_children_comment/bloc/event_detail_write_children_comment_blocs.dart';
 import '../../pages/event_detail_write_children_comment/event_detail_write_children_comment.dart';
 import '../../pages/event_detail_write_comment/bloc/event_detail_write_comment_blocs.dart';
 import '../../pages/event_detail_write_comment/event_detail_write_comment.dart';
 import '../../pages/hof_detail/hof_detail.dart';
+import '../../pages/list_comment_post_advise/bloc/list_comment_post_advise_blocs.dart';
+import '../../pages/list_comment_post_advise/list_comment_post_advise.dart';
 import '../../pages/news_detail_write_children_comment/bloc/news_detail_write_children_comment_blocs.dart';
 import '../../pages/register/bloc/register_blocs.dart';
 import '../../pages/register/register.dart';
 import '../../pages/sign_in/bloc/sign_in_blocs.dart';
+import '../../pages/write_post_advise/bloc/write_post_advise_blocs.dart';
 import 'names.dart';
 
 class AppPages {
@@ -126,7 +135,7 @@ class AppPages {
           route: AppRoutes.ADVISE_PAGE,
           page: const AdvisePage(),
           bloc: BlocProvider(
-            create: (_) => ApplicationPageBloc(),
+            create: (_) => AdvisePageBloc(),
           )),
       PageEntity(
           route: AppRoutes.HOF_PAGE,
@@ -175,6 +184,30 @@ class AppPages {
           page: const HofDetail(),
           bloc: BlocProvider(
             create: (_) => HofDetailBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.WRITE_POST_ADVISE,
+          page: const WritePostAdvise(),
+          bloc: BlocProvider(
+            create: (_) => WritePostAdviseBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.EDIT_POST_ADVISE,
+          page: const EditPostAdvise(),
+          bloc: BlocProvider(
+            create: (_) => EditPostAdviseBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.LIST_INTERACT_POST_ADVISE,
+          page: const ListInteractPostAdvise(),
+          bloc: BlocProvider(
+            create: (_) => ListInteractPostAdviseBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.LIST_COMMENT_POST_ADVISE,
+          page: const ListCommentPostAdvise(),
+          bloc: BlocProvider(
+            create: (_) => ListCommentPostAdviseBloc(),
           )),
     ];
   }
