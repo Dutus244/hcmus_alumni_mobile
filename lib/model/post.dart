@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:hcmus_alumni_mobile/model/faculty.dart';
+import 'package:hcmus_alumni_mobile/model/permissions.dart';
 import 'package:hcmus_alumni_mobile/model/picture.dart';
 import 'package:hcmus_alumni_mobile/model/picture_response.dart';
 import 'package:hcmus_alumni_mobile/model/status.dart';
@@ -22,6 +23,7 @@ class Post {
   final List<Picture> picture;
   late bool isReacted;
   late int reactionCount;
+  final Permissions permissions;
 
   Post(
       this.id,
@@ -35,7 +37,8 @@ class Post {
       this.creator,
       this.picture,
       this.isReacted,
-      this.reactionCount);
+      this.reactionCount,
+      this.permissions);
 
   Post.fromJson(Map<String, dynamic> json)
       : id = json["id"],
@@ -49,5 +52,6 @@ class Post {
         creator = Creator.fromJson(json["creator"]),
         picture = PictureResponse.fromJson(json).picture,
         isReacted = json["isReacted"],
-        reactionCount = json["reactionCount"].toInt();
+        reactionCount = json["reactionCount"].toInt(),
+        permissions = Permissions.fromJson(json['permissions']);
 }

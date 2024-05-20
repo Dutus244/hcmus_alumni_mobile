@@ -49,37 +49,7 @@ class _HofDetailState extends State<HofDetail> {
         return Scaffold(
           appBar: buildAppBar(context, 'Gương thành công'),
           backgroundColor: AppColors.primaryBackground,
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    hofContent(
-                        context,
-                        BlocProvider.of<HofDetailBloc>(context)
-                            .state
-                            .hallOfFame)
-                  ],
-                ),
-              ),
-              // Container nằm dưới cùng của màn hình
-              navigation(() {
-                if (route == 0) {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/applicationPage", (route) => false,
-                      arguments: {"route": route, "secondRoute": 0});
-                } else {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/hofPage",
-                    (route) => false,
-                  );
-                }
-              }),
-            ],
-          ),
+          body: hofDetail(context, route),
         );
       }),
     );

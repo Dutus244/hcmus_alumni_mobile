@@ -30,12 +30,14 @@ class _NewsDetailWriteCommentState extends State<NewsDetailWriteComment> {
   }
 
   late News news;
+  late int route;
 
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
+      route = args["route"];
       news = args["news"];
     }
 
@@ -46,7 +48,7 @@ class _NewsDetailWriteCommentState extends State<NewsDetailWriteComment> {
             "/newsDetail",
             (route) => false,
             arguments: {
-              "route": 1,
+              "route": route,
               "id": news.id,
             },
           );
@@ -56,44 +58,7 @@ class _NewsDetailWriteCommentState extends State<NewsDetailWriteComment> {
           return Scaffold(
             appBar: buildAppBar(context, 'Tin tức'),
             backgroundColor: AppColors.primaryBackground,
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: ListView(
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      header(news),
-                      buildTextField('Bình luận của bạn', 'comment', '',
-                          (value) {
-                        context
-                            .read<NewsDetailWriteCommentBloc>()
-                            .add(CommentEvent(value));
-                      }),
-                    ],
-                  ),
-                ),
-                navigation(
-                    () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        "/newsDetail",
-                        (route) => false,
-                        arguments: {
-                          "route": 1,
-                          "id": news.id,
-                        },
-                      );
-                    },
-                    BlocProvider.of<NewsDetailWriteCommentBloc>(context)
-                        .state
-                        .comment,
-                    () {
-                      NewsDetailWriteCommentController(context: context)
-                          .handleLoadWriteComment(news.id);
-                    }),
-              ],
-            ),
+            body: newsDetailWriteComment(context, news, route),
           );
         }));
   }

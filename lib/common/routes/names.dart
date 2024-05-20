@@ -14,16 +14,31 @@ class AppRoutes {
   static const NEWS_EVENT_PAGE = "/newsEventPage";
   static const ADVISE_PAGE = "/advisePage";
   static const HOF_PAGE = "/hofPage";
+  static const GROUP_PAGE = "/groupPage";
 
   static const NEWS_DETAIL = "/newsDetail";
   static const NEWS_DETAIL_WRITE_COMMENT = "/newsDetailWriteComment";
+  static const NEWS_DETAIL_EDIT_COMMENT = "/newsDetailEditComment";
   static const NEWS_DETAIL_WRITE_CHILDREN_COMMENT = "/newsDetailWriteChildrenComment";
+
   static const EVENT_DETAIL = "/eventDetail";
   static const EVENT_DETAIL_WRITE_COMMENT = "/eventDetailWriteComment";
+  static const EVENT_DETAIL_EDIT_COMMENT = "/eventDetailEditComment";
   static const EVENT_DETAIL_WRITE_CHILDREN_COMMENT = "/eventDetailWriteChildrenComment";
+
   static const HOF_DETAIL = "/hofDetail";
   static const WRITE_POST_ADVISE = "/writePostAdvise";
   static const EDIT_POST_ADVISE = "/editPostAdvise";
   static const LIST_INTERACT_POST_ADVISE = "/listInteractPostAdvise";
   static const LIST_COMMENT_POST_ADVISE = "/listCommentPostAdvise";
+  static const LIST_PICTURE_POST_ADVISE = "/listPicturePostAdvise";
+
+  static const GROUP_DETAIL = "/groupDetail";
+  static const GROUP_INFO = "/groupInfo";
+  static const GROUP_MEMBER = "/groupMember";
+  static const WRITE_POST_GROUP = "/writePostGroup";
+  static const EDIT_POST_GROUP = "/editPostGroup";
+  static const LIST_INTERACT_POST_GROUP = "/listInteractPostGroup";
+  static const LIST_COMMENT_POST_GROUP = "/listCommentPostGroup";
+  static const LIST_PICTURE_POST_GROUP = "/listPicturePostGroup";
 }

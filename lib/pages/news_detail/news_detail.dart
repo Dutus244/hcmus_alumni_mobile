@@ -49,36 +49,7 @@ class _NewsDetailState extends State<NewsDetail> {
         return Scaffold(
           appBar: buildAppBar(context, 'Tin tức'),
           backgroundColor: AppColors.primaryBackground,
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  children: [
-                    newsContent(context,
-                        BlocProvider.of<NewsDetailBloc>(context).state.news),
-                    listComment(
-                        context,
-                        BlocProvider.of<NewsDetailBloc>(context).state.news,
-                        BlocProvider.of<NewsDetailBloc>(context).state.comment),
-                    listRelatedNews(
-                        context,
-                        BlocProvider.of<NewsDetailBloc>(context)
-                            .state
-                            .relatedNews),
-                  ],
-                ),
-              ),
-              // Container nằm dưới cùng của màn hình
-              navigation(() {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/applicationPage", (route) => false,
-                    arguments: {"route": route, "secondRoute": 0});
-              }),
-            ],
-          ),
+          body: newsDetail(context, route),
         );
       }),
     );

@@ -5,6 +5,8 @@ import 'package:hcmus_alumni_mobile/pages/sign_in/bloc/sign_in_blocs.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../sign_in_controller.dart';
+import "../bloc/sign_in_events.dart";
 
 Widget buildTextField(String hintText, String textType, String iconName,
     void Function(String value)? func) {
@@ -65,13 +67,15 @@ Widget buildTextField(String hintText, String textType, String iconName,
       ));
 }
 
-Widget forgotPassword(void Function()? func) {
+Widget forgotPassword(BuildContext context) {
   return Container(
     width: 100.w,
     height: 30.h,
     padding: EdgeInsets.only(left: 15.w),
     child: GestureDetector(
-        onTap: func,
+        onTap: () {
+          Navigator.of(context).pushNamed("/forgotPassword");
+        },
         child: Text(
           "Quên mật khẩu?",
           style: TextStyle(
@@ -127,9 +131,15 @@ Widget rememberLogin(BuildContext context, void Function(bool value)? func) {
 }
 
 Widget buildLogInAndRegButton(
-    String buttonName, String buttonType, void Function()? func) {
+    BuildContext context, String buttonName, String buttonType) {
   return GestureDetector(
-    onTap: func,
+    onTap: () {
+      if (buttonType == "login") {
+        SignInController(context: context).handleSignIn();
+      } else {
+        Navigator.of(context).pushNamed("/register");
+      }
+    },
     child: Container(
       width: 325.w,
       height: 50.h,
@@ -158,6 +168,79 @@ Widget buildLogInAndRegButton(
                   : AppColors.primaryElement),
         ),
       ),
+    ),
+  );
+}
+
+Widget signIn(BuildContext context) {
+  return SingleChildScrollView(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: 25.w, right: 25.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 230.w,
+                  height: 230.w,
+                  child: Image.asset(
+                    "assets/images/logos/logo.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Center(
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: 15.h),
+                    child: Text(
+                      "ĐĂNG NHẬP",
+                      style: TextStyle(
+                        fontFamily: AppFonts.Header0,
+                        color: AppColors.primaryText,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17.sp,
+                      ),
+                    ),
+                  )),
+              SizedBox(
+                height: 5.h,
+              ),
+              buildTextField("Email *", "email", "email", (value) {
+                context.read<SignInBloc>().add(EmailEvent(value));
+              }),
+              SizedBox(
+                height: 5.h,
+              ),
+              buildTextField("Mật khẩu *", "password", "lock",
+                      (value) {
+                    context.read<SignInBloc>().add(PasswordEvent(value));
+                  }),
+            ],
+          ),
+        ),
+        Container(
+          padding:
+          EdgeInsets.only(left: 25.w, right: 25.w, top: 10.h),
+          height: 24.h,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              rememberLogin(context, (value) {
+                context
+                    .read<SignInBloc>()
+                    .add(RememberLoginEvent(value));
+              }),
+              forgotPassword(context),
+            ],
+          ),
+        ),
+        buildLogInAndRegButton(context, "ĐĂNG NHẬP", "login"),
+        buildLogInAndRegButton(context, "ĐĂNG KÝ", "register"),
+      ],
     ),
   );
 }

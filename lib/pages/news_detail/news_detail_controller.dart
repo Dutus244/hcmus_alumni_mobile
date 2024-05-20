@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hcmus_alumni_mobile/model/comment.dart';
@@ -160,5 +161,52 @@ class NewsDetailController {
         context.read<NewsDetailBloc>().add(RelatedNewsEvent(newsResponse.news));
       } else {}
     } catch (error, stacktrace) {}
+  }
+
+  Future<void> handleDeleteComment(String id, String commentId) async {
+    final shouldDelte = await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Xoá bình luận'),
+        content: Text('Bạn có muốn xoá bình luận này?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text('Huỷ'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text('Xoá'),
+          ),
+        ],
+      ),
+    );
+    if (shouldDelte != null && shouldDelte) {
+      var apiUrl = dotenv.env['API_URL'];
+      var endpoint = '/news/comments/$commentId';
+
+      var token = Global.storageService.getUserAuthToken();
+
+      var headers = <String, String>{
+        'Authorization': 'Bearer $token',
+        "Content-Type": "application/json"
+      };
+
+      try {
+        var url = Uri.parse('$apiUrl$endpoint');
+
+        var response = await http.delete(url, headers: headers);
+
+        if (response.statusCode == 200) {
+          NewsDetailController(context: context).handleGetNews(id);
+          NewsDetailController(context: context).handleGetComment(id, 0);
+        } else {
+          // Handle other status codes if needed
+        }
+      } catch (error, stacktrace) {
+        // Handle errors
+      }
+    }
+    return shouldDelte ?? false;
   }
 }

@@ -266,7 +266,7 @@ Widget newsContent(BuildContext context, News? news) {
 }
 
 Widget listComment(
-    BuildContext context, News? news, List<Comment> commentList) {
+    BuildContext context, News? news, List<Comment> commentList, int route) {
   if (news == null) {
     return Column(
       children: [],
@@ -282,6 +282,7 @@ Widget listComment(
               "/newsDetailWriteComment",
               (route) => false,
               arguments: {
+                "route": route,
                 "news": news,
               },
             );
@@ -339,7 +340,7 @@ Widget listComment(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             for (int i = 0; i < commentList.length; i += 1)
-              buildCommentWidget(context, news, commentList[i], 0)
+              buildCommentWidget(context, news, commentList[i], 0, route)
           ],
         ),
         if (news.childrenCommentNumber > 5 &&
@@ -389,7 +390,7 @@ Widget listComment(
 }
 
 Widget buildCommentWidget(
-    BuildContext context, News news, Comment comment, int index) {
+    BuildContext context, News news, Comment comment, int index, int route) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.h),
     child: Column(
@@ -473,90 +474,144 @@ Widget buildCommentWidget(
         ),
         if (index <= 1)
           Container(
-          margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      NewsDetailController(context: context)
-                          .handleGetChildrenComment(comment.id);
-                    },
-                    child: Container(
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/comment.svg",
-                            width: 11.w,
-                            height: 11.h,
-                            color: Colors.black.withOpacity(0.8),
-                          ),
-                          Container(
-                            width: 3.w,
-                          ),
-                          Text(
-                            "${comment.childrenCommentNumber.toString()} trả lời",
-                            style: TextStyle(
+            margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        NewsDetailController(context: context)
+                            .handleGetChildrenComment(comment.id);
+                      },
+                      child: Container(
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/comment.svg",
+                              width: 11.w,
+                              height: 11.h,
                               color: Colors.black.withOpacity(0.8),
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.normal,
-                              fontFamily: 'Roboto',
                             ),
-                          )
+                            Container(
+                              width: 3.w,
+                            ),
+                            Text(
+                              "${comment.childrenCommentNumber.toString()} trả lời",
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'Roboto',
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 50.w,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          "/newsDetailWriteChildrenComment",
+                          (route) => false,
+                          arguments: {
+                            "route": route,
+                            "news": news,
+                            "comment": comment,
+                          },
+                        );
+                      },
+                      child: Text(
+                        'Trả lời',
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.8),
+                          fontSize: 11.sp,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Roboto',
+                        ),
+                      ),
+                    ),
+                    if (comment.permissions.edit)
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                "/newsDetailEditComment",
+                                (route) => false,
+                                arguments: {
+                                  "route": route,
+                                  "news": news,
+                                  "comment": comment,
+                                },
+                              );
+                            },
+                            child: Text(
+                              'Chỉnh sửa',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                  ),
-                  Container(
-                    width: 50.w,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        "/newsDetailWriteChildrenComment",
-                            (route) => false,
-                        arguments: {
-                          "news": news,
-                          "comment": comment,
-                        },
-                      );
-                    },
-                    child: Text(
-                      'Trả lời',
-                      style: TextStyle(
-                        color: Colors.black.withOpacity(0.8),
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: 'Roboto',
+                    if (comment.permissions.delete)
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              NewsDetailController(context: context)
+                                  .handleDeleteComment(news.id, comment.id);
+                            },
+                            child: Text(
+                              'Xoá',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
         if (comment.childrenComment.length > 0)
           Container(
-          padding: EdgeInsets.only(left: 10.w, bottom: 10.h),
-          child: Column(
-            children: [
-              for (int i = 0; i < comment.childrenComment.length; i += 1)
-                IntrinsicHeight(
-                    child: Row(
-                  children: [
-                    Container(width: 1, color: Colors.black),
-                    // This is divider
-                    Container(
-                        child: buildCommentWidget(context, news,
-                            comment.childrenComment[i], index + 1)),
-                  ],
-                ))
-            ],
+            padding: EdgeInsets.only(left: 10.w, bottom: 10.h),
+            child: Column(
+              children: [
+                for (int i = 0; i < comment.childrenComment.length; i += 1)
+                  IntrinsicHeight(
+                      child: Row(
+                    children: [
+                      Container(width: 1, color: Colors.black),
+                      // This is divider
+                      Container(
+                          child: buildCommentWidget(context, news,
+                              comment.childrenComment[i], index + 1, route)),
+                    ],
+                  ))
+              ],
+            ),
           ),
-        ),
       ],
     ),
   );
@@ -780,7 +835,7 @@ Widget news(BuildContext context, News news) {
   );
 }
 
-Widget navigation(void Function()? func) {
+Widget navigation(BuildContext context, int route) {
   return Container(
     height: 45.h,
     child: Column(
@@ -795,7 +850,11 @@ Widget navigation(void Function()? func) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: func,
+                onTap: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      "/applicationPage", (route) => false,
+                      arguments: {"route": route, "secondRoute": 0});
+                },
                 child: SvgPicture.asset(
                   "assets/icons/back.svg",
                   width: 25.w,
@@ -1097,4 +1156,31 @@ class _ButtonEditTextState extends State<ButtonEditText> {
       ),
     );
   }
+}
+
+Widget newsDetail(BuildContext context, int route) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Expanded(
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: [
+            newsContent(
+                context, BlocProvider.of<NewsDetailBloc>(context).state.news),
+            listComment(
+                context,
+                BlocProvider.of<NewsDetailBloc>(context).state.news,
+                BlocProvider.of<NewsDetailBloc>(context).state.comment,
+                route),
+            listRelatedNews(context,
+                BlocProvider.of<NewsDetailBloc>(context).state.relatedNews),
+          ],
+        ),
+      ),
+      // Container nằm dưới cùng của màn hình
+      navigation(context, route),
+    ],
+  );
 }

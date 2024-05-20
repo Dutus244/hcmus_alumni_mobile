@@ -55,6 +55,7 @@ class AdvisePageController {
         // Pass the Map to the fromJson method
         var postResponse = PostResponse.fromJson(jsonMap);
         if (postResponse.post.isEmpty) {
+          context.read<AdvisePageBloc>().add(PostEvent(postResponse.post));
           context.read<AdvisePageBloc>().add(HasReachedMaxPostEvent(true));
           context.read<AdvisePageBloc>().add(StatusPostEvent(Status.success));
           return;
@@ -134,7 +135,7 @@ class AdvisePageController {
       context: context,
       builder: (context) => AlertDialog(
         title: Text('Xoá bài viết'),
-        content: Text('Bạn có muốn Xoá bài viết này?'),
+        content: Text('Bạn có muốn xoá bài viết này?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -147,7 +148,7 @@ class AdvisePageController {
         ],
       ),
     );
-    if (shouldDelte) {
+    if (shouldDelte != null && shouldDelte) {
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/counsel/$id';
 

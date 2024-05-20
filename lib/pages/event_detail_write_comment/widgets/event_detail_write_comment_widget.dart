@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -7,6 +8,9 @@ import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../global.dart';
 import '../../../model/event.dart';
+import '../bloc/event_detail_write_comment_blocs.dart';
+import '../bloc/event_detail_write_comment_events.dart';
+import '../event_detail_write_comment_controller.dart';
 
 Widget buildTextField(String hintText, String textType, String iconName,
     void Function(String value)? func) {
@@ -121,8 +125,10 @@ Widget header(Event event) {
   );
 }
 
-Widget navigation(
-    void Function()? func1, String comment, void Function()? func2) {
+Widget navigation(BuildContext context, Event event, int route) {
+  String comment = BlocProvider.of<EventDetailWriteCommentBloc>(context)
+      .state
+      .comment;
   return Container(
     height: 45.h,
     child: Column(
@@ -133,7 +139,16 @@ Widget navigation(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: func1,
+                onTap: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/eventDetail",
+                        (route) => false,
+                    arguments: {
+                      "route": route,
+                      "id": event.id,
+                    },
+                  );
+                },
                 child: SvgPicture.asset(
                   "assets/icons/back.svg",
                   width: 25.w,
@@ -142,7 +157,12 @@ Widget navigation(
                 ),
               ),
               GestureDetector(
-                onTap:comment != "" ? func2 : (){},
+                onTap: () {
+                  if (comment != "") {
+                    EventDetailWriteCommentController(context: context)
+                        .handleLoadWriteComment(event.id, route);
+                  }
+                },
                 child: Container(
                   width: 70.w,
                   height: 30.h,
@@ -191,5 +211,29 @@ Widget navigation(
         )
       ],
     ),
+  );
+}
+
+Widget eventDetailWriteComment(BuildContext context, Event event, int route) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Expanded(
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: [
+            header(event),
+            buildTextField('Bình luận của bạn', 'comment', '',
+                    (value) {
+                  context
+                      .read<EventDetailWriteCommentBloc>()
+                      .add(CommentEvent(value));
+                }),
+          ],
+        ),
+      ),
+      navigation(context, event, route),
+    ],
   );
 }

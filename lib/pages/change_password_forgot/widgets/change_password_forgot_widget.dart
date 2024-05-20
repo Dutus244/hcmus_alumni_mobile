@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../bloc/change_password_forgot_blocs.dart';
+import '../bloc/change_password_forgot_events.dart';
+import '../change_password_forgot_controller.dart';
 
 Widget buildTextField(String hintText, String textType, String iconName,
     void Function(String value)? func) {
@@ -62,9 +66,15 @@ Widget buildTextField(String hintText, String textType, String iconName,
 }
 
 Widget buildLogInAndRegButton(
-    String buttonName, String buttonType, void Function()? func) {
+    BuildContext context, String buttonName, String buttonType) {
   return GestureDetector(
-    onTap: func,
+    onTap: () {
+      if (buttonType == "change") {
+        ChangePasswordForgotController(context: context).hanldeChangePassword();
+      } else {
+        Navigator.of(context).pushNamed("forgotPassword");
+      }
+    },
     child: Container(
       width: 325.w,
       height: 50.h,
@@ -93,6 +103,66 @@ Widget buildLogInAndRegButton(
                   : AppColors.primaryElement),
         ),
       ),
+    ),
+  );
+}
+
+Widget changePassword(BuildContext context) {
+  return SingleChildScrollView(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: 25.w, right: 25.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 230.w,
+                  height: 230.w,
+                  child: Image.asset(
+                    "assets/images/logos/logo.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Center(
+                  child: Container(
+                padding: EdgeInsets.only(bottom: 15.h),
+                child: Text(
+                  "THAY ĐỔI MẬT KHẨU",
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header0,
+                    color: AppColors.primaryText,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17.sp,
+                  ),
+                ),
+              )),
+              SizedBox(
+                height: 5.h,
+              ),
+              buildTextField("Mật khẩu mới *", "password", "lock", (value) {
+                context
+                    .read<ChangePasswordForgotBloc>()
+                    .add(PasswordEvent(value));
+              }),
+              SizedBox(
+                height: 5.h,
+              ),
+              buildTextField("Nhập lại mật khẩu mới *", "password", "lock",
+                  (value) {
+                context
+                    .read<ChangePasswordForgotBloc>()
+                    .add(RePasswordEvent(value));
+              }),
+            ],
+          ),
+        ),
+        buildLogInAndRegButton(context, "THAY ĐỔI", "change"),
+        buildLogInAndRegButton(context, "THOÁT", "back"),
+      ],
     ),
   );
 }

@@ -12,7 +12,7 @@ class News {
   final String content;
   final String thumbnail;
   final int views;
-  final int childrenCommentNumber;
+  late int childrenCommentNumber;
   final String updateAt;
   final String publishedAt;
   final List<Tags> tags;

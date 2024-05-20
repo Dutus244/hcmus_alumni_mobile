@@ -105,7 +105,7 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có dữ liệu',
+                          'Không có bài viết',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 11.sp,
@@ -177,90 +177,92 @@ class _ButtonOptionPostState extends State<ButtonOptionPost> {
           context: context,
           bodyBuilder: (context) =>
               BlocBuilder<AdvisePageBloc, AdvisePageState>(
-                builder: (context, state) {
-                  return Container(
-                    width: 130.w,
-                    height: 45.h,
-                    child: Container(
-                      margin: EdgeInsets.only(left: 5.w, right: 5.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 5.h,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                "/editPostAdvise",
-                                    (route) => false,
-                                arguments: {
-                                  "route": 2,
-                                  "post": post,
-                                },
-                              );
-                            },
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/edit.svg",
-                                  width: 16.w,
-                                  height: 16.h,
-                                  color: AppColors.primarySecondaryText,
-                                ),
-                                Container(
-                                  width: 5.w,
-                                ),
-                                Text(
-                                  'Chỉnh sửa bài viết',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: AppFonts.Header2,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 16.sp,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 10.h,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              AdvisePageController(context: context)
-                                  .handleDeletePost(post.id);
-                            },
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/trash.svg",
-                                  width: 16.w,
-                                  height: 16.h,
-                                  color: AppColors.primarySecondaryText,
-                                ),
-                                Container(
-                                  width: 5.w,
-                                ),
-                                Text(
-                                  'Xoá bài viết',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: AppFonts.Header2,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 16.sp,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+            builder: (context, state) {
+              return Container(
+                width: 130.w,
+                height: 45.h,
+                child: Container(
+                  margin: EdgeInsets.only(left: 5.w, right: 5.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 5.h,
                       ),
-                    ),
-                  );
-                },
-              ),
+                      if (post.permissions.edit)
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              "/editPostAdvise",
+                              (route) => false,
+                              arguments: {
+                                "route": 2,
+                                "post": post,
+                              },
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/edit.svg",
+                                width: 16.w,
+                                height: 16.h,
+                                color: AppColors.primarySecondaryText,
+                              ),
+                              Container(
+                                width: 5.w,
+                              ),
+                              Text(
+                                'Chỉnh sửa bài viết',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: AppFonts.Header2,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 16.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      Container(
+                        height: 10.h,
+                      ),
+                      if (post.permissions.delete)
+                        GestureDetector(
+                          onTap: () {
+                            AdvisePageController(context: context)
+                                .handleDeletePost(post.id);
+                          },
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/trash.svg",
+                                width: 16.w,
+                                height: 16.h,
+                                color: AppColors.primarySecondaryText,
+                              ),
+                              Container(
+                                width: 5.w,
+                              ),
+                              Text(
+                                'Xoá bài viết',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: AppFonts.Header2,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 16.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
           onPop: () {},
           direction: PopoverDirection.bottom,
           width: 170.w,
@@ -324,7 +326,7 @@ Widget post(BuildContext context, Post post) {
                     Row(
                       children: [
                         Text(
-                          handleDatetime(post.publishedAt),
+                          timePost(post.publishedAt),
                           maxLines: 1,
                           style: TextStyle(
                             fontFamily: AppFonts.Header3,
@@ -338,7 +340,8 @@ Widget post(BuildContext context, Post post) {
                   ],
                 ),
               ),
-              ButtonOptionPost(post),
+              if (post.permissions.edit || post.permissions.delete)
+                ButtonOptionPost(post),
             ],
           ),
         ),
@@ -401,250 +404,306 @@ Widget post(BuildContext context, Post post) {
           height: 5.h,
         ),
         if (post.picture.length == 1)
-          Container(
-            width: 340.w,
-            height: 240.h,
-            margin: EdgeInsets.only(left: 10.w, right: 10.w),
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage(post.picture[0].pictureUrl),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/listPicturePostAdvise",
+                (route) => false,
+                arguments: {
+                  "post": post,
+                },
+              );
+            },
+            child: Container(
+              width: 340.w,
+              height: 240.h,
+              margin: EdgeInsets.only(left: 10.w, right: 10.w),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(post.picture[0].pictureUrl),
+                ),
               ),
             ),
           ),
         if (post.picture.length == 2)
-          Container(
-            margin: EdgeInsets.only(left: 10.w, right: 10.w),
-            child: Column(
-              children: [
-                Container(
-                  width: 340.w,
-                  height: 120.h,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(post.picture[0].pictureUrl),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/listPicturePostAdvise",
+                (route) => false,
+                arguments: {
+                  "post": post,
+                },
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.only(left: 10.w, right: 10.w),
+              child: Column(
+                children: [
+                  Container(
+                    width: 340.w,
+                    height: 120.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(post.picture[0].pictureUrl),
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  width: 340.w,
-                  height: 120.h,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(post.picture[1].pictureUrl),
+                  Container(
+                    width: 340.w,
+                    height: 120.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(post.picture[1].pictureUrl),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         if (post.picture.length == 3)
-          Container(
-            child: Column(
-              children: [
-                Container(
-                  width: 340.w,
-                  height: 120.h,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(post.picture[0].pictureUrl),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/listPicturePostAdvise",
+                (route) => false,
+                arguments: {
+                  "post": post,
+                },
+              );
+            },
+            child: Container(
+              child: Column(
+                children: [
+                  Container(
+                    width: 340.w,
+                    height: 120.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(post.picture[0].pictureUrl),
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 170.w,
-                        height: 120.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(post.picture[1].pictureUrl),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 170.w,
+                          height: 120.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(post.picture[1].pictureUrl),
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: 170.w,
-                        height: 120.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(post.picture[2].pictureUrl),
+                        Container(
+                          width: 170.w,
+                          height: 120.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(post.picture[2].pictureUrl),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         if (post.picture.length == 4)
-          Container(
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 170.w,
-                        height: 120.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(post.picture[0].pictureUrl),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/listPicturePostAdvise",
+                (route) => false,
+                arguments: {
+                  "post": post,
+                },
+              );
+            },
+            child: Container(
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 170.w,
+                          height: 120.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(post.picture[0].pictureUrl),
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: 170.w,
-                        height: 120.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(post.picture[1].pictureUrl),
+                        Container(
+                          width: 170.w,
+                          height: 120.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(post.picture[1].pictureUrl),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 170.w,
-                        height: 120.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(post.picture[2].pictureUrl),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 170.w,
+                          height: 120.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(post.picture[2].pictureUrl),
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: 170.w,
-                        height: 120.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(post.picture[3].pictureUrl),
+                        Container(
+                          width: 170.w,
+                          height: 120.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(post.picture[3].pictureUrl),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         if (post.picture.length == 5)
-          Container(
-            child: Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 170.w,
-                        height: 120.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(post.picture[0].pictureUrl),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 170.w,
-                        height: 120.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(post.picture[1].pictureUrl),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 170.w,
-                        height: 120.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(post.picture[2].pictureUrl),
-                          ),
-                        ),
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(post.picture[3].pictureUrl),
-                              ),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/listPicturePostAdvise",
+                (route) => false,
+                arguments: {
+                  "post": post,
+                },
+              );
+            },
+            child: Container(
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 170.w,
+                          height: 120.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(post.picture[0].pictureUrl),
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Container(
+                        ),
+                        Container(
+                          width: 170.w,
+                          height: 120.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(post.picture[1].pictureUrl),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 170.w,
+                          height: 120.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(post.picture[2].pictureUrl),
+                            ),
+                          ),
+                        ),
+                        Stack(
+                          children: [
+                            Container(
                               width: 170.w,
                               height: 120.h,
                               decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
-                                color: Color.fromARGB(255, 24, 59, 86)
-                                    .withOpacity(0.5),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image:
+                                      NetworkImage(post.picture[3].pictureUrl),
+                                ),
                               ),
-                              child: Center(
-                                child: Text(
-                                  '+1',
-                                  style: TextStyle(
-                                    fontFamily: AppFonts.Header2,
-                                    fontSize: 32.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.primaryBackground,
+                            ),
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Container(
+                                width: 170.w,
+                                height: 120.h,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  color: Color.fromARGB(255, 24, 59, 86)
+                                      .withOpacity(0.5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '+1',
+                                    style: TextStyle(
+                                      fontFamily: AppFonts.Header2,
+                                      fontSize: 32.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primaryBackground,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         Container(
@@ -791,7 +850,16 @@ Widget post(BuildContext context, Post post) {
               ),
               Center(
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      "/listCommentPostAdvise",
+                          (route) => false,
+                      arguments: {
+                        "route": 1,
+                        "id": post.id,
+                      },
+                    );
+                  },
                   child: Container(
                     margin: EdgeInsets.only(right: 40.w),
                     child: Row(

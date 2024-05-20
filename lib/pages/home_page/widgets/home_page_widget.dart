@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
@@ -10,6 +11,7 @@ import 'package:intl/intl.dart';
 import '../../../global.dart';
 import '../../../model/hall_of_fame.dart';
 import '../../../model/news.dart';
+import '../bloc/home_page_blocs.dart';
 
 Widget listEvent(BuildContext context, List<Event> eventList) {
   return Container(
@@ -620,7 +622,7 @@ Widget advise(BuildContext context) {
                 onTap: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     "/writePostAdvise",
-                        (route) => false,
+                    (route) => false,
                     arguments: {
                       "route": 0,
                     },
@@ -655,4 +657,23 @@ Widget advise(BuildContext context) {
       ],
     ),
   );
+}
+
+Widget homePage(BuildContext context) {
+  return ListView(scrollDirection: Axis.vertical, children: [
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        listEvent(context, BlocProvider.of<HomePageBloc>(context).state.event),
+        listNews(context, BlocProvider.of<HomePageBloc>(context).state.news),
+        Container(
+          height: 5.h,
+        ),
+        listHof(
+            context, BlocProvider.of<HomePageBloc>(context).state.hallOfFame),
+        advise(context),
+      ],
+    ),
+  ]);
 }

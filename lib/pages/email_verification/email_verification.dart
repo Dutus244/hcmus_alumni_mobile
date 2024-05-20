@@ -41,78 +41,7 @@ class _EmailVerificationState extends State<EmailVerification> {
           child: SafeArea(
               child: Scaffold(
             backgroundColor: AppColors.primaryBackground,
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(left: 25.w, right: 25.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Container(
-                            width: 230.w,
-                            height: 230.w,
-                            child: Image.asset(
-                              "assets/images/logos/logo.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Center(
-                            child: Container(
-                          padding: EdgeInsets.only(bottom: 5.h),
-                          child: Text(
-                            "XÁC THỰC NGƯỜI DÙNG",
-                            style: TextStyle(
-                              fontFamily: AppFonts.Header0,
-                              color: AppColors.primaryText,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17.sp,
-                            ),
-                          ),
-                        )),
-                        Center(
-                            child: Container(
-                          padding: EdgeInsets.only(left: 5.w, right: 5.w),
-                          child: Text(
-                            "Mã xác thực đã được gửi đến ${Global.storageService.getUserEmail()}",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: AppFonts.Header3,
-                              color: AppColors.primaryElement,
-                              fontWeight: FontWeight.normal,
-                              fontStyle: FontStyle.italic,
-                              fontSize: 11.sp,
-                            ),
-                          ),
-                        )),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        buildTextField("Mã xác thực  *", "code", "send",
-                            (value) {
-                          context
-                              .read<EmailVerificationBloc>()
-                              .add(CodeEvent(value));
-                        }, () {
-                          EmailVerificationController(context: context)
-                              .handleResendCode();
-                        }),
-                      ],
-                    ),
-                  ),
-                  buildVerifyAndBackButton("XÁC THỰC", "verify", () {
-                    EmailVerificationController(context: context)
-                        .handleEmailVerification();
-                  }),
-                  buildVerifyAndBackButton("TRỞ VỀ", "back", () {
-                    Navigator.of(context).pushNamed("/register");
-                  }),
-                ],
-              ),
-            ),
+            body: emailVerification(context),
           )),
         );
       }),

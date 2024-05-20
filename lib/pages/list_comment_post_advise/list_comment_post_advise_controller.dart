@@ -252,8 +252,8 @@ class ListCommentPostAdviseController {
     final shouldDelte = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Xoá bài viết'),
-        content: Text('Bạn có muốn Xoá bài viết này?'),
+        title: Text('Xoá bình luận'),
+        content: Text('Bạn có muốn xoá bình luận này?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -266,7 +266,7 @@ class ListCommentPostAdviseController {
         ],
       ),
     );
-    if (shouldDelte) {
+    if (shouldDelte != null && shouldDelte) {
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/counsel/comments/$commentId';
 

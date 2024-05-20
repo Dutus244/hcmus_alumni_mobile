@@ -17,29 +17,48 @@ import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification.
 import 'package:hcmus_alumni_mobile/pages/event_detail/event_detail.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/bloc/forgot_password_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/forgot_password.dart';
+import 'package:hcmus_alumni_mobile/pages/group_detail/bloc/group_detail_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/group_detail/group_detail.dart';
+import 'package:hcmus_alumni_mobile/pages/group_info/group_info.dart';
+import 'package:hcmus_alumni_mobile/pages/group_member/bloc/group_member_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/group_member/group_member.dart';
+import 'package:hcmus_alumni_mobile/pages/group_page/bloc/group_page_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/group_page/group_page.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_detail/bloc/hof_detail_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/bloc/hof_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/hof_page.dart';
 import 'package:hcmus_alumni_mobile/pages/home_page/bloc/home_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/home_page/home_page.dart';
+import 'package:hcmus_alumni_mobile/pages/list_comment_post_group/bloc/list_comment_post_group_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/list_comment_post_group/list_comment_post_group.dart';
+import 'package:hcmus_alumni_mobile/pages/list_picture_post_advise/list_picture_post_advise.dart';
 import 'package:hcmus_alumni_mobile/pages/list_react_post_advise/bloc/list_interact_post_advise_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/list_react_post_advise/list_interact_post_advise.dart';
+import 'package:hcmus_alumni_mobile/pages/list_react_post_group/bloc/list_interact_post_group_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/list_react_post_group/list_interact_post_group.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/news_detail.dart';
+import 'package:hcmus_alumni_mobile/pages/news_detail_edit_comment/bloc/news_detail_edit_comment_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/news_detail_edit_comment/news_detail_edit_comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail_write_children_comment/news_detail_write_children_comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/bloc/news_detail_write_comment_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/news_detail_write_comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/news_event_page.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in.dart';
-import 'package:hcmus_alumni_mobile/pages/splash/bloc/splash_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
 import 'package:hcmus_alumni_mobile/pages/welcome/bloc/welcome_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/welcome/welcome.dart';
 import 'package:hcmus_alumni_mobile/pages/write_post_advise/write_post_advise.dart';
+import 'package:hcmus_alumni_mobile/pages/write_post_group/bloc/write_post_group_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/write_post_group/write_post_group.dart';
 
 import '../../pages/edit_post_advise/edit_post_advise.dart';
+import '../../pages/edit_post_group/bloc/edit_post_group_blocs.dart';
+import '../../pages/edit_post_group/edit_post_group.dart';
 import '../../pages/event_detail/bloc/event_detail_blocs.dart';
+import '../../pages/event_detail_edit_comment/bloc/event_detail_edit_comment_blocs.dart';
+import '../../pages/event_detail_edit_comment/event_detail_edit_comment.dart';
 import '../../pages/event_detail_write_children_comment/bloc/event_detail_write_children_comment_blocs.dart';
 import '../../pages/event_detail_write_children_comment/event_detail_write_children_comment.dart';
 import '../../pages/event_detail_write_comment/bloc/event_detail_write_comment_blocs.dart';
@@ -47,6 +66,7 @@ import '../../pages/event_detail_write_comment/event_detail_write_comment.dart';
 import '../../pages/hof_detail/hof_detail.dart';
 import '../../pages/list_comment_post_advise/bloc/list_comment_post_advise_blocs.dart';
 import '../../pages/list_comment_post_advise/list_comment_post_advise.dart';
+import '../../pages/list_picture_post_group/list_picture_post_group.dart';
 import '../../pages/news_detail_write_children_comment/bloc/news_detail_write_children_comment_blocs.dart';
 import '../../pages/register/bloc/register_blocs.dart';
 import '../../pages/register/register.dart';
@@ -59,10 +79,7 @@ class AppPages {
     return [
       PageEntity(
           route: AppRoutes.SPLASH,
-          page: const Splash(),
-          bloc: BlocProvider(
-            create: (_) => SplashBloc(),
-          )),
+          page: const Splash()),
       PageEntity(
           route: AppRoutes.WELCOME,
           page: const Welcome(),
@@ -144,6 +161,14 @@ class AppPages {
             create: (_) => HofPageBloc(),
           )),
       PageEntity(
+          route: AppRoutes.GROUP_PAGE,
+          page: GroupPage(
+            page: 0,
+          ),
+          bloc: BlocProvider(
+            create: (_) => GroupPageBloc(),
+          )),
+      PageEntity(
           route: AppRoutes.NEWS_DETAIL,
           page: const NewsDetail(),
           bloc: BlocProvider(
@@ -154,6 +179,12 @@ class AppPages {
           page: const NewsDetailWriteComment(),
           bloc: BlocProvider(
             create: (_) => NewsDetailWriteCommentBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.NEWS_DETAIL_EDIT_COMMENT,
+          page: const NewsDetailEditComment(),
+          bloc: BlocProvider(
+            create: (_) => NewsDetailEditCommentBloc(),
           )),
       PageEntity(
           route: AppRoutes.NEWS_DETAIL_WRITE_CHILDREN_COMMENT,
@@ -172,6 +203,12 @@ class AppPages {
           page: const EventDetailWriteComment(),
           bloc: BlocProvider(
             create: (_) => EventDetailWriteCommentBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.EVENT_DETAIL_EDIT_COMMENT,
+          page: const EventDetailEditComment(),
+          bloc: BlocProvider(
+            create: (_) => EventDetailEditCommentBloc(),
           )),
       PageEntity(
           route: AppRoutes.EVENT_DETAIL_WRITE_CHILDREN_COMMENT,
@@ -209,6 +246,52 @@ class AppPages {
           bloc: BlocProvider(
             create: (_) => ListCommentPostAdviseBloc(),
           )),
+      PageEntity(
+          route: AppRoutes.LIST_PICTURE_POST_ADVISE,
+          page: const ListPicturePostAdvise()),
+      PageEntity(
+          route: AppRoutes.GROUP_DETAIL,
+          page: const GroupDetail(),
+          bloc: BlocProvider(
+            create: (_) => GroupDetailBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.GROUP_INFO,
+          page: const GroupInfo(),
+          ),
+      PageEntity(
+          route: AppRoutes.GROUP_MEMBER,
+          page: const GroupMember(),
+          bloc: BlocProvider(
+            create: (_) => GroupMemberBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.WRITE_POST_GROUP,
+          page: const WritePostGroup(),
+          bloc: BlocProvider(
+            create: (_) => WritePostGroupBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.EDIT_POST_GROUP,
+          page: const EditPostGroup(),
+          bloc: BlocProvider(
+            create: (_) => EditPostGroupBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.LIST_INTERACT_POST_GROUP,
+          page: const ListInteractPostGroup(),
+          bloc: BlocProvider(
+            create: (_) => ListInteractPostGroupBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.LIST_COMMENT_POST_GROUP,
+          page: const ListCommentPostGroup(),
+          bloc: BlocProvider(
+            create: (_) => ListCommentPostGroupBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.LIST_PICTURE_POST_GROUP,
+          page: const ListPicturePostGroup()),
     ];
   }
 

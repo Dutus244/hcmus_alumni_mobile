@@ -14,7 +14,7 @@ class EventDetailWriteCommentController {
 
   const EventDetailWriteCommentController({required this.context});
 
-  Future<void> handleLoadWriteComment(String id) async {
+  Future<void> handleLoadWriteComment(String id, int route) async {
     final state = context.read<EventDetailWriteCommentBloc>().state;
     String comment = state.comment;
     var apiUrl = dotenv.env['API_URL'];
@@ -34,7 +34,7 @@ class EventDetailWriteCommentController {
           "/eventDetail",
           (route) => false,
           arguments: {
-            "route": 1,
+            "route": route,
             "id": id,
           },
         );

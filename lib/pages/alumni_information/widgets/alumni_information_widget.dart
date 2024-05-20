@@ -9,6 +9,7 @@ import 'dart:io';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../alumni_information_controller.dart';
 
 Widget buildTextField(String hintText, String textType, String iconName,
     void Function(String value)? func) {
@@ -67,9 +68,11 @@ Widget buildTextField(String hintText, String textType, String iconName,
 }
 
 Widget buildLogInAndRegButton(
-    String buttonName, String buttonType, void Function()? func) {
+    BuildContext context, String buttonName, String buttonType) {
   return GestureDetector(
-    onTap: func,
+    onTap: () {
+      AlumniInformationController(context: context).hanldeAlumniInformation();
+    },
     child: Container(
       width: 325.w,
       height: 50.h,
@@ -194,6 +197,74 @@ void _showPickOptionsDialog(
           )
         ],
       ),
+    ),
+  );
+}
+
+Widget alumniInformation(BuildContext context) {
+  return SingleChildScrollView(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: 25.w, right: 25.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 230.w,
+                  height: 230.w,
+                  child: Image.asset(
+                    "assets/images/logos/logo.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Center(
+                  child: Container(
+                padding: EdgeInsets.only(bottom: 5.h),
+                child: Text(
+                  "BẮT ĐẦU",
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: AppColors.primaryText,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17.sp,
+                  ),
+                ),
+              )),
+              Center(
+                  child: Container(
+                padding: EdgeInsets.only(bottom: 10.h),
+                child: Text(
+                  "Hãy thiết lập hồ sơ của bạn. Những thông tin này sẽ giúp chúng tôi xét duyệt tài khoản của bạn.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: AppColors.primaryText,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              )),
+              SizedBox(
+                height: 5.h,
+              ),
+              chooseAvatar(context, (value) {
+                context.read<AlumniInformationBloc>().add(AvatarEvent(value));
+              }),
+              SizedBox(
+                height: 25.h,
+              ),
+              buildTextField("Họ và tên *", "fullName", "user", (value) {
+                context.read<AlumniInformationBloc>().add(FullNameEvent(value));
+              }),
+            ],
+          ),
+        ),
+        buildLogInAndRegButton(context, "TIẾP TỤC", "verify"),
+      ],
     ),
   );
 }

@@ -68,11 +68,7 @@ class _ListInteractPostAdviseState extends State<ListInteractPostAdvise> {
           BlocBuilder<ListInteractPostAdviseBloc, ListInteractPostAdviseState>(
               builder: (context, state) {
         return Scaffold(
-          appBar: buildAppBar(() {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                "/applicationPage", (route) => false,
-                arguments: {"route": 2, "secondRoute": 0});
-          }),
+          appBar: buildAppBar(context),
           backgroundColor: AppColors.primaryBackground,
           body: listInteract(context, _scrollController),
         );
