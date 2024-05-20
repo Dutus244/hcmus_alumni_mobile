@@ -42,70 +42,7 @@ class _ChangePasswordForgotState extends State<ChangePasswordForgot> {
           child: SafeArea(
               child: Scaffold(
             backgroundColor: AppColors.primaryBackground,
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(left: 25.w, right: 25.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Container(
-                            width: 230.w,
-                            height: 230.w,
-                            child: Image.asset(
-                              "assets/images/logos/logo.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Center(
-                            child: Container(
-                          padding: EdgeInsets.only(bottom: 15.h),
-                          child: Text(
-                            "THAY ĐỔI MẬT KHẨU",
-                            style: TextStyle(
-                              fontFamily: AppFonts.Header0,
-                              color: AppColors.primaryText,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17.sp,
-                            ),
-                          ),
-                        )),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        buildTextField("Mật khẩu mới *", "password", "lock",
-                            (value) {
-                          context
-                              .read<ChangePasswordForgotBloc>()
-                              .add(PasswordEvent(value));
-                        }),
-                        SizedBox(
-                          height: 5.h,
-                        ),
-                        buildTextField(
-                            "Nhập lại mật khẩu mới *", "password", "lock",
-                            (value) {
-                          context
-                              .read<ChangePasswordForgotBloc>()
-                              .add(RePasswordEvent(value));
-                        }),
-                      ],
-                    ),
-                  ),
-                  buildLogInAndRegButton("THAY ĐỔI", "change", () {
-                    ChangePasswordForgotController(context: context)
-                        .hanldeChangePassword();
-                  }),
-                  buildLogInAndRegButton("THOÁT", "back", () {
-                    Navigator.of(context).pushNamed("forgotPassword");
-                  }),
-                ],
-              ),
-            ),
+            body: changePassword(context),
           )),
         );
       }),

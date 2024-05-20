@@ -14,7 +14,7 @@ class NewsDetailWriteChildrenCommentController {
 
   const NewsDetailWriteChildrenCommentController({required this.context});
 
-  Future<void> handleLoadWriteComment(String id, String commentId) async {
+  Future<void> handleLoadWriteComment(String id, String commentId, int route) async {
     final state = context.read<NewsDetailWriteChildrenCommentBloc>().state;
     String comment = state.comment;
 
@@ -40,7 +40,7 @@ class NewsDetailWriteChildrenCommentController {
           "/newsDetail",
           (route) => false,
           arguments: {
-            "route": 1,
+            "route": route,
             "id": id,
           },
         );

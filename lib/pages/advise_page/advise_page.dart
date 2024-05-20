@@ -82,7 +82,7 @@ class _AdvisePageState extends State<AdvisePage> {
         return Scaffold(
           appBar: buildAppBar(context, 'Tư vấn & Cố vấn'),
           backgroundColor: AppColors.primaryBackground,
-          body: Container(child: listPost(context, _scrollController)),
+          body: listPost(context, _scrollController),
         );
       }),
     );

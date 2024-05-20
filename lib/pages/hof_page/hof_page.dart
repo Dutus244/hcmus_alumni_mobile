@@ -57,7 +57,7 @@ class _HofPageState extends State<HofPage> {
         return Scaffold(
           appBar: buildAppBar(context, 'Gương thành công'),
           backgroundColor: AppColors.primaryBackground,
-          body: Container(child: listHof(context, _scrollController)),
+          body: listHof(context, _scrollController),
         );
       }),
     );

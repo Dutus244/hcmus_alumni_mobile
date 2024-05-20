@@ -29,12 +29,14 @@ class _EventDetailWriteCommentState extends State<EventDetailWriteComment> {
   }
 
   late Event event;
+  late int route;
 
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
+      route = args["route"];
       event = args["event"];
     }
 
@@ -45,7 +47,7 @@ class _EventDetailWriteCommentState extends State<EventDetailWriteComment> {
             "/eventDetail",
             (route) => false,
             arguments: {
-              "route": 1,
+              "route": route,
               "id": event.id,
             },
           );
@@ -55,44 +57,7 @@ class _EventDetailWriteCommentState extends State<EventDetailWriteComment> {
           return Scaffold(
             appBar: buildAppBar(context, 'Sự kiện'),
             backgroundColor: AppColors.primaryBackground,
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: ListView(
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      header(event),
-                      buildTextField('Bình luận của bạn', 'comment', '',
-                          (value) {
-                        context
-                            .read<EventDetailWriteCommentBloc>()
-                            .add(CommentEvent(value));
-                      }),
-                    ],
-                  ),
-                ),
-                navigation(
-                    () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        "/newsDetail",
-                        (route) => false,
-                        arguments: {
-                          "route": 1,
-                          "id": event.id,
-                        },
-                      );
-                    },
-                    BlocProvider.of<EventDetailWriteCommentBloc>(context)
-                        .state
-                        .comment,
-                    () {
-                      EventDetailWriteCommentController(context: context)
-                          .handleLoadWriteComment(event.id);
-                    }),
-              ],
-            ),
+            body: eventDetailWriteComment(context, event, route),
           );
         }));
   }

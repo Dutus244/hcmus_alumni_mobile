@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +16,15 @@ import '../bloc/edit_post_advise_blocs.dart';
 import '../bloc/edit_post_advise_events.dart';
 import '../edit_post_advise_controller.dart';
 
-Widget navigation(void Function()? func1, String title, String content,
-    void Function()? func2) {
+Widget navigation(BuildContext context, int route, String id) {
+  String title = BlocProvider
+      .of<EditPostAdviseBloc>(context)
+      .state
+      .title;
+  String content = BlocProvider
+      .of<EditPostAdviseBloc>(context)
+      .state
+      .content;
   return Container(
     height: 45.h,
     child: Column(
@@ -29,7 +35,16 @@ Widget navigation(void Function()? func1, String title, String content,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: func1,
+                onTap: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/applicationPage",
+                        (route) => false,
+                    arguments: {
+                      "route": route,
+                      "secondRoute": 0,
+                    },
+                  );
+                },
                 child: SvgPicture.asset(
                   "assets/icons/back.svg",
                   width: 25.w,
@@ -38,7 +53,11 @@ Widget navigation(void Function()? func1, String title, String content,
                 ),
               ),
               GestureDetector(
-                onTap: (title != "" && content != "") ? func2 : () {},
+                onTap: () {
+                  if (title != "" && content != "") {
+                    EditPostAdviseController(context: context).handlePost(id);
+                  }
+                },
                 child: Container(
                   width: 80.w,
                   height: 30.h,
@@ -90,7 +109,7 @@ Widget navigation(void Function()? func1, String title, String content,
   );
 }
 
-Widget navigationEditPicture(void Function()? func1, void Function()? func2) {
+Widget navigationEditPicture(BuildContext context) {
   return Container(
     height: 45.h,
     child: Column(
@@ -101,7 +120,9 @@ Widget navigationEditPicture(void Function()? func1, void Function()? func2) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: func1,
+                onTap: () {
+                  context.read<EditPostAdviseBloc>().add(PageEvent(0));
+                },
                 child: SvgPicture.asset(
                   "assets/icons/back.svg",
                   width: 25.w,
@@ -110,7 +131,9 @@ Widget navigationEditPicture(void Function()? func1, void Function()? func2) {
                 ),
               ),
               GestureDetector(
-                onTap: func2,
+                onTap: () {
+                  context.read<EditPostAdviseBloc>().add(PageEvent(0));
+                },
                 child: Container(
                   width: 60.w,
                   height: 30.h,
@@ -293,28 +316,7 @@ Widget writePost(BuildContext context, int route, String id) {
           ],
         ),
       ),
-      navigation(
-              () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              "/applicationPage",
-                  (route) => false,
-              arguments: {
-                "route": route,
-                "secondRoute": 0,
-              },
-            );
-          },
-          BlocProvider
-              .of<EditPostAdviseBloc>(context)
-              .state
-              .title,
-          BlocProvider
-              .of<EditPostAdviseBloc>(context)
-              .state
-              .content,
-              () {
-            EditPostAdviseController(context: context).handlePost(id);
-          }),
+      navigation(context, route, id),
     ],
   );
 }
@@ -438,11 +440,7 @@ Widget editPicture(BuildContext context, int route) {
               })
             ],
           )),
-      navigationEditPicture(() {
-        context.read<EditPostAdviseBloc>().add(PageEvent(0));
-      }, () {
-        context.read<EditPostAdviseBloc>().add(PageEvent(0));
-      }),
+      navigationEditPicture(context),
     ],
   );
 }
@@ -457,21 +455,19 @@ Widget chooseEditPicture(BuildContext context,
           .pictures);
 
       final pickedFiles = await ImagePicker().pickMultiImage();
-      if (pickedFiles != null) {
-        if (pickedFiles.length + currentList.length + BlocProvider
-            .of<EditPostAdviseBloc>(context)
-            .state
-            .pictureNetwork
-            .length > 5) {
-          toastInfo(msg: "Chỉ được chọn tối đa 5 tấm ảnh");
-          return;
-        }
-        currentList.addAll(pickedFiles.map((pickedFile) =>
-            File(pickedFile.path))); // Concatenate currentList and picked files
-
-        func!(currentList);
+      if (pickedFiles.length + currentList.length + BlocProvider
+          .of<EditPostAdviseBloc>(context)
+          .state
+          .pictureNetwork
+          .length > 5) {
+        toastInfo(msg: "Chỉ được chọn tối đa 5 tấm ảnh");
+        return;
       }
-    },
+      currentList.addAll(pickedFiles.map((pickedFile) =>
+          File(pickedFile.path))); // Concatenate currentList and picked files
+
+      func!(currentList);
+        },
     child: Container(
       width: 340.w,
       height: 40.h,
@@ -554,21 +550,19 @@ Widget choosePicture(BuildContext context,
                 .length ==
             0) {
           final pickedFiles = await ImagePicker().pickMultiImage();
-          if (pickedFiles != null) {
-            if (pickedFiles.length +
-                BlocProvider
-                    .of<EditPostAdviseBloc>(context)
-                    .state
-                    .pictureNetwork
-                    .length > 5) {
-              toastInfo(msg: "Chỉ được chọn tối đa 5 tấm ảnh");
-              return;
-            }
-            func!(pickedFiles
-                .map((pickedFile) => File(pickedFile.path))
-                .toList());
+          if (pickedFiles.length +
+              BlocProvider
+                  .of<EditPostAdviseBloc>(context)
+                  .state
+                  .pictureNetwork
+                  .length > 5) {
+            toastInfo(msg: "Chỉ được chọn tối đa 5 tấm ảnh");
+            return;
           }
-        } else {
+          func!(pickedFiles
+              .map((pickedFile) => File(pickedFile.path))
+              .toList());
+                } else {
           context.read<EditPostAdviseBloc>().add(PageEvent(1));
         }
       },

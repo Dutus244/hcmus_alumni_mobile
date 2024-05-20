@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../forgot_password_controller.dart';
+import '../bloc/forgot_password_events.dart';
+import '../bloc/forgot_password_blocs.dart';
 
-Widget buildTextFieldEmail(String hintText, String textType, String iconName,
-    void Function(String value)? func1, void Function()? func2) {
+Widget buildTextFieldEmail(BuildContext context, String hintText,
+    String textType, String iconName, void Function(String value)? func) {
   return Container(
       width: 325.w,
       height: 40.h,
@@ -23,7 +27,7 @@ Widget buildTextFieldEmail(String hintText, String textType, String iconName,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 20.w),
             child: TextField(
-              onChanged: (value) => func1!(value),
+              onChanged: (value) => func!(value),
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 hintText: hintText,
@@ -53,7 +57,9 @@ Widget buildTextFieldEmail(String hintText, String textType, String iconName,
             ),
           ),
           GestureDetector(
-            onTap: func2,
+            onTap: () {
+              ForgotPasswordController(context: context).hanldeResendCode();
+            },
             child: Container(
               padding: EdgeInsets.only(left: 0.w),
               width: 70.w,
@@ -136,9 +142,15 @@ Widget buildTextField(String hintText, String textType, String iconName,
 }
 
 Widget buildVerifyAndBackButton(
-    String buttonName, String buttonType, void Function()? func) {
+    BuildContext context, String buttonName, String buttonType) {
   return GestureDetector(
-    onTap: func,
+    onTap: () {
+      if (buttonType == "verify") {
+        ForgotPasswordController(context: context).hanldeEmailVerification();
+      } else {
+        Navigator.of(context).pushNamed("/signIn");
+      }
+    },
     child: Container(
       width: 325.w,
       height: 50.h,
@@ -167,6 +179,61 @@ Widget buildVerifyAndBackButton(
                   : AppColors.primaryElement),
         ),
       ),
+    ),
+  );
+}
+
+Widget forgotPassword(BuildContext context) {
+  return SingleChildScrollView(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(left: 25.w, right: 25.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 230.w,
+                  height: 230.w,
+                  child: Image.asset(
+                    "assets/images/logos/logo.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Center(
+                  child: Container(
+                padding: EdgeInsets.only(bottom: 5.h),
+                child: Text(
+                  "QUÊN MẬT KHẨU",
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header0,
+                    color: AppColors.primaryText,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17.sp,
+                  ),
+                ),
+              )),
+              SizedBox(
+                height: 5.h,
+              ),
+              buildTextFieldEmail(context, "Email *", "email", "send", (value) {
+                context.read<ForgotPasswordBloc>().add(EmailEvent(value));
+              }),
+              SizedBox(
+                height: 5.h,
+              ),
+              buildTextField("Mã xác thực *", "code", "", (value) {
+                context.read<ForgotPasswordBloc>().add(CodeEvent(value));
+              }),
+            ],
+          ),
+        ),
+        buildVerifyAndBackButton(context, "XÁC THỰC", "verify"),
+        buildVerifyAndBackButton(context, "TRỞ VỀ", "back"),
+      ],
     ),
   );
 }

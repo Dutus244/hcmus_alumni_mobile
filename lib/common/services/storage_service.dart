@@ -40,4 +40,12 @@ class StorageService {
   String getUserPassword() {
     return _prefs.getString(AppConstants.STORAGE_USER_PASSWORD) ?? '';
   }
+
+  String getUserFullName() {
+    return _prefs.getString(AppConstants.STORAGE_USER_FULL_NAME) ?? '';
+  }
+
+  String getUserAvatarUrl() {
+    return _prefs.getString(AppConstants.STORAGE_USER_AVATAR_URL) ?? '';
+  }
 }

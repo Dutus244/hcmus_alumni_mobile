@@ -18,8 +18,10 @@ import '../../../common/widgets/flutter_toast.dart';
 import '../bloc/write_post_advise_events.dart';
 import '../write_post_advise_controller.dart';
 
-Widget navigation(void Function()? func1, String title, String content,
-    void Function()? func2) {
+Widget navigation(BuildContext context, int route) {
+  String title = BlocProvider.of<WritePostAdviseBloc>(context).state.title;
+  String content = BlocProvider.of<WritePostAdviseBloc>(context).state.content;
+
   return Container(
     height: 45.h,
     child: Column(
@@ -30,7 +32,16 @@ Widget navigation(void Function()? func1, String title, String content,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: func1,
+                onTap: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/applicationPage",
+                        (route) => false,
+                    arguments: {
+                      "route": route,
+                      "secondRoute": 0,
+                    },
+                  );
+                },
                 child: SvgPicture.asset(
                   "assets/icons/back.svg",
                   width: 25.w,
@@ -39,7 +50,11 @@ Widget navigation(void Function()? func1, String title, String content,
                 ),
               ),
               GestureDetector(
-                onTap: (title != "" && content != "") ? func2 : () {},
+                onTap: () {
+                  if (title != "" && content != "") {
+                    WritePostAdviseController(context: context).handlePost();
+                  }
+                },
                 child: Container(
                   width: 80.w,
                   height: 30.h,
@@ -91,8 +106,7 @@ Widget navigation(void Function()? func1, String title, String content,
   );
 }
 
-Widget navigationEditPicture(void Function()? func1,
-    void Function()? func2) {
+Widget navigationEditPicture(BuildContext context) {
   return Container(
     height: 45.h,
     child: Column(
@@ -103,7 +117,9 @@ Widget navigationEditPicture(void Function()? func1,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: func1,
+                onTap: () {
+                  context.read<WritePostAdviseBloc>().add(PageEvent(0));
+                },
                 child: SvgPicture.asset(
                   "assets/icons/back.svg",
                   width: 25.w,
@@ -112,7 +128,9 @@ Widget navigationEditPicture(void Function()? func1,
                 ),
               ),
               GestureDetector(
-                onTap: func2,
+                onTap: () {
+                  context.read<WritePostAdviseBloc>().add(PageEvent(0));
+                },
                 child: Container(
                   width: 60.w,
                   height: 30.h,
@@ -278,22 +296,7 @@ Widget writePost(BuildContext context, int route){
           ],
         ),
       ),
-      navigation(
-              () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              "/applicationPage",
-                  (route) => false,
-              arguments: {
-                "route": route,
-                "secondRoute": 0,
-              },
-            );
-          },
-          BlocProvider.of<WritePostAdviseBloc>(context).state.title,
-          BlocProvider.of<WritePostAdviseBloc>(context).state.content,
-              () {
-            WritePostAdviseController(context: context).handlePost();
-          }),
+      navigation(context, route),
     ],
   );
 }
@@ -356,13 +359,7 @@ Widget editPicture(BuildContext context, int route) {
           })
         ],
       )),
-      navigationEditPicture(
-              () {
-                context.read<WritePostAdviseBloc>().add(PageEvent(0));
-          },
-              () {
-                context.read<WritePostAdviseBloc>().add(PageEvent(0));
-          }),
+      navigationEditPicture(context),
     ],
   );
 }

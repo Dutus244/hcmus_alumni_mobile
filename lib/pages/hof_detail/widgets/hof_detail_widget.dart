@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,8 +11,9 @@ import 'package:hcmus_alumni_mobile/model/hall_of_fame.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../bloc/hof_detail_blocs.dart';
 
-Widget navigation(void Function()? func) {
+Widget navigation(BuildContext context, int route) {
   return Container(
     height: 45.h,
     child: Column(
@@ -22,7 +24,18 @@ Widget navigation(void Function()? func) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: func,
+                onTap: () {
+                  if (route == 0) {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        "/applicationPage", (route) => false,
+                        arguments: {"route": route, "secondRoute": 0});
+                  } else {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      "/hofPage",
+                      (route) => false,
+                    );
+                  }
+                },
                 child: SvgPicture.asset(
                   "assets/icons/back.svg",
                   width: 25.w,
@@ -174,4 +187,24 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
       ],
     );
   }
+}
+
+Widget hofDetail(BuildContext context, int route) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Expanded(
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: [
+            hofContent(context,
+                BlocProvider.of<HofDetailBloc>(context).state.hallOfFame)
+          ],
+        ),
+      ),
+      // Container nằm dưới cùng của màn hình
+      navigation(context, route),
+    ],
+  );
 }

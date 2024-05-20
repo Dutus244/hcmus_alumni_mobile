@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hcmus_alumni_mobile/model/permissions.dart';
 
 import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../model/comment.dart';
+import '../../../model/creator.dart';
 import '../../../model/interact.dart';
 import '../../write_post_advise/bloc/write_post_advise_events.dart';
 import '../bloc/list_comment_post_advise_blocs.dart';
@@ -16,17 +18,13 @@ import '../bloc/list_comment_post_advise_events.dart';
 import '../bloc/list_comment_post_advise_states.dart';
 import '../list_comment_post_advise_controller.dart';
 
-Widget listComment(
-    BuildContext context,
-    ScrollController _scrollController,
-    String content,
-    Comment? comment,
-    String id,
-    void Function(String value)? func1,
-    void Function()? func2,
-    void Function()? func3,
-    void Function()? func4,
-    void Function()? func5) {
+Widget listComment(BuildContext context, ScrollController _scrollController,
+    String id, void Function(String value)? func) {
+  String content =
+      BlocProvider.of<ListCommentPostAdviseBloc>(context).state.content;
+  Comment? comment =
+      BlocProvider.of<ListCommentPostAdviseBloc>(context).state.children;
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
@@ -111,7 +109,8 @@ Widget listComment(
                             BlocProvider.of<ListCommentPostAdviseBloc>(context)
                                 .state
                                 .comment[index],
-                            0, id),
+                            0,
+                            id),
                       ],
                     );
                   } else {
@@ -120,19 +119,21 @@ Widget listComment(
                         BlocProvider.of<ListCommentPostAdviseBloc>(context)
                             .state
                             .comment[index],
-                        0, id);
+                        0,
+                        id);
                   }
                 }
             }
           },
         ),
       ),
-      navigation(context, content, comment, func1, func2, func3, func4, func5)
+      navigation(context, content, comment, id, func)
     ],
   );
 }
 
-Widget buildCommentWidget(BuildContext context, Comment comment, int index, String id) {
+Widget buildCommentWidget(
+    BuildContext context, Comment comment, int index, String id) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.h),
     child: Column(
@@ -274,45 +275,56 @@ Widget buildCommentWidget(BuildContext context, Comment comment, int index, Stri
                         ),
                       ),
                     ),
-                    Container(
-                      width: 50.w,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        context
-                            .read<ListCommentPostAdviseBloc>()
-                            .add(ChildrenEvent(comment));
-                        context
-                            .read<ListCommentPostAdviseBloc>()
-                            .add(ReplyEvent(2));
-                      },
-                      child: Text(
-                        'Chỉnh sửa',
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.8),
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header2,
-                        ),
+                    if (comment.permissions.edit)
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<ListCommentPostAdviseBloc>()
+                                  .add(ChildrenEvent(comment));
+                              context
+                                  .read<ListCommentPostAdviseBloc>()
+                                  .add(ReplyEvent(2));
+                            },
+                            child: Text(
+                              'Chỉnh sửa',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Container(
-                      width: 50.w,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        ListCommentPostAdviseController(context: context).handleDeleteComment(id, comment.id);
-                      },
-                      child: Text(
-                        'Xoá',
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.8),
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header2,
-                        ),
+                    if (comment.permissions.delete)
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              ListCommentPostAdviseController(context: context)
+                                  .handleDeleteComment(id, comment.id);
+                            },
+                            child: Text(
+                              'Xoá',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
                   ],
                 ),
               ],
@@ -330,8 +342,8 @@ Widget buildCommentWidget(BuildContext context, Comment comment, int index, Stri
                       Container(width: 1, color: Colors.black),
                       // This is divider
                       Container(
-                          child: buildCommentWidget(
-                              context, comment.childrenComment[i], index + 1, id)),
+                          child: buildCommentWidget(context,
+                              comment.childrenComment[i], index + 1, id)),
                     ],
                   ))
               ],
@@ -408,15 +420,8 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
       ));
 }
 
-Widget navigation(
-    BuildContext context,
-    String content,
-    Comment? comment,
-    void Function(String value)? func1,
-    void Function()? func2,
-    void Function()? func3,
-    void Function()? func4,
-    void Function()? func5) {
+Widget navigation(BuildContext context, String content, Comment? comment,
+    String id, void Function(String value)? func) {
   return Container(
     child: Column(
       children: [
@@ -428,9 +433,14 @@ Widget navigation(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 buildTextFieldContent(
-                    context, 'Bình luận của bạn', 'comment', '', func1),
+                    context, 'Bình luận của bạn', 'comment', '', func),
                 GestureDetector(
-                  onTap: content != "" ? func2 : () {},
+                  onTap: () {
+                    if (content != "") {
+                      ListCommentPostAdviseController(context: context)
+                          .handleLoadWriteComment(id);
+                    }
+                  },
                   child: SvgPicture.asset(
                     "assets/icons/send.svg",
                     width: 15.w,
@@ -481,7 +491,14 @@ Widget navigation(
                       width: 5.w,
                     ),
                     GestureDetector(
-                      onTap: func4,
+                      onTap: () {
+                        context
+                            .read<ListCommentPostAdviseBloc>()
+                            .add(ReplyEvent(0));
+                        context.read<ListCommentPostAdviseBloc>().add(
+                            ChildrenEvent(Comment('', Creator('', '', ''), '',
+                                0, '', '', Permissions(false, false))));
+                      },
                       child: Text(
                         '- Huỷ',
                         style: TextStyle(
@@ -498,9 +515,20 @@ Widget navigation(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     buildTextFieldContent(
-                        context, 'Bình luận của bạn', 'comment', '', func1),
+                        context, 'Bình luận của bạn', 'comment', '', func),
                     GestureDetector(
-                      onTap: content != "" ? func3 : () {},
+                      onTap: () {
+                        if (content != "") {
+                          ListCommentPostAdviseController(context: context)
+                              .handleLoadWriteChildrenComment(
+                                  id,
+                                  BlocProvider.of<ListCommentPostAdviseBloc>(
+                                          context)
+                                      .state
+                                      .children!
+                                      .id);
+                        }
+                      },
                       child: SvgPicture.asset(
                         "assets/icons/send.svg",
                         width: 15.w,
@@ -541,7 +569,14 @@ Widget navigation(
                       width: 5.w,
                     ),
                     GestureDetector(
-                      onTap: func4,
+                      onTap: () {
+                        context
+                            .read<ListCommentPostAdviseBloc>()
+                            .add(ReplyEvent(0));
+                        context.read<ListCommentPostAdviseBloc>().add(
+                            ChildrenEvent(Comment('', Creator('', '', ''), '',
+                                0, '', '', Permissions(false, false))));
+                      },
                       child: Text(
                         '- Huỷ',
                         style: TextStyle(
@@ -558,14 +593,40 @@ Widget navigation(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     buildTextFieldContent(
-                        context, 'Bình luận của bạn', 'comment', '', func1),
+                        context, 'Bình luận của bạn', 'comment', '', func),
                     GestureDetector(
                       onTap: BlocProvider.of<ListCommentPostAdviseBloc>(context)
                                   .state
                                   .reply ==
                               1
-                          ? func3
-                          : func5,
+                          ? () {
+                              if (content != "") {
+                                ListCommentPostAdviseController(
+                                        context: context)
+                                    .handleLoadWriteChildrenComment(
+                                        id,
+                                        BlocProvider.of<
+                                                    ListCommentPostAdviseBloc>(
+                                                context)
+                                            .state
+                                            .children!
+                                            .id);
+                              }
+                            }
+                          : () {
+                              if (content != "") {
+                                ListCommentPostAdviseController(
+                                        context: context)
+                                    .handleEditComment(
+                                        id,
+                                        BlocProvider.of<
+                                                    ListCommentPostAdviseBloc>(
+                                                context)
+                                            .state
+                                            .children!
+                                            .id);
+                              }
+                            },
                       child: SvgPicture.asset(
                         "assets/icons/send.svg",
                         width: 15.w,
@@ -585,7 +646,7 @@ Widget navigation(
   );
 }
 
-AppBar buildAppBar(void Function()? func) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -594,7 +655,11 @@ AppBar buildAppBar(void Function()? func) {
       child: Row(
         children: [
           GestureDetector(
-            onTap: func,
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/applicationPage", (route) => false,
+                  arguments: {"route": 2, "secondRoute": 0});
+            },
             child: SvgPicture.asset(
               "assets/icons/back.svg",
               width: 25.w,

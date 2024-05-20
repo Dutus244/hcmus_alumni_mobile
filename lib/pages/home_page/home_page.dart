@@ -64,29 +64,7 @@ class _HomePageState extends State<HomePage> {
           return Scaffold(
             appBar: buildAppBar(context, 'Trang chủ'),
             backgroundColor: AppColors.primaryBackground,
-            body: Container(
-              child: ListView(scrollDirection: Axis.vertical, children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    listEvent(context,
-                        BlocProvider.of<HomePageBloc>(context).state.event),
-                    listNews(context,
-                        BlocProvider.of<HomePageBloc>(context).state.news),
-                    Container(
-                      height: 5.h,
-                    ),
-                    listHof(
-                        context,
-                        BlocProvider.of<HomePageBloc>(context)
-                            .state
-                            .hallOfFame),
-                    advise(context),
-                  ],
-                ),
-              ]),
-            ),
+            body: homePage(context),
           );
         }));
   }

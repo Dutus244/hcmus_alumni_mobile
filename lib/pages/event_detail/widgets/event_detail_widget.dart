@@ -9,13 +9,11 @@ import 'package:hcmus_alumni_mobile/model/comment.dart';
 import 'package:hcmus_alumni_mobile/model/event.dart';
 import 'package:hcmus_alumni_mobile/model/participant.dart';
 import 'package:hcmus_alumni_mobile/pages/event_detail/bloc/event_detail_events.dart';
-import 'package:intl/intl.dart';
 
 import '../../../common/function/handle_html_content.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
-import '../../../global.dart';
 import '../bloc/event_detail_blocs.dart';
 import '../bloc/event_detail_states.dart';
 import '../event_detail_controller.dart';
@@ -252,7 +250,7 @@ Widget eventContent(BuildContext context, Event event) {
                 'Thời gian:',
                 maxLines: 1,
                 style: TextStyle(
-                  fontFamily: 'Roboto',
+                  fontFamily: AppFonts.Header3,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.normal,
                   color: Color.fromARGB(255, 63, 63, 70),
@@ -265,7 +263,7 @@ Widget eventContent(BuildContext context, Event event) {
                 handleDatetime(event.organizationTime),
                 maxLines: 1,
                 style: TextStyle(
-                  fontFamily: 'Roboto',
+                  fontFamily: AppFonts.Header3,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.normal,
                   color: Color.fromARGB(255, 63, 63, 70),
@@ -457,11 +455,7 @@ Widget detail(BuildContext context, Event? event,
           loadingWidget()
         ],
       )),
-      navigation(() {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": route, "secondRoute": 1});
-      }),
+      navigation(context, route),
     ]);
   } else {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -474,22 +468,18 @@ Widget detail(BuildContext context, Event? event,
           }),
           eventContent(context, event),
           listComment(context, event,
-              BlocProvider.of<EventDetailBloc>(context).state.comment),
+              BlocProvider.of<EventDetailBloc>(context).state.comment, route),
           // listRelatedEvent(context,
           //     BlocProvider.of<EventDetailBloc>(context).state.relatedEvent)
         ],
       )),
-      navigation(() {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": route, "secondRoute": 1});
-      }),
+      navigation(context, route),
     ]);
   }
 }
 
 Widget listComment(
-    BuildContext context, Event? event, List<Comment> commentList) {
+    BuildContext context, Event? event, List<Comment> commentList, int route) {
   if (event == null) {
     return Column(
       children: [],
@@ -505,6 +495,7 @@ Widget listComment(
               "/eventDetailWriteComment",
               (route) => false,
               arguments: {
+                "route": route,
                 "event": event,
               },
             );
@@ -562,7 +553,7 @@ Widget listComment(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             for (int i = 0; i < commentList.length; i += 1)
-              buildCommentWidget(context, event, commentList[i], 0)
+              buildCommentWidget(context, event, commentList[i], 0, route)
           ],
         ),
         if (event.childrenCommentNumber > 5 &&
@@ -604,7 +595,7 @@ Widget listComment(
 }
 
 Widget buildCommentWidget(
-    BuildContext context, Event event, Comment comment, int index) {
+    BuildContext context, Event event, Comment comment, int index, int route) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.h),
     child: Column(
@@ -717,7 +708,7 @@ Widget buildCommentWidget(
                                 color: Colors.black.withOpacity(0.8),
                                 fontSize: 11.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: 'Roboto',
+                                fontFamily: AppFonts.Header2,
                               ),
                             )
                           ],
@@ -733,6 +724,7 @@ Widget buildCommentWidget(
                           "/eventDetailWriteChildrenComment",
                               (route) => false,
                           arguments: {
+                            "route": route,
                             "event": event,
                             "comment": comment,
                           },
@@ -744,10 +736,62 @@ Widget buildCommentWidget(
                           color: Colors.black.withOpacity(0.8),
                           fontSize: 11.sp,
                           fontWeight: FontWeight.normal,
-                          fontFamily: 'Roboto',
+                          fontFamily: AppFonts.Header2,
                         ),
                       ),
                     ),
+                    if (comment.permissions.edit)
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                "/eventDetailEditComment",
+                                    (route) => false,
+                                arguments: {
+                                  "route": route,
+                                  "event": event,
+                                  "comment": comment,
+                                },
+                              );
+                            },
+                            child: Text(
+                              'Chỉnh sửa',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    if (comment.permissions.delete)
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              EventDetailController(context: context).handleDeleteComment(event.id, comment.id);
+                            },
+                            child: Text(
+                              'Xoá',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ],
@@ -765,7 +809,7 @@ Widget buildCommentWidget(
                         // This is divider
                         Container(
                             child: buildCommentWidget(context, event,
-                                comment.childrenComment[i], index + 1)),
+                                comment.childrenComment[i], index + 1, route)),
                       ],
                     ))
             ],
@@ -1005,7 +1049,7 @@ Widget event(BuildContext context, Event event) {
                     'Thời gian:',
                     maxLines: 1,
                     style: TextStyle(
-                      fontFamily: 'Roboto',
+                      fontFamily: AppFonts.Header3,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 63, 63, 70),
@@ -1018,7 +1062,7 @@ Widget event(BuildContext context, Event event) {
                     handleDatetime(event.organizationTime),
                     maxLines: 1,
                     style: TextStyle(
-                      fontFamily: 'Roboto',
+                      fontFamily: AppFonts.Header3,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 63, 63, 70),
@@ -1178,11 +1222,7 @@ Widget listParticipant(
           },
         ),
       ),
-      navigation(() {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": route, "secondRoute": 1});
-      }),
+      navigation(context, route),
     ],
   );
 }
@@ -1192,6 +1232,7 @@ Widget participant(BuildContext context, Participant participant) {
     onTap: () {},
     child: Container(
       margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
+      color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -1226,7 +1267,7 @@ Widget participant(BuildContext context, Participant participant) {
   );
 }
 
-Widget navigation(void Function()? func) {
+Widget navigation(BuildContext context, int route) {
   return Container(
     height: 45.h,
     child: Column(
@@ -1237,7 +1278,11 @@ Widget navigation(void Function()? func) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: func,
+                onTap: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      "/applicationPage", (route) => false,
+                      arguments: {"route": route, "secondRoute": 1});
+                },
                 child: SvgPicture.asset(
                   "assets/icons/back.svg",
                   width: 25.w,

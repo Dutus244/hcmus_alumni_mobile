@@ -163,7 +163,7 @@ Widget interact(BuildContext context, Interact interact) {
   );
 }
 
-AppBar buildAppBar(void Function()? func) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -172,7 +172,11 @@ AppBar buildAppBar(void Function()? func) {
       child: Row(
         children: [
           GestureDetector(
-            onTap: func,
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/applicationPage", (route) => false,
+                  arguments: {"route": 2, "secondRoute": 0});
+            },
             child: SvgPicture.asset(
               "assets/icons/back.svg",
               width: 25.w,

@@ -13,7 +13,7 @@ class NewsDetailWriteCommentController {
 
   const NewsDetailWriteCommentController({required this.context});
 
-  Future<void> handleLoadWriteComment(String id) async {
+  Future<void> handleLoadWriteComment(String id, int route) async {
     final state = context.read<NewsDetailWriteCommentBloc>().state;
     String comment = state.comment;
 
@@ -40,7 +40,7 @@ class NewsDetailWriteCommentController {
           "/newsDetail",
           (route) => false,
           arguments: {
-            "route": 1,
+            "route": route,
             "id": id,
           },
         );

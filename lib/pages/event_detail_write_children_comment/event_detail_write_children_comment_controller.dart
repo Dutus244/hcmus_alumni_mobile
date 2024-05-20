@@ -14,7 +14,8 @@ class EventDetailWriteChildrenCommentController {
 
   const EventDetailWriteChildrenCommentController({required this.context});
 
-  Future<void> handleLoadWriteComment(String id, String commentId) async {
+  Future<void> handleLoadWriteComment(
+      String id, String commentId, int route) async {
     final state = context.read<EventDetailWriteChildrenCommentBloc>().state;
     String comment = state.comment;
 
@@ -40,7 +41,7 @@ class EventDetailWriteChildrenCommentController {
           "/eventDetail",
           (route) => false,
           arguments: {
-            "route": 1,
+            "route": route,
             "id": id,
           },
         );

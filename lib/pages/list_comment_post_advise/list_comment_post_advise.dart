@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hcmus_alumni_mobile/model/creator.dart';
+import 'package:hcmus_alumni_mobile/model/permissions.dart';
 import 'package:hcmus_alumni_mobile/pages/list_comment_post_advise/widgets/list_comment_post_advise_widget.dart';
 
 import '../../common/values/colors.dart';
@@ -69,43 +70,10 @@ class _ListCommentPostAdviseState extends State<ListCommentPostAdvise> {
       child: BlocBuilder<ListCommentPostAdviseBloc, ListCommentPostAdviseState>(
           builder: (context, state) {
         return Scaffold(
-          appBar: buildAppBar(() {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                "/applicationPage", (route) => false,
-                arguments: {"route": 2, "secondRoute": 0});
-          }),
+          appBar: buildAppBar(context),
           backgroundColor: AppColors.primaryBackground,
-          body: listComment(
-              context,
-              _scrollController,
-              BlocProvider.of<ListCommentPostAdviseBloc>(context).state.content,
-              BlocProvider.of<ListCommentPostAdviseBloc>(context)
-                  .state
-                  .children,
-              id, (value) {
+          body: listComment(context, _scrollController, id, (value) {
             context.read<ListCommentPostAdviseBloc>().add(ContentEvent(value));
-          }, () {
-            ListCommentPostAdviseController(context: context)
-                .handleLoadWriteComment(id);
-          }, () {
-            ListCommentPostAdviseController(context: context)
-                .handleLoadWriteChildrenComment(
-                    id,
-                    BlocProvider.of<ListCommentPostAdviseBloc>(context)
-                        .state
-                        .children!
-                        .id);
-          }, () {
-            context.read<ListCommentPostAdviseBloc>().add(ReplyEvent(0));
-            context.read<ListCommentPostAdviseBloc>().add(
-                ChildrenEvent(Comment('', Creator('', '', ''), '', 0, '', '')));
-          }, () {
-            ListCommentPostAdviseController(context: context).handleEditComment(
-                id,
-                BlocProvider.of<ListCommentPostAdviseBloc>(context)
-                    .state
-                    .children!
-                    .id);
           }),
         );
       }),

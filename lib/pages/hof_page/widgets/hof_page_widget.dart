@@ -14,8 +14,8 @@ import '../bloc/hof_page_blocs.dart';
 import '../bloc/hof_page_events.dart';
 import '../hof_page_controller.dart';
 
-Widget buildTextField(String hintText, String textType, String iconName,
-    void Function(String value)? func1, void Function()? func2) {
+Widget buildTextField(BuildContext context, String hintText, String textType,
+    String iconName, void Function(String value)? func) {
   return Container(
       width: 340.w,
       height: 40.h,
@@ -33,7 +33,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 20.w),
             child: TextField(
-              onChanged: (value) => func1!(value),
+              onChanged: (value) => func!(value),
               keyboardType: TextInputType.multiline,
               decoration: InputDecoration(
                 hintText: hintText,
@@ -63,7 +63,9 @@ Widget buildTextField(String hintText, String textType, String iconName,
             ),
           ),
           GestureDetector(
-            onTap: func2,
+            onTap: () {
+              HofPageController(context: context).handleSearchHof();
+            },
             child: Container(
               width: 16.w,
               height: 16.w,
@@ -261,11 +263,9 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                   children: [
                     Center(
                         child: buildTextField(
-                            'Tìm gương thành công', 'search', 'search',
+                            context, 'Tìm gương thành công', 'search', 'search',
                             (value) {
                       context.read<HofPageBloc>().add(NameEvent(value));
-                    }, () {
-                      HofPageController(context: context).handleSearchHof();
                     })),
                     Row(
                       children: [
@@ -307,12 +307,9 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                   return Column(
                     children: [
                       Center(
-                          child: buildTextField(
-                              'Tìm gương thành công', 'search', 'search',
-                              (value) {
+                          child: buildTextField(context, 'Tìm gương thành công',
+                              'search', 'search', (value) {
                         context.read<HofPageBloc>().add(NameEvent(value));
-                      }, () {
-                        HofPageController(context: context).handleSearchHof();
                       })),
                       Row(
                         children: [
@@ -380,11 +377,11 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                       children: [
                         Center(
                             child: buildTextField(
-                                'Tìm gương thành công', 'search', 'search',
-                                (value) {
+                                context,
+                                'Tìm gương thành công',
+                                'search',
+                                'search', (value) {
                           context.read<HofPageBloc>().add(NameEvent(value));
-                        }, () {
-                          HofPageController(context: context).handleSearchHof();
                         })),
                         Row(
                           children: [

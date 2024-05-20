@@ -5,4 +5,6 @@ class AppConstants {
   static const String STORAGE_USER_REMEMBER_LOGIN = 'user_remember_login';
   static const String STORAGE_USER_EMAIL = 'user_email';
   static const String STORAGE_USER_PASSWORD = 'user_password';
+  static const String STORAGE_USER_FULL_NAME = 'user_full_name';
+  static const String STORAGE_USER_AVATAR_URL = 'user_avatar_url';
 }
