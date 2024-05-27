@@ -6,7 +6,6 @@ import 'bloc/write_post_advise_events.dart';
 import 'widgets/write_post_advise_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import 'bloc/write_post_advise_blocs.dart';
 import 'bloc/write_post_advise_states.dart';
 
@@ -25,6 +24,9 @@ class _WritePostAdviseState extends State<WritePostAdvise> {
     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       route = args["route"];
+      context
+          .read<WritePostAdviseBloc>()
+          .add(WritePostAdviseResetEvent());
       // Now you can use the passedValue in your widget
     }
 
@@ -43,7 +45,7 @@ class _WritePostAdviseState extends State<WritePostAdvise> {
         child: BlocBuilder<WritePostAdviseBloc, WritePostAdviseState>(
             builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, 'Tạo bài viết'),
+            appBar: buildAppBar(context, route),
             backgroundColor: AppColors.primaryBackground,
             body: BlocProvider.of<WritePostAdviseBloc>(context)
                 .state.page == 0 ? writePost(context, route) : editPicture(context, route)

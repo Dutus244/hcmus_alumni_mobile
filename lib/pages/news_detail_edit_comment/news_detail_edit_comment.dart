@@ -1,10 +1,8 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import '../../model/comment.dart';
 import '../../model/news.dart';
 import 'bloc/news_detail_edit_comment_blocs.dart';
@@ -61,7 +59,7 @@ class _NewsDetailEditCommentState extends State<NewsDetailEditComment> {
         child: BlocBuilder<NewsDetailEditCommentBloc,
             NewsDetailEditCommentState>(builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, 'Tin tức'),
+            appBar: buildAppBar(context, route, news),
             backgroundColor: AppColors.primaryBackground,
             body: newsDetailEditComment(context, news, route, comment),
           );

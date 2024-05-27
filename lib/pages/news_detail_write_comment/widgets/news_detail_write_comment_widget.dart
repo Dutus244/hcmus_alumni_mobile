@@ -12,11 +12,70 @@ import '../bloc/news_detail_write_comment_blocs.dart';
 import '../bloc/news_detail_write_comment_events.dart';
 import '../news_detail_write_comment_controller.dart';
 
+AppBar buildAppBar(BuildContext context, int route, News news) {
+  return AppBar(
+    backgroundColor: AppColors.primaryBackground,
+    title: Container(
+      height: 40.h,
+      margin: EdgeInsets.only(left: 0.w, right: 0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/newsDetail",
+                (route) => false,
+                arguments: {
+                  "route": route,
+                  "id": news.id,
+                },
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 0.w),
+              child: SizedBox(
+                width: 25.w,
+                height: 25.h,
+                child: SvgPicture.asset(
+                  "assets/icons/back.svg",
+                  width: 25.w,
+                  height: 25.h,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+          Text(
+            'Sự kiện',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppFonts.Header0,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.sp,
+              color: AppColors.secondaryHeader,
+            ),
+          ),
+          Container(
+            width: 25.w,
+            color: Colors.transparent,
+            child: Row(
+              children: [],
+            ),
+          )
+        ],
+      ),
+    ),
+    centerTitle: true, // Đặt tiêu đề vào giữa
+  );
+}
+
 Widget buildTextField(String hintText, String textType, String iconName,
     void Function(String value)? func) {
   return Container(
       width: 320.w,
-      height: 400.h,
+      height: 350.h,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
       decoration: BoxDecoration(
         color: AppColors.primaryBackground,
@@ -26,7 +85,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
         children: [
           Container(
             width: 300.w,
-            height: 400.h,
+            height: 350.h,
             child: TextField(
               onChanged: (value) => func!(value),
               keyboardType: TextInputType.multiline,
@@ -105,7 +164,8 @@ Widget header(News news) {
                   child: CircleAvatar(
                     radius: 10,
                     child: null,
-                    backgroundImage: NetworkImage(Global.storageService.getUserAvatarUrl()),
+                    backgroundImage:
+                        NetworkImage(Global.storageService.getUserAvatarUrl()),
                   )),
             ),
             Text(
@@ -126,9 +186,8 @@ Widget header(News news) {
 }
 
 Widget navigation(BuildContext context, News news, int route) {
-  String comment = BlocProvider.of<NewsDetailWriteCommentBloc>(context)
-      .state
-      .comment;
+  String comment =
+      BlocProvider.of<NewsDetailWriteCommentBloc>(context).state.comment;
   return Container(
     height: 45.h,
     child: Column(
@@ -142,7 +201,7 @@ Widget navigation(BuildContext context, News news, int route) {
                 onTap: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     "/newsDetail",
-                        (route) => false,
+                    (route) => false,
                     arguments: {
                       "route": route,
                       "id": news.id,
@@ -214,6 +273,62 @@ Widget navigation(BuildContext context, News news, int route) {
   );
 }
 
+Widget buttonSend(BuildContext context, News news, int route) {
+  String comment =
+      BlocProvider.of<NewsDetailWriteCommentBloc>(context).state.comment;
+  return GestureDetector(
+    onTap: () {
+      if (comment != "") {
+        NewsDetailWriteCommentController(context: context)
+            .handleLoadWriteComment(news.id, route);
+      }
+    },
+    child: Container(
+      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+      height: 30.h,
+      decoration: BoxDecoration(
+        color: comment != ""
+            ? AppColors.primaryElement
+            : AppColors.primaryBackground,
+        borderRadius: BorderRadius.circular(10.w),
+        border: Border.all(
+          color: AppColors.primarySecondaryElement,
+        ),
+      ),
+      child: Center(
+          child: Container(
+        margin: EdgeInsets.only(left: 12.w, right: 12.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Gửi',
+              style: TextStyle(
+                  fontFamily: AppFonts.Header1,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: comment != ""
+                      ? AppColors.primaryBackground
+                      : Colors.black.withOpacity(0.3)),
+            ),
+            Container(
+              width: 6.w,
+            ),
+            SvgPicture.asset(
+              "assets/icons/send.svg",
+              width: 15.w,
+              height: 15.h,
+              color: comment != ""
+                  ? AppColors.primaryBackground
+                  : Colors.black.withOpacity(0.5),
+            ),
+          ],
+        ),
+      )),
+    ),
+  );
+}
+
 Widget newsDetailWriteComment(BuildContext context, News news, int route) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,16 +339,15 @@ Widget newsDetailWriteComment(BuildContext context, News news, int route) {
           scrollDirection: Axis.vertical,
           children: [
             header(news),
-            buildTextField('Bình luận của bạn', 'comment', '',
-                    (value) {
-                  context
-                      .read<NewsDetailWriteCommentBloc>()
-                      .add(CommentEvent(value));
-                }),
+            buildTextField('Bình luận của bạn', 'comment', '', (value) {
+              context
+                  .read<NewsDetailWriteCommentBloc>()
+                  .add(CommentEvent(value));
+            }),
           ],
         ),
       ),
-      navigation(context, news, route),
+      buttonSend(context, news, route),
     ],
   );
 }

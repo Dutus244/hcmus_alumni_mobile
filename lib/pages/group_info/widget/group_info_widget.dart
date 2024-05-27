@@ -1,5 +1,6 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -7,6 +8,68 @@ import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../model/group.dart';
+import '../bloc/group_info_blocs.dart';
+
+AppBar buildAppBar(BuildContext context, Group group, int secondRoute) {
+  return AppBar(
+    backgroundColor: AppColors.primaryBackground,
+    title: Container(
+      height: 40.h,
+      margin: EdgeInsets.only(left: 0.w, right: 0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/groupDetail",
+                (route) => false,
+                arguments: {
+                  "id": group.id,
+                  "secondRoute": secondRoute,
+                },
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 0.w),
+              child: SizedBox(
+                width: 25.w,
+                height: 25.h,
+                child: SvgPicture.asset(
+                  "assets/icons/back.svg",
+                  width: 25.w,
+                  height: 25.h,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+          Text(
+            group.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppFonts.Header0,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.sp,
+              color: AppColors.secondaryHeader,
+            ),
+          ),
+          Container(
+            width: 25.w,
+            color: Colors.transparent,
+            child: Row(
+              children: [],
+            ),
+          )
+        ],
+      ),
+    ),
+    centerTitle: true, // Đặt tiêu đề vào giữa
+  );
+}
 
 Widget navigation(BuildContext context, Group group, int secondRoute) {
   return Container(
@@ -26,7 +89,7 @@ Widget navigation(BuildContext context, Group group, int secondRoute) {
                 onTap: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     "/groupDetail",
-                        (route) => false,
+                    (route) => false,
                     arguments: {
                       "id": group.id,
                       "secondRoute": secondRoute,
@@ -217,7 +280,8 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h, bottom: 5.h),
+              margin: EdgeInsets.only(
+                  left: 10.w, right: 10.w, top: 10.h, bottom: 5.h),
               height: 1.h,
               color: AppColors.primarySecondaryElement,
             ),
@@ -247,10 +311,11 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                             onTap: () {
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                 "/groupMember",
-                                    (route) => false,
+                                (route) => false,
                                 arguments: {
                                   "group": group,
                                   "secondRoute": secondRoute,
+                                  "route": 0,
                                 },
                               );
                             },
@@ -267,36 +332,56 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                       ),
                     ],
                   ),
-                  Container(
-                      margin: EdgeInsets.only(left: 10.w, top: 5.h),
-                      height: 25.h,
-                      child: Stack(
-                        children: [
-                          for (var i = 0; i < 10; i += 1)
-                            Positioned(
-                              left: (0 + i * 20).w,
-                              child: CircleAvatar(
-                                radius: 15,
-                                child: null,
-                                backgroundImage:
-                                AssetImage("assets/images/test1.png"),
-                              ),
-                            )
-                        ],
-                      )
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                    child: Text(
-                      'Nguyễn Đinh Quang Khánh. Minh Phúc và 9 người bạn khác đã tham gia',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: AppFonts.Header3,
+                  if (BlocProvider.of<GroupInfoBloc>(context)
+                          .state
+                          .member
+                          .length >
+                      0)
+                    Container(
+                        margin: EdgeInsets.only(left: 10.w, top: 5.h),
+                        height: 25.h,
+                        child: Stack(
+                          children: [
+                            for (var i = 0;
+                                i <
+                                    BlocProvider.of<GroupInfoBloc>(context)
+                                        .state
+                                        .member
+                                        .length;
+                                i += 1)
+                              Positioned(
+                                left: (0 + i * 20).w,
+                                child: CircleAvatar(
+                                  radius: 15,
+                                  child: null,
+                                  backgroundImage: NetworkImage(
+                                      BlocProvider.of<GroupInfoBloc>(context)
+                                          .state
+                                          .member[i]
+                                          .participant
+                                          .avatarUrl),
+                                ),
+                              )
+                          ],
+                        )),
+                  if (BlocProvider.of<GroupInfoBloc>(context)
+                          .state
+                          .member
+                          .length >
+                      0)
+                    Container(
+                      margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                      child: Text(
+
+  BlocProvider.of<GroupInfoBloc>(context).state.member.length > 1 ? '${BlocProvider.of<GroupInfoBloc>(context).state.member[0].participant.fullName} và người bạn khác đã tham gia' : '${BlocProvider.of<GroupInfoBloc>(context).state.member[0].participant.fullName} đã tham gia',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: AppFonts.Header3,
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             if (group.isJoined || group.privacy == 'PUBLIC')
@@ -304,42 +389,66 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                      margin: EdgeInsets.only(left: 10.w, top: 5.h),
-                      height: 25.h,
-                      child: Stack(
-                        children: [
-                          for (var i = 0; i < 10; i += 1)
-                            Positioned(
-                              left: (0 + i * 20).w,
-                              child: CircleAvatar(
-                                radius: 15,
-                                child: null,
-                                backgroundImage:
-                                AssetImage("assets/images/test1.png"),
-                              ),
-                            )
-                        ],
-                      )
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                    child: Text(
-                      'Quý Trung và 3 người khác là quảng trị viên',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: AppFonts.Header3,
+                  if (BlocProvider.of<GroupInfoBloc>(context)
+                          .state
+                          .admin
+                          .length >
+                      0)
+                    Container(
+                        margin: EdgeInsets.only(left: 10.w, top: 5.h),
+                        height: 25.h,
+                        child: Stack(
+                          children: [
+                            for (var i = 0;
+                                i <
+                                    BlocProvider.of<GroupInfoBloc>(context)
+                                        .state
+                                        .admin
+                                        .length;
+                                i += 1)
+                              Positioned(
+                                left: (0 + i * 20).w,
+                                child: CircleAvatar(
+                                  radius: 15,
+                                  child: null,
+                                  backgroundImage: NetworkImage(
+                                      BlocProvider.of<GroupInfoBloc>(context)
+                                          .state
+                                          .admin[i]
+                                          .participant
+                                          .avatarUrl),
+                                ),
+                              )
+                          ],
+                        )),
+                  if (BlocProvider.of<GroupInfoBloc>(context)
+                          .state
+                          .admin
+                          .length >
+                      0)
+                    Container(
+                      margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                      child: Text(
+                        BlocProvider.of<GroupInfoBloc>(context)
+                                    .state
+                                    .admin
+                                    .length >
+                                1
+                            ? '${BlocProvider.of<GroupInfoBloc>(context).state.admin[0].participant.fullName} và ${BlocProvider.of<GroupInfoBloc>(context).state.admin.length - 1} người khác là quản trị viên'
+                            : '${BlocProvider.of<GroupInfoBloc>(context).state.admin[0].participant.fullName} là quản trị viên',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: AppFonts.Header3,
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
           ],
         ),
       ),
-      navigation(context, group, secondRoute)
     ],
   );
 }

@@ -11,7 +11,6 @@ import 'bloc/edit_post_advise_states.dart';
 import 'widgets/edit_post_advise_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 
 class EditPostAdvise extends StatefulWidget {
   const EditPostAdvise({super.key});
@@ -32,6 +31,9 @@ class _EditPostAdviseState extends State<EditPostAdvise> {
       route = args["route"];
       post = args["post"];
       // Now you can use the passedValue in your widget
+      context
+          .read<EditPostAdviseBloc>()
+          .add(EditPostAdviseResetEvent());
       EditPostAdviseController(context: context).handleLoad(post);
     }
 
@@ -50,7 +52,7 @@ class _EditPostAdviseState extends State<EditPostAdvise> {
         child: BlocBuilder<EditPostAdviseBloc, EditPostAdviseState>(
             builder: (context, state) {
           return Scaffold(
-              appBar: buildAppBar(context, 'Chỉnh sửa bài viết'),
+              appBar: buildAppBar(context, route, post.id),
               backgroundColor: AppColors.primaryBackground,
               body: BlocProvider.of<EditPostAdviseBloc>(context).state.page == 0
                   ? writePost(context, route, post.id)

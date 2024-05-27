@@ -9,7 +9,6 @@ import 'package:hcmus_alumni_mobile/pages/group_member/group_member_controller.d
 import 'package:hcmus_alumni_mobile/pages/group_member/widgets/group_member_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import '../../model/group.dart';
 
 class GroupMember extends StatefulWidget {
@@ -22,7 +21,7 @@ class GroupMember extends StatefulWidget {
 class _GroupMemberState extends State<GroupMember> {
   late int secondRoute;
   late Group group;
-  late PageController pageController; // Không khởi tạo ở đây
+  late int route;
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
 
@@ -42,9 +41,6 @@ class _GroupMemberState extends State<GroupMember> {
         _isFetchingData = false;
       });
 
-      // GroupMemberController(context: context).handleGetMember(group.id,
-      //     BlocProvider.of<GroupMemberBloc>(context).state.indexMember);
-
       if (!BlocProvider.of<GroupMemberBloc>(context).state.hasReachedMaxAdmin) {
         GroupMemberController(context: context).handleGetAdmin(group.id,
             BlocProvider.of<GroupMemberBloc>(context).state.indexAdmin);
@@ -62,24 +58,37 @@ class _GroupMemberState extends State<GroupMember> {
     if (args != null) {
       group = args["group"];
       secondRoute = args["secondRoute"];
+      route = args["route"];
       GroupMemberController(context: context).handleGetAdmin(group.id, 0);
     }
     return PopScope(
       canPop: false, // prevent back
       onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/groupInfo",
-          (route) => false,
-          arguments: {
-            "group": group,
-            "secondRoute": secondRoute,
-          },
-        );
+        if (route == 0) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            "/groupInfo",
+                (route) => false,
+            arguments: {
+              "group": group,
+              "secondRoute": secondRoute,
+            },
+          );
+        }
+        else {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            "/groupManagement",
+                (route) => false,
+            arguments: {
+              "group": group,
+              "secondRoute": secondRoute,
+            },
+          );
+        }
       },
       child: BlocBuilder<GroupMemberBloc, GroupMemberState>(
           builder: (context, state) {
         return Scaffold(
-          appBar: buildAppBar(context, 'Thành viên'),
+          appBar: buildAppBar(context, group, secondRoute, route),
           backgroundColor: AppColors.primaryBackground,
           body: listMember(context, _scrollController, group, secondRoute),
         );

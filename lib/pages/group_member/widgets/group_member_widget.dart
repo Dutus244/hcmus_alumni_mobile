@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hcmus_alumni_mobile/model/group.dart';
+import 'package:hcmus_alumni_mobile/pages/group_member/group_member_controller.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
@@ -12,95 +13,76 @@ import '../../../model/member.dart';
 import '../bloc/group_member_blocs.dart';
 import '../bloc/group_member_states.dart';
 
-// Widget listMember(
-//     BuildContext context, ScrollController _scrollController, Group group, int secondRoute) {
-//   return Column(
-//     crossAxisAlignment: CrossAxisAlignment.stretch,
-//     children: [
-//       Expanded(
-//         child: ListView.builder(
-//           controller: _scrollController,
-//           itemCount: BlocProvider.of<GroupMemberBloc>(context)
-//               .state
-//               .member
-//               .length +
-//               1,
-//           itemBuilder: (BuildContext context, int index) {
-//             switch (BlocProvider.of<GroupMemberBloc>(context)
-//                 .state
-//                 .status) {
-//               case Status.loading:
-//                 return Column(
-//                   children: [
-//                     loadingWidget(),
-//                   ],
-//                 );
-//               case Status.success:
-//                 if (BlocProvider.of<GroupMemberBloc>(context)
-//                     .state
-//                     .member
-//                     .isEmpty) {
-//                   return Column(
-//                     children: [
-//                       Center(
-//                           child: Container(
-//                             margin: EdgeInsets.only(top: 20.h),
-//                             child: Text(
-//                               'Không có thành viên nào',
-//                               style: TextStyle(
-//                                 color: Colors.black,
-//                                 fontSize: 11.sp,
-//                                 fontWeight: FontWeight.normal,
-//                                 fontFamily: AppFonts.Header2,
-//                               ),
-//                             ),
-//                           )),
-//                     ],
-//                   );
-//                 }
-//                 if (index >=
-//                     BlocProvider.of<GroupMemberBloc>(context)
-//                         .state
-//                         .member
-//                         .length) {
-//                   if (BlocProvider.of<GroupMemberBloc>(context)
-//                       .state
-//                       .hasReachedMaxMember) {
-//                     return SizedBox();
-//                   }
-//                   // Return something indicating end of list, if needed
-//                   return loadingWidget();
-//                 } else {
-//                   if (index == 0) {
-//                     // Create a custom widget to combine button and news item
-//                     return Column(
-//                       children: [
-//                         Container(
-//                           height: 10.h,
-//                         ),
-//                         member(
-//                             context,
-//                             BlocProvider.of<GroupMemberBloc>(context)
-//                                 .state
-//                                 .member[index]),
-//                       ],
-//                     );
-//                   } else {
-//                     return member(
-//                         context,
-//                         BlocProvider.of<GroupMemberBloc>(context)
-//                             .state
-//                             .member[index]);
-//                   }
-//                 }
-//             }
-//           },
-//         ),
-//       ),
-//       navigation(context, group, secondRoute),
-//     ],
-//   );
-// }
+AppBar buildAppBar(BuildContext context, Group group, int secondRoute, int route) {
+  return AppBar(
+    backgroundColor: AppColors.primaryBackground,
+    title: Container(
+      height: 40.h,
+      margin: EdgeInsets.only(left: 0.w, right: 0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              if (route == 0) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/groupInfo",
+                      (route) => false,
+                  arguments: {
+                    "group": group,
+                    "secondRoute": secondRoute,
+                  },
+                );
+              }
+              else {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/groupManagement",
+                      (route) => false,
+                  arguments: {
+                    "group": group,
+                    "secondRoute": secondRoute,
+                  },
+                );
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 0.w),
+              child: SizedBox(
+                width: 25.w,
+                height: 25.h,
+                child: SvgPicture.asset(
+                  "assets/icons/back.svg",
+                  width: 25.w,
+                  height: 25.h,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+          Text(
+            'Thành viên',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppFonts.Header0,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.sp,
+              color: AppColors.secondaryHeader,
+            ),
+          ),
+          Container(
+            width: 25.w,
+            color: Colors.transparent,
+            child: Row(
+              children: [],
+            ),
+          )
+        ],
+      ),
+    ),
+    centerTitle: true, // Đặt tiêu đề vào giữa
+  );
+}
 
 Widget listMember(BuildContext context, ScrollController _scrollController,
     Group group, int secondRoute) {
@@ -126,12 +108,14 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
                 );
               case Status.success:
                 if (BlocProvider.of<GroupMemberBloc>(context)
-                    .state
-                    .admin
-                    .length + BlocProvider.of<GroupMemberBloc>(context)
-                    .state
-                    .member
-                    .length == 0) {
+                            .state
+                            .admin
+                            .length +
+                        BlocProvider.of<GroupMemberBloc>(context)
+                            .state
+                            .member
+                            .length ==
+                    0) {
                   return Column(
                     children: [
                       Center(
@@ -179,7 +163,8 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(left: 10.w, top: 10.h, bottom: 5.h),
+                          margin: EdgeInsets.only(
+                              left: 10.w, top: 10.h, bottom: 5.h),
                           child: Text(
                             'Quản trị viên',
                             style: TextStyle(
@@ -194,7 +179,8 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
                             context,
                             BlocProvider.of<GroupMemberBloc>(context)
                                 .state
-                                .admin[index]),
+                                .admin[index],
+                            group),
                       ],
                     );
                   } else if (index -
@@ -208,7 +194,8 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(left: 10.w, top: 10.h, bottom: 5.h),
+                          margin: EdgeInsets.only(
+                              left: 10.w, top: 10.h, bottom: 5.h),
                           child: Text(
                             'Thành viên',
                             style: TextStyle(
@@ -222,42 +209,48 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
                         member(
                             context,
                             BlocProvider.of<GroupMemberBloc>(context)
-                                .state
-                                .member[index - BlocProvider.of<GroupMemberBloc>(context)
-                                .state
-                                .admin
-                                .length]),
+                                    .state
+                                    .member[
+                                index -
+                                    BlocProvider.of<GroupMemberBloc>(context)
+                                        .state
+                                        .admin
+                                        .length],
+                            group),
                       ],
                     );
                   } else if (BlocProvider.of<GroupMemberBloc>(context)
-                      .state
-                      .admin.length > index) {
+                          .state
+                          .admin
+                          .length >
+                      index) {
                     return member(
                         context,
                         BlocProvider.of<GroupMemberBloc>(context)
                             .state
-                            .admin[index]);
+                            .admin[index],
+                        group);
                   } else {
                     return member(
                         context,
-                        BlocProvider.of<GroupMemberBloc>(context)
-                            .state
-                            .member[index - BlocProvider.of<GroupMemberBloc>(context)
-                            .state
-                            .admin
-                            .length]);
+                        BlocProvider.of<GroupMemberBloc>(context).state.member[
+                            index -
+                                BlocProvider.of<GroupMemberBloc>(context)
+                                    .state
+                                    .admin
+                                    .length],
+                        group);
                   }
                 }
             }
           },
         ),
       ),
-      navigation(context, group, secondRoute),
     ],
   );
 }
 
-Widget member(BuildContext context, Member member) {
+Widget member(BuildContext context, Member member, Group group) {
   return GestureDetector(
     onTap: () {},
     child: Container(
@@ -293,7 +286,7 @@ Widget member(BuildContext context, Member member) {
                       fontFamily: AppFonts.Header2,
                     ),
                   ),
-                  if (member.role == 'ADMIN')
+                  if (member.role == 'ADMIN' || member.role == 'CREATOR')
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -329,11 +322,136 @@ Widget member(BuildContext context, Member member) {
                       ),
                     ),
                 ],
+              ),
+            ],
+          ),
+          if (group.userRole == 'ADMIN' || group.userRole == 'CREATOR')
+            GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (ctx) => memberManagement(context, member, group.id),
+                );
+              },
+              child: Container(
+                width: 17.w,
+                height: 17.h,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/icons/3dot.png"))),
+              ),
+            ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget memberManagement(BuildContext context, Member member, String groupId) {
+  return Container(
+    height: 120.h,
+    child: Stack(
+      children: [
+        SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 10.h),
+                child: Center(
+                  child: Text(
+                    member.participant.fullName,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: AppFonts.Header2,
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  GroupMemberController(context: context)
+                      .handleDeleteMemeber(groupId, member.participant.id);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  margin: EdgeInsets.only(left: 20.w, right: 10.w, top: 10.h),
+                  color: Colors.transparent,
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/delete_user.svg",
+                        width: 14.w,
+                        height: 14.h,
+                        color: AppColors.primaryText,
+                      ),
+                      Container(
+                        width: 10.w,
+                      ),
+                      Text(
+                        'Xoá thành viên',
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header2,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  if (member.role == 'MEMBER') {
+                    GroupMemberController(context: context).handleChangeRole(
+                        groupId, member.participant.id, 'ADMIN');
+                  } else {
+                    GroupMemberController(context: context).handleChangeRole(
+                        groupId, member.participant.id, 'MEMBER');
+                  }
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  margin: EdgeInsets.only(left: 20.w, right: 10.w, top: 10.h),
+                  color: Colors.transparent,
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/star_circle.svg",
+                        width: 14.w,
+                        height: 14.h,
+                        color: AppColors.primaryText,
+                      ),
+                      Container(
+                        width: 10.w,
+                      ),
+                      Text(
+                        member.role == 'MEMBER'
+                            ? 'Mời làm quản trị viên'
+                            : 'Gỡ vai trò quản trị viên',
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header2,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 70.h,
               )
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     ),
   );
 }

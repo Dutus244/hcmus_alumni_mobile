@@ -91,6 +91,11 @@ class HofPageController {
         // Pass the Map to the fromJson method
         var hallOfFameResponse = HallOfFameResponse.fromJson(jsonMap);
         if (hallOfFameResponse.hallOfFame.isEmpty) {
+          if (page == 0) {
+            context
+                .read<HofPageBloc>()
+                .add(HallOfFameEvent(hallOfFameResponse.hallOfFame));
+          }
           context.read<HofPageBloc>().add(HasReachedMaxHofEvent(true));
           context.read<HofPageBloc>().add(StatusHofEvent(Status.success));
           return;

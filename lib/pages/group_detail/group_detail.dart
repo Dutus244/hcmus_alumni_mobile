@@ -8,7 +8,6 @@ import 'package:hcmus_alumni_mobile/pages/group_detail/group_detail_controller.d
 import 'package:hcmus_alumni_mobile/pages/group_detail/widgets/group_detail_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import '../../model/group.dart';
 import 'bloc/group_detail_blocs.dart';
 import 'bloc/group_detail_states.dart';
@@ -69,14 +68,14 @@ class _GroupDetailState extends State<GroupDetail> {
           builder: (context, state) {
             if (state.group != null && state.group!.privacy == "PRIVATE" && !state.group!.isJoined) {
               return Scaffold(
-                appBar: buildAppBar(context, 'Nhóm'),
+                appBar: buildAppBar(context, secondRoute),
                 backgroundColor: AppColors.primaryBackground,
                 body: groupPrivateNotJoined(context, state.group, secondRoute),
               );
             }
             else {
               return Scaffold(
-                appBar: buildAppBar(context, 'Nhóm'),
+                appBar: buildAppBar(context, secondRoute),
                 backgroundColor: AppColors.primaryBackground,
                 body: group(context, _scrollController, state.group, secondRoute)
               );

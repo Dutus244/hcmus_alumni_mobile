@@ -118,7 +118,7 @@ class GroupDetailController {
 
       var response = await http.post(url, headers: headers);
       if (response.statusCode == 201) {
-
+        GroupDetailController(context: context).handleGetGroup(id);
       } else {
         // Handle other status codes if needed
       }
@@ -213,6 +213,34 @@ class GroupDetailController {
           }
         }
       }
+    }
+  }
+
+  Future<void> handleExitGroup(String id, int secondRoute) async {
+    String userId = '30ff6fa7-035f-42e4-aa13-55c1c94ded1e';
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/groups/$id/members/$userId';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      "Content-Type": "application/json"
+    };
+
+    try {
+      var url = Uri.parse('$apiUrl$endpoint');
+
+      var response = await http.delete(url, headers: headers);
+      if (response.statusCode == 200) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            "/applicationPage", (route) => false,
+            arguments: {"route": 3, "secondRoute": secondRoute});
+      } else {
+        // Handle other status codes if needed
+      }
+    } catch (error, stacktrace) {
+      // Handle errors
     }
   }
 }

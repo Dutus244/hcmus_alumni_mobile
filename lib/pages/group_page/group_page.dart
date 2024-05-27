@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hcmus_alumni_mobile/pages/group_page/widgets/group_page_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import 'bloc/group_page_blocs.dart';
 import 'bloc/group_page_events.dart';
 import 'bloc/group_page_states.dart';
@@ -87,7 +86,7 @@ class _GroupPageState extends State<GroupPage> {
           BlocBuilder<GroupPageBloc, GroupPageState>(builder: (context, state) {
         return Container(
           child: Scaffold(
-            appBar: buildAppBar(context, 'Nhóm'),
+            appBar: buildAppBar(context),
             backgroundColor: AppColors.primaryBackground,
             body: BlocProvider.of<GroupPageBloc>(context).state.page == 0
                 ? listGroupDiscover(context, _scrollController)

@@ -6,7 +6,6 @@ import 'bloc/write_post_group_events.dart';
 import 'widgets/write_post_group_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import 'bloc/write_post_group_blocs.dart';
 import 'bloc/write_post_group_states.dart';
 
@@ -23,12 +22,14 @@ class _WritePostGroupState extends State<WritePostGroup> {
 
   @override
   Widget build(BuildContext context) {
-    var route;
     Map<String, dynamic>? args =
     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       id = args["id"];
       secondRoute = args["secondRoute"];
+      context
+          .read<WritePostGroupBloc>()
+          .add(WritePostGroupResetEvent());
       // Now you can use the passedValue in your widget
     }
 
@@ -47,10 +48,10 @@ class _WritePostGroupState extends State<WritePostGroup> {
         child: BlocBuilder<WritePostGroupBloc, WritePostGroupState>(
             builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, 'Tạo bài viết'),
+            appBar: buildAppBar(context, id, secondRoute),
             backgroundColor: AppColors.primaryBackground,
             body: BlocProvider.of<WritePostGroupBloc>(context)
-                .state.page == 0 ? writePost(context, id, secondRoute) : editPicture(context, route)
+                .state.page == 0 ? writePost(context, id, secondRoute) : editPicture(context)
           );
         }));
   }

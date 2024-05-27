@@ -13,6 +13,67 @@ import '../../../model/news.dart';
 import '../news_detail_edit_comment_controller.dart';
 import '../bloc/news_detail_edit_comment_events.dart';
 
+AppBar buildAppBar(BuildContext context, int route, News news) {
+  return AppBar(
+    backgroundColor: AppColors.primaryBackground,
+    title: Container(
+      height: 40.h,
+      margin: EdgeInsets.only(left: 0.w, right: 0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/newsDetail",
+                    (route) => false,
+                arguments: {
+                  "route": route,
+                  "id": news.id,
+                },
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 0.w),
+              child: SizedBox(
+                width: 25.w,
+                height: 25.h,
+                child: SvgPicture.asset(
+                  "assets/icons/back.svg",
+                  width: 25.w,
+                  height: 25.h,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+          Text(
+            'Sự kiện',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppFonts.Header0,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.sp,
+              color: AppColors.secondaryHeader,
+            ),
+          ),
+          Container(
+            width: 25.w,
+            color: Colors.transparent,
+            child: Row(
+              children: [
+
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
+    centerTitle: true, // Đặt tiêu đề vào giữa
+  );
+}
+
 Widget buildTextField(BuildContext context, String hintText, String textType,
     String iconName, void Function(String value)? func) {
   TextEditingController _controller = TextEditingController(
@@ -20,7 +81,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
 
   return Container(
       width: 320.w,
-      height: 400.h,
+      height: 350.h,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
       decoration: BoxDecoration(
         color: AppColors.primaryBackground,
@@ -30,7 +91,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
         children: [
           Container(
             width: 300.w,
-            height: 400.h,
+            height: 350.h,
             child: TextField(
               onTapOutside: (PointerDownEvent event) {
                 func!(_controller.text);
@@ -221,6 +282,63 @@ Widget navigation(BuildContext context, News news, int route, Comment Comment) {
   );
 }
 
+Widget buttonEdit(BuildContext context, News news, int route, Comment Comment) {
+  String comment = BlocProvider.of<NewsDetailEditCommentBloc>(context)
+      .state
+      .comment;
+  return GestureDetector(
+    onTap: () {
+      if (comment != "") {
+        NewsDetailEditCommentController(context: context)
+            .handleEditComment(news.id, Comment.id, route);
+      }
+    },
+    child: Container(
+      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+      height: 30.h,
+      decoration: BoxDecoration(
+        color: comment != ""
+            ? AppColors.primaryElement
+            : AppColors.primaryBackground,
+        borderRadius: BorderRadius.circular(10.w),
+        border: Border.all(
+          color: AppColors.primarySecondaryElement,
+        ),
+      ),
+      child: Center(
+          child: Container(
+            margin: EdgeInsets.only(left: 12.w, right: 12.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Lưu',
+                  style: TextStyle(
+                      fontFamily: AppFonts.Header1,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: comment != ""
+                          ? AppColors.primaryBackground
+                          : Colors.black.withOpacity(0.3)),
+                ),
+                Container(
+                  width: 6.w,
+                ),
+                SvgPicture.asset(
+                  "assets/icons/send.svg",
+                  width: 15.w,
+                  height: 15.h,
+                  color: comment != ""
+                      ? AppColors.primaryBackground
+                      : Colors.black.withOpacity(0.5),
+                ),
+              ],
+            ),
+          )),
+    ),
+  );
+}
+
 Widget newsDetailEditComment(BuildContext context, News news, int route, Comment comment) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,7 +358,7 @@ Widget newsDetailEditComment(BuildContext context, News news, int route, Comment
           ],
         ),
       ),
-      navigation(context, news, route, comment),
+      buttonEdit(context, news, route, comment),
     ],
   );
 }

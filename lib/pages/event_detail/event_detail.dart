@@ -8,7 +8,6 @@ import 'package:hcmus_alumni_mobile/pages/event_detail/bloc/event_detail_events.
 import 'package:hcmus_alumni_mobile/pages/event_detail/bloc/event_detail_states.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import 'bloc/event_detail_blocs.dart';
 import 'event_detail_controller.dart';
 import 'widgets/event_detail_widget.dart';
@@ -74,7 +73,7 @@ class _EventDetailState extends State<EventDetail> {
       child: BlocBuilder<EventDetailBloc, EventDetailState>(
           builder: (context, state) {
         return Scaffold(
-          appBar: buildAppBar(context, 'Sự kiện'),
+          appBar: buildAppBar(context, route),
           backgroundColor: AppColors.primaryBackground,
           body: BlocProvider.of<EventDetailBloc>(context).state.page == 0
               ? detail(context, BlocProvider.of<EventDetailBloc>(context)
