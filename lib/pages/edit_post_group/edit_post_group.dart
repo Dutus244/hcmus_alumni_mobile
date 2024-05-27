@@ -6,11 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../model/post.dart';
 import 'bloc/edit_post_group_blocs.dart';
 import 'bloc/edit_post_group_states.dart';
+import 'bloc/edit_post_group_events.dart';
 import 'edit_post_group_controller.dart';
 import 'widgets/edit_post_group_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 
 class EditPostGroup extends StatefulWidget {
   const EditPostGroup({super.key});
@@ -33,6 +33,9 @@ class _EditPostGroupState extends State<EditPostGroup> {
       secondRoute = args["secondRoute"];
       post = args["post"];
       // Now you can use the passedValue in your widget
+      context
+          .read<EditPostGroupBloc>()
+          .add(EditPostGroupResetEvent());
       EditPostGroupController(context: context).handleLoad(post);
     }
 
@@ -51,7 +54,7 @@ class _EditPostGroupState extends State<EditPostGroup> {
         child: BlocBuilder<EditPostGroupBloc, EditPostGroupState>(
             builder: (context, state) {
           return Scaffold(
-              appBar: buildAppBar(context, 'Chỉnh sửa bài viết'),
+              appBar: buildAppBar(context, secondRoute, post.id, id),
               backgroundColor: AppColors.primaryBackground,
               body: BlocProvider.of<EditPostGroupBloc>(context).state.page == 0
                   ? writePost(context, secondRoute, post.id, id)

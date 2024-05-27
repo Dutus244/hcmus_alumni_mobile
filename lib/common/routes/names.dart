@@ -27,15 +27,20 @@ class AppRoutes {
   static const EVENT_DETAIL_WRITE_CHILDREN_COMMENT = "/eventDetailWriteChildrenComment";
 
   static const HOF_DETAIL = "/hofDetail";
+
   static const WRITE_POST_ADVISE = "/writePostAdvise";
   static const EDIT_POST_ADVISE = "/editPostAdvise";
   static const LIST_INTERACT_POST_ADVISE = "/listInteractPostAdvise";
   static const LIST_COMMENT_POST_ADVISE = "/listCommentPostAdvise";
   static const LIST_PICTURE_POST_ADVISE = "/listPicturePostAdvise";
 
+  static const GROUP_CREATE = "/groupCreate";
+  static const GROUP_EDIT = "/groupEdit";
   static const GROUP_DETAIL = "/groupDetail";
   static const GROUP_INFO = "/groupInfo";
   static const GROUP_MEMBER = "/groupMember";
+  static const GROUP_MANAGEMENT = "/groupManagement";
+  static const GROUP_MEMBER_APPROVE = "/groupMemberApprove";
   static const WRITE_POST_GROUP = "/writePostGroup";
   static const EDIT_POST_GROUP = "/editPostGroup";
   static const LIST_INTERACT_POST_GROUP = "/listInteractPostGroup";

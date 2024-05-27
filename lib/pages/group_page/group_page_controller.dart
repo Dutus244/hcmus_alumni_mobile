@@ -40,16 +40,18 @@ class GroupPageController {
       'Authorization': 'Bearer $token',
     };
     try {
-      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
+      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize&isJoined=false');
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var groupResponse = GroupResponse.fromJson(jsonMap);
         if (groupResponse.group.isEmpty) {
-          context
-              .read<GroupPageBloc>()
-              .add(GroupDiscoverEvent(groupResponse.group));
+          if (page == 0) {
+            context
+                .read<GroupPageBloc>()
+                .add(GroupDiscoverEvent(groupResponse.group));
+          }
           context
               .read<GroupPageBloc>()
               .add(HasReachedMaxGroupDiscoverEvent(true));
@@ -106,7 +108,7 @@ class GroupPageController {
       'Authorization': 'Bearer $token',
     };
     try {
-      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
+      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize&isJoined=true');
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
@@ -148,9 +150,9 @@ class GroupPageController {
     } catch (error, stacktrace) {}
   }
 
-  Future<void> handleRequestJoinGroup(String id) async {
+  Future<void> handleRequestJoinGroup(Group group) async {
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/groups/$id/requests';
+    var endpoint = '/groups/${group.id}/requests';
 
     var token = Global.storageService.getUserAuthToken();
 
@@ -164,7 +166,19 @@ class GroupPageController {
 
       var response = await http.post(url, headers: headers);
       if (response.statusCode == 201) {
-        GroupPageController(context: context).handleLoadGroupDiscoverData(0);
+        if (group.privacy == 'PUBLIC') {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            "/groupDetail",
+                (route) => false,
+            arguments: {
+              "id": group.id,
+              "secondRoute": 1,
+            },
+          );
+        }
+        else {
+          GroupPageController(context: context).handleLoadGroupDiscoverData(0);
+        }
       } else {
         // Handle other status codes if needed
       }

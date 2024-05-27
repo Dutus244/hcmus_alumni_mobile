@@ -12,9 +12,118 @@ import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../bloc/group_page_blocs.dart';
 import '../bloc/group_page_events.dart';
 import '../bloc/group_page_states.dart';
+
+AppBar buildAppBar(BuildContext context) {
+  return AppBar(
+    backgroundColor: AppColors.primaryBackground,
+    title: Container(
+      height: 40.h,
+      margin: EdgeInsets.only(left: 0.w, right: 0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/applicationPage",
+                        (route) => false,
+                    arguments: {"route": 0, "secondRoute": 0},
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.only(left: 0.w),
+                  child: SizedBox(
+                    width: 60.w,
+                    height: 120.h,
+                    child: Image.asset("assets/images/logos/logo.png"),
+                  ),
+                ),
+              ),
+              Container(
+                width: 30.w,
+              )
+            ],
+          ),
+          Text(
+            'Nhóm',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppFonts.Header0,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.sp,
+              color: AppColors.secondaryHeader,
+            ),
+          ),
+          Container(
+            width: 90.w,
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      "/groupCreate",
+                          (route) => false,
+                      arguments: {"route": 3},
+                    );
+                  },
+                  child: Container(
+                    width: 20.w,
+                    height: 20.h,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/icons/add.png"))),
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                GestureDetector(
+                  child: Container(
+                    width: 20.w,
+                    height: 20.h,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/icons/chat.png"))),
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Container(
+                  width: 20.w,
+                  height: 20.w,
+                  margin: EdgeInsets.only(),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed("/signIn");
+                    },
+                    child: Global.storageService.getUserIsLoggedIn()
+                        ? CircleAvatar(
+                      radius: 10,
+                      child: null,
+                      backgroundImage:
+                      AssetImage("assets/images/test1.png"),
+                    )
+                        : Container(
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image:
+                              AssetImage("assets/icons/login.png"))),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
+    centerTitle: true, // Đặt tiêu đề vào giữa
+  );
+}
 
 Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
   return Container(
@@ -121,7 +230,7 @@ Widget listGroupDiscover(BuildContext context,
               .groupDiscover
               .length +
               1) ~/
-              2,
+              2 + 1,
           itemBuilder: (BuildContext context, int index) {
             switch (BlocProvider
                 .of<GroupPageBloc>(context)
@@ -147,6 +256,9 @@ Widget listGroupDiscover(BuildContext context,
                     .isEmpty) {
                   return Column(
                     children: [
+                      buildButtonChoose(context, (value) {
+                        context.read<GroupPageBloc>().add(PageEvent(1));
+                      }),
                       Center(
                           child: Container(
                             margin: EdgeInsets.only(top: 20.h),
@@ -168,7 +280,7 @@ Widget listGroupDiscover(BuildContext context,
                         .of<GroupPageBloc>(context)
                         .state
                         .groupDiscover
-                        .length) {
+                        .length / 2) {
                   if (BlocProvider
                       .of<GroupPageBloc>(context)
                       .state
@@ -378,9 +490,30 @@ Widget groupDiscover(BuildContext context, Group group) {
             right: 10.w,
             child: GestureDetector(
               onTap: () {
-                GroupPageController(context: context).handleRequestJoinGroup(group.id);
+                GroupPageController(context: context).handleRequestJoinGroup(group);
               },
-              child: Container(
+              child: group.isRequestPending ? Container(
+                width: 145.w,
+                height: 30.h,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 230, 230, 230),
+                  borderRadius: BorderRadius.circular(5.w),
+                  border: Border.all(
+                    color: Colors.transparent,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    'Đang chờ duyệt',
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header2,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                ),
+              ) : Container(
                 width: 145.w,
                 height: 30.h,
                 decoration: BoxDecoration(
@@ -632,9 +765,30 @@ Widget infoGroup(BuildContext context, Group group) {
             color: AppColors.primaryBackground,
             child: GestureDetector(
               onTap: () {
-                GroupPageController(context: context).handleRequestJoinGroup(group.id);
+                GroupPageController(context: context).handleRequestJoinGroup(group);
               },
-              child: Container(
+              child: group.isRequestPending ? Container(
+                margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 20.h),
+                height: 30.h,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 230, 230, 230),
+                  borderRadius: BorderRadius.circular(5.w),
+                  border: Border.all(
+                    color: Colors.transparent,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    'Đang chờ duyệt',
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header2,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                ),
+              ) : Container(
                 margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 20.h),
                 height: 30.h,
                 decoration: BoxDecoration(
@@ -704,11 +858,14 @@ Widget listGroupJoined(BuildContext context,
                     .isEmpty) {
                   return Column(
                     children: [
+                      buildButtonChoose(context, (value) {
+                        context.read<GroupPageBloc>().add(PageEvent(0));
+                      }),
                       Center(
                           child: Container(
                             margin: EdgeInsets.only(top: 20.h),
                             child: Text(
-                              'Không có dữ liệu',
+                              'Bạn chưa tham gia nhóm nào',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 11.sp,

@@ -48,7 +48,9 @@ class NewsEventPageController {
         var newsResponse = NewsResponse.fromJson(jsonMap);
 
         if (newsResponse.news.isEmpty) {
-          context.read<NewsEventPageBloc>().add(NewsEvent(newsResponse.news));
+          if (page == 0) {
+            context.read<NewsEventPageBloc>().add(NewsEvent(newsResponse.news));
+          }
           context.read<NewsEventPageBloc>().add(HasReachedMaxNewsEvent(true));
           context
               .read<NewsEventPageBloc>()
@@ -103,9 +105,11 @@ class NewsEventPageController {
         var eventResponse = EventResponse.fromJson(jsonMap);
 
         if (eventResponse.event.isEmpty) {
-          context
-              .read<NewsEventPageBloc>()
-              .add(EventEvent(eventResponse.event));
+          if (page == 0) {
+            context
+                .read<NewsEventPageBloc>()
+                .add(EventEvent(eventResponse.event));
+          }
           context.read<NewsEventPageBloc>().add(HasReachedMaxEventEvent(true));
           context
               .read<NewsEventPageBloc>()

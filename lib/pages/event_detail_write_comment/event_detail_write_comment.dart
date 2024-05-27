@@ -5,7 +5,6 @@ import 'package:hcmus_alumni_mobile/pages/event_detail_write_comment/bloc/event_
 import 'package:hcmus_alumni_mobile/pages/event_detail_write_comment/widgets/event_detail_write_comment_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import '../../model/event.dart';
 import 'bloc/event_detail_write_comment_blocs.dart';
 import 'bloc/event_detail_write_comment_states.dart';
@@ -55,7 +54,7 @@ class _EventDetailWriteCommentState extends State<EventDetailWriteComment> {
         child: BlocBuilder<EventDetailWriteCommentBloc,
             EventDetailWriteCommentState>(builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, 'Sự kiện'),
+            appBar: buildAppBar(context, route, event),
             backgroundColor: AppColors.primaryBackground,
             body: eventDetailWriteComment(context, event, route),
           );

@@ -5,7 +5,6 @@ import 'package:hcmus_alumni_mobile/model/comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail_write_children_comment/widgets/news_detail_write_children_comment_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import '../../model/news.dart';
 import 'bloc/news_detail_write_children_comment_blocs.dart';
 import 'bloc/news_detail_write_children_comment_events.dart';
@@ -58,7 +57,7 @@ class _NewsDetailWriteChildrenCommentState
         child: BlocBuilder<NewsDetailWriteChildrenCommentBloc,
             NewsDetailWriteChildrenCommentState>(builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, 'Tin tức'),
+            appBar: buildAppBar(context, route, news),
             backgroundColor: AppColors.primaryBackground,
             body: newsDetailWriteChildrenComment(context, news, route, comment),
           );

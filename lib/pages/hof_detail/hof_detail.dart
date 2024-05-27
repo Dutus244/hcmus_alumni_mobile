@@ -6,7 +6,6 @@ import 'package:hcmus_alumni_mobile/pages/hof_detail/bloc/hof_detail_states.dart
 import 'package:hcmus_alumni_mobile/pages/hof_detail/widgets/hof_detail_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import 'hof_detail_controller.dart';
 
 class HofDetail extends StatefulWidget {
@@ -47,7 +46,7 @@ class _HofDetailState extends State<HofDetail> {
       child:
           BlocBuilder<HofDetailBloc, HofDetailState>(builder: (context, state) {
         return Scaffold(
-          appBar: buildAppBar(context, 'Gương thành công'),
+          appBar: buildAppBar(context, route),
           backgroundColor: AppColors.primaryBackground,
           body: hofDetail(context, route),
         );

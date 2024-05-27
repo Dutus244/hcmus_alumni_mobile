@@ -1,4 +1,5 @@
 import 'package:hcmus_alumni_mobile/model/creator.dart';
+import 'package:hcmus_alumni_mobile/model/permissions.dart';
 import 'status.dart';
 
 class Group {
@@ -7,7 +8,6 @@ class Group {
   final Creator creator;
   final String description;
   final String? type;
-  final String? avatarUrl;
   final String? coverUrl;
   final String? website;
   final String privacy;
@@ -15,6 +15,9 @@ class Group {
   final bool isJoined;
   final int participantCount;
   final String createAt;
+  final Permissions permissions;
+  final String? userRole;
+  final bool isRequestPending;
 
   Group(
       this.id,
@@ -22,27 +25,31 @@ class Group {
       this.creator,
       this.description,
       this.type,
-      this.avatarUrl,
       this.coverUrl,
       this.website,
       this.privacy,
       this.status,
       this.isJoined,
       this.participantCount,
-      this.createAt);
+      this.createAt,
+      this.permissions,
+      this.userRole,
+      this.isRequestPending);
 
   Group.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         name = json["name"],
         creator = Creator.fromJson(json["creator"]),
-        description = 'Group là nơi học tập kiến thức, chia sẻ kinh nghiệm và trao đổi chuyên môn của những con người yêu thích và đam mê công nghệ',
+        description = json["description"],
         type = json["type"],
-        avatarUrl = json["avatarUrl"],
         coverUrl = json["coverUrl"],
         website = json["website"],
         privacy = json["privacy"],
         status = Status.fromJson(json["status"]),
-        isJoined = true,
-        participantCount = 2000,
-        createAt = '2024-04-10 20:29:15';
+        isJoined = json["userRole"] == null ? false : true,
+        participantCount = json["participantCount"],
+        createAt = json["createAt"],
+        permissions = Permissions.fromJson(json["permissions"]),
+        userRole = json["userRole"],
+        isRequestPending = json["isRequestPending"];
 }

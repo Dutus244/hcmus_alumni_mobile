@@ -12,7 +12,6 @@ import '../../../common/widgets/loading_widget.dart';
 import '../../../model/comment.dart';
 import '../../../model/creator.dart';
 import '../../../model/interact.dart';
-import '../../write_post_advise/bloc/write_post_advise_events.dart';
 import '../bloc/list_comment_post_group_blocs.dart';
 import '../bloc/list_comment_post_group_events.dart';
 import '../bloc/list_comment_post_group_states.dart';
@@ -157,7 +156,7 @@ Widget buildCommentWidget(
                       radius: 10,
                       child: null,
                       backgroundImage:
-                          NetworkImage(comment.creator.avatarUrl ?? ""),
+                      NetworkImage(comment.creator.avatarUrl ?? ""),
                     )),
               ),
               Container(
@@ -263,6 +262,9 @@ Widget buildCommentWidget(
                             .add(ChildrenEvent(comment));
                         context
                             .read<ListCommentPostGroupBloc>()
+                            .add(ContentEvent(comment.content));
+                        context
+                            .read<ListCommentPostGroupBloc>()
                             .add(ReplyEvent(1));
                       },
                       child: Text(
@@ -286,6 +288,9 @@ Widget buildCommentWidget(
                               context
                                   .read<ListCommentPostGroupBloc>()
                                   .add(ChildrenEvent(comment));
+                              context
+                                  .read<ListCommentPostGroupBloc>()
+                                  .add(ContentEvent(comment.content));
                               context
                                   .read<ListCommentPostGroupBloc>()
                                   .add(ReplyEvent(2));
@@ -338,14 +343,14 @@ Widget buildCommentWidget(
                 for (int i = 0; i < comment.childrenComment.length; i += 1)
                   IntrinsicHeight(
                       child: Row(
-                    children: [
-                      Container(width: 1, color: Colors.black),
-                      // This is divider
-                      Container(
-                          child: buildCommentWidget(context,
-                              comment.childrenComment[i], index + 1, id)),
-                    ],
-                  ))
+                        children: [
+                          Container(width: 1, color: Colors.black),
+                          // This is divider
+                          Container(
+                              child: buildCommentWidget(context,
+                                  comment.childrenComment[i], index + 1, id)),
+                        ],
+                      ))
               ],
             ),
           ),
@@ -354,19 +359,63 @@ Widget buildCommentWidget(
   );
 }
 
-Widget buildTextFieldContent(BuildContext context, String hintText,
+Widget buildTextFieldContent1(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller;
-  if (BlocProvider.of<ListCommentPostGroupBloc>(context).state.children !=
-      null) {
-    _controller = TextEditingController(
-        text: BlocProvider.of<ListCommentPostGroupBloc>(context)
-            .state
-            .children!
-            .content);
-  } else {
-    _controller = TextEditingController(text: '');
-  }
+  return Container(
+      width: 300.w,
+      margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 5.w, bottom: 2.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.w),
+        color: Color.fromARGB(255, 245, 245, 245),
+        border: Border.all(
+          color: Colors.transparent,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 10.w),
+            width: 260.w,
+            child: TextField(
+              onChanged: (value) => func!(value),
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              // Cho phép đa dòng
+              decoration: InputDecoration(
+                hintText: hintText,
+                contentPadding: EdgeInsets.zero,
+                border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent)),
+                enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent)),
+                disabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent)),
+                focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.transparent)),
+                hintStyle: TextStyle(
+                  color: AppColors.primarySecondaryElementText,
+                ),
+                counterText: '',
+              ),
+              style: TextStyle(
+                color: AppColors.primaryText,
+                fontFamily: AppFonts.Header3,
+                fontWeight: FontWeight.normal,
+                fontSize: 12.sp,
+              ),
+              autocorrect: false,
+            ),
+          )
+        ],
+      ));
+}
+
+Widget buildTextFieldContent2(BuildContext context, String hintText,
+    String textType, String iconName, void Function(String value)? func) {
+  TextEditingController _controller = TextEditingController(
+      text: BlocProvider.of<ListCommentPostGroupBloc>(context)
+          .state
+          .content);
 
   return Container(
       width: 300.w,
@@ -432,8 +481,10 @@ Widget navigation(BuildContext context, String content, Comment? comment,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                buildTextFieldContent(
-                    context, 'Bình luận của bạn', 'comment', '', func),
+                buildTextFieldContent1(
+                    context, 'Bình luận của bạn', 'comment', '', (value) {
+                  context.read<ListCommentPostGroupBloc>().add(ContentEvent(value));
+                }),
                 GestureDetector(
                   onTap: () {
                     if (content != "") {
@@ -495,6 +546,9 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                         context
                             .read<ListCommentPostGroupBloc>()
                             .add(ReplyEvent(0));
+                        context
+                            .read<ListCommentPostGroupBloc>()
+                            .add(ContentEvent(''));
                         context.read<ListCommentPostGroupBloc>().add(
                             ChildrenEvent(Comment('', Creator('', '', ''), '',
                                 0, '', '', Permissions(false, false))));
@@ -514,19 +568,21 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    buildTextFieldContent(
-                        context, 'Bình luận của bạn', 'comment', '', func),
+                    buildTextFieldContent2(
+                        context, 'Bình luận của bạn', 'comment', '', (value) {
+                      context.read<ListCommentPostGroupBloc>().add(ContentEvent(value));
+                    }),
                     GestureDetector(
                       onTap: () {
                         if (content != "") {
                           ListCommentPostAdviseController(context: context)
                               .handleLoadWriteChildrenComment(
-                                  id,
-                                  BlocProvider.of<ListCommentPostGroupBloc>(
-                                          context)
-                                      .state
-                                      .children!
-                                      .id);
+                              id,
+                              BlocProvider.of<ListCommentPostGroupBloc>(
+                                  context)
+                                  .state
+                                  .children!
+                                  .id);
                         }
                       },
                       child: SvgPicture.asset(
@@ -573,6 +629,9 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                         context
                             .read<ListCommentPostGroupBloc>()
                             .add(ReplyEvent(0));
+                        context
+                            .read<ListCommentPostGroupBloc>()
+                            .add(ContentEvent(''));
                         context.read<ListCommentPostGroupBloc>().add(
                             ChildrenEvent(Comment('', Creator('', '', ''), '',
                                 0, '', '', Permissions(false, false))));
@@ -592,41 +651,43 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    buildTextFieldContent(
-                        context, 'Bình luận của bạn', 'comment', '', func),
+                    buildTextFieldContent2(
+                        context, 'Bình luận của bạn', 'comment', '', (value) {
+                      context.read<ListCommentPostGroupBloc>().add(ContentEvent(value));
+                    }),
                     GestureDetector(
                       onTap: BlocProvider.of<ListCommentPostGroupBloc>(context)
-                                  .state
-                                  .reply ==
-                              1
+                          .state
+                          .reply ==
+                          1
                           ? () {
-                              if (content != "") {
-                                ListCommentPostAdviseController(
-                                        context: context)
-                                    .handleLoadWriteChildrenComment(
-                                        id,
-                                        BlocProvider.of<
-                                                    ListCommentPostGroupBloc>(
-                                                context)
-                                            .state
-                                            .children!
-                                            .id);
-                              }
-                            }
+                        if (content != "") {
+                          ListCommentPostAdviseController(
+                              context: context)
+                              .handleLoadWriteChildrenComment(
+                              id,
+                              BlocProvider.of<
+                                  ListCommentPostGroupBloc>(
+                                  context)
+                                  .state
+                                  .children!
+                                  .id);
+                        }
+                      }
                           : () {
-                              if (content != "") {
-                                ListCommentPostAdviseController(
-                                        context: context)
-                                    .handleEditComment(
-                                        id,
-                                        BlocProvider.of<
-                                                    ListCommentPostGroupBloc>(
-                                                context)
-                                            .state
-                                            .children!
-                                            .id);
-                              }
-                            },
+                        if (content != "") {
+                          ListCommentPostAdviseController(
+                              context: context)
+                              .handleEditComment(
+                              id,
+                              BlocProvider.of<
+                                  ListCommentPostGroupBloc>(
+                                  context)
+                                  .state
+                                  .children!
+                                  .id);
+                        }
+                      },
                       child: SvgPicture.asset(
                         "assets/icons/send.svg",
                         width: 15.w,

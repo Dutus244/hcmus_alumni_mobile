@@ -7,7 +7,6 @@ import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/news_detail_
 
 import '../../common/values/colors.dart';
 import '../../common/values/fonts.dart';
-import '../../common/widgets/app_bar.dart';
 import '../../model/news.dart';
 import '../news_detail_write_comment/bloc/news_detail_write_comment_events.dart';
 import 'bloc/news_detail_write_comment_blocs.dart';
@@ -21,14 +20,6 @@ class NewsDetailWriteComment extends StatefulWidget {
 }
 
 class _NewsDetailWriteCommentState extends State<NewsDetailWriteComment> {
-  @override
-  void initState() {
-    super.initState();
-    context
-        .read<NewsDetailWriteCommentBloc>()
-        .add(NewsDetailWriteCommentResetEvent());
-  }
-
   late News news;
   late int route;
 
@@ -39,6 +30,9 @@ class _NewsDetailWriteCommentState extends State<NewsDetailWriteComment> {
     if (args != null) {
       route = args["route"];
       news = args["news"];
+      context
+          .read<NewsDetailWriteCommentBloc>()
+          .add(NewsDetailWriteCommentResetEvent());
     }
 
     return PopScope(
@@ -56,7 +50,7 @@ class _NewsDetailWriteCommentState extends State<NewsDetailWriteComment> {
         child: BlocBuilder<NewsDetailWriteCommentBloc,
             NewsDetailWriteCommentState>(builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, 'Tin tức'),
+            appBar: buildAppBar(context, route, news),
             backgroundColor: AppColors.primaryBackground,
             body: newsDetailWriteComment(context, news, route),
           );

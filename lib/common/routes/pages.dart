@@ -17,11 +17,20 @@ import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification.
 import 'package:hcmus_alumni_mobile/pages/event_detail/event_detail.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/bloc/forgot_password_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/forgot_password.dart';
+import 'package:hcmus_alumni_mobile/pages/group_create/bloc/group_create_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/group_create/group_create.dart';
 import 'package:hcmus_alumni_mobile/pages/group_detail/bloc/group_detail_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/group_detail/group_detail.dart';
+import 'package:hcmus_alumni_mobile/pages/group_edit/bloc/group_edit_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/group_edit/group_edit.dart';
+import 'package:hcmus_alumni_mobile/pages/group_info/bloc/group_info_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/group_info/group_info.dart';
+import 'package:hcmus_alumni_mobile/pages/group_management/bloc/group_management_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/group_management/group_management.dart';
 import 'package:hcmus_alumni_mobile/pages/group_member/bloc/group_member_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/group_member/group_member.dart';
+import 'package:hcmus_alumni_mobile/pages/group_member_approve/bloc/group_member_approve_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/group_member_approve/group_member_approve.dart';
 import 'package:hcmus_alumni_mobile/pages/group_page/bloc/group_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/group_page/group_page.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_detail/bloc/hof_detail_blocs.dart';
@@ -77,9 +86,7 @@ import 'names.dart';
 class AppPages {
   static List<PageEntity> routes() {
     return [
-      PageEntity(
-          route: AppRoutes.SPLASH,
-          page: const Splash()),
+      PageEntity(route: AppRoutes.SPLASH, page: const Splash()),
       PageEntity(
           route: AppRoutes.WELCOME,
           page: const Welcome(),
@@ -250,6 +257,18 @@ class AppPages {
           route: AppRoutes.LIST_PICTURE_POST_ADVISE,
           page: const ListPicturePostAdvise()),
       PageEntity(
+          route: AppRoutes.GROUP_CREATE,
+          page: const GroupCreate(),
+          bloc: BlocProvider(
+            create: (_) => GroupCreateBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.GROUP_EDIT,
+          page: const GroupEdit(),
+          bloc: BlocProvider(
+            create: (_) => GroupEditBloc(),
+          )),
+      PageEntity(
           route: AppRoutes.GROUP_DETAIL,
           page: const GroupDetail(),
           bloc: BlocProvider(
@@ -258,12 +277,26 @@ class AppPages {
       PageEntity(
           route: AppRoutes.GROUP_INFO,
           page: const GroupInfo(),
-          ),
+          bloc: BlocProvider(
+            create: (_) => GroupInfoBloc(),
+          )),
       PageEntity(
           route: AppRoutes.GROUP_MEMBER,
           page: const GroupMember(),
           bloc: BlocProvider(
             create: (_) => GroupMemberBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.GROUP_MANAGEMENT,
+          page: const GroupManagement(),
+          bloc: BlocProvider(
+            create: (_) => GroupManagementBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.GROUP_MEMBER_APPROVE,
+          page: const GroupMemberApprove(),
+          bloc: BlocProvider(
+            create: (_) => GroupMemberApproveBloc(),
           )),
       PageEntity(
           route: AppRoutes.WRITE_POST_GROUP,

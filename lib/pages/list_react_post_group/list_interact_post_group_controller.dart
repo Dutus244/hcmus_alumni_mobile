@@ -52,9 +52,11 @@ class ListInteractPostGroupController {
         var jsonMap = json.decode(responseBody);
         var interactResponse = InteractResponse.fromJson(jsonMap);
         if (interactResponse.interact.isEmpty) {
-          context
-              .read<ListInteractPostGroupBloc>()
-              .add(InteractEvent(interactResponse.interact));
+          if (page == 0) {
+            context
+                .read<ListInteractPostGroupBloc>()
+                .add(InteractEvent(interactResponse.interact));
+          }
           context
               .read<ListInteractPostGroupBloc>()
               .add(HasReachedMaxInteractEvent(true));

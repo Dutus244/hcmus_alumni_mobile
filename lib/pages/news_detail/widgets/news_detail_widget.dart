@@ -14,8 +14,65 @@ import 'package:popover/popover.dart';
 import '../../../common/function/handle_html_content.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../../../model/news.dart';
 import '../bloc/news_detail_events.dart';
+
+AppBar buildAppBar(BuildContext context, int route) {
+  return AppBar(
+    backgroundColor: AppColors.primaryBackground,
+    title: Container(
+      height: 40.h,
+      margin: EdgeInsets.only(left: 0.w, right: 0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/applicationPage", (route) => false,
+                  arguments: {"route": route, "secondRoute": 0});
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 0.w),
+              child: SizedBox(
+                width: 25.w,
+                height: 25.h,
+                child: SvgPicture.asset(
+                  "assets/icons/back.svg",
+                  width: 25.w,
+                  height: 25.h,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+          Text(
+            'Tin tức',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppFonts.Header0,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.sp,
+              color: AppColors.secondaryHeader,
+            ),
+          ),
+          Container(
+            width: 25.w,
+            color: Colors.transparent,
+            child: Row(
+              children: [
+
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
+    centerTitle: true, // Đặt tiêu đề vào giữa
+  );
+}
 
 FontSize getContentFontSize(double value) {
   switch (value) {
@@ -1180,7 +1237,6 @@ Widget newsDetail(BuildContext context, int route) {
         ),
       ),
       // Container nằm dưới cùng của màn hình
-      navigation(context, route),
     ],
   );
 }

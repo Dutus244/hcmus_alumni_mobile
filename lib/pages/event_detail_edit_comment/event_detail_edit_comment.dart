@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import '../../model/comment.dart';
 import '../../model/event.dart';
 import '../../model/news.dart';
@@ -61,7 +60,7 @@ class _EventDetailEditCommentState extends State<EventDetailEditComment> {
         child: BlocBuilder<EventDetailEditCommentBloc,
             EventDetailEditCommentState>(builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, 'Tin tức'),
+            appBar: buildAppBar(context, route, event),
             backgroundColor: AppColors.primaryBackground,
             body: eventDetailEditComment(context, event, route, comment),
           );

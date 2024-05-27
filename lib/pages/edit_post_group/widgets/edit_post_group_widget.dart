@@ -12,9 +12,183 @@ import 'package:multi_dropdown/multiselect_dropdown.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/flutter_toast.dart';
+import '../../../global.dart';
 import '../bloc/edit_post_group_blocs.dart';
 import '../bloc/edit_post_group_events.dart';
 import '../edit_post_group_controller.dart';
+
+AppBar buildAppBar(BuildContext context, int secondRoute, String postId, String groupId) {
+  return AppBar(
+    backgroundColor: AppColors.primaryBackground,
+    title: Container(
+      height: 40.h,
+      margin: EdgeInsets.only(left: 0.w, right: 0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              if (BlocProvider
+                  .of<EditPostGroupBloc>(context)
+                  .state
+                  .page ==
+                  0) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/groupDetail",
+                      (route) => false,
+                  arguments: {
+                    "id": groupId,
+                    "secondRoute": secondRoute,
+                  },
+                );
+              } else {
+                context.read<EditPostGroupBloc>().add(PageEvent(0));
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 0.w),
+              child: SizedBox(
+                width: 25.w,
+                height: 25.h,
+                child: SvgPicture.asset(
+                  "assets/icons/back.svg",
+                  width: 25.w,
+                  height: 25.h,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+          Text(
+            'Sửa bài viết',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppFonts.Header0,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.sp,
+              color: AppColors.secondaryHeader,
+            ),
+          ),
+          Container(
+            width: 25.w,
+            color: Colors.transparent,
+            child: Row(
+              children: [],
+            ),
+          )
+        ],
+      ),
+    ),
+    centerTitle: true, // Đặt tiêu đề vào giữa
+  );
+}
+
+Widget buttonEdit(BuildContext context, int secondRoute, String postId, String groupId) {
+  String title = BlocProvider
+      .of<EditPostGroupBloc>(context)
+      .state
+      .title;
+  String content = BlocProvider
+      .of<EditPostGroupBloc>(context)
+      .state
+      .content;
+  return GestureDetector(
+    onTap: () {
+      if (title != "" && content != "") {
+        EditPostGroupController(context: context).handlePost(postId, groupId, secondRoute);
+      }
+    },
+    child: Container(
+      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+      height: 30.h,
+      decoration: BoxDecoration(
+        color: (title != "" && content != "")
+            ? AppColors.primaryElement
+            : AppColors.primaryBackground,
+        borderRadius: BorderRadius.circular(10.w),
+        border: Border.all(
+          color: AppColors.primarySecondaryElement,
+        ),
+      ),
+      child: Center(
+          child: Container(
+            margin: EdgeInsets.only(left: 12.w, right: 12.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Lưu',
+                  style: TextStyle(
+                      fontFamily: AppFonts.Header1,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: (title != "" && content != "")
+                          ? AppColors.primaryBackground
+                          : Colors.black.withOpacity(0.3)),
+                ),
+                Container(
+                  width: 6.w,
+                ),
+                SvgPicture.asset(
+                  "assets/icons/send.svg",
+                  width: 15.w,
+                  height: 15.h,
+                  color: (title != "" && content != "")
+                      ? AppColors.primaryBackground
+                      : Colors.black.withOpacity(0.5),
+                ),
+              ],
+            ),
+          )),
+    ),
+  );
+}
+
+Widget buttonFinishEditPicture(BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      context.read<EditPostGroupBloc>().add(PageEvent(0));
+    },
+    child: Container(
+      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+      height: 30.h,
+      decoration: BoxDecoration(
+        color: AppColors.primaryElement,
+        borderRadius: BorderRadius.circular(10.w),
+        border: Border.all(
+          color: AppColors.primarySecondaryElement,
+        ),
+      ),
+      child: Center(
+          child: Container(
+            margin: EdgeInsets.only(left: 12.w, right: 12.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Xong',
+                  style: TextStyle(
+                      fontFamily: AppFonts.Header1,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryBackground),
+                ),
+                Container(
+                  width: 6.w,
+                ),
+                SvgPicture.asset(
+                  "assets/icons/send.svg",
+                  width: 15.w,
+                  height: 15.h,
+                  color: AppColors.primaryBackground,
+                ),
+              ],
+            ),
+          )),
+    ),
+  );
+}
 
 Widget navigation(BuildContext context, int secondRoute, String postId, String groupId) {
   String title = BlocProvider
@@ -310,13 +484,14 @@ Widget writePost(BuildContext context, int secondRoute, String id, String groupI
                     (value) {
                   context.read<EditPostGroupBloc>().add(ContentEvent(value));
                 }),
+            chooseVote(context),
             choosePicture(context, (value) {
               context.read<EditPostGroupBloc>().add(PicturesEvent(value));
             }),
           ],
         ),
       ),
-      navigation(context, secondRoute, id, groupId),
+      buttonEdit(context, secondRoute, id, groupId),
     ],
   );
 }
@@ -440,7 +615,7 @@ Widget editPicture(BuildContext context, int route) {
               })
             ],
           )),
-      navigationEditPicture(context),
+      buttonFinishEditPicture(context),
     ],
   );
 }
@@ -580,49 +755,37 @@ Widget choosePicture(BuildContext context,
                   .length ==
               0)
             Container(
-              width: 340.w,
-              height: 240.h,
+              width: 140.w,
+              height: 30.h,
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(15.w),
+                color: AppColors.primaryElement,
                 border: Border.all(
-                  color: AppColors.primaryFourthElementText,
+                  color: Colors.transparent,
                 ),
               ),
               child: Center(
                 child: Container(
-                  width: 100.w,
-                  height: 30.h,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(15.w),
-                    color: AppColors.primaryElement,
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  child: Center(
-                    child: Container(
-                      margin: EdgeInsets.only(left: 5.w, right: 5.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/picture.svg",
-                            width: 12.w,
-                            height: 12.h,
-                            color: AppColors.primaryBackground,
-                          ),
-                          Text(
-                            'Chọn ảnh',
-                            style: TextStyle(
-                                fontFamily: AppFonts.Header1,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryBackground),
-                          ),
-                        ],
+                  margin: EdgeInsets.only(left: 20.w, right: 20.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/picture.svg",
+                        width: 12.w,
+                        height: 12.h,
+                        color: AppColors.primaryBackground,
                       ),
-                    ),
+                      Text(
+                        'Chọn ảnh',
+                        style: TextStyle(
+                            fontFamily: AppFonts.Header1,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryBackground),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -1850,6 +2013,46 @@ Widget choosePicture(BuildContext context,
       ));
 }
 
+Widget chooseVote(BuildContext) {
+  return Container(
+    margin: EdgeInsets.only(left: 110.w, top: 5.h, right: 110.w, bottom: 10.h),
+    width: 140.w,
+    height: 30.h,
+    decoration: BoxDecoration(
+      shape: BoxShape.rectangle,
+      borderRadius: BorderRadius.circular(15.w),
+      color: AppColors.primaryElement,
+      border: Border.all(
+        color: Colors.transparent,
+      ),
+    ),
+    child: Center(
+      child: Container(
+        margin: EdgeInsets.only(left: 5.w, right: 5.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            SvgPicture.asset(
+              "assets/icons/vote.svg",
+              width: 12.w,
+              height: 12.h,
+              color: AppColors.primaryBackground,
+            ),
+            Text(
+              'Tạo bình chọn',
+              style: TextStyle(
+                  fontFamily: AppFonts.Header1,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryBackground),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 Widget header() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1870,11 +2073,11 @@ Widget header() {
                   child: CircleAvatar(
                     radius: 10,
                     child: null,
-                    backgroundImage: AssetImage("assets/images/test1.png"),
+                    backgroundImage: NetworkImage(Global.storageService.getUserAvatarUrl()),
                   )),
             ),
             Text(
-              'Đặng Nguyễn Duy',
+              Global.storageService.getUserFullName(),
               maxLines: 1,
               style: TextStyle(
                 color: AppColors.primaryText,

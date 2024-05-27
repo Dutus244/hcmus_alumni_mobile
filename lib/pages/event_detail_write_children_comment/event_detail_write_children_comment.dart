@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hcmus_alumni_mobile/pages/event_detail_write_children_comment/widgets/event_detail_write_children_comment_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import '../../model/comment.dart';
 import '../../model/event.dart';
 import 'bloc/event_detail_write_children_comment_blocs.dart';
@@ -59,7 +58,7 @@ class _EventDetailWriteChildrenCommentState
         child: BlocBuilder<EventDetailWriteChildrenCommentBloc,
             EventDetailWriteChildrenCommentState>(builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, 'Sự kiện'),
+            appBar: buildAppBar(context, route, event),
             backgroundColor: AppColors.primaryBackground,
             body:
                 eventDetailWriteChildrenComment(context, event, route, comment),

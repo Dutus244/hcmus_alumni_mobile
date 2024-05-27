@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:popover/popover.dart';
 import '../../../common/function/handle_datetime.dart';
+import '../../../common/function/handle_participant_count.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
@@ -15,6 +16,60 @@ import '../bloc/group_detail_states.dart';
 import 'package:hcmus_alumni_mobile/pages/group_detail/bloc/group_detail_blocs.dart';
 
 import '../group_detail_controller.dart';
+
+AppBar buildAppBar(BuildContext context, int secondRoute) {
+  return AppBar(
+    backgroundColor: AppColors.primaryBackground,
+    title: Container(
+      height: 40.h,
+      margin: EdgeInsets.only(left: 0.w, right: 0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/applicationPage", (route) => false,
+                  arguments: {"route": 3, "secondRoute": secondRoute});
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 0.w),
+              child: SizedBox(
+                width: 25.w,
+                height: 25.h,
+                child: SvgPicture.asset(
+                  "assets/icons/back.svg",
+                  width: 25.w,
+                  height: 25.h,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+          Text(
+            'Nhóm',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppFonts.Header0,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.sp,
+              color: AppColors.secondaryHeader,
+            ),
+          ),
+          Container(
+            width: 25.w,
+            color: Colors.transparent,
+            child: Row(
+              children: [],
+            ),
+          )
+        ],
+      ),
+    ),
+    centerTitle: true, // Đặt tiêu đề vào giữa
+  );
+}
 
 Widget informationGroup(BuildContext context, Group group, int secondRoute) {
   String typeGroup = '';
@@ -120,7 +175,7 @@ Widget informationGroup(BuildContext context, Group group, int secondRoute) {
                       ),
                     ),
                     Text(
-                      '200 ',
+                      '${handleParticipantCount(group.participantCount)} ',
                       maxLines: 2,
                       style: TextStyle(
                         color: AppColors.primaryText,
@@ -216,7 +271,28 @@ Widget joinGroup(BuildContext context, Group group) {
     onTap: () {
       GroupDetailController(context: context).handleRequestJoinGroup(group.id);
     },
-    child: Container(
+    child: group.isRequestPending ? Container(
+      margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
+      height: 30.h,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 230, 230, 230),
+        borderRadius: BorderRadius.circular(5.w),
+        border: Border.all(
+          color: Colors.transparent,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          'Đang chờ duyệt',
+          style: TextStyle(
+            fontFamily: AppFonts.Header2,
+            fontSize: 14.sp,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryText,
+          ),
+        ),
+      ),
+    ) : Container(
       margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
       height: 30.h,
       decoration: BoxDecoration(
@@ -256,21 +332,33 @@ Widget space() {
   );
 }
 
-Widget joinedGroup(BuildContext context, Group group) {
+Widget joinedGroup(BuildContext context, Group group, int secondRoute) {
   return GestureDetector(
     onTap: () {
-      showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (ctx) => exitGroup(context, group),
-      );
+      if (group.userRole == 'MEMBER') {
+        showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (ctx) => exitGroup(context, group, secondRoute),
+        );
+      }
+      else {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          "/groupManagement",
+              (route) => false,
+          arguments: {
+            "group": group,
+            "secondRoute": secondRoute,
+          },
+        );
+      }
     },
     child: Container(
       margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
       width: 160.w,
       height: 30.h,
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 230, 230, 230),
+        color: (group.userRole == 'MEMBER') ? Color.fromARGB(255, 230, 230, 230) : AppColors.primaryElement,
         borderRadius: BorderRadius.circular(5.w),
         border: Border.all(
           color: Colors.transparent,
@@ -280,33 +368,61 @@ Widget joinedGroup(BuildContext context, Group group) {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(
-              "assets/icons/tick.svg",
-              width: 14.w,
-              height: 14.h,
-              color: AppColors.primaryText,
-            ),
-            Container(
-              width: 5.w,
-            ),
-            Text(
-              'Đã tham gia',
-              style: TextStyle(
-                fontFamily: AppFonts.Header2,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryText,
+            if (group.userRole == 'MEMBER')
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/icons/tick.svg",
+                    width: 14.w,
+                    height: 14.h,
+                    color: AppColors.primaryText,
+                  ),
+                  Container(
+                    width: 5.w,
+                  ),
+                  Text(
+                    'Đã tham gia',
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header2,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                  Container(
+                    width: 5.w,
+                  ),
+                  SvgPicture.asset(
+                    "assets/icons/dropdown.svg",
+                    width: 14.w,
+                    height: 14.h,
+                    color: AppColors.primaryText,
+                  ),
+                ],
               ),
-            ),
-            Container(
-              width: 5.w,
-            ),
-            SvgPicture.asset(
-              "assets/icons/dropdown.svg",
-              width: 14.w,
-              height: 14.h,
-              color: AppColors.primaryText,
-            ),
+            if (group.userRole == 'ADMIN' || group.userRole == 'CREATOR')
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/icons/star_circle.svg",
+                    width: 14.w,
+                    height: 14.h,
+                    color: AppColors.primaryBackground,
+                  ),
+                  Container(
+                    width: 5.w,
+                  ),
+                  Text(
+                    'Quản lý',
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header2,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryBackground,
+                    ),
+                  ),
+                ],
+              ),
           ],
         ),
       ),
@@ -314,13 +430,16 @@ Widget joinedGroup(BuildContext context, Group group) {
   );
 }
 
-Widget exitGroup(BuildContext context, Group group) {
+Widget exitGroup(BuildContext context, Group group, int secondRoute) {
   return GestureDetector(
-    onTap: () {},
+    onTap: () {
+      GroupDetailController(context: context).handleExitGroup(group.id, secondRoute);
+    },
     child: Container(
       height: 60.h,
       child: Container(
         margin: EdgeInsets.only(left: 20.w, right: 10.w, bottom: 20.h),
+        color: Colors.transparent,
         child: Row(
           children: [
             SvgPicture.asset(
@@ -336,7 +455,7 @@ Widget exitGroup(BuildContext context, Group group) {
               'Rời nhóm',
               style: TextStyle(
                 fontFamily: AppFonts.Header2,
-                fontSize: 14.sp,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primaryText,
               ),
@@ -480,7 +599,6 @@ Widget groupPrivateNotJoined(
             ],
           ),
         ),
-        navigation(context, secondRoute)
       ],
     );
   }
@@ -510,7 +628,7 @@ Widget group(BuildContext context, ScrollController _scrollController,
                     children: [
                       informationGroup(context, group, secondRoute),
                       if (!joined) joinGroup(context, group),
-                      if (joined) joinedGroup(context, group),
+                      if (joined) joinedGroup(context, group, secondRoute),
                       space(),
                       if (joined) buildCreatePostButton(context, group, secondRoute),
                       loadingWidget(),
@@ -527,7 +645,7 @@ Widget group(BuildContext context, ScrollController _scrollController,
                       children: [
                         informationGroup(context, group, secondRoute),
                         if (!joined) joinGroup(context, group),
-                        if (joined) joinedGroup(context, group),
+                        if (joined) joinedGroup(context, group, secondRoute),
                         space(),
                         if (joined) buildCreatePostButton(context, group, secondRoute),
                         Center(
@@ -567,7 +685,7 @@ Widget group(BuildContext context, ScrollController _scrollController,
                         children: [
                           informationGroup(context, group, secondRoute),
                           if (!joined) joinGroup(context, group),
-                          if (joined) joinedGroup(context, group),
+                          if (joined) joinedGroup(context, group, secondRoute),
                           space(),
                           if (joined) buildCreatePostButton(context, group, secondRoute),
                           post(
@@ -589,7 +707,6 @@ Widget group(BuildContext context, ScrollController _scrollController,
             },
           ),
         ),
-        navigation(context, secondRoute)
       ],
     );
   }

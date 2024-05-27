@@ -18,6 +18,62 @@ import '../bloc/event_detail_blocs.dart';
 import '../bloc/event_detail_states.dart';
 import '../event_detail_controller.dart';
 
+AppBar buildAppBar(BuildContext context, int route) {
+  return AppBar(
+    backgroundColor: AppColors.primaryBackground,
+    title: Container(
+      height: 40.h,
+      margin: EdgeInsets.only(left: 0.w, right: 0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/applicationPage", (route) => false,
+                  arguments: {"route": route, "secondRoute": 1});
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 0.w),
+              child: SizedBox(
+                width: 25.w,
+                height: 25.h,
+                child: SvgPicture.asset(
+                  "assets/icons/back.svg",
+                  width: 25.w,
+                  height: 25.h,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+          Text(
+            'Sự kiện',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppFonts.Header0,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.sp,
+              color: AppColors.secondaryHeader,
+            ),
+          ),
+          Container(
+            width: 25.w,
+            color: Colors.transparent,
+            child: Row(
+              children: [
+
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
+    centerTitle: true, // Đặt tiêu đề vào giữa
+  );
+}
+
 Widget buildButtonChooseInfoOrParticipant(
     BuildContext context, void Function(int value)? func) {
   return Container(
@@ -455,7 +511,6 @@ Widget detail(BuildContext context, Event? event,
           loadingWidget()
         ],
       )),
-      navigation(context, route),
     ]);
   } else {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -473,7 +528,6 @@ Widget detail(BuildContext context, Event? event,
           //     BlocProvider.of<EventDetailBloc>(context).state.relatedEvent)
         ],
       )),
-      navigation(context, route),
     ]);
   }
 }
@@ -1222,7 +1276,6 @@ Widget listParticipant(
           },
         ),
       ),
-      navigation(context, route),
     ],
   );
 }

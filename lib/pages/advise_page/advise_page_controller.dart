@@ -55,7 +55,9 @@ class AdvisePageController {
         // Pass the Map to the fromJson method
         var postResponse = PostResponse.fromJson(jsonMap);
         if (postResponse.post.isEmpty) {
-          context.read<AdvisePageBloc>().add(PostEvent(postResponse.post));
+          if (page == 0) {
+            context.read<AdvisePageBloc>().add(PostEvent(postResponse.post));
+          }
           context.read<AdvisePageBloc>().add(HasReachedMaxPostEvent(true));
           context.read<AdvisePageBloc>().add(StatusPostEvent(Status.success));
           return;
