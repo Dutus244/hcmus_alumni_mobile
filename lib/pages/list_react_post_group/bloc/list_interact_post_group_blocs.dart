@@ -7,7 +7,7 @@ class ListInteractPostGroupBloc
     extends Bloc<ListInteractPostGroupEvent, ListInteractPostGroupState> {
   ListInteractPostGroupBloc() : super(ListInteractPostGroupState()) {
     on<StatusInteractEvent>(_statusInteractEvent);
-    on<InteractEvent>(_interactEvent);
+    on<InteractsEvent>(_interactsEvent);
     on<IndexInteractEvent>(_indexInteractEvent);
     on<HasReachedMaxInteractEvent>(_hasReachedMaxInteractEvent);
   }
@@ -17,9 +17,9 @@ class ListInteractPostGroupBloc
     emit(state.copyWith(statusInteract: event.statusInteract));
   }
 
-  void _interactEvent(
-      InteractEvent event, Emitter<ListInteractPostGroupState> emit) async {
-    emit(state.copyWith(interact: event.interact));
+  void _interactsEvent(
+      InteractsEvent event, Emitter<ListInteractPostGroupState> emit) async {
+    emit(state.copyWith(interacts: event.interacts));
   }
 
   void _indexInteractEvent(

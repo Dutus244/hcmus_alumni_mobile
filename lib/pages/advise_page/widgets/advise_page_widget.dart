@@ -1,17 +1,21 @@
+import 'dart:async';
+
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hcmus_alumni_mobile/common/function/handle_percentage_vote.dart';
 import 'package:hcmus_alumni_mobile/common/values/colors.dart';
 import 'package:hcmus_alumni_mobile/model/post.dart';
+import 'package:hcmus_alumni_mobile/model/vote.dart';
 import 'package:hcmus_alumni_mobile/pages/advise_page/advise_page_controller.dart';
 import 'package:popover/popover.dart';
 
 import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
-import '../../../global.dart';
+import '../../../model/voter.dart';
 import '../bloc/advise_page_blocs.dart';
 import '../bloc/advise_page_states.dart';
 
@@ -83,7 +87,7 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
         child: ListView.builder(
           controller: _scrollController,
           itemCount:
-              BlocProvider.of<AdvisePageBloc>(context).state.post.length + 1,
+              BlocProvider.of<AdvisePageBloc>(context).state.posts.length + 1,
           itemBuilder: (BuildContext context, int index) {
             switch (BlocProvider.of<AdvisePageBloc>(context).state.statusPost) {
               case Status.loading:
@@ -96,7 +100,7 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
               case Status.success:
                 if (BlocProvider.of<AdvisePageBloc>(context)
                     .state
-                    .post
+                    .posts
                     .isEmpty) {
                   return Column(
                     children: [
@@ -120,7 +124,7 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
                 if (index >=
                     BlocProvider.of<AdvisePageBloc>(context)
                         .state
-                        .post
+                        .posts
                         .length) {
                   if (BlocProvider.of<AdvisePageBloc>(context)
                       .state
@@ -139,7 +143,7 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
                             context,
                             BlocProvider.of<AdvisePageBloc>(context)
                                 .state
-                                .post[index]),
+                                .posts[index]),
                       ],
                     );
                   } else {
@@ -147,7 +151,7 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
                         context,
                         BlocProvider.of<AdvisePageBloc>(context)
                             .state
-                            .post[index]);
+                            .posts[index]);
                   }
                 }
             }
@@ -155,6 +159,101 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
         ),
       ),
     ],
+  );
+}
+
+Widget postOption(BuildContext context, Post post) {
+  return Container(
+    height: 90.h,
+    child: Stack(
+      children: [
+        SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/editPostAdvise",
+                    (route) => false,
+                    arguments: {
+                      "route": 2,
+                      "post": post,
+                    },
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.only(left: 10.w, top: 10.h),
+                  color: Colors.transparent,
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/edit.svg",
+                        width: 14.w,
+                        height: 14.h,
+                        color: AppColors.primaryText,
+                      ),
+                      Container(
+                        width: 10.w,
+                      ),
+                      Text(
+                        'Chỉnh sửa bài viết',
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header2,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  bool shouldDelete =
+                      await AdvisePageController(context: context)
+                          .handleDeletePost(post.id);
+                  if (shouldDelete) {
+                    Navigator.pop(context); // Close the modal after deletion
+                  }
+                },
+                child: Container(
+                  margin: EdgeInsets.only(left: 10.w, top: 10.h),
+                  color: Colors.transparent,
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/trash.svg",
+                        width: 14.w,
+                        height: 14.h,
+                        color: AppColors.primaryText,
+                      ),
+                      Container(
+                        width: 10.w,
+                      ),
+                      Text(
+                        'Xoá bài viết',
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header2,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 70.h,
+              )
+            ],
+          ),
+        ),
+      ],
+    ),
   );
 }
 
@@ -341,7 +440,22 @@ Widget post(BuildContext context, Post post) {
                 ),
               ),
               if (post.permissions.edit || post.permissions.delete)
-                ButtonOptionPost(post),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (ctx) => postOption(context, post),
+                    );
+                  },
+                  child: Container(
+                    width: 17.w,
+                    height: 17.h,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/icons/3dot.png"))),
+                  ),
+                ),
             ],
           ),
         ),
@@ -400,10 +514,98 @@ Widget post(BuildContext context, Post post) {
             ),
           ),
         ),
+        for (int i = 0; i < post.votes.length; i += 1)
+          Container(
+            width: 350.w,
+            height: 35.h,
+            margin: EdgeInsets.only(
+                top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(10.w),
+              border: Border.all(
+                color: AppColors.primaryFourthElementText,
+              ),
+            ),
+            child: Container(
+              margin: EdgeInsets.only(left: 10.w, right: 10.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Radio(
+                        value: post.votes[i].name,
+                        groupValue: post.voteSelected,
+                        onChanged: (value) {
+                          if (post.voteSelected == "") {
+                            AdvisePageController(context: context)
+                                .handleVote(post.id, post.votes[i].id);
+                          } else {
+                            for (int j = 0; j < post.votes.length; j += 1) {
+                              if (post.votes[j].name == post.voteSelected) {
+                                AdvisePageController(context: context)
+                                    .handleUpdateVote(post.id, post.votes[j].id, post.votes[i].id);
+                              }
+                            }
+                          }
+                        },
+                      ),
+                      Container(
+                        width: 220.w,
+                        child: Text(
+                          post.votes[i].name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontFamily: AppFonts.Header2,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.normal,
+                              color: AppColors.primarySecondaryText),
+                        ),
+                      ),
+                    ],
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        "/advisePageListVoters",
+                            (route) => false,
+                        arguments: {
+                          "vote": post.votes[i],
+                          "post": post,
+                        },
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
+                          style: TextStyle(
+                              fontFamily: AppFonts.Header2,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.normal,
+                              color: AppColors.primaryElement),
+                        ),
+                        Container(
+                          width: 5.w,
+                        ),
+                        SvgPicture.asset(
+                          "assets/icons/arrow_next.svg",
+                          height: 15.h,
+                          width: 15.w,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
         Container(
           height: 5.h,
         ),
-        if (post.picture.length == 1)
+        if (post.pictures.length == 1)
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
@@ -422,12 +624,12 @@ Widget post(BuildContext context, Post post) {
                 shape: BoxShape.rectangle,
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(post.picture[0].pictureUrl),
+                  image: NetworkImage(post.pictures[0].pictureUrl),
                 ),
               ),
             ),
           ),
-        if (post.picture.length == 2)
+        if (post.pictures.length == 2)
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
@@ -449,7 +651,7 @@ Widget post(BuildContext context, Post post) {
                       shape: BoxShape.rectangle,
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(post.picture[0].pictureUrl),
+                        image: NetworkImage(post.pictures[0].pictureUrl),
                       ),
                     ),
                   ),
@@ -460,7 +662,7 @@ Widget post(BuildContext context, Post post) {
                       shape: BoxShape.rectangle,
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(post.picture[1].pictureUrl),
+                        image: NetworkImage(post.pictures[1].pictureUrl),
                       ),
                     ),
                   ),
@@ -468,7 +670,7 @@ Widget post(BuildContext context, Post post) {
               ),
             ),
           ),
-        if (post.picture.length == 3)
+        if (post.pictures.length == 3)
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
@@ -489,7 +691,7 @@ Widget post(BuildContext context, Post post) {
                       shape: BoxShape.rectangle,
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(post.picture[0].pictureUrl),
+                        image: NetworkImage(post.pictures[0].pictureUrl),
                       ),
                     ),
                   ),
@@ -504,7 +706,7 @@ Widget post(BuildContext context, Post post) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[1].pictureUrl),
+                              image: NetworkImage(post.pictures[1].pictureUrl),
                             ),
                           ),
                         ),
@@ -515,7 +717,7 @@ Widget post(BuildContext context, Post post) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[2].pictureUrl),
+                              image: NetworkImage(post.pictures[2].pictureUrl),
                             ),
                           ),
                         ),
@@ -526,7 +728,7 @@ Widget post(BuildContext context, Post post) {
               ),
             ),
           ),
-        if (post.picture.length == 4)
+        if (post.pictures.length == 4)
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
@@ -551,7 +753,7 @@ Widget post(BuildContext context, Post post) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[0].pictureUrl),
+                              image: NetworkImage(post.pictures[0].pictureUrl),
                             ),
                           ),
                         ),
@@ -562,7 +764,7 @@ Widget post(BuildContext context, Post post) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[1].pictureUrl),
+                              image: NetworkImage(post.pictures[1].pictureUrl),
                             ),
                           ),
                         ),
@@ -580,7 +782,7 @@ Widget post(BuildContext context, Post post) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[2].pictureUrl),
+                              image: NetworkImage(post.pictures[2].pictureUrl),
                             ),
                           ),
                         ),
@@ -591,7 +793,7 @@ Widget post(BuildContext context, Post post) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[3].pictureUrl),
+                              image: NetworkImage(post.pictures[3].pictureUrl),
                             ),
                           ),
                         ),
@@ -602,7 +804,7 @@ Widget post(BuildContext context, Post post) {
               ),
             ),
           ),
-        if (post.picture.length == 5)
+        if (post.pictures.length == 5)
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
@@ -627,7 +829,7 @@ Widget post(BuildContext context, Post post) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[0].pictureUrl),
+                              image: NetworkImage(post.pictures[0].pictureUrl),
                             ),
                           ),
                         ),
@@ -638,7 +840,7 @@ Widget post(BuildContext context, Post post) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[1].pictureUrl),
+                              image: NetworkImage(post.pictures[1].pictureUrl),
                             ),
                           ),
                         ),
@@ -656,7 +858,7 @@ Widget post(BuildContext context, Post post) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[2].pictureUrl),
+                              image: NetworkImage(post.pictures[2].pictureUrl),
                             ),
                           ),
                         ),
@@ -670,7 +872,7 @@ Widget post(BuildContext context, Post post) {
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image:
-                                      NetworkImage(post.picture[3].pictureUrl),
+                                      NetworkImage(post.pictures[3].pictureUrl),
                                 ),
                               ),
                             ),
@@ -853,7 +1055,7 @@ Widget post(BuildContext context, Post post) {
                   onTap: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                       "/listCommentPostAdvise",
-                          (route) => false,
+                      (route) => false,
                       arguments: {
                         "route": 1,
                         "id": post.id,
@@ -897,3 +1099,4 @@ Widget post(BuildContext context, Post post) {
     ),
   );
 }
+

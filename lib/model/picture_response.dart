@@ -1,12 +1,12 @@
 import 'package:hcmus_alumni_mobile/model/picture.dart';
 
 class PictureResponse {
-  final List<Picture> picture;
+  final List<Picture> pictures;
 
-  PictureResponse(this.picture);
+  PictureResponse(this.pictures);
 
   PictureResponse.fromJson(Map<String, dynamic> json)
-      : picture = (json["pictures"] as List)
+      : pictures = (json["pictures"] as List)
             .map((i) => new Picture.fromJson(i))
             .toList();
 }

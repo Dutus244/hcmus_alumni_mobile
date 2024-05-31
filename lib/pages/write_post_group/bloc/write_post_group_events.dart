@@ -22,6 +22,12 @@ class TagsEvent extends WritePostGroupEvent {
   const TagsEvent(this.tags);
 }
 
+class VotesEvent extends WritePostGroupEvent {
+  final List<String> votes;
+
+  const VotesEvent(this.votes);
+}
+
 class PicturesEvent extends WritePostGroupEvent {
   final List<File> pictures;
 

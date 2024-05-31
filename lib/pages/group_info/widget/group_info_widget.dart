@@ -334,7 +334,7 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                   ),
                   if (BlocProvider.of<GroupInfoBloc>(context)
                           .state
-                          .member
+                          .members
                           .length >
                       0)
                     Container(
@@ -346,7 +346,7 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                                 i <
                                     BlocProvider.of<GroupInfoBloc>(context)
                                         .state
-                                        .member
+                                        .members
                                         .length;
                                 i += 1)
                               Positioned(
@@ -357,7 +357,7 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                                   backgroundImage: NetworkImage(
                                       BlocProvider.of<GroupInfoBloc>(context)
                                           .state
-                                          .member[i]
+                                          .members[i]
                                           .participant
                                           .avatarUrl),
                                 ),
@@ -366,14 +366,14 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                         )),
                   if (BlocProvider.of<GroupInfoBloc>(context)
                           .state
-                          .member
+                          .members
                           .length >
                       0)
                     Container(
                       margin: EdgeInsets.only(left: 10.w, right: 10.w),
                       child: Text(
 
-  BlocProvider.of<GroupInfoBloc>(context).state.member.length > 1 ? '${BlocProvider.of<GroupInfoBloc>(context).state.member[0].participant.fullName} và người bạn khác đã tham gia' : '${BlocProvider.of<GroupInfoBloc>(context).state.member[0].participant.fullName} đã tham gia',
+  BlocProvider.of<GroupInfoBloc>(context).state.members.length > 1 ? '${BlocProvider.of<GroupInfoBloc>(context).state.members[0].participant.fullName} và người bạn khác đã tham gia' : '${BlocProvider.of<GroupInfoBloc>(context).state.members[0].participant.fullName} đã tham gia',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 12.sp,
@@ -391,7 +391,7 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                 children: [
                   if (BlocProvider.of<GroupInfoBloc>(context)
                           .state
-                          .admin
+                          .admins
                           .length >
                       0)
                     Container(
@@ -403,7 +403,7 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                                 i <
                                     BlocProvider.of<GroupInfoBloc>(context)
                                         .state
-                                        .admin
+                                        .admins
                                         .length;
                                 i += 1)
                               Positioned(
@@ -414,7 +414,7 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                                   backgroundImage: NetworkImage(
                                       BlocProvider.of<GroupInfoBloc>(context)
                                           .state
-                                          .admin[i]
+                                          .admins[i]
                                           .participant
                                           .avatarUrl),
                                 ),
@@ -423,7 +423,7 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                         )),
                   if (BlocProvider.of<GroupInfoBloc>(context)
                           .state
-                          .admin
+                          .admins
                           .length >
                       0)
                     Container(
@@ -431,11 +431,11 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                       child: Text(
                         BlocProvider.of<GroupInfoBloc>(context)
                                     .state
-                                    .admin
+                                    .admins
                                     .length >
                                 1
-                            ? '${BlocProvider.of<GroupInfoBloc>(context).state.admin[0].participant.fullName} và ${BlocProvider.of<GroupInfoBloc>(context).state.admin.length - 1} người khác là quản trị viên'
-                            : '${BlocProvider.of<GroupInfoBloc>(context).state.admin[0].participant.fullName} là quản trị viên',
+                            ? '${BlocProvider.of<GroupInfoBloc>(context).state.admins[0].participant.fullName} và ${BlocProvider.of<GroupInfoBloc>(context).state.admins.length - 1} người khác là quản trị viên'
+                            : '${BlocProvider.of<GroupInfoBloc>(context).state.admins[0].participant.fullName} là quản trị viên',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 12.sp,

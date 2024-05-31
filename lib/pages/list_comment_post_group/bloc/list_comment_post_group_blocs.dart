@@ -7,7 +7,7 @@ class ListCommentPostGroupBloc
     extends Bloc<ListCommentPostGroupEvent, ListCommentPostGroupState> {
   ListCommentPostGroupBloc() : super(ListCommentPostGroupState()) {
     on<StatusCommentEvent>(_statusCommentEvent);
-    on<CommentEvent>(_commentEvent);
+    on<CommentsEvent>(_commentsEvent);
     on<IndexCommentEvent>(_indexCommentEvent);
     on<HasReachedMaxCommentEvent>(_hasReachedMaxCommentEvent);
     on<ContentEvent>(_contentEvent);
@@ -20,9 +20,9 @@ class ListCommentPostGroupBloc
     emit(state.copyWith(statusComment: event.statusComment));
   }
 
-  void _commentEvent(
-      CommentEvent event, Emitter<ListCommentPostGroupState> emit) async {
-    emit(state.copyWith(comment: event.comment));
+  void _commentsEvent(
+      CommentsEvent event, Emitter<ListCommentPostGroupState> emit) async {
+    emit(state.copyWith(comments: event.comments));
   }
 
   void _indexCommentEvent(

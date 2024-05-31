@@ -11,7 +11,7 @@ class NewsEventPageBloc extends Bloc<NewsEventPageEvent, NewsEventPageState> {
     on<IndexNewsEvent>(_indexNewsEvent);
     on<HasReachedMaxNewsEvent>(_hasReachedMaxNewsEvent);
     on<StatusEventEvent>(_statusEventEvent);
-    on<EventEvent>(_eventEvent);
+    on<EventsEvent>(_eventsEvent);
     on<IndexEventEvent>(_indexEventEvent);
     on<HasReachedMaxEventEvent>(_hasReachedMaxEventEvent);
   }
@@ -43,8 +43,8 @@ class NewsEventPageBloc extends Bloc<NewsEventPageEvent, NewsEventPageState> {
     emit(state.copyWith(statusEvent: event.statusEvent));
   }
 
-  void _eventEvent(EventEvent event, Emitter<NewsEventPageState> emit) async {
-    emit(state.copyWith(event: event.event));
+  void _eventsEvent(EventsEvent event, Emitter<NewsEventPageState> emit) async {
+    emit(state.copyWith(events: event.events));
   }
 
   void _indexEventEvent(

@@ -6,10 +6,10 @@ class HomePageEvent {
   const HomePageEvent();
 }
 
-class EventEvent extends HomePageEvent {
-  final List<Event> event;
+class EventsEvent extends HomePageEvent {
+  final List<Event> events;
 
-  const EventEvent(this.event);
+  const EventsEvent(this.events);
 }
 
 class NewsEvent extends HomePageEvent {
@@ -18,8 +18,8 @@ class NewsEvent extends HomePageEvent {
   const NewsEvent(this.news);
 }
 
-class HallOfFameEvent extends HomePageEvent {
-  final List<HallOfFame> hallOfFame;
+class HallOfFamesEvent extends HomePageEvent {
+  final List<HallOfFame> hallOfFames;
 
-  const HallOfFameEvent(this.hallOfFame);
+  const HallOfFamesEvent(this.hallOfFames);
 }

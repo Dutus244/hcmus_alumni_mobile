@@ -39,6 +39,6 @@ class EventDetailWriteCommentController {
           },
         );
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 }

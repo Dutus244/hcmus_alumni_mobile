@@ -11,10 +11,10 @@ class StatusEvent extends GroupMemberEvent {
   const StatusEvent(this.status);
 }
 
-class MemberEvent extends GroupMemberEvent {
-  final List<Member> member;
+class MembersEvent extends GroupMemberEvent {
+  final List<Member> members;
 
-  const MemberEvent(this.member);
+  const MembersEvent(this.members);
 }
 
 class IndexMemberEvent extends GroupMemberEvent {
@@ -29,10 +29,10 @@ class HasReachedMaxMemberEvent extends GroupMemberEvent {
   const HasReachedMaxMemberEvent(this.hasReachedMaxMember);
 }
 
-class AdminEvent extends GroupMemberEvent {
-  final List<Member> admin;
+class AdminsEvent extends GroupMemberEvent {
+  final List<Member> admins;
 
-  const AdminEvent(this.admin);
+  const AdminsEvent(this.admins);
 }
 
 class IndexAdminEvent extends GroupMemberEvent {

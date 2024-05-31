@@ -1,0 +1,3 @@
+class MyProfilePageEvent {
+  const MyProfilePageEvent();
+}

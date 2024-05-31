@@ -1,12 +1,12 @@
 import 'package:hcmus_alumni_mobile/model/request_group.dart';
 
 class RequestGroupResponse {
-  final List<RequestGroup> request;
+  final List<RequestGroup> requests;
 
-  RequestGroupResponse(this.request);
+  RequestGroupResponse(this.requests);
 
   RequestGroupResponse.fromJson(Map<String, dynamic> json)
-      : request = (json["requests"] as List)
+      : requests = (json["requests"] as List)
             .map((i) => new RequestGroup.fromJson(i))
             .toList();
 }

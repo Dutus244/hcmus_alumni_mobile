@@ -14,7 +14,6 @@ import 'package:popover/popover.dart';
 import '../../../common/function/handle_html_content.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
-import '../../../global.dart';
 import '../../../model/news.dart';
 import '../bloc/news_detail_events.dart';
 
@@ -650,12 +649,12 @@ Widget buildCommentWidget(
               ],
             ),
           ),
-        if (comment.childrenComment.length > 0)
+        if (comment.childrenComments.length > 0)
           Container(
             padding: EdgeInsets.only(left: 10.w, bottom: 10.h),
             child: Column(
               children: [
-                for (int i = 0; i < comment.childrenComment.length; i += 1)
+                for (int i = 0; i < comment.childrenComments.length; i += 1)
                   IntrinsicHeight(
                       child: Row(
                     children: [
@@ -663,7 +662,7 @@ Widget buildCommentWidget(
                       // This is divider
                       Container(
                           child: buildCommentWidget(context, news,
-                              comment.childrenComment[i], index + 1, route)),
+                              comment.childrenComments[i], index + 1, route)),
                     ],
                   ))
               ],
@@ -952,8 +951,6 @@ class ButtonEditText extends StatefulWidget {
 }
 
 class _ButtonEditTextState extends State<ButtonEditText> {
-  final _currentValueNotifier = ValueNotifier(0.0);
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -1229,7 +1226,7 @@ Widget newsDetail(BuildContext context, int route) {
             listComment(
                 context,
                 BlocProvider.of<NewsDetailBloc>(context).state.news,
-                BlocProvider.of<NewsDetailBloc>(context).state.comment,
+                BlocProvider.of<NewsDetailBloc>(context).state.comments,
                 route),
             listRelatedNews(context,
                 BlocProvider.of<NewsDetailBloc>(context).state.relatedNews),

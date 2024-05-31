@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hcmus_alumni_mobile/pages/write_post_advise/write_post_advise_controller.dart';
 import 'bloc/write_post_group_events.dart';
 import 'widgets/write_post_group_widget.dart';
 

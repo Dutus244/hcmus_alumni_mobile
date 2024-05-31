@@ -11,10 +11,10 @@ class StatusCommentEvent extends ListCommentPostAdviseEvent {
   const StatusCommentEvent(this.statusComment);
 }
 
-class CommentEvent extends ListCommentPostAdviseEvent {
-  final List<Comment> comment;
+class CommentsEvent extends ListCommentPostAdviseEvent {
+  final List<Comment> comments;
 
-  const CommentEvent(this.comment);
+  const CommentsEvent(this.comments);
 }
 
 class IndexCommentEvent extends ListCommentPostAdviseEvent {

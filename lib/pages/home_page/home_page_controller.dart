@@ -33,9 +33,9 @@ class HomePageController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var eventResponse = EventResponse.fromJson(jsonMap);
-        context.read<HomePageBloc>().add(EventEvent(eventResponse.event));
+        context.read<HomePageBloc>().add(EventsEvent(eventResponse.events));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleLoadNewsData() async {
@@ -56,7 +56,7 @@ class HomePageController {
         var newsResponse = NewsResponse.fromJson(jsonMap);
         context.read<HomePageBloc>().add(NewsEvent(newsResponse.news));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleLoadHallOfFameData() async {
@@ -78,8 +78,8 @@ class HomePageController {
         var hallOfFameResponse = HallOfFameResponse.fromJson(jsonMap);
         context
             .read<HomePageBloc>()
-            .add(HallOfFameEvent(hallOfFameResponse.hallOfFame));
+            .add(HallOfFamesEvent(hallOfFameResponse.hallOfFames));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 }

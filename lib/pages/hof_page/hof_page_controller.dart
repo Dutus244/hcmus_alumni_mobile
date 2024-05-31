@@ -70,7 +70,7 @@ class HofPageController {
 
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/hof';
-    var pageSize = '5';
+    var pageSize = 5;
 
     var token = Global.storageService.getUserAuthToken();
 
@@ -90,11 +90,11 @@ class HofPageController {
         var jsonMap = json.decode(responseBody);
         // Pass the Map to the fromJson method
         var hallOfFameResponse = HallOfFameResponse.fromJson(jsonMap);
-        if (hallOfFameResponse.hallOfFame.isEmpty) {
+        if (hallOfFameResponse.hallOfFames.isEmpty) {
           if (page == 0) {
             context
                 .read<HofPageBloc>()
-                .add(HallOfFameEvent(hallOfFameResponse.hallOfFame));
+                .add(HallOfFamesEvent(hallOfFameResponse.hallOfFames));
           }
           context.read<HofPageBloc>().add(HasReachedMaxHofEvent(true));
           context.read<HofPageBloc>().add(StatusHofEvent(Status.success));
@@ -103,26 +103,26 @@ class HofPageController {
         if (page == 0) {
           context
               .read<HofPageBloc>()
-              .add(HallOfFameEvent(hallOfFameResponse.hallOfFame));
+              .add(HallOfFamesEvent(hallOfFameResponse.hallOfFames));
         } else {
           List<HallOfFame> currentList =
-              BlocProvider.of<HofPageBloc>(context).state.hallOfFame;
+              BlocProvider.of<HofPageBloc>(context).state.hallOfFames;
 
           // Create a new list by adding newsResponse.news to the existing list
           List<HallOfFame> updatedNewsList = List.of(currentList)
-            ..addAll(hallOfFameResponse.hallOfFame);
+            ..addAll(hallOfFameResponse.hallOfFames);
 
-          context.read<HofPageBloc>().add(HallOfFameEvent(updatedNewsList));
+          context.read<HofPageBloc>().add(HallOfFamesEvent(updatedNewsList));
         }
         context.read<HofPageBloc>().add(StatusHofEvent(Status.success));
 
-        if (hallOfFameResponse.hallOfFame.length < 5) {
+        if (hallOfFameResponse.hallOfFames.length < pageSize) {
           context.read<HofPageBloc>().add(HasReachedMaxHofEvent(true));
         }
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }

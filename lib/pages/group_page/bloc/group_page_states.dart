@@ -6,23 +6,23 @@ class GroupPageState {
   final int page;
 
   final Status statusGroupDiscover;
-  final List<Group> groupDiscover;
+  final List<Group> groupDiscovers;
   final int indexGroupDiscover;
   final bool hasReachedMaxGroupDiscover;
 
   final Status statusGroupJoined;
-  final List<Group> groupJoined;
+  final List<Group> groupJoineds;
   final int indexGroupJoined;
   final bool hasReachedMaxGroupJoined;
 
   GroupPageState({
     this.page = 0,
     this.statusGroupDiscover = Status.loading,
-    this.groupDiscover = const [],
+    this.groupDiscovers = const [],
     this.indexGroupDiscover = 0,
     this.hasReachedMaxGroupDiscover = false,
     this.statusGroupJoined = Status.loading,
-    this.groupJoined = const [],
+    this.groupJoineds = const [],
     this.indexGroupJoined = 0,
     this.hasReachedMaxGroupJoined = false,
   });
@@ -30,23 +30,23 @@ class GroupPageState {
   GroupPageState copyWith({
     int? page,
     Status? statusGroupDiscover,
-    List<Group>? groupDiscover,
+    List<Group>? groupDiscovers,
     int? indexGroupDiscover,
     bool? hasReachedMaxGroupDiscover,
     Status? statusGroupJoined,
-    List<Group>? groupJoined,
+    List<Group>? groupJoineds,
     int? indexGroupJoined,
     bool? hasReachedMaxGroupJoined,
   }) {
     return GroupPageState(
       page: page ?? this.page,
       statusGroupDiscover: statusGroupDiscover ?? this.statusGroupDiscover,
-      groupDiscover: groupDiscover ?? this.groupDiscover,
+      groupDiscovers: groupDiscovers ?? this.groupDiscovers,
       indexGroupDiscover: indexGroupDiscover ?? this.indexGroupDiscover,
       hasReachedMaxGroupDiscover:
           hasReachedMaxGroupDiscover ?? this.hasReachedMaxGroupDiscover,
       statusGroupJoined: statusGroupJoined ?? this.statusGroupJoined,
-      groupJoined: groupJoined ?? this.groupJoined,
+      groupJoineds: groupJoineds ?? this.groupJoineds,
       indexGroupJoined: indexGroupJoined ?? this.indexGroupJoined,
       hasReachedMaxGroupJoined:
           hasReachedMaxGroupJoined ?? this.hasReachedMaxGroupJoined,

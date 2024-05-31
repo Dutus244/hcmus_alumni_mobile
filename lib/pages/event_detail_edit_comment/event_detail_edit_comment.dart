@@ -5,11 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../common/values/colors.dart';
 import '../../model/comment.dart';
 import '../../model/event.dart';
-import '../../model/news.dart';
 import 'bloc/event_detail_edit_comment_blocs.dart';
 import 'bloc/event_detail_edit_comment_events.dart';
 import 'bloc/event_detail_edit_comment_states.dart';
-import 'event_detail_edit_comment_controller.dart';
 import 'widgets/event_detail_edit_comment_widget.dart';
 
 class EventDetailEditComment extends StatefulWidget {

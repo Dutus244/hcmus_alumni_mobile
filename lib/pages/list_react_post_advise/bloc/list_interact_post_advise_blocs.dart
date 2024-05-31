@@ -7,7 +7,7 @@ class ListInteractPostAdviseBloc
     extends Bloc<ListInteractPostAdviseEvent, ListInteractPostAdviseState> {
   ListInteractPostAdviseBloc() : super(ListInteractPostAdviseState()) {
     on<StatusInteractEvent>(_statusInteractEvent);
-    on<InteractEvent>(_interactEvent);
+    on<InteractsEvent>(_interactsEvent);
     on<IndexInteractEvent>(_indexInteractEvent);
     on<HasReachedMaxInteractEvent>(_hasReachedMaxInteractEvent);
   }
@@ -17,9 +17,9 @@ class ListInteractPostAdviseBloc
     emit(state.copyWith(statusInteract: event.statusInteract));
   }
 
-  void _interactEvent(
-      InteractEvent event, Emitter<ListInteractPostAdviseState> emit) async {
-    emit(state.copyWith(interact: event.interact));
+  void _interactsEvent(
+      InteractsEvent event, Emitter<ListInteractPostAdviseState> emit) async {
+    emit(state.copyWith(interacts: event.interacts));
   }
 
   void _indexInteractEvent(

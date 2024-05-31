@@ -12,7 +12,7 @@ class HofPageState {
   final String beginningYearSearch;
 
   final Status statusHof;
-  final List<HallOfFame> hallOfFame;
+  final List<HallOfFame> hallOfFames;
   final int indexHof;
   final bool hasReachedMaxHof;
 
@@ -24,7 +24,7 @@ class HofPageState {
     this.facultySearch = "",
     this.beginningYearSearch = "",
     this.statusHof = Status.loading,
-    this.hallOfFame = const [],
+    this.hallOfFames = const [],
     this.indexHof = 0,
     this.hasReachedMaxHof = false,
   });
@@ -37,7 +37,7 @@ class HofPageState {
     String? facultySearch,
     String? beginningYearSearch,
     Status? statusHof,
-    List<HallOfFame>? hallOfFame,
+    List<HallOfFame>? hallOfFames,
     int? indexHof,
     bool? hasReachedMaxHof,
   }) {
@@ -49,7 +49,7 @@ class HofPageState {
       facultySearch: facultySearch ?? this.facultySearch,
       beginningYearSearch: beginningYearSearch ?? this.beginningYearSearch,
       statusHof: statusHof ?? this.statusHof,
-      hallOfFame: hallOfFame ?? this.hallOfFame,
+      hallOfFames: hallOfFames ?? this.hallOfFames,
       indexHof: indexHof ?? this.indexHof,
       hasReachedMaxHof: hasReachedMaxHof ?? this.hasReachedMaxHof,
     );

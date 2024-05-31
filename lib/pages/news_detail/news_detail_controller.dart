@@ -36,7 +36,7 @@ class NewsDetailController {
         var news = News.fromJson(jsonMap);
         context.read<NewsDetailBloc>().add(NewsEvent(news));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleGetComment(String id, int page) async {
@@ -65,9 +65,9 @@ class NewsDetailController {
         var jsonMap = json.decode(responseBody);
         var commentResponse = CommentResponse.fromJson(jsonMap);
 
-        if (commentResponse.comment.isEmpty) {
+        if (commentResponse.comments.isEmpty) {
           if (page == 0) {
-            context.read<NewsDetailBloc>().add(CommentEvent([]));
+            context.read<NewsDetailBloc>().add(CommentsEvent([]));
           }
           context.read<NewsDetailBloc>().add(HasReachedMaxCommentEvent(true));
           return;
@@ -76,16 +76,16 @@ class NewsDetailController {
         if (page == 0) {
           context
               .read<NewsDetailBloc>()
-              .add(CommentEvent(commentResponse.comment));
+              .add(CommentsEvent(commentResponse.comments));
         } else {
           List<Comment> currentList =
-              BlocProvider.of<NewsDetailBloc>(context).state.comment;
+              BlocProvider.of<NewsDetailBloc>(context).state.comments;
           List<Comment> updatedNewsList = List.of(currentList)
-            ..addAll(commentResponse.comment);
-          context.read<NewsDetailBloc>().add(CommentEvent(updatedNewsList));
+            ..addAll(commentResponse.comments);
+          context.read<NewsDetailBloc>().add(CommentsEvent(updatedNewsList));
         }
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleGetChildrenComment(String commentId) async {
@@ -105,7 +105,7 @@ class NewsDetailController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         List<Comment> currentList =
-            BlocProvider.of<NewsDetailBloc>(context).state.comment;
+            BlocProvider.of<NewsDetailBloc>(context).state.comments;
 
         // Tìm bình luận cha trong toàn bộ cây bình luận
         Comment? parentComment = findParentComment(currentList, commentId);
@@ -116,11 +116,11 @@ class NewsDetailController {
         }
 
         // Thông báo cho Bloc về sự thay đổi
-        context.read<NewsDetailBloc>().add(CommentEvent(currentList));
+        context.read<NewsDetailBloc>().add(CommentsEvent(currentList));
       } else {
         // Xử lý lỗi hoặc trạng thái không mong muốn
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Xử lý lỗi
     }
   }
@@ -132,8 +132,8 @@ class NewsDetailController {
         return comment; // Bình luận hiện tại là bình luận cha
       }
       // Kiểm tra các bình luận con của bình luận hiện tại
-      if (comment.childrenComment.isNotEmpty) {
-        var parent = findParentComment(comment.childrenComment, commentId);
+      if (comment.childrenComments.isNotEmpty) {
+        var parent = findParentComment(comment.childrenComments, commentId);
         if (parent != null) {
           return parent; // Bình luận cha được tìm thấy trong các bình luận con
         }
@@ -160,7 +160,7 @@ class NewsDetailController {
         var newsResponse = NewsResponse.fromJson(jsonMap);
         context.read<NewsDetailBloc>().add(RelatedNewsEvent(newsResponse.news));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleDeleteComment(String id, String commentId) async {
@@ -203,7 +203,7 @@ class NewsDetailController {
         } else {
           // Handle other status codes if needed
         }
-      } catch (error, stacktrace) {
+      } catch (error) {
         // Handle errors
       }
     }

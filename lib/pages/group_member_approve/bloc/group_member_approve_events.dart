@@ -12,10 +12,10 @@ class StatusEvent extends GroupMemberApproveEvent {
   const StatusEvent(this.status);
 }
 
-class RequestEvent extends GroupMemberApproveEvent {
-  final List<RequestGroup> request;
+class RequestsEvent extends GroupMemberApproveEvent {
+  final List<RequestGroup> requests;
 
-  const RequestEvent(this.request);
+  const RequestsEvent(this.requests);
 }
 
 class IndexRequestEvent extends GroupMemberApproveEvent {

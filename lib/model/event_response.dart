@@ -1,11 +1,11 @@
 import 'event.dart';
 
 class EventResponse {
-  final List<Event> event;
+  final List<Event> events;
 
-  EventResponse(this.event);
+  EventResponse(this.events);
 
   EventResponse.fromJson(Map<String, dynamic> json)
-      : event =
+      : events =
             (json["events"] as List).map((i) => new Event.fromJson(i)).toList();
 }

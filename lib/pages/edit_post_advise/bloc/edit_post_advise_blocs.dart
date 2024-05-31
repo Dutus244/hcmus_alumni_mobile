@@ -9,7 +9,7 @@ class EditPostAdviseBloc
     on<ContentEvent>(_contentEvent);
     on<TagsEvent>(_tagsEvent);
     on<ItemTagsEvent>(_itemTagsEvent);
-    on<PictureNetworkEvent>(_pictureNetworkEvent);
+    on<PictureNetworksEvent>(_pictureNetworksEvent);
     on<PicturesEvent>(_picturesEvent);
     on<DeletePicturesEvent>(_deletePicturesEvent);
     on<PageEvent>(_pageEvent);
@@ -32,9 +32,9 @@ class EditPostAdviseBloc
     emit(state.copyWith(itemTags: event.itemTags));
   }
 
-  void _pictureNetworkEvent(
-      PictureNetworkEvent event, Emitter<EditPostAdviseState> emit) {
-    emit(state.copyWith(pictureNetwork: event.pictureNetwork));
+  void _pictureNetworksEvent(
+      PictureNetworksEvent event, Emitter<EditPostAdviseState> emit) {
+    emit(state.copyWith(pictureNetworks: event.pictureNetworks));
   }
 
   void _picturesEvent(PicturesEvent event, Emitter<EditPostAdviseState> emit) {

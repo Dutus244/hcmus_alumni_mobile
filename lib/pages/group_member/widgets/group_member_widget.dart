@@ -94,9 +94,9 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
           controller: _scrollController,
           itemCount: BlocProvider.of<GroupMemberBloc>(context)
                   .state
-                  .admin
+                  .admins
                   .length +
-              BlocProvider.of<GroupMemberBloc>(context).state.member.length +
+              BlocProvider.of<GroupMemberBloc>(context).state.members.length +
               1,
           itemBuilder: (BuildContext context, int index) {
             switch (BlocProvider.of<GroupMemberBloc>(context).state.status) {
@@ -109,11 +109,11 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
               case Status.success:
                 if (BlocProvider.of<GroupMemberBloc>(context)
                             .state
-                            .admin
+                            .admins
                             .length +
                         BlocProvider.of<GroupMemberBloc>(context)
                             .state
-                            .member
+                            .members
                             .length ==
                     0) {
                   return Column(
@@ -137,11 +137,11 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
                 if (index >=
                     BlocProvider.of<GroupMemberBloc>(context)
                             .state
-                            .admin
+                            .admins
                             .length +
                         BlocProvider.of<GroupMemberBloc>(context)
                             .state
-                            .member
+                            .members
                             .length) {
                   if (BlocProvider.of<GroupMemberBloc>(context)
                       .state
@@ -153,7 +153,7 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
                 } else {
                   if (BlocProvider.of<GroupMemberBloc>(context)
                               .state
-                              .admin
+                              .admins
                               .length !=
                           0 &&
                       index == 0) {
@@ -179,14 +179,14 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
                             context,
                             BlocProvider.of<GroupMemberBloc>(context)
                                 .state
-                                .admin[index],
+                                .admins[index],
                             group),
                       ],
                     );
                   } else if (index -
                           BlocProvider.of<GroupMemberBloc>(context)
                               .state
-                              .admin
+                              .admins
                               .length ==
                       0) {
                     return Column(
@@ -210,34 +210,34 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
                             context,
                             BlocProvider.of<GroupMemberBloc>(context)
                                     .state
-                                    .member[
+                                    .members[
                                 index -
                                     BlocProvider.of<GroupMemberBloc>(context)
                                         .state
-                                        .admin
+                                        .admins
                                         .length],
                             group),
                       ],
                     );
                   } else if (BlocProvider.of<GroupMemberBloc>(context)
                           .state
-                          .admin
+                          .admins
                           .length >
                       index) {
                     return member(
                         context,
                         BlocProvider.of<GroupMemberBloc>(context)
                             .state
-                            .admin[index],
+                            .admins[index],
                         group);
                   } else {
                     return member(
                         context,
-                        BlocProvider.of<GroupMemberBloc>(context).state.member[
+                        BlocProvider.of<GroupMemberBloc>(context).state.members[
                             index -
                                 BlocProvider.of<GroupMemberBloc>(context)
                                     .state
-                                    .admin
+                                    .admins
                                     .length],
                         group);
                   }

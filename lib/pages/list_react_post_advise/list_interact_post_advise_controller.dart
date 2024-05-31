@@ -51,11 +51,11 @@ class ListInteractPostAdviseController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var interactResponse = InteractResponse.fromJson(jsonMap);
-        if (interactResponse.interact.isEmpty) {
+        if (interactResponse.interacts.isEmpty) {
           if (page == 0) {
             context
                 .read<ListInteractPostAdviseBloc>()
-                .add(InteractEvent(interactResponse.interact));
+                .add(InteractsEvent(interactResponse.interacts));
           }
           context
               .read<ListInteractPostAdviseBloc>()
@@ -69,19 +69,19 @@ class ListInteractPostAdviseController {
         if (page == 0) {
           context
               .read<ListInteractPostAdviseBloc>()
-              .add(InteractEvent(interactResponse.interact));
+              .add(InteractsEvent(interactResponse.interacts));
         } else {
           List<Interact> currentList =
               BlocProvider.of<ListInteractPostAdviseBloc>(context)
                   .state
-                  .interact;
+                  .interacts;
           List<Interact> updatedNewsList = List.of(currentList)
-            ..addAll(interactResponse.interact);
+            ..addAll(interactResponse.interacts);
           context
               .read<ListInteractPostAdviseBloc>()
-              .add(InteractEvent(updatedNewsList));
+              .add(InteractsEvent(updatedNewsList));
         }
-        if (interactResponse.interact.length < pageSize) {
+        if (interactResponse.interacts.length < pageSize) {
           context
               .read<ListInteractPostAdviseBloc>()
               .add(HasReachedMaxInteractEvent(true));
@@ -90,6 +90,6 @@ class ListInteractPostAdviseController {
             .read<ListInteractPostAdviseBloc>()
             .add(StatusInteractEvent(Status.success));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 }

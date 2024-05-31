@@ -46,11 +46,11 @@ class GroupPageController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var groupResponse = GroupResponse.fromJson(jsonMap);
-        if (groupResponse.group.isEmpty) {
+        if (groupResponse.groups.isEmpty) {
           if (page == 0) {
             context
                 .read<GroupPageBloc>()
-                .add(GroupDiscoverEvent(groupResponse.group));
+                .add(GroupDiscoversEvent(groupResponse.groups));
           }
           context
               .read<GroupPageBloc>()
@@ -64,17 +64,17 @@ class GroupPageController {
         if (page == 0) {
           context
               .read<GroupPageBloc>()
-              .add(GroupDiscoverEvent(groupResponse.group));
+              .add(GroupDiscoversEvent(groupResponse.groups));
         } else {
           List<Group> currentList =
-              BlocProvider.of<GroupPageBloc>(context).state.groupDiscover;
+              BlocProvider.of<GroupPageBloc>(context).state.groupDiscovers;
           List<Group> updatedNewsList = List.of(currentList)
-            ..addAll(groupResponse.group);
+            ..addAll(groupResponse.groups);
           context
               .read<GroupPageBloc>()
-              .add(GroupDiscoverEvent(updatedNewsList));
+              .add(GroupDiscoversEvent(updatedNewsList));
         }
-        if (groupResponse.group.length < pageSize) {
+        if (groupResponse.groups.length < pageSize) {
           context
               .read<GroupPageBloc>()
               .add(HasReachedMaxGroupDiscoverEvent(true));
@@ -83,7 +83,7 @@ class GroupPageController {
             .read<GroupPageBloc>()
             .add(StatusGroupDiscoverEvent(Status.success));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleLoadGroupJoinedData(int page) async {
@@ -114,10 +114,10 @@ class GroupPageController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var groupResponse = GroupResponse.fromJson(jsonMap);
-        if (groupResponse.group.isEmpty) {
+        if (groupResponse.groups.isEmpty) {
           context
               .read<GroupPageBloc>()
-              .add(GroupJoinedEvent(groupResponse.group));
+              .add(GroupJoinedsEvent(groupResponse.groups));
           context
               .read<GroupPageBloc>()
               .add(HasReachedMaxGroupJoinedEvent(true));
@@ -130,15 +130,15 @@ class GroupPageController {
         if (page == 0) {
           context
               .read<GroupPageBloc>()
-              .add(GroupJoinedEvent(groupResponse.group));
+              .add(GroupJoinedsEvent(groupResponse.groups));
         } else {
           List<Group> currentList =
-              BlocProvider.of<GroupPageBloc>(context).state.groupJoined;
+              BlocProvider.of<GroupPageBloc>(context).state.groupJoineds;
           List<Group> updatedNewsList = List.of(currentList)
-            ..addAll(groupResponse.group);
-          context.read<GroupPageBloc>().add(GroupJoinedEvent(updatedNewsList));
+            ..addAll(groupResponse.groups);
+          context.read<GroupPageBloc>().add(GroupJoinedsEvent(updatedNewsList));
         }
-        if (groupResponse.group.length < pageSize) {
+        if (groupResponse.groups.length < pageSize) {
           context
               .read<GroupPageBloc>()
               .add(HasReachedMaxGroupJoinedEvent(true));
@@ -147,7 +147,7 @@ class GroupPageController {
             .read<GroupPageBloc>()
             .add(StatusGroupJoinedEvent(Status.success));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleRequestJoinGroup(Group group) async {
@@ -182,7 +182,7 @@ class GroupPageController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }

@@ -9,7 +9,7 @@ class NewsDetailBloc extends Bloc<NewsDetailEvent, NewsDetailState> {
     on<FontSizeResetEvent>(_fontSizeResetEvent);
     on<FontFamilyEvent>(_fontFamilyEvent);
     on<NewsEvent>(_newsEvent);
-    on<CommentEvent>(_commentEvent);
+    on<CommentsEvent>(_commentsEvent);
     on<IndexCommentEvent>(_indexCommentEvent);
     on<HasReachedMaxCommentEvent>(_hasReachedMaxCommentEvent);
     on<RelatedNewsEvent>(_relatedNewsEvent);
@@ -32,8 +32,8 @@ class NewsDetailBloc extends Bloc<NewsDetailEvent, NewsDetailState> {
     emit(state.copyWith(news: event.news));
   }
 
-  void _commentEvent(CommentEvent event, Emitter<NewsDetailState> emit) async {
-    emit(state.copyWith(comment: event.comment));
+  void _commentsEvent(CommentsEvent event, Emitter<NewsDetailState> emit) async {
+    emit(state.copyWith(comments: event.comments));
   }
 
   void _indexCommentEvent(

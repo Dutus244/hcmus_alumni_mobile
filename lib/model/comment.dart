@@ -7,7 +7,7 @@ class Comment {
   final Creator creator;
   final String content;
   final int childrenCommentNumber;
-  late List<Comment> childrenComment = [];
+  late List<Comment> childrenComments= [];
   final String createAt;
   final String updateAt;
   final Permissions permissions;
@@ -26,7 +26,7 @@ class Comment {
 
   // Optional method to fetch and populate children comments later
   Future<void> fetchChildrenComments(Map<String, dynamic> json) async {
-    childrenComment =
+    childrenComments=
         (json["comments"] as List).map((i) => new Comment.fromJson(i)).toList();
   }
 }

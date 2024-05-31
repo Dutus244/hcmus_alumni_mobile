@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hcmus_alumni_mobile/pages/group_create/group_create_controller.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
@@ -509,6 +510,157 @@ Widget buildTextFieldPrivacy(BuildContext context) {
   );
 }
 
+void deleteTag(BuildContext context, String tag) {
+  List<String> currentList =
+      BlocProvider.of<GroupCreateBloc>(context).state.tags;
+  for (int i = 0; i < currentList.length; i += 1) {
+    if (currentList[i] == tag) {
+      currentList.removeAt(i);
+      break;
+    }
+  }
+  context.read<GroupCreateBloc>().add(TagsEvent(currentList));
+}
+
+void addTag(BuildContext context, String tag) {
+  List<String> currentList =
+      List.from(BlocProvider.of<GroupCreateBloc>(context).state.tags);
+  currentList.add(tag);
+  context.read<GroupCreateBloc>().add(TagsEvent(currentList));
+}
+
+Widget buildTextFieldTag(BuildContext context) {
+  TextfieldTagsController<String> _stringTagController =
+      TextfieldTagsController<String>();
+
+  return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.w),
+      child: Column(
+        children: [
+          TextFieldTags<String>(
+            textfieldTagsController: _stringTagController,
+            initialTags: BlocProvider.of<GroupCreateBloc>(context).state.tags,
+            textSeparators: const [' ', ','],
+            letterCase: LetterCase.normal,
+            inputFieldBuilder: (context, inputFieldValues) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.h),
+                child: TextField(
+                  onTap: () {
+                    _stringTagController.getFocusNode?.requestFocus();
+                  },
+                  controller: inputFieldValues.textEditingController,
+                  focusNode: inputFieldValues.focusNode,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.primaryFourthElementText,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(15.w),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.primaryFourthElementText,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(15.w),
+                    ),
+                    helperStyle: const TextStyle(
+                      color: AppColors.primarySecondaryElement,
+                    ),
+                    hintText:
+                        inputFieldValues.tags.isNotEmpty ? '' : "Nhập #hashtag...",
+                    errorText: inputFieldValues.error,
+                    prefixIconConstraints:
+                        BoxConstraints(maxWidth: 300.w * 0.8),
+                    prefixIcon: inputFieldValues.tags.isNotEmpty
+                        ? SingleChildScrollView(
+                            controller: inputFieldValues.tagScrollController,
+                            scrollDirection: Axis.vertical,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 8,
+                                bottom: 8,
+                                left: 8,
+                              ),
+                              child: Wrap(
+                                  runSpacing: 4.0,
+                                  spacing: 4.0,
+                                  children:
+                                      inputFieldValues.tags.map((String tag) {
+                                    return Container(
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20.0),
+                                        ),
+                                        color: AppColors.primaryElement,
+                                      ),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 5.0),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0, vertical: 5.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          InkWell(
+                                            child: Text(
+                                              '#$tag',
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: AppFonts.Header2,
+                                                  color: Colors.white),
+                                            ),
+                                            onTap: () {
+                                              //print("$tag selected");
+                                            },
+                                          ),
+                                          const SizedBox(width: 4.0),
+                                          InkWell(
+                                            child: const Icon(
+                                              Icons.cancel,
+                                              size: 14.0,
+                                              color: Color.fromARGB(
+                                                  255, 233, 233, 233),
+                                            ),
+                                            onTap: () {
+                                              inputFieldValues
+                                                  .onTagRemoved(tag);
+                                              deleteTag(context, tag);
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }).toList()),
+                            ),
+                          )
+                        : null,
+                  ),
+                  onChanged: (value) {
+                    inputFieldValues.onTagChanged(value);
+                  },
+                  onSubmitted: (value) {
+                    if (!BlocProvider.of<GroupCreateBloc>(context).state.tags.contains(value)) {
+                      inputFieldValues.onTagSubmitted(value);
+                      addTag(context, value);
+                    } else {
+                      // Optionally, show a message to the user about the duplicate tag
+                      toastInfo(msg: "Bạn đã nhập tag này rồi");
+                    }
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ));
+}
+
 Widget header() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -568,6 +720,7 @@ Widget groupCreate(BuildContext context, int route) {
               context.read<GroupCreateBloc>().add(DescriptionEvent(value));
             }),
             buildTextFieldPrivacy(context),
+            buildTextFieldTag(context),
             choosePicture(context, (value) {
               context.read<GroupCreateBloc>().add(PicturesEvent(value));
             }),

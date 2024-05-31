@@ -9,7 +9,7 @@ class NewsDetailState {
   final double fontSize;
   final String fontFamily;
   final News? news;
-  final List<Comment> comment;
+  final List<Comment> comments;
   final int indexComment;
   final bool hasReachedMaxComment;
   final List<News> relatedNews;
@@ -18,7 +18,7 @@ class NewsDetailState {
       {this.fontSize = 40,
       this.fontFamily = "Roboto",
       this.news = null,
-      this.comment = const [],
+      this.comments = const [],
       this.indexComment = 0,
       this.hasReachedMaxComment = false,
       this.relatedNews = const []});
@@ -27,7 +27,7 @@ class NewsDetailState {
       {double? fontSize,
       String? fontFamily,
       News? news,
-      List<Comment>? comment,
+      List<Comment>? comments,
       int? indexComment,
       bool? hasReachedMaxComment,
       List<News>? relatedNews}) {
@@ -35,7 +35,7 @@ class NewsDetailState {
       fontSize: fontSize ?? this.fontSize,
       fontFamily: fontFamily ?? this.fontFamily,
       news: news ?? this.news,
-      comment: comment ?? this.comment,
+      comments: comments ?? this.comments,
       indexComment: indexComment ?? this.indexComment,
       hasReachedMaxComment: hasReachedMaxComment ?? this.hasReachedMaxComment,
       relatedNews: relatedNews ?? this.relatedNews,

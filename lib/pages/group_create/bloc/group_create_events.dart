@@ -28,4 +28,10 @@ class PicturesEvent extends GroupCreateEvent {
   const PicturesEvent(this.pictures);
 }
 
+class TagsEvent extends GroupCreateEvent {
+  final List<String> tags;
+
+  const TagsEvent(this.tags);
+}
+
 class GroupCreateResetEvent extends GroupCreateEvent {}

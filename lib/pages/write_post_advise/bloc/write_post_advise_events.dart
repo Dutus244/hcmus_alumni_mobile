@@ -22,6 +22,12 @@ class TagsEvent extends WritePostAdviseEvent {
   const TagsEvent(this.tags);
 }
 
+class VotesEvent extends WritePostAdviseEvent {
+  final List<String> votes;
+
+  const VotesEvent(this.votes);
+}
+
 class PicturesEvent extends WritePostAdviseEvent {
   final List<File> pictures;
 

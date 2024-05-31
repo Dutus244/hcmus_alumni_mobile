@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/common/values/colors.dart';
 import 'package:hcmus_alumni_mobile/pages/home_page/bloc/home_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/home_page/bloc/home_page_states.dart';
@@ -62,7 +61,7 @@ class _HomePageState extends State<HomePage> {
         child:
             BlocBuilder<HomePageBloc, HomePageState>(builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, 'Trang chủ'),
+            appBar: buildAppBar(context, 'Trang chủ', 0),
             backgroundColor: AppColors.primaryBackground,
             body: homePage(context),
           );

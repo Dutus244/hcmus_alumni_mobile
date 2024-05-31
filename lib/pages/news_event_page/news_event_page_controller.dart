@@ -72,7 +72,7 @@ class NewsEventPageController {
         }
         context.read<NewsEventPageBloc>().add(StatusNewsEvent(Status.success));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleLoadEventData(int page) async {
@@ -104,11 +104,11 @@ class NewsEventPageController {
         var jsonMap = json.decode(responseBody);
         var eventResponse = EventResponse.fromJson(jsonMap);
 
-        if (eventResponse.event.isEmpty) {
+        if (eventResponse.events.isEmpty) {
           if (page == 0) {
             context
                 .read<NewsEventPageBloc>()
-                .add(EventEvent(eventResponse.event));
+                .add(EventsEvent(eventResponse.events));
           }
           context.read<NewsEventPageBloc>().add(HasReachedMaxEventEvent(true));
           context
@@ -120,19 +120,19 @@ class NewsEventPageController {
         if (page == 0) {
           context
               .read<NewsEventPageBloc>()
-              .add(EventEvent(eventResponse.event));
+              .add(EventsEvent(eventResponse.events));
         } else {
           List<Event> currentList =
-              BlocProvider.of<NewsEventPageBloc>(context).state.event;
+              BlocProvider.of<NewsEventPageBloc>(context).state.events;
           List<Event> updatedEventList = List.of(currentList)
-            ..addAll(eventResponse.event);
-          context.read<NewsEventPageBloc>().add(EventEvent(updatedEventList));
+            ..addAll(eventResponse.events);
+          context.read<NewsEventPageBloc>().add(EventsEvent(updatedEventList));
         }
-        if (eventResponse.event.length < pageSize) {
+        if (eventResponse.events.length < pageSize) {
           context.read<NewsEventPageBloc>().add(HasReachedMaxEventEvent(true));
         }
         context.read<NewsEventPageBloc>().add(StatusEventEvent(Status.success));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 }

@@ -17,7 +17,7 @@ import 'package:hcmus_alumni_mobile/pages/group_detail/bloc/group_detail_blocs.d
 
 import '../group_detail_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int secondRoute) {
+AppBar buildAppBar(BuildContext context, int secondRoute, int search) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -29,9 +29,15 @@ AppBar buildAppBar(BuildContext context, int secondRoute) {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage", (route) => false,
-                  arguments: {"route": 3, "secondRoute": secondRoute});
+              if (search == 0) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/applicationPage", (route) => false,
+                    arguments: {"route": 3, "secondRoute": secondRoute});
+              }
+              else {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/groupSearch", (route) => false);
+              }
             },
             child: Container(
               padding: EdgeInsets.only(left: 0.w),
@@ -617,7 +623,7 @@ Widget group(BuildContext context, ScrollController _scrollController,
           child: ListView.builder(
             controller: _scrollController,
             itemCount:
-                BlocProvider.of<GroupDetailBloc>(context).state.post.length + 1,
+                BlocProvider.of<GroupDetailBloc>(context).state.posts.length + 1,
             itemBuilder: (BuildContext context, int index) {
               switch (
                   BlocProvider.of<GroupDetailBloc>(context).state.statusPost) {
@@ -637,7 +643,7 @@ Widget group(BuildContext context, ScrollController _scrollController,
                 case Status.success:
                   if (BlocProvider.of<GroupDetailBloc>(context)
                       .state
-                      .post
+                      .posts
                       .isEmpty) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -667,7 +673,7 @@ Widget group(BuildContext context, ScrollController _scrollController,
                   if (index >=
                       BlocProvider.of<GroupDetailBloc>(context)
                           .state
-                          .post
+                          .posts
                           .length) {
                     if (BlocProvider.of<GroupDetailBloc>(context)
                         .state
@@ -692,7 +698,7 @@ Widget group(BuildContext context, ScrollController _scrollController,
                               context,
                               BlocProvider.of<GroupDetailBloc>(context)
                                   .state
-                                  .post[index], group, secondRoute),
+                                  .posts[index], group, secondRoute),
                         ],
                       );
                     } else {
@@ -700,7 +706,7 @@ Widget group(BuildContext context, ScrollController _scrollController,
                           context,
                           BlocProvider.of<GroupDetailBloc>(context)
                               .state
-                              .post[index], group, secondRoute);
+                              .posts[index], group, secondRoute);
                     }
                   }
               }
@@ -838,6 +844,101 @@ class _ButtonOptionPostState extends State<ButtonOptionPost> {
   }
 }
 
+Widget postOption(BuildContext context, Post post, String groupId, int secondRoute) {
+  return Container(
+    height: 90.h,
+    child: Stack(
+      children: [
+        SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/editPostGroup",
+                        (route) => false,
+                    arguments: {
+                      "id": groupId,
+                      "secondRoute": secondRoute,
+                      "post": post,
+                    },
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.only(left: 10.w, top: 10.h),
+                  color: Colors.transparent,
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/edit.svg",
+                        width: 14.w,
+                        height: 14.h,
+                        color: AppColors.primaryText,
+                      ),
+                      Container(
+                        width: 10.w,
+                      ),
+                      Text(
+                        'Chỉnh sửa bài viết',
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header2,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  bool shouldDelete = await GroupDetailController(context: context)
+                      .handleDeletePost(post.id, groupId);
+                  if (shouldDelete) {
+                    Navigator.pop(context); // Close the modal after deletion
+                  }
+                },
+                child: Container(
+                  margin: EdgeInsets.only(left: 10.w, top: 10.h),
+                  color: Colors.transparent,
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/trash.svg",
+                        width: 14.w,
+                        height: 14.h,
+                        color: AppColors.primaryText,
+                      ),
+                      Container(
+                        width: 10.w,
+                      ),
+                      Text(
+                        'Xoá bài viết',
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header2,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 70.h,
+              )
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 Widget post(BuildContext context, Post post, Group group, int secondRoute) {
   return Container(
     child: Column(
@@ -900,7 +1001,21 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                 ),
               ),
               if (post.permissions.edit || post.permissions.delete)
-                ButtonOptionPost(post, group.id, secondRoute),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (ctx) => postOption(context, post, group.id, secondRoute),
+                    );
+                  },
+                  child: Container(
+                    width: 17.w,
+                    height: 17.h,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(image: AssetImage("assets/icons/3dot.png"))),
+                  ),
+                ),
             ],
           ),
         ),
@@ -962,7 +1077,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
         Container(
           height: 5.h,
         ),
-        if (post.picture.length == 1)
+        if (post.pictures.length == 1)
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
@@ -983,12 +1098,12 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                 shape: BoxShape.rectangle,
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(post.picture[0].pictureUrl),
+                  image: NetworkImage(post.pictures[0].pictureUrl),
                 ),
               ),
             ),
           ),
-        if (post.picture.length == 2)
+        if (post.pictures.length == 2)
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
@@ -1012,7 +1127,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                       shape: BoxShape.rectangle,
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(post.picture[0].pictureUrl),
+                        image: NetworkImage(post.pictures[0].pictureUrl),
                       ),
                     ),
                   ),
@@ -1023,7 +1138,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                       shape: BoxShape.rectangle,
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(post.picture[1].pictureUrl),
+                        image: NetworkImage(post.pictures[1].pictureUrl),
                       ),
                     ),
                   ),
@@ -1031,7 +1146,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
               ),
             ),
           ),
-        if (post.picture.length == 3)
+        if (post.pictures.length == 3)
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
@@ -1054,7 +1169,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                       shape: BoxShape.rectangle,
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(post.picture[0].pictureUrl),
+                        image: NetworkImage(post.pictures[0].pictureUrl),
                       ),
                     ),
                   ),
@@ -1069,7 +1184,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[1].pictureUrl),
+                              image: NetworkImage(post.pictures[1].pictureUrl),
                             ),
                           ),
                         ),
@@ -1080,7 +1195,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[2].pictureUrl),
+                              image: NetworkImage(post.pictures[2].pictureUrl),
                             ),
                           ),
                         ),
@@ -1091,7 +1206,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
               ),
             ),
           ),
-        if (post.picture.length == 4)
+        if (post.pictures.length == 4)
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
@@ -1118,7 +1233,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[0].pictureUrl),
+                              image: NetworkImage(post.pictures[0].pictureUrl),
                             ),
                           ),
                         ),
@@ -1129,7 +1244,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[1].pictureUrl),
+                              image: NetworkImage(post.pictures[1].pictureUrl),
                             ),
                           ),
                         ),
@@ -1147,7 +1262,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[2].pictureUrl),
+                              image: NetworkImage(post.pictures[2].pictureUrl),
                             ),
                           ),
                         ),
@@ -1158,7 +1273,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[3].pictureUrl),
+                              image: NetworkImage(post.pictures[3].pictureUrl),
                             ),
                           ),
                         ),
@@ -1169,7 +1284,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
               ),
             ),
           ),
-        if (post.picture.length == 5)
+        if (post.pictures.length == 5)
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
@@ -1196,7 +1311,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[0].pictureUrl),
+                              image: NetworkImage(post.pictures[0].pictureUrl),
                             ),
                           ),
                         ),
@@ -1207,7 +1322,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[1].pictureUrl),
+                              image: NetworkImage(post.pictures[1].pictureUrl),
                             ),
                           ),
                         ),
@@ -1225,7 +1340,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                             shape: BoxShape.rectangle,
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(post.picture[2].pictureUrl),
+                              image: NetworkImage(post.pictures[2].pictureUrl),
                             ),
                           ),
                         ),
@@ -1239,7 +1354,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image:
-                                      NetworkImage(post.picture[3].pictureUrl),
+                                      NetworkImage(post.pictures[3].pictureUrl),
                                 ),
                               ),
                             ),

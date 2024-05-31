@@ -1,18 +1,18 @@
 import 'package:hcmus_alumni_mobile/model/member.dart';
 
 class GroupInfoState {
-  final List<Member> member;
-  final List<Member> admin;
+  final List<Member> members;
+  final List<Member> admins;
 
-  GroupInfoState({this.member = const [], this.admin = const []});
+  GroupInfoState({this.members = const [], this.admins = const []});
 
   GroupInfoState copyWith({
-    List<Member>? member,
-    List<Member>? admin,
+    List<Member>? members,
+    List<Member>? admins,
   }) {
     return GroupInfoState(
-      member: member ?? this.member,
-      admin: admin ?? this.admin,
+      members: members ?? this.members,
+      admins: admins ?? this.admins,
     );
   }
 }

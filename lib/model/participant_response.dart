@@ -1,10 +1,10 @@
 import 'package:hcmus_alumni_mobile/model/participant.dart';
 
 class ParticipantResponse {
-  final List<Participant> participant;
+  final List<Participant> participants;
 
-  ParticipantResponse(this.participant);
+  ParticipantResponse(this.participants);
 
   ParticipantResponse.fromJson(Map<String, dynamic> json)
-      : participant = (json["participants"] as List).map((i) => new Participant.fromJson(i)).toList();
+      : participants = (json["participants"] as List).map((i) => new Participant.fromJson(i)).toList();
 }

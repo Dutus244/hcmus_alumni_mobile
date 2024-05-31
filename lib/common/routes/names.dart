@@ -15,6 +15,7 @@ class AppRoutes {
   static const ADVISE_PAGE = "/advisePage";
   static const HOF_PAGE = "/hofPage";
   static const GROUP_PAGE = "/groupPage";
+  static const MY_PROFILE_PAGE = "/myProfilePage";
 
   static const NEWS_DETAIL = "/newsDetail";
   static const NEWS_DETAIL_WRITE_COMMENT = "/newsDetailWriteComment";
@@ -33,7 +34,9 @@ class AppRoutes {
   static const LIST_INTERACT_POST_ADVISE = "/listInteractPostAdvise";
   static const LIST_COMMENT_POST_ADVISE = "/listCommentPostAdvise";
   static const LIST_PICTURE_POST_ADVISE = "/listPicturePostAdvise";
+  static const ADVISE_PAGE_LIST_VOTERS = "/advisePageListVoters";
 
+  static const GROUP_SEARCH = "/groupSearch";
   static const GROUP_CREATE = "/groupCreate";
   static const GROUP_EDIT = "/groupEdit";
   static const GROUP_DETAIL = "/groupDetail";

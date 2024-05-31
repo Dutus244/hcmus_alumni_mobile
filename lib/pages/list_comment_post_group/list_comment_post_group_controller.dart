@@ -4,13 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hcmus_alumni_mobile/pages/list_react_post_advise/bloc/list_interact_post_advise_events.dart';
 
 import '../../global.dart';
 import '../../model/comment.dart';
 import '../../model/comment_response.dart';
-import '../../model/interact.dart';
-import '../../model/interact_response.dart';
 import 'package:http/http.dart' as http;
 
 import 'bloc/list_comment_post_group_blocs.dart';
@@ -55,9 +52,9 @@ class ListCommentPostAdviseController {
         var jsonMap = json.decode(responseBody);
         var commentResponse = CommentResponse.fromJson(jsonMap);
 
-        if (commentResponse.comment.isEmpty) {
+        if (commentResponse.comments.isEmpty) {
           if (page == 0) {
-            context.read<ListCommentPostGroupBloc>().add(CommentEvent([]));
+            context.read<ListCommentPostGroupBloc>().add(CommentsEvent([]));
           }
           context
               .read<ListCommentPostGroupBloc>()
@@ -71,17 +68,17 @@ class ListCommentPostAdviseController {
         if (page == 0) {
           context
               .read<ListCommentPostGroupBloc>()
-              .add(CommentEvent(commentResponse.comment));
+              .add(CommentsEvent(commentResponse.comments));
         } else {
           List<Comment> currentList =
-              BlocProvider.of<ListCommentPostGroupBloc>(context).state.comment;
+              BlocProvider.of<ListCommentPostGroupBloc>(context).state.comments;
           List<Comment> updatedNewsList = List.of(currentList)
-            ..addAll(commentResponse.comment);
+            ..addAll(commentResponse.comments);
           context
               .read<ListCommentPostGroupBloc>()
-              .add(CommentEvent(updatedNewsList));
+              .add(CommentsEvent(updatedNewsList));
         }
-        if (commentResponse.comment.length < pageSize) {
+        if (commentResponse.comments.length < pageSize) {
           context
               .read<ListCommentPostGroupBloc>()
               .add(HasReachedMaxCommentEvent(true));
@@ -90,7 +87,7 @@ class ListCommentPostAdviseController {
             .read<ListCommentPostGroupBloc>()
             .add(StatusCommentEvent(Status.success));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleGetChildrenComment(String commentId) async {
@@ -110,7 +107,7 @@ class ListCommentPostAdviseController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         List<Comment> currentList =
-            BlocProvider.of<ListCommentPostGroupBloc>(context).state.comment;
+            BlocProvider.of<ListCommentPostGroupBloc>(context).state.comments;
 
         // Tìm bình luận cha trong toàn bộ cây bình luận
         Comment? parentComment = findParentComment(currentList, commentId);
@@ -123,11 +120,11 @@ class ListCommentPostAdviseController {
         // Thông báo cho Bloc về sự thay đổi
         context
             .read<ListCommentPostGroupBloc>()
-            .add(CommentEvent(currentList));
+            .add(CommentsEvent(currentList));
       } else {
         // Xử lý lỗi hoặc trạng thái không mong muốn
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Xử lý lỗi
     }
   }
@@ -139,8 +136,8 @@ class ListCommentPostAdviseController {
         return comment; // Bình luận hiện tại là bình luận cha
       }
       // Kiểm tra các bình luận con của bình luận hiện tại
-      if (comment.childrenComment.isNotEmpty) {
-        var parent = findParentComment(comment.childrenComment, commentId);
+      if (comment.childrenComments.isNotEmpty) {
+        var parent = findParentComment(comment.childrenComments, commentId);
         if (parent != null) {
           return parent; // Bình luận cha được tìm thấy trong các bình luận con
         }
@@ -177,7 +174,7 @@ class ListCommentPostAdviseController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
@@ -210,7 +207,7 @@ class ListCommentPostAdviseController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
@@ -243,7 +240,7 @@ class ListCommentPostAdviseController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
@@ -288,7 +285,7 @@ class ListCommentPostAdviseController {
         } else {
           // Handle other status codes if needed
         }
-      } catch (error, stacktrace) {
+      } catch (error) {
         // Handle errors
       }
     }

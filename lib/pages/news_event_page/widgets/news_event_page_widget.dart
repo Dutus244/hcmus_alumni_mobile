@@ -8,12 +8,10 @@ import 'package:hcmus_alumni_mobile/model/event.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_events.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_states.dart';
-import 'package:intl/intl.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
-import '../../../global.dart';
 import '../../../model/news.dart';
 
 Widget buildButtonChooseNewsOrEvent(
@@ -385,7 +383,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
         child: ListView.builder(
           controller: _scrollController,
           itemCount:
-              BlocProvider.of<NewsEventPageBloc>(context).state.event.length +
+              BlocProvider.of<NewsEventPageBloc>(context).state.events.length +
                   1,
           itemBuilder: (BuildContext context, int index) {
             switch (
@@ -402,7 +400,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
               case Status.success:
                 if (BlocProvider.of<NewsEventPageBloc>(context)
                     .state
-                    .event
+                    .events
                     .isEmpty) {
                   return Column(
                     children: [
@@ -428,7 +426,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                 if (index >=
                     BlocProvider.of<NewsEventPageBloc>(context)
                         .state
-                        .event
+                        .events
                         .length) {
                   if (BlocProvider.of<NewsEventPageBloc>(context)
                       .state
@@ -449,7 +447,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                             context,
                             BlocProvider.of<NewsEventPageBloc>(context)
                                 .state
-                                .event[index]),
+                                .events[index]),
                       ],
                     );
                   } else {
@@ -457,7 +455,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                         context,
                         BlocProvider.of<NewsEventPageBloc>(context)
                             .state
-                            .event[index]);
+                            .events[index]);
                   }
                 }
             }

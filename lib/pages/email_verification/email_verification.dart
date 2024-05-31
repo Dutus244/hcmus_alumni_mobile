@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/email_verification/bloc/email_verification_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/email_verification/bloc/email_verification_events.dart';
 import 'package:hcmus_alumni_mobile/pages/email_verification/bloc/email_verification_states.dart';
@@ -9,8 +8,6 @@ import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification_
 import 'package:hcmus_alumni_mobile/pages/email_verification/widgets/email_verification_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/values/fonts.dart';
-import '../../global.dart';
 
 class EmailVerification extends StatefulWidget {
   const EmailVerification({super.key});

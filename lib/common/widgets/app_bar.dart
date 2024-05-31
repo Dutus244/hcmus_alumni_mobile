@@ -6,7 +6,7 @@ import '../../global.dart';
 import '../values/colors.dart';
 import '../values/fonts.dart';
 
-AppBar buildAppBar(BuildContext context, String title) {
+AppBar buildAppBar(BuildContext context, String title, int route) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -63,21 +63,16 @@ AppBar buildAppBar(BuildContext context, String title) {
                   margin: EdgeInsets.only(),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed("/signIn");
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          "/myProfilePage", (route) => false,
+                          arguments: {"route": route});
                     },
-                    child: Global.storageService.getUserIsLoggedIn()
-                        ? CircleAvatar(
-                            radius: 10,
-                            child: null,
-                            backgroundImage:
-                                AssetImage("assets/images/test1.png"),
-                          )
-                        : Container(
-                            decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage("assets/icons/login.png"))),
-                          ),
+                    child: CircleAvatar(
+                      radius: 10,
+                      child: null,
+                      backgroundImage:
+                      NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                    )
                   ),
                 ),
               ],

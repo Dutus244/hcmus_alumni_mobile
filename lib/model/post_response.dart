@@ -1,10 +1,10 @@
 import 'post.dart';
 
 class PostResponse {
-  final List<Post> post;
+  final List<Post> posts;
 
-  PostResponse(this.post);
+  PostResponse(this.posts);
 
   PostResponse.fromJson(Map<String, dynamic> json)
-      : post = (json["posts"] as List).map((i) => new Post.fromJson(i)).toList();
+      : posts = (json["posts"] as List).map((i) => new Post.fromJson(i)).toList();
 }

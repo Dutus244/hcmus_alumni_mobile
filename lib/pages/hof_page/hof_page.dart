@@ -7,7 +7,6 @@ import 'package:hcmus_alumni_mobile/pages/hof_page/hof_page_controller.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/widgets/hof_page_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import 'bloc/hof_page_blocs.dart';
 import 'bloc/hof_page_states.dart';
 
@@ -55,7 +54,7 @@ class _HofPageState extends State<HofPage> {
       },
       child: BlocBuilder<HofPageBloc, HofPageState>(builder: (context, state) {
         return Scaffold(
-          appBar: buildAppBar(context, 'Gương thành công'),
+          appBar: buildAppBar(context),
           backgroundColor: AppColors.primaryBackground,
           body: listHof(context, _scrollController),
         );

@@ -8,6 +8,7 @@ class WritePostGroupBloc
     on<TitleEvent>(_titleEvent);
     on<ContentEvent>(_contentEvent);
     on<TagsEvent>(_tagsEvent);
+    on<VotesEvent>(_votesEvent);
     on<PicturesEvent>(_picturesEvent);
     on<PageEvent>(_pageEvent);
     on<WritePostGroupResetEvent>(_writePostGroupResetEvent);
@@ -23,6 +24,10 @@ class WritePostGroupBloc
 
   void _tagsEvent(TagsEvent event, Emitter<WritePostGroupState> emit) {
     emit(state.copyWith(tags: event.tags));
+  }
+
+  void _votesEvent(VotesEvent event, Emitter<WritePostGroupState> emit) {
+    emit(state.copyWith(votes: event.votes));
   }
 
   void _picturesEvent(PicturesEvent event, Emitter<WritePostGroupState> emit) {

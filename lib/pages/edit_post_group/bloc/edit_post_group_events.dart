@@ -43,10 +43,10 @@ class DeletePicturesEvent extends EditPostGroupEvent {
   const DeletePicturesEvent(this.deletePictures);
 }
 
-class PictureNetworkEvent extends EditPostGroupEvent {
-  final List<Picture> pictureNetwork;
+class PictureNetworksEvent extends EditPostGroupEvent {
+  final List<Picture> pictureNetworks;
 
-  const PictureNetworkEvent(this.pictureNetwork);
+  const PictureNetworksEvent(this.pictureNetworks);
 }
 
 class PageEvent extends EditPostGroupEvent {

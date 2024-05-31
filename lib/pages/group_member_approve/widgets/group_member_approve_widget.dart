@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hcmus_alumni_mobile/model/request_group.dart';
-import 'package:hcmus_alumni_mobile/pages/group_member/group_member.dart';
 import 'package:hcmus_alumni_mobile/pages/group_member_approve/group_member_approve_controller.dart';
 
 import '../../../common/values/colors.dart';
@@ -83,7 +82,7 @@ Widget listRequest(
           controller: _scrollController,
           itemCount: BlocProvider.of<GroupMemberApproveBloc>(context)
                   .state
-                  .request
+                  .requests
                   .length +
               1,
           itemBuilder: (BuildContext context, int index) {
@@ -98,7 +97,7 @@ Widget listRequest(
               case Status.success:
                 if (BlocProvider.of<GroupMemberApproveBloc>(context)
                     .state
-                    .request
+                    .requests
                     .isEmpty) {
                   return Column(
                     children: [
@@ -121,7 +120,7 @@ Widget listRequest(
                 if (index >=
                     BlocProvider.of<GroupMemberApproveBloc>(context)
                         .state
-                        .request
+                        .requests
                         .length) {
                   if (BlocProvider.of<GroupMemberApproveBloc>(context)
                       .state
@@ -139,7 +138,7 @@ Widget listRequest(
                             context,
                             BlocProvider.of<GroupMemberApproveBloc>(context)
                                 .state
-                                .request[index], groupId),
+                                .requests[index], groupId),
                       ],
                     );
                   } else {
@@ -147,7 +146,7 @@ Widget listRequest(
                         context,
                         BlocProvider.of<GroupMemberApproveBloc>(context)
                             .state
-                            .request[index], groupId);
+                            .requests[index], groupId);
                   }
                 }
             }
@@ -239,7 +238,7 @@ Widget request(BuildContext context, RequestGroup request, String groupId) {
                   height: 30.h,
                   margin: EdgeInsets.only(left: 10.w),
                   decoration: BoxDecoration(
-                    color: AppColors.primarySecondaryElement,
+                    color: Color.fromARGB(255, 230, 230, 230),
                     borderRadius: BorderRadius.circular(15.w),
                     border: Border.all(
                       color: Colors.transparent,
@@ -253,7 +252,7 @@ Widget request(BuildContext context, RequestGroup request, String groupId) {
                           fontSize: 11.sp,
                           fontWeight: FontWeight.bold,
                           color:
-                          AppColors.primaryElement),
+                          AppColors.primaryText),
                     ),
                   ),
                 ),

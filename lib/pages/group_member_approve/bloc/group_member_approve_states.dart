@@ -4,25 +4,25 @@ enum Status { loading, success }
 
 class GroupMemberApproveState {
   final Status status;
-  final List<RequestGroup> request;
+  final List<RequestGroup> requests;
   final int indexRequest;
   final bool hasReachedMaxRequest;
 
   GroupMemberApproveState({
     this.status = Status.loading,
-    this.request = const [],
+    this.requests = const [],
     this.indexRequest = 0,
     this.hasReachedMaxRequest = false,
   });
 
   GroupMemberApproveState copyWith(
       {Status? status,
-      List<RequestGroup>? request,
+      List<RequestGroup>? requests,
       int? indexRequest,
       bool? hasReachedMaxRequest}) {
     return GroupMemberApproveState(
       status: status ?? this.status,
-      request: request ?? this.request,
+      requests: requests ?? this.requests,
       indexRequest: indexRequest ?? this.indexRequest,
       hasReachedMaxRequest: hasReachedMaxRequest ?? this.hasReachedMaxRequest,
     );

@@ -35,7 +35,7 @@ class GroupDetailController {
         var group = Group.fromJson(jsonMap);
         context.read< GroupDetailBloc>().add(GroupEvent(group));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleLoadPostData(String id, int page) async {
@@ -71,33 +71,35 @@ class GroupDetailController {
         var jsonMap = json.decode(responseBody);
         // Pass the Map to the fromJson method
         var postResponse = PostResponse.fromJson(jsonMap);
-        if (postResponse.post.isEmpty) {
-          context.read<GroupDetailBloc>().add(PostEvent(postResponse.post));
+        if (postResponse.posts.isEmpty) {
+          if (page == 0) {
+            context.read<GroupDetailBloc>().add(PostsEvent(postResponse.posts));
+          }
           context.read<GroupDetailBloc>().add(HasReachedMaxPostEvent(true));
           context.read<GroupDetailBloc>().add(StatusPostEvent(Status.success));
           return;
         }
         if (page == 0) {
-          context.read<GroupDetailBloc>().add(PostEvent(postResponse.post));
+          context.read<GroupDetailBloc>().add(PostsEvent(postResponse.posts));
         } else {
           List<Post> currentList =
-              BlocProvider.of<GroupDetailBloc>(context).state.post;
+              BlocProvider.of<GroupDetailBloc>(context).state.posts;
 
           // Create a new list by adding newsResponse.news to the existing list
           List<Post> updatedNewsList = List.of(currentList)
-            ..addAll(postResponse.post);
+            ..addAll(postResponse.posts);
 
-          context.read<GroupDetailBloc>().add(PostEvent(updatedNewsList));
+          context.read<GroupDetailBloc>().add(PostsEvent(updatedNewsList));
         }
         context.read<GroupDetailBloc>().add(StatusPostEvent(Status.success));
 
-        if (postResponse.post.length < 5) {
+        if (postResponse.posts.length < 5) {
           context.read<GroupDetailBloc>().add(HasReachedMaxPostEvent(true));
         }
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
@@ -122,12 +124,12 @@ class GroupDetailController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
 
-  Future<void> handleDeletePost(String id, String groupId) async {
+  Future<bool> handleDeletePost(String id, String groupId) async {
     final shouldDelte = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -161,10 +163,11 @@ class GroupDetailController {
         var response = await http.delete(url, headers: headers);
         if (response.statusCode == 200) {
           GroupDetailController(context: context).handleLoadPostData(groupId, 0);
+          return true;
         } else {
           // Handle other status codes if needed
         }
-      } catch (error, stacktrace) {
+      } catch (error) {
         // Handle errors
       }
     }
@@ -173,7 +176,7 @@ class GroupDetailController {
 
   Future<void> handleLikePost(String id) async {
     List<Post> currentList =
-        BlocProvider.of<GroupDetailBloc>(context).state.post;
+        BlocProvider.of<GroupDetailBloc>(context).state.posts;
 
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$id/react';
@@ -196,7 +199,7 @@ class GroupDetailController {
           if (response.statusCode == 200) {
             currentList[i].reactionCount -= 1;
             currentList[i].isReacted = false;
-            context.read<GroupDetailBloc>().add(PostEvent(currentList));
+            context.read<GroupDetailBloc>().add(PostsEvent(currentList));
             return;
           } else {
             // Handle other status codes if needed
@@ -206,7 +209,7 @@ class GroupDetailController {
           if (response.statusCode == 201) {
             currentList[i].reactionCount += 1;
             currentList[i].isReacted = true;
-            context.read<GroupDetailBloc>().add(PostEvent(currentList));
+            context.read<GroupDetailBloc>().add(PostsEvent(currentList));
             return;
           } else {
             // Handle other status codes if needed
@@ -239,7 +242,7 @@ class GroupDetailController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }

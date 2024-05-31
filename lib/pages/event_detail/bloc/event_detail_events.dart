@@ -20,16 +20,16 @@ class EventEvent extends EventDetailEvent {
   const EventEvent(this.event);
 }
 
-class RelatedEventEvent extends EventDetailEvent {
-  final List<Event> relatedEvent;
+class RelatedEventsEvent extends EventDetailEvent {
+  final List<Event> relatedEvents;
 
-  const RelatedEventEvent(this.relatedEvent);
+  const RelatedEventsEvent(this.relatedEvents);
 }
 
-class CommentEvent extends EventDetailEvent {
-  final List<Comment> comment;
+class CommentsEvent extends EventDetailEvent {
+  final List<Comment> comments;
 
-  const CommentEvent(this.comment);
+  const CommentsEvent(this.comments);
 }
 
 class IndexCommentEvent extends EventDetailEvent {
@@ -56,10 +56,10 @@ class StatusParticipantEvent extends EventDetailEvent {
   const StatusParticipantEvent(this.statusParticipant);
 }
 
-class ParticipantEvent extends EventDetailEvent {
-  final List<Participant> participant;
+class ParticipantsEvent extends EventDetailEvent {
+  final List<Participant> participants;
 
-  const ParticipantEvent(this.participant);
+  const ParticipantsEvent(this.participants);
 }
 
 class IndexParticipantEvent extends EventDetailEvent {
