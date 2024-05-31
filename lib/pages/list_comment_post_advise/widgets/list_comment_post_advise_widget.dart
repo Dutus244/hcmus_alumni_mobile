@@ -11,7 +11,6 @@ import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../model/comment.dart';
 import '../../../model/creator.dart';
-import '../../../model/interact.dart';
 import '../bloc/list_comment_post_advise_blocs.dart';
 import '../bloc/list_comment_post_advise_events.dart';
 import '../bloc/list_comment_post_advise_states.dart';
@@ -32,7 +31,7 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
           controller: _scrollController,
           itemCount: BlocProvider.of<ListCommentPostAdviseBloc>(context)
                   .state
-                  .comment
+                  .comments
                   .length +
               1,
           itemBuilder: (BuildContext context, int index) {
@@ -54,7 +53,7 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
               case Status.success:
                 if (BlocProvider.of<ListCommentPostAdviseBloc>(context)
                     .state
-                    .comment
+                    .comments
                     .isEmpty) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -83,7 +82,7 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
                 if (index >=
                     BlocProvider.of<ListCommentPostAdviseBloc>(context)
                         .state
-                        .comment
+                        .comments
                         .length) {
                   if (BlocProvider.of<ListCommentPostAdviseBloc>(context)
                       .state
@@ -107,7 +106,7 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
                             context,
                             BlocProvider.of<ListCommentPostAdviseBloc>(context)
                                 .state
-                                .comment[index],
+                                .comments[index],
                             0,
                             id),
                       ],
@@ -117,7 +116,7 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
                         context,
                         BlocProvider.of<ListCommentPostAdviseBloc>(context)
                             .state
-                            .comment[index],
+                            .comments[index],
                         0,
                         id);
                   }
@@ -335,12 +334,12 @@ Widget buildCommentWidget(
               ],
             ),
           ),
-        if (comment.childrenComment.length > 0)
+        if (comment.childrenComments.length > 0)
           Container(
             padding: EdgeInsets.only(left: 10.w, bottom: 10.h),
             child: Column(
               children: [
-                for (int i = 0; i < comment.childrenComment.length; i += 1)
+                for (int i = 0; i < comment.childrenComments.length; i += 1)
                   IntrinsicHeight(
                       child: Row(
                     children: [
@@ -348,7 +347,7 @@ Widget buildCommentWidget(
                       // This is divider
                       Container(
                           child: buildCommentWidget(context,
-                              comment.childrenComment[i], index + 1, id)),
+                              comment.childrenComments[i], index + 1, id)),
                     ],
                   ))
               ],

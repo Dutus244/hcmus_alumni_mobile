@@ -47,10 +47,10 @@ class StatusHofEvent extends HofPageEvent {
   const StatusHofEvent(this.statusHof);
 }
 
-class HallOfFameEvent extends HofPageEvent {
-  final List<HallOfFame> hallOfFame;
+class HallOfFamesEvent extends HofPageEvent {
+  final List<HallOfFame> hallOfFames;
 
-  const HallOfFameEvent(this.hallOfFame);
+  const HallOfFamesEvent(this.hallOfFames);
 }
 
 class IndexHofEvent extends HofPageEvent {

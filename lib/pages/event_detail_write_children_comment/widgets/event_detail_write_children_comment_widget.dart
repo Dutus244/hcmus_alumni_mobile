@@ -10,7 +10,6 @@ import 'package:hcmus_alumni_mobile/model/comment.dart';
 import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
-import '../../../global.dart';
 import '../../../model/event.dart';
 import '../bloc/event_detail_write_children_comment_blocs.dart';
 import '../bloc/event_detail_write_children_comment_events.dart';

@@ -7,13 +7,13 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
   EventDetailBloc() : super(EventDetailState()) {
     on<PageEvent>(_pageEvent);
     on<EventEvent>(_eventEvent);
-    on<RelatedEventEvent>(_relatedEventEvent);
-    on<CommentEvent>(_commentEvent);
+    on<RelatedEventsEvent>(_relatedEventsEvent);
+    on<CommentsEvent>(_commentsEvent);
     on<IndexCommentEvent>(_indexCommentEvent);
     on<HasReachedMaxCommentEvent>(_hasReachedMaxCommentEvent);
     on<IsParticipatedEvent>(_isParticipatedEvent);
     on<StatusParticipantEvent>(_statusParticipantEvent);
-    on<ParticipantEvent>(_participantEvent);
+    on<ParticipantsEvent>(_participantsEvent);
     on<IndexParticipantEvent>(_indexParticipantEvent);
     on<HasReachedMaxParticipantEvent>(_hasReachedMaxParticipantEvent);
   }
@@ -26,13 +26,13 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
     emit(state.copyWith(event: event.event));
   }
 
-  void _relatedEventEvent(
-      RelatedEventEvent event, Emitter<EventDetailState> emit) {
-    emit(state.copyWith(relatedEvent: event.relatedEvent));
+  void _relatedEventsEvent(
+      RelatedEventsEvent event, Emitter<EventDetailState> emit) {
+    emit(state.copyWith(relatedEvents: event.relatedEvents));
   }
 
-  void _commentEvent(CommentEvent event, Emitter<EventDetailState> emit) async {
-    emit(state.copyWith(comment: event.comment));
+  void _commentsEvent(CommentsEvent event, Emitter<EventDetailState> emit) async {
+    emit(state.copyWith(comments: event.comments));
   }
 
   void _indexCommentEvent(
@@ -55,9 +55,9 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
     emit(state.copyWith(statusParticipant: event.statusParticipant));
   }
 
-  void _participantEvent(
-      ParticipantEvent event, Emitter<EventDetailState> emit) async {
-    emit(state.copyWith(participant: event.participant));
+  void _participantsEvent(
+      ParticipantsEvent event, Emitter<EventDetailState> emit) async {
+    emit(state.copyWith(participants: event.participants));
   }
 
   void _indexParticipantEvent(

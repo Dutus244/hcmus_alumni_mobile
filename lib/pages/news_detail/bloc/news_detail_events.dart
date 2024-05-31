@@ -26,10 +26,10 @@ class NewsEvent extends NewsDetailEvent {
   const NewsEvent(this.news);
 }
 
-class CommentEvent extends NewsDetailEvent {
-  final List<Comment> comment;
+class CommentsEvent extends NewsDetailEvent {
+  final List<Comment> comments;
 
-  const CommentEvent(this.comment);
+  const CommentsEvent(this.comments);
 }
 
 class IndexCommentEvent extends NewsDetailEvent {

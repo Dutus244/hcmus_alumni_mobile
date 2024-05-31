@@ -1,10 +1,10 @@
 import 'interact.dart';
 
 class InteractResponse {
-  final List<Interact> interact;
+  final List<Interact> interacts;
 
-  InteractResponse(this.interact);
+  InteractResponse(this.interacts);
 
   InteractResponse.fromJson(Map<String, dynamic> json)
-      : interact = (json["users"] as List).map((i) => new Interact.fromJson(i)).toList();
+      : interacts= (json["users"] as List).map((i) => new Interact.fromJson(i)).toList();
 }

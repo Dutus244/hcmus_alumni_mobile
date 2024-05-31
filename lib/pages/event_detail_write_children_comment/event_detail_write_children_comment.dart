@@ -9,7 +9,6 @@ import '../../model/event.dart';
 import 'bloc/event_detail_write_children_comment_blocs.dart';
 import 'bloc/event_detail_write_children_comment_events.dart';
 import 'bloc/event_detail_write_children_comment_states.dart';
-import 'event_detail_write_children_comment_controller.dart';
 
 class EventDetailWriteChildrenComment extends StatefulWidget {
   const EventDetailWriteChildrenComment({super.key});

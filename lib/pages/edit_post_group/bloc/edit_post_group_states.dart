@@ -8,7 +8,7 @@ class EditPostGroupState {
   final String content;
   final List<String> tags;
   final List<ValueItem> itemTags;
-  final List<Picture> pictureNetwork;
+  final List<Picture> pictureNetworks;
   final List<File> pictures;
   final List<String> deletePictures;
   final int page;
@@ -18,7 +18,7 @@ class EditPostGroupState {
       this.content = "",
       this.tags = const [],
       this.itemTags = const [],
-      this.pictureNetwork = const [],
+      this.pictureNetworks = const [],
       this.pictures = const [],
       this.deletePictures = const [],
       this.page = 0});
@@ -28,7 +28,7 @@ class EditPostGroupState {
       String? content,
       List<String>? tags,
       List<ValueItem>? itemTags,
-      List<Picture>? pictureNetwork,
+      List<Picture>? pictureNetworks,
       List<String>? deletePictures,
       List<File>? pictures,
       int? page}) {
@@ -37,7 +37,7 @@ class EditPostGroupState {
       content: content ?? this.content,
       tags: tags ?? this.tags,
       itemTags: itemTags ?? this.itemTags,
-      pictureNetwork: pictureNetwork ?? this.pictureNetwork,
+      pictureNetworks: pictureNetworks ?? this.pictureNetworks,
       pictures: pictures ?? this.pictures,
       deletePictures: deletePictures ?? this.deletePictures,
       page: page ?? this.page,

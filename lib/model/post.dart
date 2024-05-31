@@ -7,6 +7,8 @@ import 'package:hcmus_alumni_mobile/model/picture_response.dart';
 import 'package:hcmus_alumni_mobile/model/status.dart';
 import 'package:hcmus_alumni_mobile/model/tags.dart';
 import 'package:hcmus_alumni_mobile/model/tags_response.dart';
+import 'package:hcmus_alumni_mobile/model/vote.dart';
+import 'package:hcmus_alumni_mobile/model/vote_response.dart';
 
 import 'creator.dart';
 
@@ -20,10 +22,13 @@ class Post {
   final List<Tags> tags;
   final Status status;
   final Creator creator;
-  final List<Picture> picture;
+  final List<Picture> pictures;
   late bool isReacted;
   late int reactionCount;
   final Permissions permissions;
+  List<Vote> votes;
+  String voteSelected;
+  int totalVote;
 
   Post(
       this.id,
@@ -35,10 +40,13 @@ class Post {
       this.tags,
       this.status,
       this.creator,
-      this.picture,
+      this.pictures,
       this.isReacted,
       this.reactionCount,
-      this.permissions);
+      this.permissions,
+      this.votes,
+      this.voteSelected,
+      this.totalVote);
 
   Post.fromJson(Map<String, dynamic> json)
       : id = json["id"],
@@ -50,8 +58,11 @@ class Post {
         tags = TagsResponse.fromJson(json).tags,
         status = Status.fromJson(json["status"]),
         creator = Creator.fromJson(json["creator"]),
-        picture = PictureResponse.fromJson(json).picture,
+        pictures = PictureResponse.fromJson(json).pictures,
         isReacted = json["isReacted"],
         reactionCount = json["reactionCount"].toInt(),
-        permissions = Permissions.fromJson(json['permissions']);
+        permissions = Permissions.fromJson(json['permissions']),
+        votes = VoteResponse.fromJson(json).votes,
+        voteSelected = VoteResponse.fromJson(json).voteSelected,
+        totalVote = VoteResponse.fromJson(json).totalVote;
 }

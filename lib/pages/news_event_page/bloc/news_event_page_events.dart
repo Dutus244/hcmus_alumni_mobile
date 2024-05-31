@@ -43,10 +43,10 @@ class StatusEventEvent extends NewsEventPageEvent {
   const StatusEventEvent(this.statusEvent);
 }
 
-class EventEvent extends NewsEventPageEvent {
-  final List<Event> event;
+class EventsEvent extends NewsEventPageEvent {
+  final List<Event> events;
 
-  const EventEvent(this.event);
+  const EventsEvent(this.events);
 }
 
 class IndexEventEvent extends NewsEventPageEvent {

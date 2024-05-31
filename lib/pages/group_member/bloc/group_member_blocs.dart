@@ -6,10 +6,10 @@ import 'group_member_states.dart';
 class GroupMemberBloc extends Bloc<GroupMemberEvent, GroupMemberState> {
   GroupMemberBloc() : super(GroupMemberState()) {
     on<StatusEvent>(_statusEvent);
-    on<MemberEvent>(_memberEvent);
+    on<MembersEvent>(_membersEvent);
     on<IndexMemberEvent>(_indexMemberEvent);
     on<HasReachedMaxMemberEvent>(_hasReachedMaxMemberEvent);
-    on<AdminEvent>(_adminEvent);
+    on<AdminsEvent>(_adminsEvent);
     on<IndexAdminEvent>(_indexAdminEvent);
     on<HasReachedMaxAdminEvent>(_hasReachedMaxAdminEvent);
   }
@@ -18,8 +18,8 @@ class GroupMemberBloc extends Bloc<GroupMemberEvent, GroupMemberState> {
     emit(state.copyWith(status: event.status));
   }
 
-  void _memberEvent(MemberEvent event, Emitter<GroupMemberState> emit) async {
-    emit(state.copyWith(member: event.member));
+  void _membersEvent(MembersEvent event, Emitter<GroupMemberState> emit) async {
+    emit(state.copyWith(members: event.members));
   }
 
   void _indexMemberEvent(
@@ -32,8 +32,8 @@ class GroupMemberBloc extends Bloc<GroupMemberEvent, GroupMemberState> {
     emit(state.copyWith(hasReachedMaxMember: event.hasReachedMaxMember));
   }
 
-  void _adminEvent(AdminEvent event, Emitter<GroupMemberState> emit) async {
-    emit(state.copyWith(admin: event.admin));
+  void _adminsEvent(AdminsEvent event, Emitter<GroupMemberState> emit) async {
+    emit(state.copyWith(admins: event.admins));
   }
 
   void _indexAdminEvent(IndexAdminEvent event, Emitter<GroupMemberState> emit) {

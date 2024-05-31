@@ -5,15 +5,15 @@ import 'group_info_states.dart';
 
 class GroupInfoBloc extends Bloc<GroupInfoEvent, GroupInfoState> {
   GroupInfoBloc() : super(GroupInfoState()) {
-    on<MemberEvent>(_memberEvent);
-    on<AdminEvent>(_adminEvent);
+    on<MembersEvent>(_membersEvent);
+    on<AdminsEvent>(_adminsEvent);
   }
 
-  void _memberEvent(MemberEvent event, Emitter<GroupInfoState> emit) async {
-    emit(state.copyWith(member: event.member));
+  void _membersEvent(MembersEvent event, Emitter<GroupInfoState> emit) async {
+    emit(state.copyWith(members: event.members));
   }
 
-  void _adminEvent(AdminEvent event, Emitter<GroupInfoState> emit) async {
-    emit(state.copyWith(admin: event.admin));
+  void _adminsEvent(AdminsEvent event, Emitter<GroupInfoState> emit) async {
+    emit(state.copyWith(admins: event.admins));
   }
 }

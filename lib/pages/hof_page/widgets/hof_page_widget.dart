@@ -9,10 +9,65 @@ import 'package:hcmus_alumni_mobile/pages/hof_page/bloc/hof_page_states.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
-import '../../../global.dart';
 import '../bloc/hof_page_blocs.dart';
 import '../bloc/hof_page_events.dart';
 import '../hof_page_controller.dart';
+
+AppBar buildAppBar(BuildContext context) {
+  return AppBar(
+    backgroundColor: AppColors.primaryBackground,
+    title: Container(
+      height: 40.h,
+      margin: EdgeInsets.only(left: 0.w, right: 0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/applicationPage", (route) => false,
+                  arguments: {"route": 0, "secondRoute": 0});
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 0.w),
+              child: SizedBox(
+                width: 25.w,
+                height: 25.h,
+                child: SvgPicture.asset(
+                  "assets/icons/back.svg",
+                  width: 25.w,
+                  height: 25.h,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+          Text(
+            'Gương thành công',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppFonts.Header0,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.sp,
+              color: AppColors.secondaryHeader,
+            ),
+          ),
+          Container(
+            width: 25.w,
+            color: Colors.transparent,
+            child: Row(
+              children: [
+
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
+    centerTitle: true, // Đặt tiêu đề vào giữa
+  );
+}
 
 Widget buildTextField(BuildContext context, String hintText, String textType,
     String iconName, void Function(String value)? func) {
@@ -255,7 +310,7 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
         child: ListView.builder(
           controller: _scrollController,
           itemCount:
-              BlocProvider.of<HofPageBloc>(context).state.hallOfFame.length + 1,
+              BlocProvider.of<HofPageBloc>(context).state.hallOfFames.length + 1,
           itemBuilder: (BuildContext context, int index) {
             switch (BlocProvider.of<HofPageBloc>(context).state.statusHof) {
               case Status.loading:
@@ -302,7 +357,7 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
               case Status.success:
                 if (BlocProvider.of<HofPageBloc>(context)
                     .state
-                    .hallOfFame
+                    .hallOfFames
                     .isEmpty) {
                   return Column(
                     children: [
@@ -361,7 +416,7 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                 if (index >=
                     BlocProvider.of<HofPageBloc>(context)
                         .state
-                        .hallOfFame
+                        .hallOfFames
                         .length) {
                   if (BlocProvider.of<HofPageBloc>(context)
                       .state
@@ -420,7 +475,7 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                             context,
                             BlocProvider.of<HofPageBloc>(context)
                                 .state
-                                .hallOfFame[index]),
+                                .hallOfFames[index]),
                       ],
                     );
                   } else {
@@ -428,7 +483,7 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                         context,
                         BlocProvider.of<HofPageBloc>(context)
                             .state
-                            .hallOfFame[index]);
+                            .hallOfFames[index]);
                   }
                 }
             }

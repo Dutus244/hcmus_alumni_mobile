@@ -8,6 +8,7 @@ class WritePostAdviseBloc
     on<TitleEvent>(_titleEvent);
     on<ContentEvent>(_contentEvent);
     on<TagsEvent>(_tagsEvent);
+    on<VotesEvent>(_votesEvent);
     on<PicturesEvent>(_picturesEvent);
     on<PageEvent>(_pageEvent);
     on<WritePostAdviseResetEvent>(_writePostAdviseResetEvent);
@@ -23,6 +24,10 @@ class WritePostAdviseBloc
 
   void _tagsEvent(TagsEvent event, Emitter<WritePostAdviseState> emit) {
     emit(state.copyWith(tags: event.tags));
+  }
+
+  void _votesEvent(VotesEvent event, Emitter<WritePostAdviseState> emit) {
+    emit(state.copyWith(votes: event.votes));
   }
 
   void _picturesEvent(PicturesEvent event, Emitter<WritePostAdviseState> emit) {

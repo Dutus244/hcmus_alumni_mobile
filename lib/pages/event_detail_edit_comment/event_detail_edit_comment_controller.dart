@@ -46,7 +46,7 @@ class EventDetailEditCommentController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }

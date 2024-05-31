@@ -38,7 +38,7 @@ class EditPostGroupController {
     context.read<EditPostGroupBloc>().add(ItemTagsEvent(initialSelectedItems));
     context.read<EditPostGroupBloc>().add(TitleEvent(post.title));
     context.read<EditPostGroupBloc>().add(ContentEvent(post.content));
-    context.read<EditPostGroupBloc>().add(PictureNetworkEvent(post.picture));
+    context.read<EditPostGroupBloc>().add(PictureNetworksEvent(post.pictures));
   }
 
   Future<void> handlePost(String id, String groupId, int secondRoute) async {
@@ -73,7 +73,6 @@ class EditPostGroupController {
       var url = Uri.parse('$apiUrl$endpoint');
 
       var response = await http.put(url, headers: headers, body: body);
-      var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var endpoint =
             '/groups/posts/$id/images';
@@ -123,7 +122,7 @@ class EditPostGroupController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }

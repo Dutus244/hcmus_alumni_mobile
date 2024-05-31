@@ -10,6 +10,7 @@ class GroupCreateBloc
     on<DescriptionEvent>(_descriptionEvent);
     on<PrivacyEvent>(_privacyEvent);
     on<PicturesEvent>(_picturesEvent);
+    on<TagsEvent>(_tagsEvent);
     on<GroupCreateResetEvent>(_groupCreateResetEvent);
   }
 
@@ -27,6 +28,10 @@ class GroupCreateBloc
 
   void _picturesEvent(PicturesEvent event, Emitter<GroupCreateState> emit) {
     emit(state.copyWith(pictures: event.pictures));
+  }
+
+  void _tagsEvent(TagsEvent event, Emitter<GroupCreateState> emit) {
+    emit(state.copyWith(tags: event.tags));
   }
 
   void _groupCreateResetEvent(GroupCreateResetEvent event, Emitter<GroupCreateState> emit) {

@@ -8,7 +8,6 @@ import '../../common/values/colors.dart';
 import '../../model/event.dart';
 import 'bloc/event_detail_write_comment_blocs.dart';
 import 'bloc/event_detail_write_comment_states.dart';
-import 'event_detail_write_comment_controller.dart';
 
 class EventDetailWriteComment extends StatefulWidget {
   const EventDetailWriteComment({super.key});

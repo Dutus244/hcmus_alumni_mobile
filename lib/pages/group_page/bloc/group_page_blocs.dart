@@ -7,11 +7,11 @@ class GroupPageBloc extends Bloc<GroupPageEvent, GroupPageState> {
   GroupPageBloc() : super(GroupPageState()) {
     on<PageEvent>(_pageEvent);
     on<StatusGroupDiscoverEvent>(_statusGroupDiscoverEvent);
-    on<GroupDiscoverEvent>(_groupDiscoverEvent);
+    on<GroupDiscoversEvent>(_groupDiscoversEvent);
     on<IndexGroupDiscoverEvent>(_indexGroupDiscoverEvent);
     on<HasReachedMaxGroupDiscoverEvent>(_hasReachedMaxGroupDiscoverEvent);
     on<StatusGroupJoinedEvent>(_statusGroupJoinedEvent);
-    on<GroupJoinedEvent>(_groupJoinedEvent);
+    on<GroupJoinedsEvent>(_groupJoinedsEvent);
     on<IndexGroupJoinedEvent>(_indexGroupJoinedEvent);
     on<HasReachedMaxGroupJoinedEvent>(_hasReachedMaxGroupJoinedEvent);
   }
@@ -25,9 +25,9 @@ class GroupPageBloc extends Bloc<GroupPageEvent, GroupPageState> {
     emit(state.copyWith(statusGroupDiscover: event.statusGroupDiscover));
   }
 
-  void _groupDiscoverEvent(
-      GroupDiscoverEvent event, Emitter<GroupPageState> emit) async {
-    emit(state.copyWith(groupDiscover: event.groupDiscover));
+  void _groupDiscoversEvent(
+      GroupDiscoversEvent event, Emitter<GroupPageState> emit) async {
+    emit(state.copyWith(groupDiscovers: event.groupDiscovers));
   }
 
   void _indexGroupDiscoverEvent(
@@ -46,9 +46,9 @@ class GroupPageBloc extends Bloc<GroupPageEvent, GroupPageState> {
     emit(state.copyWith(statusGroupJoined: event.statusGroupJoined));
   }
 
-  void _groupJoinedEvent(
-      GroupJoinedEvent event, Emitter<GroupPageState> emit) async {
-    emit(state.copyWith(groupJoined: event.groupJoined));
+  void _groupJoinedsEvent(
+      GroupJoinedsEvent event, Emitter<GroupPageState> emit) async {
+    emit(state.copyWith(groupJoineds: event.groupJoineds));
   }
 
   void _indexGroupJoinedEvent(

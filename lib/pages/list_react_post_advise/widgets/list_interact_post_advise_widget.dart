@@ -20,7 +20,7 @@ Widget listInteract(BuildContext context, ScrollController _scrollController) {
           controller: _scrollController,
           itemCount: BlocProvider.of<ListInteractPostAdviseBloc>(context)
                   .state
-                  .interact
+                  .interacts
                   .length +
               1,
           itemBuilder: (BuildContext context, int index) {
@@ -42,7 +42,7 @@ Widget listInteract(BuildContext context, ScrollController _scrollController) {
               case Status.success:
                 if (BlocProvider.of<ListInteractPostAdviseBloc>(context)
                     .state
-                    .interact
+                    .interacts
                     .isEmpty) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -75,7 +75,7 @@ Widget listInteract(BuildContext context, ScrollController _scrollController) {
                 if (index >=
                     BlocProvider.of<ListInteractPostAdviseBloc>(context)
                         .state
-                        .interact
+                        .interacts
                         .length) {
                   if (BlocProvider.of<ListInteractPostAdviseBloc>(context)
                       .state
@@ -99,7 +99,7 @@ Widget listInteract(BuildContext context, ScrollController _scrollController) {
                             context,
                             BlocProvider.of<ListInteractPostAdviseBloc>(context)
                                 .state
-                                .interact[index]),
+                                .interacts[index]),
                       ],
                     );
                   } else {
@@ -107,7 +107,7 @@ Widget listInteract(BuildContext context, ScrollController _scrollController) {
                         context,
                         BlocProvider.of<ListInteractPostAdviseBloc>(context)
                             .state
-                            .interact[index]);
+                            .interacts[index]);
                   }
                 }
             }

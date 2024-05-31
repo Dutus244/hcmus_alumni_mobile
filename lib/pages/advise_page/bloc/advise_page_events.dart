@@ -1,4 +1,5 @@
 import '../../../model/post.dart';
+import '../../../model/voter.dart';
 import 'advise_page_states.dart';
 
 class AdvisePageEvent {
@@ -11,10 +12,10 @@ class StatusPostEvent extends AdvisePageEvent {
   const StatusPostEvent(this.statusPost);
 }
 
-class PostEvent extends AdvisePageEvent {
-  final List<Post> post;
+class PostsEvent extends AdvisePageEvent {
+  final List<Post> posts;
 
-  const PostEvent(this.post);
+  const PostsEvent(this.posts);
 }
 
 class IndexPostEvent extends AdvisePageEvent {
@@ -27,4 +28,28 @@ class HasReachedMaxPostEvent extends AdvisePageEvent {
   final bool hasReachedMaxPost;
 
   const HasReachedMaxPostEvent(this.hasReachedMaxPost);
+}
+
+class StatusVoterEvent extends AdvisePageEvent {
+  final Status statusVoter;
+
+  const StatusVoterEvent(this.statusVoter);
+}
+
+class VotersEvent extends AdvisePageEvent {
+  final List<Voter> voters;
+
+  const VotersEvent(this.voters);
+}
+
+class IndexVoterEvent extends AdvisePageEvent {
+  final int indexVoter;
+
+  const IndexVoterEvent(this.indexVoter);
+}
+
+class HasReachedMaxVoterEvent extends AdvisePageEvent {
+  final bool hasReachedMaxVoter;
+
+  const HasReachedMaxVoterEvent(this.hasReachedMaxVoter);
 }

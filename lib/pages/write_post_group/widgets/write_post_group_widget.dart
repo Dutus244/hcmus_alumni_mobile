@@ -34,7 +34,7 @@ AppBar buildAppBar(BuildContext context, String id, int secondRoute) {
                   0) {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                   "/groupDetail",
-                      (route) => false,
+                  (route) => false,
                   arguments: {
                     "id": id,
                     "secondRoute": secondRoute,
@@ -105,34 +105,34 @@ Widget buttonSend(BuildContext context, String id, int secondRoute) {
       ),
       child: Center(
           child: Container(
-            margin: EdgeInsets.only(left: 12.w, right: 12.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Đăng',
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header1,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: (title != "" && content != "")
-                          ? AppColors.primaryBackground
-                          : Colors.black.withOpacity(0.3)),
-                ),
-                Container(
-                  width: 6.w,
-                ),
-                SvgPicture.asset(
-                  "assets/icons/send.svg",
-                  width: 15.w,
-                  height: 15.h,
+        margin: EdgeInsets.only(left: 12.w, right: 12.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Đăng',
+              style: TextStyle(
+                  fontFamily: AppFonts.Header1,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
                   color: (title != "" && content != "")
                       ? AppColors.primaryBackground
-                      : Colors.black.withOpacity(0.5),
-                ),
-              ],
+                      : Colors.black.withOpacity(0.3)),
             ),
-          )),
+            Container(
+              width: 6.w,
+            ),
+            SvgPicture.asset(
+              "assets/icons/send.svg",
+              width: 15.w,
+              height: 15.h,
+              color: (title != "" && content != "")
+                  ? AppColors.primaryBackground
+                  : Colors.black.withOpacity(0.5),
+            ),
+          ],
+        ),
+      )),
     ),
   );
 }
@@ -154,30 +154,30 @@ Widget buttonFinishEditPicture(BuildContext context) {
       ),
       child: Center(
           child: Container(
-            margin: EdgeInsets.only(left: 12.w, right: 12.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Xong',
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header1,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryBackground),
-                ),
-                Container(
-                  width: 6.w,
-                ),
-                SvgPicture.asset(
-                  "assets/icons/send.svg",
-                  width: 15.w,
-                  height: 15.h,
-                  color: AppColors.primaryBackground,
-                ),
-              ],
+        margin: EdgeInsets.only(left: 12.w, right: 12.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Xong',
+              style: TextStyle(
+                  fontFamily: AppFonts.Header1,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryBackground),
             ),
-          )),
+            Container(
+              width: 6.w,
+            ),
+            SvgPicture.asset(
+              "assets/icons/send.svg",
+              width: 15.w,
+              height: 15.h,
+              color: AppColors.primaryBackground,
+            ),
+          ],
+        ),
+      )),
     ),
   );
 }
@@ -199,7 +199,7 @@ Widget navigation(BuildContext context, String id, int secondRoute) {
                 onTap: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     "/groupDetail",
-                        (route) => false,
+                    (route) => false,
                     arguments: {
                       "id": id,
                       "secondRoute": secondRoute,
@@ -216,7 +216,8 @@ Widget navigation(BuildContext context, String id, int secondRoute) {
               GestureDetector(
                 onTap: () {
                   if (title != "" && content != "") {
-                    WritePostGroupController(context: context).handlePost(id, secondRoute);
+                    WritePostGroupController(context: context)
+                        .handlePost(id, secondRoute);
                   }
                 },
                 child: Container(
@@ -233,33 +234,33 @@ Widget navigation(BuildContext context, String id, int secondRoute) {
                   ),
                   child: Center(
                       child: Container(
-                        margin: EdgeInsets.only(left: 12.w, right: 12.w),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Đăng',
-                              style: TextStyle(
-                                  fontFamily: AppFonts.Header2,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: (title != "" && content != "")
-                                      ? AppColors.primaryBackground
-                                      : Colors.black.withOpacity(0.3)),
-                            ),
-                            Container(
-                              width: 6.w,
-                            ),
-                            SvgPicture.asset(
-                              "assets/icons/send.svg",
-                              width: 15.w,
-                              height: 15.h,
+                    margin: EdgeInsets.only(left: 12.w, right: 12.w),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Đăng',
+                          style: TextStyle(
+                              fontFamily: AppFonts.Header2,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold,
                               color: (title != "" && content != "")
                                   ? AppColors.primaryBackground
-                                  : Colors.black.withOpacity(0.5),
-                            ),
-                          ],
+                                  : Colors.black.withOpacity(0.3)),
                         ),
-                      )),
+                        Container(
+                          width: 6.w,
+                        ),
+                        SvgPicture.asset(
+                          "assets/icons/send.svg",
+                          width: 15.w,
+                          height: 15.h,
+                          color: (title != "" && content != "")
+                              ? AppColors.primaryBackground
+                              : Colors.black.withOpacity(0.5),
+                        ),
+                      ],
+                    ),
+                  )),
                 ),
               )
             ],
@@ -307,20 +308,20 @@ Widget navigationEditPicture(BuildContext context) {
                   ),
                   child: Center(
                       child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Xong',
-                              style: TextStyle(
-                                  fontFamily: AppFonts.Header2,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.primaryBackground),
-                            ),
-                          ],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Xong',
+                          style: TextStyle(
+                              fontFamily: AppFonts.Header2,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryBackground),
                         ),
-                      )),
+                      ],
+                    ),
+                  )),
                 ),
               )
             ],
@@ -331,8 +332,8 @@ Widget navigationEditPicture(BuildContext context) {
   );
 }
 
-Widget buildTextFieldTitle(BuildContext context, String hintText, String textType, String iconName,
-    void Function(String value)? func) {
+Widget buildTextFieldTitle(BuildContext context, String hintText,
+    String textType, String iconName, void Function(String value)? func) {
   TextEditingController _controller = TextEditingController(
       text: BlocProvider.of<WritePostGroupBloc>(context).state.title);
 
@@ -384,8 +385,8 @@ Widget buildTextFieldTitle(BuildContext context, String hintText, String textTyp
       ));
 }
 
-Widget buildTextFieldContent(BuildContext context, String hintText, String textType, String iconName,
-    void Function(String value)? func) {
+Widget buildTextFieldContent(BuildContext context, String hintText,
+    String textType, String iconName, void Function(String value)? func) {
   TextEditingController _controller = TextEditingController(
       text: BlocProvider.of<WritePostGroupBloc>(context).state.content);
   return Container(
@@ -436,7 +437,91 @@ Widget buildTextFieldContent(BuildContext context, String hintText, String textT
       ));
 }
 
-Widget writePost(BuildContext context, String id, int secondRoute){
+Widget buildTextFieldVote(BuildContext context, int index, String hintText,
+    String textType, String iconName, void Function(List<String> value)? func) {
+  TextEditingController _controller = TextEditingController(
+      text: BlocProvider.of<WritePostGroupBloc>(context).state.votes[index]);
+
+  return Container(
+    margin: EdgeInsets.only(right: 10.w),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+            width: 310.w,
+            margin: EdgeInsets.only(
+                top: 5.h, left: 10.w, right: 10.w, bottom: 10.h),
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(10.w),
+              border: Border.all(
+                color: AppColors.primaryFourthElementText,
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 10.w),
+                  width: 290.w,
+                  child: TextField(
+                    onTapOutside: (PointerDownEvent event) {
+                      List<String> currentList =
+                          BlocProvider.of<WritePostGroupBloc>(context)
+                              .state
+                              .votes;
+                      currentList[index] = _controller.text;
+                      func!(currentList);
+                    },
+                    keyboardType: TextInputType.multiline,
+                    controller: _controller,
+                    maxLines: null,
+                    // Cho phép đa dòng
+                    decoration: InputDecoration(
+                      hintText: 'Lựa chọn ${index + 1}',
+                      contentPadding: EdgeInsets.zero,
+                      border: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent)),
+                      enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent)),
+                      disabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent)),
+                      focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent)),
+                      hintStyle: TextStyle(
+                        color: AppColors.primarySecondaryElementText,
+                      ),
+                      counterText: '',
+                    ),
+                    style: TextStyle(
+                      color: AppColors.primaryText,
+                      fontFamily: AppFonts.Header2,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12.sp,
+                    ),
+                    autocorrect: false,
+                  ),
+                ),
+              ],
+            )),
+        GestureDetector(
+          onTap: () {
+            deleteVote(context, index);
+          },
+          child: SvgPicture.asset(
+            "assets/icons/close.svg",
+            width: 14.w,
+            height: 14.h,
+            color: Colors.black,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget writePost(BuildContext context, String id, int secondRoute) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -447,27 +532,19 @@ Widget writePost(BuildContext context, String id, int secondRoute){
           children: [
             header(),
             chooseTag((value) {
-              context
-                  .read<WritePostGroupBloc>()
-                  .add(TagsEvent(value));
+              context.read<WritePostGroupBloc>().add(TagsEvent(value));
             }),
             buildTextFieldTitle(context, 'Tiêu đề của bài viết', 'comment', '',
-                    (value) {
-                  context
-                      .read<WritePostGroupBloc>()
-                      .add(TitleEvent(value));
-                }),
+                (value) {
+              context.read<WritePostGroupBloc>().add(TitleEvent(value));
+            }),
             buildTextFieldContent(context, 'Suy nghĩ của bạn', 'comment', '',
-                    (value) {
-                  context
-                      .read<WritePostGroupBloc>()
-                      .add(ContentEvent(value));
-                }),
+                (value) {
+              context.read<WritePostGroupBloc>().add(ContentEvent(value));
+            }),
             chooseVote(context),
             choosePicture(context, (value) {
-              context
-                  .read<WritePostGroupBloc>()
-                  .add(PicturesEvent(value));
+              context.read<WritePostGroupBloc>().add(PicturesEvent(value));
             }),
           ],
         ),
@@ -480,16 +557,21 @@ Widget writePost(BuildContext context, String id, int secondRoute){
 Widget editPicture(BuildContext context) {
   return Column(
     children: [
-      Expanded(child: ListView(
+      Expanded(
+          child: ListView(
         children: [
-          for (int i = 0; i < BlocProvider.of<WritePostGroupBloc>(context)
-              .state
-              .pictures
-              .length; i += 1)
+          for (int i = 0;
+              i <
+                  BlocProvider.of<WritePostGroupBloc>(context)
+                      .state
+                      .pictures
+                      .length;
+              i += 1)
             Stack(
               children: [
                 AspectRatio(
-                  aspectRatio: 16 / 9, // Thay đổi tỷ lệ khung hình tùy theo yêu cầu của bạn
+                  aspectRatio: 16 / 9,
+                  // Thay đổi tỷ lệ khung hình tùy theo yêu cầu của bạn
                   child: Container(
                     margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
                     decoration: BoxDecoration(
@@ -497,8 +579,9 @@ Widget editPicture(BuildContext context) {
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         image: FileImage(
-                            BlocProvider.of<WritePostGroupBloc>(context).state.pictures[i]
-                        ),
+                            BlocProvider.of<WritePostGroupBloc>(context)
+                                .state
+                                .pictures[i]),
                       ),
                     ),
                   ),
@@ -511,7 +594,7 @@ Widget editPicture(BuildContext context) {
                       },
                       child: Container(
                         margin:
-                        EdgeInsets.only(left: 15.w, top: 8.h, right: 15.w),
+                            EdgeInsets.only(left: 15.w, top: 8.h, right: 15.w),
                         padding: EdgeInsets.only(
                             left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                         decoration: BoxDecoration(
@@ -529,9 +612,7 @@ Widget editPicture(BuildContext context) {
               ],
             ),
           chooseEditPicture(context, (value) {
-            context
-                .read<WritePostGroupBloc>()
-                .add(PicturesEvent(value));
+            context.read<WritePostGroupBloc>().add(PicturesEvent(value));
           })
         ],
       )),
@@ -540,7 +621,8 @@ Widget editPicture(BuildContext context) {
   );
 }
 
-Widget chooseEditPicture(BuildContext context, void Function(List<File> value)? func) {
+Widget chooseEditPicture(
+    BuildContext context, void Function(List<File> value)? func) {
   return GestureDetector(
     onTap: () async {
       List<File> currentList =
@@ -551,10 +633,11 @@ Widget chooseEditPicture(BuildContext context, void Function(List<File> value)? 
         toastInfo(msg: "Chỉ được chọn tối đa 5 tấm ảnh");
         return;
       }
-      currentList.addAll(pickedFiles.map((pickedFile) => File(pickedFile.path))); // Concatenate currentList and picked files
+      currentList.addAll(pickedFiles.map((pickedFile) =>
+          File(pickedFile.path))); // Concatenate currentList and picked files
 
       func!(currentList);
-        },
+    },
     child: Container(
       width: 340.w,
       height: 40.h,
@@ -563,9 +646,7 @@ Widget chooseEditPicture(BuildContext context, void Function(List<File> value)? 
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(15.w),
         color: AppColors.primaryBackground,
-        border: Border.all(
-            color: AppColors.primaryElement
-        ),
+        border: Border.all(color: AppColors.primaryElement),
       ),
       child: Center(
         child: Container(
@@ -605,14 +686,21 @@ void deletePicture(BuildContext context, int index) {
   context.read<WritePostGroupBloc>().add(PicturesEvent(currentList));
 }
 
+void deleteVote(BuildContext context, int index) {
+  List<String> currentList =
+      BlocProvider.of<WritePostGroupBloc>(context).state.votes;
+  currentList.removeAt(index);
+  context.read<WritePostGroupBloc>().add(VotesEvent(currentList));
+}
+
 Widget choosePicture(
     BuildContext context, void Function(List<File> value)? func) {
   return GestureDetector(
       onTap: () async {
         if (BlocProvider.of<WritePostGroupBloc>(context)
-            .state
-            .pictures
-            .length ==
+                .state
+                .pictures
+                .length ==
             0) {
           final pickedFiles = await ImagePicker().pickMultiImage();
           if (pickedFiles.length > 5) {
@@ -621,17 +709,16 @@ Widget choosePicture(
           }
           func!(
               pickedFiles.map((pickedFile) => File(pickedFile.path)).toList());
-                }
-        else {
+        } else {
           context.read<WritePostGroupBloc>().add(PageEvent(1));
         }
       },
       child: Column(
         children: [
           if (BlocProvider.of<WritePostGroupBloc>(context)
-              .state
-              .pictures
-              .length ==
+                  .state
+                  .pictures
+                  .length ==
               0)
             Container(
               width: 140.w,
@@ -670,9 +757,9 @@ Widget choosePicture(
               ),
             ),
           if (BlocProvider.of<WritePostGroupBloc>(context)
-              .state
-              .pictures
-              .length ==
+                  .state
+                  .pictures
+                  .length ==
               1)
             Stack(
               children: [
@@ -699,7 +786,7 @@ Widget choosePicture(
                       },
                       child: Container(
                         margin:
-                        EdgeInsets.only(left: 15.w, top: 8.h, right: 15.w),
+                            EdgeInsets.only(left: 15.w, top: 8.h, right: 15.w),
                         padding: EdgeInsets.only(
                             left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                         decoration: BoxDecoration(
@@ -717,9 +804,9 @@ Widget choosePicture(
               ],
             ),
           if (BlocProvider.of<WritePostGroupBloc>(context)
-              .state
-              .pictures
-              .length ==
+                  .state
+                  .pictures
+                  .length ==
               2)
             Column(
               children: [
@@ -727,7 +814,7 @@ Widget choosePicture(
                   children: [
                     Container(
                       margin:
-                      EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
+                          EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
                       width: 340.w,
                       height: 120.h,
                       decoration: BoxDecoration(
@@ -811,9 +898,9 @@ Widget choosePicture(
               ],
             ),
           if (BlocProvider.of<WritePostGroupBloc>(context)
-              .state
-              .pictures
-              .length ==
+                  .state
+                  .pictures
+                  .length ==
               3)
             Column(
               children: [
@@ -821,7 +908,7 @@ Widget choosePicture(
                   children: [
                     Container(
                       margin:
-                      EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
+                          EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
                       width: 340.w,
                       height: 120.h,
                       decoration: BoxDecoration(
@@ -874,8 +961,7 @@ Widget choosePicture(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: FileImage(
-                                    BlocProvider.of<WritePostGroupBloc>(
-                                        context)
+                                    BlocProvider.of<WritePostGroupBloc>(context)
                                         .state
                                         .pictures[1]),
                               ),
@@ -919,8 +1005,7 @@ Widget choosePicture(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: FileImage(
-                                    BlocProvider.of<WritePostGroupBloc>(
-                                        context)
+                                    BlocProvider.of<WritePostGroupBloc>(context)
                                         .state
                                         .pictures[2]),
                               ),
@@ -960,9 +1045,9 @@ Widget choosePicture(
               ],
             ),
           if (BlocProvider.of<WritePostGroupBloc>(context)
-              .state
-              .pictures
-              .length ==
+                  .state
+                  .pictures
+                  .length ==
               4)
             Column(
               children: [
@@ -980,8 +1065,7 @@ Widget choosePicture(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: FileImage(
-                                    BlocProvider.of<WritePostGroupBloc>(
-                                        context)
+                                    BlocProvider.of<WritePostGroupBloc>(context)
                                         .state
                                         .pictures[0]),
                               ),
@@ -1025,8 +1109,7 @@ Widget choosePicture(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: FileImage(
-                                    BlocProvider.of<WritePostGroupBloc>(
-                                        context)
+                                    BlocProvider.of<WritePostGroupBloc>(context)
                                         .state
                                         .pictures[1]),
                               ),
@@ -1077,8 +1160,7 @@ Widget choosePicture(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: FileImage(
-                                    BlocProvider.of<WritePostGroupBloc>(
-                                        context)
+                                    BlocProvider.of<WritePostGroupBloc>(context)
                                         .state
                                         .pictures[2]),
                               ),
@@ -1122,8 +1204,7 @@ Widget choosePicture(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: FileImage(
-                                    BlocProvider.of<WritePostGroupBloc>(
-                                        context)
+                                    BlocProvider.of<WritePostGroupBloc>(context)
                                         .state
                                         .pictures[3]),
                               ),
@@ -1163,9 +1244,9 @@ Widget choosePicture(
               ],
             ),
           if (BlocProvider.of<WritePostGroupBloc>(context)
-              .state
-              .pictures
-              .length ==
+                  .state
+                  .pictures
+                  .length ==
               5)
             Column(
               children: [
@@ -1183,8 +1264,7 @@ Widget choosePicture(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: FileImage(
-                                    BlocProvider.of<WritePostGroupBloc>(
-                                        context)
+                                    BlocProvider.of<WritePostGroupBloc>(context)
                                         .state
                                         .pictures[0]),
                               ),
@@ -1228,8 +1308,7 @@ Widget choosePicture(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: FileImage(
-                                    BlocProvider.of<WritePostGroupBloc>(
-                                        context)
+                                    BlocProvider.of<WritePostGroupBloc>(context)
                                         .state
                                         .pictures[1]),
                               ),
@@ -1280,8 +1359,7 @@ Widget choosePicture(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: FileImage(
-                                    BlocProvider.of<WritePostGroupBloc>(
-                                        context)
+                                    BlocProvider.of<WritePostGroupBloc>(context)
                                         .state
                                         .pictures[2]),
                               ),
@@ -1325,8 +1403,7 @@ Widget choosePicture(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: FileImage(
-                                    BlocProvider.of<WritePostGroupBloc>(
-                                        context)
+                                    BlocProvider.of<WritePostGroupBloc>(context)
                                         .state
                                         .pictures[3]),
                               ),
@@ -1339,7 +1416,8 @@ Widget choosePicture(
                               height: 120.h,
                               decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
-                                color: Color.fromARGB(255, 24, 59, 86).withOpacity(0.5),
+                                color: Color.fromARGB(255, 24, 59, 86)
+                                    .withOpacity(0.5),
                               ),
                               child: Center(
                                 child: Text(
@@ -1391,43 +1469,111 @@ Widget choosePicture(
       ));
 }
 
-Widget chooseVote(BuildContext) {
-  return Container(
-    margin: EdgeInsets.only(left: 110.w, top: 5.h, right: 110.w, bottom: 10.h),
-    width: 140.w,
-    height: 30.h,
-    decoration: BoxDecoration(
-      shape: BoxShape.rectangle,
-      borderRadius: BorderRadius.circular(15.w),
-      color: AppColors.primaryElement,
-      border: Border.all(
-        color: Colors.transparent,
-      ),
-    ),
-    child: Center(
-      child: Container(
-        margin: EdgeInsets.only(left: 5.w, right: 5.w),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            SvgPicture.asset(
-              "assets/icons/vote.svg",
-              width: 12.w,
-              height: 12.h,
-              color: AppColors.primaryBackground,
+Widget chooseVote(BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      if (BlocProvider.of<WritePostGroupBloc>(context).state.votes.length == 0)
+        GestureDetector(
+          onTap: () {
+            List<String> currentList = List<String>.from(
+                BlocProvider.of<WritePostGroupBloc>(context).state.votes);
+            currentList.add('');
+            context.read<WritePostGroupBloc>().add(VotesEvent(currentList));
+          },
+          child: Container(
+            margin: EdgeInsets.only(
+                left: 110.w, top: 5.h, right: 110.w, bottom: 10.h),
+            width: 140.w,
+            height: 30.h,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(15.w),
+              color: AppColors.primaryElement,
+              border: Border.all(
+                color: Colors.transparent,
+              ),
             ),
-            Text(
-              'Tạo bình chọn',
-              style: TextStyle(
-                  fontFamily: AppFonts.Header1,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryBackground),
+            child: Center(
+              child: Container(
+                margin: EdgeInsets.only(left: 5.w, right: 5.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/vote.svg",
+                      width: 12.w,
+                      height: 12.h,
+                      color: AppColors.primaryBackground,
+                    ),
+                    Text(
+                      'Tạo bình chọn',
+                      style: TextStyle(
+                          fontFamily: AppFonts.Header1,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryBackground),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ],
+          ),
         ),
-      ),
-    ),
+      for (var i = 0;
+          i < BlocProvider.of<WritePostGroupBloc>(context).state.votes.length;
+          i += 1)
+        buildTextFieldVote(context, i, '', '', '', (value) {
+          context.read<WritePostGroupBloc>().add(VotesEvent(value));
+        }),
+      if (BlocProvider.of<WritePostGroupBloc>(context).state.votes.length > 0)
+        GestureDetector(
+          onTap: () {
+            List<String> currentList = List<String>.from(
+                BlocProvider.of<WritePostGroupBloc>(context).state.votes);
+            currentList.add('');
+            context.read<WritePostGroupBloc>().add(VotesEvent(currentList));
+          },
+          child: Container(
+            width: 310.w,
+            height: 35.h,
+            margin: EdgeInsets.only(
+                top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(15.w),
+              border: Border.all(
+                color: AppColors.primaryFourthElementText,
+              ),
+            ),
+            child: Container(
+              margin: EdgeInsets.only(left: 10.w),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/icons/add.svg",
+                    width: 14.w,
+                    height: 14.h,
+                    color: AppColors.primarySecondaryText,
+                  ),
+                  Container(
+                    width: 5.w,
+                  ),
+                  Text(
+                    'Thêm lựa chọn',
+                    style: TextStyle(
+                        fontFamily: AppFonts.Header2,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.normal,
+                        color: AppColors.primarySecondaryText),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
+    ],
   );
 }
 
@@ -1451,7 +1597,8 @@ Widget header() {
                   child: CircleAvatar(
                     radius: 10,
                     child: null,
-                    backgroundImage: NetworkImage(Global.storageService.getUserAvatarUrl()),
+                    backgroundImage:
+                        NetworkImage(Global.storageService.getUserAvatarUrl()),
                   )),
             ),
             Text(
@@ -1504,7 +1651,7 @@ Widget chooseTag(void Function(List<String> value)? func) {
           fontFamily: AppFonts.Header2),
       hintStyle: const TextStyle(fontSize: 12, fontFamily: AppFonts.Header2),
       selectedOptionIcon:
-      const Icon(Icons.check_circle, color: AppColors.primaryElement),
+          const Icon(Icons.check_circle, color: AppColors.primaryElement),
       hint: 'Chọn thẻ',
     ),
   );

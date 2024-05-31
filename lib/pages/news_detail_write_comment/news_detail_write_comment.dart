@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/bloc/news_detail_write_comment_states.dart';
-import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/news_detail_write_comment_controller.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/values/fonts.dart';
 import '../../model/news.dart';
 import '../news_detail_write_comment/bloc/news_detail_write_comment_events.dart';
 import 'bloc/news_detail_write_comment_blocs.dart';

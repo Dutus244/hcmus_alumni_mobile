@@ -49,11 +49,11 @@ class GroupMemberApproveController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var requestResponse = RequestGroupResponse.fromJson(jsonMap);
-        if (requestResponse.request.isEmpty) {
+        if (requestResponse.requests.isEmpty) {
           if (page == 0) {
             context
                 .read<GroupMemberApproveBloc>()
-                .add(RequestEvent(requestResponse.request));
+                .add(RequestsEvent(requestResponse.requests));
           }
           context
               .read<GroupMemberApproveBloc>()
@@ -67,24 +67,24 @@ class GroupMemberApproveController {
         if (page == 0) {
           context
               .read<GroupMemberApproveBloc>()
-              .add(RequestEvent(requestResponse.request));
+              .add(RequestsEvent(requestResponse.requests));
         } else {
           List<RequestGroup> currentList =
-              BlocProvider.of<GroupMemberApproveBloc>(context).state.request;
+              BlocProvider.of<GroupMemberApproveBloc>(context).state.requests;
           List<RequestGroup> updatedNewsList = List.of(currentList)
-            ..addAll(requestResponse.request);
+            ..addAll(requestResponse.requests);
           context
               .read<GroupMemberApproveBloc>()
-              .add(RequestEvent(updatedNewsList));
+              .add(RequestsEvent(updatedNewsList));
         }
-        if (requestResponse.request.length < pageSize) {
+        if (requestResponse.requests.length < pageSize) {
           context
               .read<GroupMemberApproveBloc>()
               .add(HasReachedMaxRequestEvent(true));
         }
         context.read<GroupMemberApproveBloc>().add(StatusEvent(Status.success));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleApprovedRequest(String groupId, String userId) async {
@@ -103,7 +103,7 @@ class GroupMemberApproveController {
       if (response.statusCode == 200) {
         GroupMemberApproveController(context: context).handleGetMember(groupId, 0);
       }
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleDeneidRequest(String groupId, String userId) async {
@@ -122,6 +122,6 @@ class GroupMemberApproveController {
       if (response.statusCode == 200) {
         GroupMemberApproveController(context: context).handleGetMember(groupId, 0);
       }
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 }

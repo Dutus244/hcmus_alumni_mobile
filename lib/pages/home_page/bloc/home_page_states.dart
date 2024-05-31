@@ -3,20 +3,20 @@ import '../../../model/news.dart';
 import '../../../model/event.dart';
 
 class HomePageState {
-  final List<Event> event;
+  final List<Event> events;
   final List<News> news;
-  final List<HallOfFame> hallOfFame;
+  final List<HallOfFame> hallOfFames;
 
   HomePageState(
-      {this.event = const [],
+      {this.events = const [],
       this.news = const [],
-      this.hallOfFame = const []});
+      this.hallOfFames = const []});
 
   HomePageState copyWith(
-      {List<Event>? event, List<News>? news, List<HallOfFame>? hallOfFame}) {
+      {List<Event>? events, List<News>? news, List<HallOfFame>? hallOfFames}) {
     return HomePageState(
-        event: event ?? this.event,
+        events: events ?? this.events,
         news: news ?? this.news,
-        hallOfFame: hallOfFame ?? this.hallOfFame);
+        hallOfFames: hallOfFames ?? this.hallOfFames);
   }
 }

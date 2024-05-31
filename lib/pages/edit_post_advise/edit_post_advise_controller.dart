@@ -38,7 +38,7 @@ class EditPostAdviseController {
     context.read<EditPostAdviseBloc>().add(ItemTagsEvent(initialSelectedItems));
     context.read<EditPostAdviseBloc>().add(TitleEvent(post.title));
     context.read<EditPostAdviseBloc>().add(ContentEvent(post.content));
-    context.read<EditPostAdviseBloc>().add(PictureNetworkEvent(post.picture));
+    context.read<EditPostAdviseBloc>().add(PictureNetworksEvent(post.pictures));
   }
 
   Future<void> handlePost(String id) async {
@@ -73,7 +73,6 @@ class EditPostAdviseController {
       var url = Uri.parse('$apiUrl$endpoint');
 
       var response = await http.put(url, headers: headers, body: body);
-      var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var endpoint =
             '/counsel/$id/images';
@@ -123,7 +122,7 @@ class EditPostAdviseController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }

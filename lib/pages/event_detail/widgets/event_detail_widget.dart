@@ -523,7 +523,7 @@ Widget detail(BuildContext context, Event? event,
           }),
           eventContent(context, event),
           listComment(context, event,
-              BlocProvider.of<EventDetailBloc>(context).state.comment, route),
+              BlocProvider.of<EventDetailBloc>(context).state.comments, route),
           // listRelatedEvent(context,
           //     BlocProvider.of<EventDetailBloc>(context).state.relatedEvent)
         ],
@@ -855,7 +855,7 @@ Widget buildCommentWidget(
           padding: EdgeInsets.only(left: 10.w),
           child: Column(
             children: [
-              for (int i = 0; i < comment.childrenComment.length; i += 1)
+              for (int i = 0; i < comment.childrenComments.length; i += 1)
                 IntrinsicHeight(
                     child: Row(
                       children: [
@@ -863,7 +863,7 @@ Widget buildCommentWidget(
                         // This is divider
                         Container(
                             child: buildCommentWidget(context, event,
-                                comment.childrenComment[i], index + 1, route)),
+                                comment.childrenComments[i], index + 1, route)),
                       ],
                     ))
             ],
@@ -1192,7 +1192,7 @@ Widget listParticipant(
           controller: _scrollController,
           itemCount: BlocProvider.of<EventDetailBloc>(context)
                   .state
-                  .participant
+                  .participants
                   .length +
               1,
           itemBuilder: (BuildContext context, int index) {
@@ -1211,7 +1211,7 @@ Widget listParticipant(
               case Status.success:
                 if (BlocProvider.of<EventDetailBloc>(context)
                     .state
-                    .participant
+                    .participants
                     .isEmpty) {
                   return Column(
                     children: [
@@ -1237,7 +1237,7 @@ Widget listParticipant(
                 if (index >=
                     BlocProvider.of<EventDetailBloc>(context)
                         .state
-                        .participant
+                        .participants
                         .length) {
                   if (BlocProvider.of<EventDetailBloc>(context)
                       .state
@@ -1261,7 +1261,7 @@ Widget listParticipant(
                             context,
                             BlocProvider.of<EventDetailBloc>(context)
                                 .state
-                                .participant[index]),
+                                .participants[index]),
                       ],
                     );
                   } else {
@@ -1269,7 +1269,7 @@ Widget listParticipant(
                         context,
                         BlocProvider.of<EventDetailBloc>(context)
                             .state
-                            .participant[index]);
+                            .participants[index]);
                   }
                 }
             }

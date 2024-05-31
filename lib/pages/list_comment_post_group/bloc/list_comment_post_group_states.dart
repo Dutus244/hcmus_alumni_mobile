@@ -4,7 +4,7 @@ enum Status { loading, success }
 
 class ListCommentPostGroupState {
   final Status statusComment;
-  final List<Comment> comment;
+  final List<Comment> comments;
   final int indexComment;
   final bool hasReachedMaxComment;
   final String content;
@@ -13,7 +13,7 @@ class ListCommentPostGroupState {
 
   ListCommentPostGroupState(
       {this.statusComment = Status.loading,
-      this.comment = const [],
+      this.comments = const [],
       this.indexComment = 0,
       this.hasReachedMaxComment = false,
       this.content = "",
@@ -22,7 +22,7 @@ class ListCommentPostGroupState {
 
   ListCommentPostGroupState copyWith(
       {Status? statusComment,
-      List<Comment>? comment,
+      List<Comment>? comments,
       int? indexComment,
       bool? hasReachedMaxComment,
       String? content,
@@ -30,7 +30,7 @@ class ListCommentPostGroupState {
       int? reply}) {
     return ListCommentPostGroupState(
       statusComment: statusComment ?? this.statusComment,
-      comment: comment ?? this.comment,
+      comments: comments ?? this.comments,
       indexComment: indexComment ?? this.indexComment,
       hasReachedMaxComment: hasReachedMaxComment ?? this.hasReachedMaxComment,
       content: content ?? this.content,

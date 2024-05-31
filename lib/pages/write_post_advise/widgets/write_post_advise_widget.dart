@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -437,6 +436,90 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
       ));
 }
 
+Widget buildTextFieldVote(BuildContext context, int index, String hintText,
+    String textType, String iconName, void Function(List<String> value)? func) {
+  TextEditingController _controller = TextEditingController(
+      text: BlocProvider.of<WritePostAdviseBloc>(context).state.votes[index]);
+
+  return Container(
+    margin: EdgeInsets.only(right: 10.w),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+            width: 310.w,
+            margin: EdgeInsets.only(
+                top: 5.h, left: 10.w, right: 10.w, bottom: 10.h),
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(10.w),
+              border: Border.all(
+                color: AppColors.primaryFourthElementText,
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 10.w),
+                  width: 290.w,
+                  child: TextField(
+                    onTapOutside: (PointerDownEvent event) {
+                      List<String> currentList =
+                          BlocProvider.of<WritePostAdviseBloc>(context)
+                              .state
+                              .votes;
+                      currentList[index] = _controller.text;
+                      func!(currentList);
+                    },
+                    keyboardType: TextInputType.multiline,
+                    controller: _controller,
+                    maxLines: null,
+                    // Cho phép đa dòng
+                    decoration: InputDecoration(
+                      hintText: 'Lựa chọn ${index + 1}',
+                      contentPadding: EdgeInsets.zero,
+                      border: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent)),
+                      enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent)),
+                      disabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent)),
+                      focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent)),
+                      hintStyle: TextStyle(
+                        color: AppColors.primarySecondaryElementText,
+                      ),
+                      counterText: '',
+                    ),
+                    style: TextStyle(
+                      color: AppColors.primaryText,
+                      fontFamily: AppFonts.Header2,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12.sp,
+                    ),
+                    autocorrect: false,
+                  ),
+                ),
+              ],
+            )),
+        GestureDetector(
+          onTap: () {
+            deleteVote(context, index);
+          },
+          child: SvgPicture.asset(
+            "assets/icons/close.svg",
+            width: 14.w,
+            height: 14.h,
+            color: Colors.black,
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 Widget writePost(BuildContext context, int route) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -458,7 +541,7 @@ Widget writePost(BuildContext context, int route) {
                 (value) {
               context.read<WritePostAdviseBloc>().add(ContentEvent(value));
             }),
-            chooseVote(BuildContext),
+            chooseVote(context),
             choosePicture(context, (value) {
               context.read<WritePostAdviseBloc>().add(PicturesEvent(value));
             }),
@@ -553,7 +636,7 @@ Widget chooseEditPicture(
           File(pickedFile.path))); // Concatenate currentList and picked files
 
       func!(currentList);
-        },
+    },
     child: Container(
       width: 340.w,
       height: 40.h,
@@ -602,6 +685,13 @@ void deletePicture(BuildContext context, int index) {
   context.read<WritePostAdviseBloc>().add(PicturesEvent(currentList));
 }
 
+void deleteVote(BuildContext context, int index) {
+  List<String> currentList =
+      BlocProvider.of<WritePostAdviseBloc>(context).state.votes;
+  currentList.removeAt(index);
+  context.read<WritePostAdviseBloc>().add(VotesEvent(currentList));
+}
+
 Widget choosePicture(
     BuildContext context, void Function(List<File> value)? func) {
   return GestureDetector(
@@ -616,10 +706,9 @@ Widget choosePicture(
             toastInfo(msg: "Chỉ được chọn tối đa 5 tấm ảnh");
             return;
           }
-          func!(pickedFiles
-              .map((pickedFile) => File(pickedFile.path))
-              .toList());
-                } else {
+          func!(
+              pickedFiles.map((pickedFile) => File(pickedFile.path)).toList());
+        } else {
           context.read<WritePostAdviseBloc>().add(PageEvent(1));
         }
       },
@@ -1389,43 +1478,111 @@ Widget choosePicture(
       ));
 }
 
-Widget chooseVote(BuildContext) {
-  return Container(
-    margin: EdgeInsets.only(left: 110.w, top: 5.h, right: 110.w, bottom: 10.h),
-    width: 140.w,
-    height: 30.h,
-    decoration: BoxDecoration(
-      shape: BoxShape.rectangle,
-      borderRadius: BorderRadius.circular(15.w),
-      color: AppColors.primaryElement,
-      border: Border.all(
-        color: Colors.transparent,
-      ),
-    ),
-    child: Center(
-      child: Container(
-        margin: EdgeInsets.only(left: 5.w, right: 5.w),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            SvgPicture.asset(
-              "assets/icons/vote.svg",
-              width: 12.w,
-              height: 12.h,
-              color: AppColors.primaryBackground,
+Widget chooseVote(BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      if (BlocProvider.of<WritePostAdviseBloc>(context).state.votes.length == 0)
+        GestureDetector(
+          onTap: () {
+            List<String> currentList = List<String>.from(
+                BlocProvider.of<WritePostAdviseBloc>(context).state.votes);
+            currentList.add('');
+            context.read<WritePostAdviseBloc>().add(VotesEvent(currentList));
+          },
+          child: Container(
+            margin: EdgeInsets.only(
+                left: 110.w, top: 5.h, right: 110.w, bottom: 10.h),
+            width: 140.w,
+            height: 30.h,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(15.w),
+              color: AppColors.primaryElement,
+              border: Border.all(
+                color: Colors.transparent,
+              ),
             ),
-            Text(
-              'Tạo bình chọn',
-              style: TextStyle(
-                  fontFamily: AppFonts.Header1,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryBackground),
+            child: Center(
+              child: Container(
+                margin: EdgeInsets.only(left: 5.w, right: 5.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/vote.svg",
+                      width: 12.w,
+                      height: 12.h,
+                      color: AppColors.primaryBackground,
+                    ),
+                    Text(
+                      'Tạo bình chọn',
+                      style: TextStyle(
+                          fontFamily: AppFonts.Header1,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryBackground),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ],
+          ),
         ),
-      ),
-    ),
+      for (var i = 0;
+          i < BlocProvider.of<WritePostAdviseBloc>(context).state.votes.length;
+          i += 1)
+        buildTextFieldVote(context, i, '', '', '', (value) {
+          context.read<WritePostAdviseBloc>().add(VotesEvent(value));
+        }),
+      if (BlocProvider.of<WritePostAdviseBloc>(context).state.votes.length > 0)
+        GestureDetector(
+          onTap: () {
+            List<String> currentList = List<String>.from(
+                BlocProvider.of<WritePostAdviseBloc>(context).state.votes);
+            currentList.add('');
+            context.read<WritePostAdviseBloc>().add(VotesEvent(currentList));
+          },
+          child: Container(
+            width: 310.w,
+            height: 35.h,
+            margin: EdgeInsets.only(
+                top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(15.w),
+              border: Border.all(
+                color: AppColors.primaryFourthElementText,
+              ),
+            ),
+            child: Container(
+              margin: EdgeInsets.only(left: 10.w),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/icons/add.svg",
+                    width: 14.w,
+                    height: 14.h,
+                    color: AppColors.primarySecondaryText,
+                  ),
+                  Container(
+                    width: 5.w,
+                  ),
+                  Text(
+                    'Thêm lựa chọn',
+                    style: TextStyle(
+                        fontFamily: AppFonts.Header2,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.normal,
+                        color: AppColors.primarySecondaryText),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
+    ],
   );
 }
 
@@ -1449,7 +1606,8 @@ Widget header() {
                   child: CircleAvatar(
                     radius: 10,
                     child: null,
-                    backgroundImage: NetworkImage(Global.storageService.getUserAvatarUrl()),
+                    backgroundImage:
+                        NetworkImage(Global.storageService.getUserAvatarUrl()),
                   )),
             ),
             Text(

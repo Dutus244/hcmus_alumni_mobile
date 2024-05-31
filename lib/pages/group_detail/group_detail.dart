@@ -3,12 +3,10 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hcmus_alumni_mobile/common/widgets/loading_widget.dart';
 import 'package:hcmus_alumni_mobile/pages/group_detail/group_detail_controller.dart';
 import 'package:hcmus_alumni_mobile/pages/group_detail/widgets/group_detail_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../model/group.dart';
 import 'bloc/group_detail_blocs.dart';
 import 'bloc/group_detail_states.dart';
 
@@ -25,6 +23,7 @@ class _GroupDetailState extends State<GroupDetail> {
   bool _isFetchingData = false;
   late String id;
   late int secondRoute;
+  var search = 0;
 
   @override
   void initState() {
@@ -53,6 +52,9 @@ class _GroupDetailState extends State<GroupDetail> {
     if (args != null) {
       id = args["id"];
       secondRoute = args["secondRoute"];
+      if (args["search"] != null) {
+        search = args["search"];
+      }
       GroupDetailController(context: context).handleGetGroup(id);
       GroupDetailController(context: context).handleLoadPostData(id, 0);
     }
@@ -60,22 +62,28 @@ class _GroupDetailState extends State<GroupDetail> {
     return PopScope(
       canPop: false, // prevent back
       onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": 3, "secondRoute": secondRoute});
+        if (search == 0) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              "/applicationPage", (route) => false,
+              arguments: {"route": 3, "secondRoute": secondRoute});
+        }
+        else {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              "/groupSearch", (route) => false);
+        }
       },
       child: BlocBuilder<GroupDetailBloc, GroupDetailState>(
           builder: (context, state) {
             if (state.group != null && state.group!.privacy == "PRIVATE" && !state.group!.isJoined) {
               return Scaffold(
-                appBar: buildAppBar(context, secondRoute),
+                appBar: buildAppBar(context, secondRoute, search),
                 backgroundColor: AppColors.primaryBackground,
                 body: groupPrivateNotJoined(context, state.group, secondRoute),
               );
             }
             else {
               return Scaffold(
-                appBar: buildAppBar(context, secondRoute),
+                appBar: buildAppBar(context, secondRoute, search),
                 backgroundColor: AppColors.primaryBackground,
                 body: group(context, _scrollController, state.group, secondRoute)
               );

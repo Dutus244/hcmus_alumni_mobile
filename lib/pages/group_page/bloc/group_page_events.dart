@@ -17,10 +17,10 @@ class StatusGroupDiscoverEvent extends GroupPageEvent {
   const StatusGroupDiscoverEvent(this.statusGroupDiscover);
 }
 
-class GroupDiscoverEvent extends GroupPageEvent {
-  final List<Group> groupDiscover;
+class GroupDiscoversEvent extends GroupPageEvent {
+  final List<Group> groupDiscovers;
 
-  const GroupDiscoverEvent(this.groupDiscover);
+  const GroupDiscoversEvent(this.groupDiscovers);
 }
 
 class IndexGroupDiscoverEvent extends GroupPageEvent {
@@ -41,10 +41,10 @@ class StatusGroupJoinedEvent extends GroupPageEvent {
   const StatusGroupJoinedEvent(this.statusGroupJoined);
 }
 
-class GroupJoinedEvent extends GroupPageEvent {
-  final List<Group> groupJoined;
+class GroupJoinedsEvent extends GroupPageEvent {
+  final List<Group> groupJoineds;
 
-  const GroupJoinedEvent(this.groupJoined);
+  const GroupJoinedsEvent(this.groupJoineds);
 }
 
 class IndexGroupJoinedEvent extends GroupPageEvent {

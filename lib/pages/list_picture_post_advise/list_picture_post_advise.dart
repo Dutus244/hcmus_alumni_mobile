@@ -32,7 +32,7 @@ class _ListPicturePostAdviseState extends State<ListPicturePostAdvise> {
       child: Scaffold(
         appBar: buildAppBar(context),
         backgroundColor: AppColors.primaryText,
-        body: listPicture(post.picture),
+        body: listPicture(post.pictures),
       ),
     );
   }

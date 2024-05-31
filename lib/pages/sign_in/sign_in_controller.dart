@@ -61,7 +61,7 @@ class SignInController {
       } else {
         toastInfo(msg: "Email hoặc mật khẩu bị sai");
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       toastInfo(msg: "Có lỗi xảy ra");
     }
   }
@@ -88,7 +88,7 @@ class SignInController {
       } else {
         toastInfo(msg: "Email hoặc mật khẩu bị sai");
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       toastInfo(msg: "Có lỗi xảy ra");
     }
   }

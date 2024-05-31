@@ -7,7 +7,7 @@ class ListCommentPostAdviseBloc
     extends Bloc<ListCommentPostAdviseEvent, ListCommentPostAdviseState> {
   ListCommentPostAdviseBloc() : super(ListCommentPostAdviseState()) {
     on<StatusCommentEvent>(_statusCommentEvent);
-    on<CommentEvent>(_commentEvent);
+    on<CommentsEvent>(_commentsEvent);
     on<IndexCommentEvent>(_indexCommentEvent);
     on<HasReachedMaxCommentEvent>(_hasReachedMaxCommentEvent);
     on<ContentEvent>(_contentEvent);
@@ -20,9 +20,9 @@ class ListCommentPostAdviseBloc
     emit(state.copyWith(statusComment: event.statusComment));
   }
 
-  void _commentEvent(
-      CommentEvent event, Emitter<ListCommentPostAdviseState> emit) async {
-    emit(state.copyWith(comment: event.comment));
+  void _commentsEvent(
+      CommentsEvent event, Emitter<ListCommentPostAdviseState> emit) async {
+    emit(state.copyWith(comments: event.comments));
   }
 
   void _indexCommentEvent(

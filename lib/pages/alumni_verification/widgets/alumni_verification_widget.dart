@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -121,12 +123,12 @@ Widget buildTextFieldStartYear(String hintText, String textType,
 }
 
 Widget buildLogInAndRegButton(
-    BuildContext context, String buttonName, String buttonType) {
+    BuildContext context, String buttonName, String buttonType, String fullName, File? avatar) {
   return GestureDetector(
     onTap: () {
       if (buttonType == "verify") {
         AlumniVerificationController(context: context)
-            .hanldeAlumniVerification();
+            .hanldeAlumniVerification(fullName, avatar);
       } else {
         Navigator.of(context)
             .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
@@ -164,7 +166,7 @@ Widget buildLogInAndRegButton(
   );
 }
 
-Widget alumniVerification(BuildContext context) {
+Widget alumniVerification(BuildContext context, String fullName, File? avatar) {
   return SingleChildScrollView(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -241,8 +243,8 @@ Widget alumniVerification(BuildContext context) {
             ],
           ),
         ),
-        buildLogInAndRegButton(context, "XÁC THỰC", "verify"),
-        buildLogInAndRegButton(context, "BỎ QUA", "skip"),
+        buildLogInAndRegButton(context, "XÁC THỰC", "verify", fullName, avatar),
+        buildLogInAndRegButton(context, "BỎ QUA", "skip", fullName, avatar),
       ],
     ),
   );

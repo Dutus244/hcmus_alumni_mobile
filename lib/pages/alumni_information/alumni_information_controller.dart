@@ -19,7 +19,14 @@ class AlumniInformationController {
         toastInfo(msg: "Bạn phải điền họ và tên");
         return;
       }
-      Navigator.of(context).pushNamed("/alumniVerification");
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        "/alumniVerification",
+            (route) => false,
+        arguments: {
+          "fullName": fullName,
+          "avatar": avatar,
+        },
+      );
     } catch (e) {}
   }
 }

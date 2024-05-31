@@ -6,7 +6,6 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
-import '../../../global.dart';
 import '../../../model/event.dart';
 import '../bloc/event_detail_write_comment_blocs.dart';
 import '../bloc/event_detail_write_comment_events.dart';

@@ -507,7 +507,7 @@ Widget editPicture(BuildContext context, int route) {
                   BlocProvider
                       .of<EditPostAdviseBloc>(context)
                       .state
-                      .pictureNetwork
+                      .pictureNetworks
                       .length;
               i += 1)
                 Stack(
@@ -526,7 +526,7 @@ Widget editPicture(BuildContext context, int route) {
                                 BlocProvider
                                     .of<EditPostAdviseBloc>(context)
                                     .state
-                                    .pictureNetwork[i].pictureUrl),
+                                    .pictureNetworks[i].pictureUrl),
                           ),
                         ),
                       ),
@@ -633,7 +633,7 @@ Widget chooseEditPicture(BuildContext context,
       if (pickedFiles.length + currentList.length + BlocProvider
           .of<EditPostAdviseBloc>(context)
           .state
-          .pictureNetwork
+          .pictureNetworks
           .length > 5) {
         toastInfo(msg: "Chỉ được chọn tối đa 5 tấm ảnh");
         return;
@@ -698,7 +698,7 @@ void deletePictureNetwork(BuildContext context, int index) {
   List<Picture> currentList = List.from(BlocProvider
       .of<EditPostAdviseBloc>(context)
       .state
-      .pictureNetwork);
+      .pictureNetworks);
   Picture remove = currentList.removeAt(index);
   List<String> removeList = List.from(BlocProvider
       .of<EditPostAdviseBloc>(context)
@@ -706,7 +706,7 @@ void deletePictureNetwork(BuildContext context, int index) {
       .deletePictures);
   removeList.add(remove.id);
   context.read<EditPostAdviseBloc>().add(DeletePicturesEvent(removeList));
-  context.read<EditPostAdviseBloc>().add(PictureNetworkEvent(currentList));
+  context.read<EditPostAdviseBloc>().add(PictureNetworksEvent(currentList));
 }
 
 Widget choosePicture(BuildContext context,
@@ -721,7 +721,7 @@ Widget choosePicture(BuildContext context,
             BlocProvider
                 .of<EditPostAdviseBloc>(context)
                 .state
-                .pictureNetwork
+                .pictureNetworks
                 .length ==
             0) {
           final pickedFiles = await ImagePicker().pickMultiImage();
@@ -729,7 +729,7 @@ Widget choosePicture(BuildContext context,
               BlocProvider
                   .of<EditPostAdviseBloc>(context)
                   .state
-                  .pictureNetwork
+                  .pictureNetworks
                   .length > 5) {
             toastInfo(msg: "Chỉ được chọn tối đa 5 tấm ảnh");
             return;
@@ -751,7 +751,7 @@ Widget choosePicture(BuildContext context,
               BlocProvider
                   .of<EditPostAdviseBloc>(context)
                   .state
-                  .pictureNetwork
+                  .pictureNetworks
                   .length ==
               0)
             Container(
@@ -798,7 +798,7 @@ Widget choosePicture(BuildContext context,
               BlocProvider
                   .of<EditPostAdviseBloc>(context)
                   .state
-                  .pictureNetwork
+                  .pictureNetworks
                   .length ==
               1)
             Stack(
@@ -814,14 +814,14 @@ Widget choosePicture(BuildContext context,
                       image: BlocProvider
                           .of<EditPostAdviseBloc>(context)
                           .state
-                          .pictureNetwork
+                          .pictureNetworks
                           .length >
                           0
                           ? NetworkImage(
                           BlocProvider
                               .of<EditPostAdviseBloc>(context)
                               .state
-                              .pictureNetwork[0]
+                              .pictureNetworks[0]
                               .pictureUrl) as ImageProvider<Object>
                           : FileImage(BlocProvider
                           .of<EditPostAdviseBloc>(context)
@@ -831,7 +831,7 @@ Widget choosePicture(BuildContext context,
                           BlocProvider
                               .of<EditPostAdviseBloc>(context)
                               .state
-                              .pictureNetwork
+                              .pictureNetworks
                               .length]) as ImageProvider<Object>,
                     ),
                   ),
@@ -843,7 +843,7 @@ Widget choosePicture(BuildContext context,
                         if (BlocProvider
                             .of<EditPostAdviseBloc>(context)
                             .state
-                            .pictureNetwork
+                            .pictureNetworks
                             .length >
                             0) {
                           deletePictureNetwork(context, 0);
@@ -854,7 +854,7 @@ Widget choosePicture(BuildContext context,
                                   BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length);
                         }
                       },
@@ -885,7 +885,7 @@ Widget choosePicture(BuildContext context,
               BlocProvider
                   .of<EditPostAdviseBloc>(context)
                   .state
-                  .pictureNetwork
+                  .pictureNetworks
                   .length ==
               2)
             Column(
@@ -904,14 +904,14 @@ Widget choosePicture(BuildContext context,
                           image: BlocProvider
                               .of<EditPostAdviseBloc>(context)
                               .state
-                              .pictureNetwork
+                              .pictureNetworks
                               .length >
                               0
                               ? NetworkImage(
                               BlocProvider
                                   .of<EditPostAdviseBloc>(context)
                                   .state
-                                  .pictureNetwork[0]
+                                  .pictureNetworks[0]
                                   .pictureUrl) as ImageProvider<Object>
                               : FileImage(
                               BlocProvider
@@ -922,7 +922,7 @@ Widget choosePicture(BuildContext context,
                                   BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length]) as ImageProvider<Object>,
                         ),
                       ),
@@ -934,7 +934,7 @@ Widget choosePicture(BuildContext context,
                             if (BlocProvider
                                 .of<EditPostAdviseBloc>(context)
                                 .state
-                                .pictureNetwork
+                                .pictureNetworks
                                 .length >
                                 0) {
                               deletePictureNetwork(context, 0);
@@ -946,7 +946,7 @@ Widget choosePicture(BuildContext context,
                                           .of<EditPostAdviseBloc>(
                                           context)
                                           .state
-                                          .pictureNetwork
+                                          .pictureNetworks
                                           .length);
                             }
                           },
@@ -982,14 +982,14 @@ Widget choosePicture(BuildContext context,
                           image: BlocProvider
                               .of<EditPostAdviseBloc>(context)
                               .state
-                              .pictureNetwork
+                              .pictureNetworks
                               .length >
                               1
                               ? NetworkImage(
                               BlocProvider
                                   .of<EditPostAdviseBloc>(context)
                                   .state
-                                  .pictureNetwork[1]
+                                  .pictureNetworks[1]
                                   .pictureUrl) as ImageProvider<Object>
                               : FileImage(
                               BlocProvider
@@ -1000,7 +1000,7 @@ Widget choosePicture(BuildContext context,
                                   BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length]) as ImageProvider<Object>,
                         ),
                       ),
@@ -1012,7 +1012,7 @@ Widget choosePicture(BuildContext context,
                             if (BlocProvider
                                 .of<EditPostAdviseBloc>(context)
                                 .state
-                                .pictureNetwork
+                                .pictureNetworks
                                 .length >
                                 1) {
                               deletePictureNetwork(context, 1);
@@ -1024,7 +1024,7 @@ Widget choosePicture(BuildContext context,
                                           .of<EditPostAdviseBloc>(
                                           context)
                                           .state
-                                          .pictureNetwork
+                                          .pictureNetworks
                                           .length);
                             }
                           },
@@ -1057,7 +1057,7 @@ Widget choosePicture(BuildContext context,
               BlocProvider
                   .of<EditPostAdviseBloc>(context)
                   .state
-                  .pictureNetwork
+                  .pictureNetworks
                   .length ==
               3)
             Column(
@@ -1076,14 +1076,14 @@ Widget choosePicture(BuildContext context,
                           image: BlocProvider
                               .of<EditPostAdviseBloc>(context)
                               .state
-                              .pictureNetwork
+                              .pictureNetworks
                               .length >
                               0
                               ? NetworkImage(
                               BlocProvider
                                   .of<EditPostAdviseBloc>(context)
                                   .state
-                                  .pictureNetwork[0]
+                                  .pictureNetworks[0]
                                   .pictureUrl) as ImageProvider<Object>
                               : FileImage(BlocProvider
                               .of<EditPostAdviseBloc>(context)
@@ -1093,7 +1093,7 @@ Widget choosePicture(BuildContext context,
                               BlocProvider
                                   .of<EditPostAdviseBloc>(context)
                                   .state
-                                  .pictureNetwork
+                                  .pictureNetworks
                                   .length]) as ImageProvider<Object>,
                         ),
                       ),
@@ -1105,7 +1105,7 @@ Widget choosePicture(BuildContext context,
                             if (BlocProvider
                                 .of<EditPostAdviseBloc>(context)
                                 .state
-                                .pictureNetwork
+                                .pictureNetworks
                                 .length >
                                 0) {
                               deletePictureNetwork(context, 0);
@@ -1116,7 +1116,7 @@ Widget choosePicture(BuildContext context,
                                       BlocProvider
                                           .of<EditPostAdviseBloc>(context)
                                           .state
-                                          .pictureNetwork
+                                          .pictureNetworks
                                           .length);
                             }
                           },
@@ -1155,14 +1155,14 @@ Widget choosePicture(BuildContext context,
                                 image: BlocProvider
                                     .of<EditPostAdviseBloc>(context)
                                     .state
-                                    .pictureNetwork
+                                    .pictureNetworks
                                     .length >
                                     1
                                     ? NetworkImage(
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork[1]
+                                        .pictureNetworks[1]
                                         .pictureUrl) as ImageProvider<Object>
                                     : FileImage(BlocProvider
                                     .of<EditPostAdviseBloc>(context)
@@ -1172,7 +1172,7 @@ Widget choosePicture(BuildContext context,
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork
+                                        .pictureNetworks
                                         .length]) as ImageProvider<Object>,
                               ),
                             ),
@@ -1184,7 +1184,7 @@ Widget choosePicture(BuildContext context,
                                   if (BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length >
                                       1) {
                                     deletePictureNetwork(context, 1);
@@ -1195,7 +1195,7 @@ Widget choosePicture(BuildContext context,
                                             BlocProvider
                                                 .of<EditPostAdviseBloc>(context)
                                                 .state
-                                                .pictureNetwork
+                                                .pictureNetworks
                                                 .length);
                                   }
                                 },
@@ -1233,14 +1233,14 @@ Widget choosePicture(BuildContext context,
                                 image: BlocProvider
                                     .of<EditPostAdviseBloc>(context)
                                     .state
-                                    .pictureNetwork
+                                    .pictureNetworks
                                     .length >
                                     2
                                     ? NetworkImage(
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork[2]
+                                        .pictureNetworks[2]
                                         .pictureUrl) as ImageProvider<Object>
                                     : FileImage(BlocProvider
                                     .of<EditPostAdviseBloc>(context)
@@ -1250,7 +1250,7 @@ Widget choosePicture(BuildContext context,
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork
+                                        .pictureNetworks
                                         .length]) as ImageProvider<Object>,
                               ),
                             ),
@@ -1262,7 +1262,7 @@ Widget choosePicture(BuildContext context,
                                   if (BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length >
                                       2) {
                                     deletePictureNetwork(context, 2);
@@ -1273,7 +1273,7 @@ Widget choosePicture(BuildContext context,
                                             BlocProvider
                                                 .of<EditPostAdviseBloc>(context)
                                                 .state
-                                                .pictureNetwork
+                                                .pictureNetworks
                                                 .length);
                                   }
                                 },
@@ -1312,7 +1312,7 @@ Widget choosePicture(BuildContext context,
               BlocProvider
                   .of<EditPostAdviseBloc>(context)
                   .state
-                  .pictureNetwork
+                  .pictureNetworks
                   .length ==
               4)
             Column(
@@ -1333,14 +1333,14 @@ Widget choosePicture(BuildContext context,
                                 image: BlocProvider
                                     .of<EditPostAdviseBloc>(context)
                                     .state
-                                    .pictureNetwork
+                                    .pictureNetworks
                                     .length >
                                     0
                                     ? NetworkImage(
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork[0]
+                                        .pictureNetworks[0]
                                         .pictureUrl) as ImageProvider<Object>
                                     : FileImage(BlocProvider
                                     .of<EditPostAdviseBloc>(context)
@@ -1350,7 +1350,7 @@ Widget choosePicture(BuildContext context,
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork
+                                        .pictureNetworks
                                         .length]) as ImageProvider<Object>,
                               ),
                             ),
@@ -1362,7 +1362,7 @@ Widget choosePicture(BuildContext context,
                                   if (BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length >
                                       0) {
                                     deletePictureNetwork(context, 0);
@@ -1373,7 +1373,7 @@ Widget choosePicture(BuildContext context,
                                             BlocProvider
                                                 .of<EditPostAdviseBloc>(context)
                                                 .state
-                                                .pictureNetwork
+                                                .pictureNetworks
                                                 .length);
                                   }
                                 },
@@ -1411,14 +1411,14 @@ Widget choosePicture(BuildContext context,
                                 image: BlocProvider
                                     .of<EditPostAdviseBloc>(context)
                                     .state
-                                    .pictureNetwork
+                                    .pictureNetworks
                                     .length >
                                     1
                                     ? NetworkImage(
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork[1]
+                                        .pictureNetworks[1]
                                         .pictureUrl) as ImageProvider<Object>
                                     : FileImage(BlocProvider
                                     .of<EditPostAdviseBloc>(context)
@@ -1428,7 +1428,7 @@ Widget choosePicture(BuildContext context,
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork
+                                        .pictureNetworks
                                         .length]) as ImageProvider<Object>,
                               ),
                             ),
@@ -1440,7 +1440,7 @@ Widget choosePicture(BuildContext context,
                                   if (BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length >
                                       1) {
                                     deletePictureNetwork(context, 1);
@@ -1451,7 +1451,7 @@ Widget choosePicture(BuildContext context,
                                             BlocProvider
                                                 .of<EditPostAdviseBloc>(context)
                                                 .state
-                                                .pictureNetwork
+                                                .pictureNetworks
                                                 .length);
                                   }
                                 },
@@ -1496,14 +1496,14 @@ Widget choosePicture(BuildContext context,
                                 image: BlocProvider
                                     .of<EditPostAdviseBloc>(context)
                                     .state
-                                    .pictureNetwork
+                                    .pictureNetworks
                                     .length >
                                     2
                                     ? NetworkImage(
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork[2]
+                                        .pictureNetworks[2]
                                         .pictureUrl) as ImageProvider<Object>
                                     : FileImage(BlocProvider
                                     .of<EditPostAdviseBloc>(context)
@@ -1513,7 +1513,7 @@ Widget choosePicture(BuildContext context,
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork
+                                        .pictureNetworks
                                         .length]) as ImageProvider<Object>,
                               ),
                             ),
@@ -1525,7 +1525,7 @@ Widget choosePicture(BuildContext context,
                                   if (BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length >
                                       2) {
                                     deletePictureNetwork(context, 2);
@@ -1536,7 +1536,7 @@ Widget choosePicture(BuildContext context,
                                             BlocProvider
                                                 .of<EditPostAdviseBloc>(context)
                                                 .state
-                                                .pictureNetwork
+                                                .pictureNetworks
                                                 .length);
                                   }
                                 },
@@ -1574,14 +1574,14 @@ Widget choosePicture(BuildContext context,
                                 image: BlocProvider
                                     .of<EditPostAdviseBloc>(context)
                                     .state
-                                    .pictureNetwork
+                                    .pictureNetworks
                                     .length >
                                     3
                                     ? NetworkImage(
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork[3]
+                                        .pictureNetworks[3]
                                         .pictureUrl) as ImageProvider<Object>
                                     : FileImage(BlocProvider
                                     .of<EditPostAdviseBloc>(context)
@@ -1591,7 +1591,7 @@ Widget choosePicture(BuildContext context,
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork
+                                        .pictureNetworks
                                         .length]) as ImageProvider<Object>,
                               ),
                             ),
@@ -1603,7 +1603,7 @@ Widget choosePicture(BuildContext context,
                                   if (BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length >
                                       3) {
                                     deletePictureNetwork(context, 3);
@@ -1614,7 +1614,7 @@ Widget choosePicture(BuildContext context,
                                             BlocProvider
                                                 .of<EditPostAdviseBloc>(context)
                                                 .state
-                                                .pictureNetwork
+                                                .pictureNetworks
                                                 .length);
                                   }
                                 },
@@ -1653,7 +1653,7 @@ Widget choosePicture(BuildContext context,
               BlocProvider
                   .of<EditPostAdviseBloc>(context)
                   .state
-                  .pictureNetwork
+                  .pictureNetworks
                   .length ==
               5)
             Column(
@@ -1674,14 +1674,14 @@ Widget choosePicture(BuildContext context,
                                 image: BlocProvider
                                     .of<EditPostAdviseBloc>(context)
                                     .state
-                                    .pictureNetwork
+                                    .pictureNetworks
                                     .length >
                                     0
                                     ? NetworkImage(
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork[0]
+                                        .pictureNetworks[0]
                                         .pictureUrl) as ImageProvider<Object>
                                     : FileImage(BlocProvider
                                     .of<EditPostAdviseBloc>(context)
@@ -1691,7 +1691,7 @@ Widget choosePicture(BuildContext context,
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork
+                                        .pictureNetworks
                                         .length]) as ImageProvider<Object>,
                               ),
                             ),
@@ -1703,7 +1703,7 @@ Widget choosePicture(BuildContext context,
                                   if (BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length >
                                       0) {
                                     deletePictureNetwork(context, 0);
@@ -1714,7 +1714,7 @@ Widget choosePicture(BuildContext context,
                                             BlocProvider
                                                 .of<EditPostAdviseBloc>(context)
                                                 .state
-                                                .pictureNetwork
+                                                .pictureNetworks
                                                 .length);
                                   }
                                 },
@@ -1752,14 +1752,14 @@ Widget choosePicture(BuildContext context,
                                 image: BlocProvider
                                     .of<EditPostAdviseBloc>(context)
                                     .state
-                                    .pictureNetwork
+                                    .pictureNetworks
                                     .length >
                                     1
                                     ? NetworkImage(
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork[1]
+                                        .pictureNetworks[1]
                                         .pictureUrl) as ImageProvider<Object>
                                     : FileImage(BlocProvider
                                     .of<EditPostAdviseBloc>(context)
@@ -1769,7 +1769,7 @@ Widget choosePicture(BuildContext context,
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork
+                                        .pictureNetworks
                                         .length]) as ImageProvider<Object>,
                               ),
                             ),
@@ -1781,7 +1781,7 @@ Widget choosePicture(BuildContext context,
                                   if (BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length >
                                       1) {
                                     deletePictureNetwork(context, 1);
@@ -1792,7 +1792,7 @@ Widget choosePicture(BuildContext context,
                                             BlocProvider
                                                 .of<EditPostAdviseBloc>(context)
                                                 .state
-                                                .pictureNetwork
+                                                .pictureNetworks
                                                 .length);
                                   }
                                 },
@@ -1837,14 +1837,14 @@ Widget choosePicture(BuildContext context,
                                 image: BlocProvider
                                     .of<EditPostAdviseBloc>(context)
                                     .state
-                                    .pictureNetwork
+                                    .pictureNetworks
                                     .length >
                                     2
                                     ? NetworkImage(
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork[2]
+                                        .pictureNetworks[2]
                                         .pictureUrl) as ImageProvider<Object>
                                     : FileImage(BlocProvider
                                     .of<EditPostAdviseBloc>(context)
@@ -1854,7 +1854,7 @@ Widget choosePicture(BuildContext context,
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork
+                                        .pictureNetworks
                                         .length]) as ImageProvider<Object>,
                               ),
                             ),
@@ -1866,7 +1866,7 @@ Widget choosePicture(BuildContext context,
                                   if (BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length >
                                       2) {
                                     deletePictureNetwork(context, 2);
@@ -1877,7 +1877,7 @@ Widget choosePicture(BuildContext context,
                                             BlocProvider
                                                 .of<EditPostAdviseBloc>(context)
                                                 .state
-                                                .pictureNetwork
+                                                .pictureNetworks
                                                 .length);
                                   }
                                 },
@@ -1915,14 +1915,14 @@ Widget choosePicture(BuildContext context,
                                 image: BlocProvider
                                     .of<EditPostAdviseBloc>(context)
                                     .state
-                                    .pictureNetwork
+                                    .pictureNetworks
                                     .length >
                                     3
                                     ? NetworkImage(
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork[3]
+                                        .pictureNetworks[3]
                                         .pictureUrl) as ImageProvider<Object>
                                     : FileImage(BlocProvider
                                     .of<EditPostAdviseBloc>(context)
@@ -1932,7 +1932,7 @@ Widget choosePicture(BuildContext context,
                                     BlocProvider
                                         .of<EditPostAdviseBloc>(context)
                                         .state
-                                        .pictureNetwork
+                                        .pictureNetworks
                                         .length]) as ImageProvider<Object>,
                               ),
                             ),
@@ -1967,7 +1967,7 @@ Widget choosePicture(BuildContext context,
                                   if (BlocProvider
                                       .of<EditPostAdviseBloc>(context)
                                       .state
-                                      .pictureNetwork
+                                      .pictureNetworks
                                       .length >
                                       3) {
                                     deletePictureNetwork(context, 3);
@@ -1978,7 +1978,7 @@ Widget choosePicture(BuildContext context,
                                             BlocProvider
                                                 .of<EditPostAdviseBloc>(context)
                                                 .state
-                                                .pictureNetwork
+                                                .pictureNetworks
                                                 .length);
                                   }
                                 },

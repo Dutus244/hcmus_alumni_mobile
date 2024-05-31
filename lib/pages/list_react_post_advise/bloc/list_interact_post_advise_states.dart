@@ -4,24 +4,24 @@ enum Status { loading, success }
 
 class ListInteractPostAdviseState {
   final Status statusInteract;
-  final List<Interact> interact;
+  final List<Interact> interacts;
   final int indexInteract;
   final bool hasReachedMaxInteract;
 
   ListInteractPostAdviseState(
       {this.statusInteract = Status.loading,
-      this.interact = const [],
+      this.interacts = const [],
       this.indexInteract = 0,
       this.hasReachedMaxInteract = false});
 
   ListInteractPostAdviseState copyWith(
       {Status? statusInteract,
-      List<Interact>? interact,
+      List<Interact>? interacts,
       int? indexInteract,
       bool? hasReachedMaxInteract}) {
     return ListInteractPostAdviseState(
       statusInteract: statusInteract ?? this.statusInteract,
-      interact: interact ?? this.interact,
+      interacts: interacts ?? this.interacts,
       indexInteract: indexInteract ?? this.indexInteract,
       hasReachedMaxInteract:
           hasReachedMaxInteract ?? this.hasReachedMaxInteract,

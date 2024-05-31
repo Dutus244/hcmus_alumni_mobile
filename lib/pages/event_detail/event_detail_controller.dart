@@ -41,7 +41,7 @@ class EventDetailController {
         var event = Event.fromJson(jsonMap);
         context.read<EventDetailBloc>().add(EventEvent(event));
       } else {}
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
@@ -74,9 +74,9 @@ class EventDetailController {
         var jsonMap = json.decode(responseBody);
         var commentResponse = CommentResponse.fromJson(jsonMap);
 
-        if (commentResponse.comment.isEmpty) {
+        if (commentResponse.comments.isEmpty) {
           if (page == 0) {
-            context.read<EventDetailBloc>().add(CommentEvent([]));
+            context.read<EventDetailBloc>().add(CommentsEvent([]));
           }
           context.read<EventDetailBloc>().add(HasReachedMaxCommentEvent(true));
           return;
@@ -85,16 +85,19 @@ class EventDetailController {
         if (page == 0) {
           context
               .read<EventDetailBloc>()
-              .add(CommentEvent(commentResponse.comment));
+              .add(CommentsEvent(commentResponse.comments));
         } else {
           List<Comment> currentList =
-              BlocProvider.of<EventDetailBloc>(context).state.comment;
+              BlocProvider.of<EventDetailBloc>(context).state.comments;
           List<Comment> updatedNewsList = List.of(currentList)
-            ..addAll(commentResponse.comment);
-          context.read<EventDetailBloc>().add(CommentEvent(updatedNewsList));
+            ..addAll(commentResponse.comments);
+          context.read<EventDetailBloc>().add(CommentsEvent(updatedNewsList));
+        }
+        if (commentResponse.comments.length < pageSize) {
+          context.read<EventDetailBloc>().add(HasReachedMaxCommentEvent(true));
         }
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleGetChildrenComment(String commentId) async {
@@ -113,7 +116,7 @@ class EventDetailController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         List<Comment> currentList =
-            BlocProvider.of<EventDetailBloc>(context).state.comment;
+            BlocProvider.of<EventDetailBloc>(context).state.comments;
 
         // Tìm bình luận cha trong toàn bộ cây bình luận
         Comment? parentComment = findParentComment(currentList, commentId);
@@ -123,9 +126,9 @@ class EventDetailController {
           await parentComment.fetchChildrenComments(jsonMap);
         }
 
-        context.read<EventDetailBloc>().add(CommentEvent(currentList));
+        context.read<EventDetailBloc>().add(CommentsEvent(currentList));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   // Hàm đệ qui để tìm bình luận cha trong toàn bộ cây bình luận
@@ -135,8 +138,8 @@ class EventDetailController {
         return comment; // Bình luận hiện tại là bình luận cha
       }
       // Kiểm tra các bình luận con của bình luận hiện tại
-      if (comment.childrenComment.isNotEmpty) {
-        var parent = findParentComment(comment.childrenComment, commentId);
+      if (comment.childrenComments.isNotEmpty) {
+        var parent = findParentComment(comment.childrenComments, commentId);
         if (parent != null) {
           return parent; // Bình luận cha được tìm thấy trong các bình luận con
         }
@@ -172,11 +175,11 @@ class EventDetailController {
         var eventResponse = EventResponse.fromJson(jsonMap);
         context
             .read<EventDetailBloc>()
-            .add(RelatedEventEvent(eventResponse.event));
+            .add(RelatedEventsEvent(eventResponse.events));
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
@@ -200,7 +203,7 @@ class EventDetailController {
             .read<EventDetailBloc>()
             .add(IsParticipatedEvent(jsonMap[0]["isParticipated"]));
       } else {}
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
@@ -229,7 +232,7 @@ class EventDetailController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
@@ -257,7 +260,7 @@ class EventDetailController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
@@ -291,10 +294,10 @@ class EventDetailController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var participantResponse = ParticipantResponse.fromJson(jsonMap);
-        if (participantResponse.participant.isEmpty) {
+        if (participantResponse.participants.isEmpty) {
           context
               .read<EventDetailBloc>()
-              .add(ParticipantEvent(participantResponse.participant));
+              .add(ParticipantsEvent(participantResponse.participants));
           context
               .read<EventDetailBloc>()
               .add(HasReachedMaxParticipantEvent(true));
@@ -307,17 +310,17 @@ class EventDetailController {
         if (page == 0) {
           context
               .read<EventDetailBloc>()
-              .add(ParticipantEvent(participantResponse.participant));
+              .add(ParticipantsEvent(participantResponse.participants));
         } else {
           List<Participant> currentList =
-              BlocProvider.of<EventDetailBloc>(context).state.participant;
+              BlocProvider.of<EventDetailBloc>(context).state.participants;
           List<Participant> updatedNewsList = List.of(currentList)
-            ..addAll(participantResponse.participant);
+            ..addAll(participantResponse.participants);
           context
               .read<EventDetailBloc>()
-              .add(ParticipantEvent(updatedNewsList));
+              .add(ParticipantsEvent(updatedNewsList));
         }
-        if (participantResponse.participant.length < pageSize) {
+        if (participantResponse.participants.length < pageSize) {
           context
               .read<EventDetailBloc>()
               .add(HasReachedMaxParticipantEvent(true));
@@ -326,7 +329,7 @@ class EventDetailController {
             .read<EventDetailBloc>()
             .add(StatusParticipantEvent(Status.success));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleDeleteComment(String id, String commentId) async {
@@ -369,7 +372,7 @@ class EventDetailController {
         } else {
           // Handle other status codes if needed
         }
-      } catch (error, stacktrace) {
+      } catch (error) {
         // Handle errors
       }
     }

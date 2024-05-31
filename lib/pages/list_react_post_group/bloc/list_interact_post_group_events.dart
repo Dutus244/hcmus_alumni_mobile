@@ -11,10 +11,10 @@ class StatusInteractEvent extends ListInteractPostGroupEvent {
   const StatusInteractEvent(this.statusInteract);
 }
 
-class InteractEvent extends ListInteractPostGroupEvent {
-  final List<Interact> interact;
+class InteractsEvent extends ListInteractPostGroupEvent {
+  final List<Interact> interacts;
 
-  const InteractEvent(this.interact);
+  const InteractsEvent(this.interacts);
 }
 
 class IndexInteractEvent extends ListInteractPostGroupEvent {

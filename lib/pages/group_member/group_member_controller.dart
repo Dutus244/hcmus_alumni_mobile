@@ -45,11 +45,11 @@ class GroupMemberController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var memberResponse = MemberResponse.fromJson(jsonMap);
-        if (memberResponse.member.isEmpty) {
+        if (memberResponse.members.isEmpty) {
           if (page == 0) {
             context
                 .read<GroupMemberBloc>()
-                .add(MemberEvent(memberResponse.member));
+                .add(MembersEvent(memberResponse.members));
           }
           context.read<GroupMemberBloc>().add(HasReachedMaxMemberEvent(true));
           context.read<GroupMemberBloc>().add(StatusEvent(Status.success));
@@ -59,20 +59,20 @@ class GroupMemberController {
         if (page == 0) {
           context
               .read<GroupMemberBloc>()
-              .add(MemberEvent(memberResponse.member));
+              .add(MembersEvent(memberResponse.members));
         } else {
           List<Member> currentList =
-              BlocProvider.of<GroupMemberBloc>(context).state.member;
+              BlocProvider.of<GroupMemberBloc>(context).state.members;
           List<Member> updatedNewsList = List.of(currentList)
-            ..addAll(memberResponse.member);
-          context.read<GroupMemberBloc>().add(MemberEvent(updatedNewsList));
+            ..addAll(memberResponse.members);
+          context.read<GroupMemberBloc>().add(MembersEvent(updatedNewsList));
         }
-        if (memberResponse.member.length < pageSize) {
+        if (memberResponse.members.length < pageSize) {
           context.read<GroupMemberBloc>().add(HasReachedMaxMemberEvent(true));
         }
         context.read<GroupMemberBloc>().add(StatusEvent(Status.success));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<List<Member>> handleGetCreator(String id) async {
@@ -91,9 +91,9 @@ class GroupMemberController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var memberResponse = MemberResponse.fromJson(jsonMap);
-        creatorList = memberResponse.member;
+        creatorList = memberResponse.members;
       }
-    } catch (error, stacktrace) {}
+    } catch (error) {}
     return creatorList;
   }
 
@@ -124,10 +124,10 @@ class GroupMemberController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var memberResponse = MemberResponse.fromJson(jsonMap);
-        if (memberResponse.member.isEmpty) {
+        if (memberResponse.members.isEmpty) {
           if (page == 0) {
             List<Member> creatorList = await handleGetCreator(id);
-            context.read<GroupMemberBloc>().add(AdminEvent(creatorList));
+            context.read<GroupMemberBloc>().add(AdminsEvent(creatorList));
           }
           context.read<GroupMemberBloc>().add(HasReachedMaxAdminEvent(true));
           context.read<GroupMemberBloc>().add(StatusEvent(Status.success));
@@ -137,22 +137,22 @@ class GroupMemberController {
 
         if (page == 0) {
           List<Member> creatorList = await handleGetCreator(id);
-          creatorList.addAll(memberResponse.member);
-          context.read<GroupMemberBloc>().add(AdminEvent(creatorList));
+          creatorList.addAll(memberResponse.members);
+          context.read<GroupMemberBloc>().add(AdminsEvent(creatorList));
         } else {
           List<Member> currentList =
-              BlocProvider.of<GroupMemberBloc>(context).state.admin;
+              BlocProvider.of<GroupMemberBloc>(context).state.admins;
           List<Member> updatedNewsList = List.of(currentList)
-            ..addAll(memberResponse.member);
-          context.read<GroupMemberBloc>().add(AdminEvent(updatedNewsList));
+            ..addAll(memberResponse.members);
+          context.read<GroupMemberBloc>().add(AdminsEvent(updatedNewsList));
         }
-        if (memberResponse.member.length < pageSize) {
+        if (memberResponse.members.length < pageSize) {
           context.read<GroupMemberBloc>().add(HasReachedMaxAdminEvent(true));
           GroupMemberController(context: context).handleGetMember(id, 0);
         }
         context.read<GroupMemberBloc>().add(StatusEvent(Status.success));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleDeleteMemeber(String groupId, String userId) async {
@@ -175,7 +175,7 @@ class GroupMemberController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
@@ -203,7 +203,7 @@ class GroupMemberController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }

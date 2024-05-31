@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hcmus_alumni_mobile/model/post.dart';
-import 'package:hcmus_alumni_mobile/pages/write_post_advise/bloc/write_post_advise_blocs.dart';
 
 import '../../global.dart';
 import '../../model/post_response.dart';
+import '../../model/voter.dart';
+import '../../model/voter_response.dart';
 import 'bloc/advise_page_blocs.dart';
 import 'package:http/http.dart' as http;
 
@@ -34,7 +35,7 @@ class AdvisePageController {
 
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel';
-    var pageSize = '5';
+    var pageSize = 5;
 
     var token = Global.storageService.getUserAuthToken();
 
@@ -54,42 +55,42 @@ class AdvisePageController {
         var jsonMap = json.decode(responseBody);
         // Pass the Map to the fromJson method
         var postResponse = PostResponse.fromJson(jsonMap);
-        if (postResponse.post.isEmpty) {
+        if (postResponse.posts.isEmpty) {
           if (page == 0) {
-            context.read<AdvisePageBloc>().add(PostEvent(postResponse.post));
+            context.read<AdvisePageBloc>().add(PostsEvent(postResponse.posts));
           }
           context.read<AdvisePageBloc>().add(HasReachedMaxPostEvent(true));
           context.read<AdvisePageBloc>().add(StatusPostEvent(Status.success));
           return;
         }
         if (page == 0) {
-          context.read<AdvisePageBloc>().add(PostEvent(postResponse.post));
+          context.read<AdvisePageBloc>().add(PostsEvent(postResponse.posts));
         } else {
           List<Post> currentList =
-              BlocProvider.of<AdvisePageBloc>(context).state.post;
+              BlocProvider.of<AdvisePageBloc>(context).state.posts;
 
           // Create a new list by adding newsResponse.news to the existing list
           List<Post> updatedNewsList = List.of(currentList)
-            ..addAll(postResponse.post);
+            ..addAll(postResponse.posts);
 
-          context.read<AdvisePageBloc>().add(PostEvent(updatedNewsList));
+          context.read<AdvisePageBloc>().add(PostsEvent(updatedNewsList));
         }
         context.read<AdvisePageBloc>().add(StatusPostEvent(Status.success));
 
-        if (postResponse.post.length < 5) {
+        if (postResponse.posts.length < pageSize) {
           context.read<AdvisePageBloc>().add(HasReachedMaxPostEvent(true));
         }
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
 
   Future<void> handleLikePost(String id) async {
     List<Post> currentList =
-        BlocProvider.of<AdvisePageBloc>(context).state.post;
+        BlocProvider.of<AdvisePageBloc>(context).state.posts;
 
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel/$id/react';
@@ -112,7 +113,7 @@ class AdvisePageController {
           if (response.statusCode == 200) {
             currentList[i].reactionCount -= 1;
             currentList[i].isReacted = false;
-            context.read<AdvisePageBloc>().add(PostEvent(currentList));
+            context.read<AdvisePageBloc>().add(PostsEvent(currentList));
             return;
           } else {
             // Handle other status codes if needed
@@ -122,7 +123,7 @@ class AdvisePageController {
           if (response.statusCode == 201) {
             currentList[i].reactionCount += 1;
             currentList[i].isReacted = true;
-            context.read<AdvisePageBloc>().add(PostEvent(currentList));
+            context.read<AdvisePageBloc>().add(PostsEvent(currentList));
             return;
           } else {
             // Handle other status codes if needed
@@ -132,7 +133,7 @@ class AdvisePageController {
     }
   }
 
-  Future<void> handleDeletePost(String id) async {
+  Future<bool> handleDeletePost(String id) async {
     final shouldDelte = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -166,13 +167,91 @@ class AdvisePageController {
         var response = await http.delete(url, headers: headers);
         if (response.statusCode == 200) {
           AdvisePageController(context: context).handleLoadPostData(0);
+          return true;
         } else {
           // Handle other status codes if needed
         }
-      } catch (error, stacktrace) {
+      } catch (error) {
         // Handle errors
       }
     }
     return shouldDelte ?? false;
+  }
+
+  Future<void> handleVote(String id, int newVoteId) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/counsel/$id/votes/$newVoteId';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', // Specify content type as JSON
+    };
+
+    try {
+      var url = Uri.parse('$apiUrl$endpoint');
+
+      var response = await http.post(url, headers: headers);
+      if (response.statusCode == 201) {
+        AdvisePageController(context: context).handleLoadPostData(0);
+      } else {
+        // Handle other status codes if needed
+      }
+    } catch (error) {
+      // Handle errors
+    }
+  }
+
+  Future<void> handleDeleteVote(String id, int voteId) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/counsel/$id/votes/$voteId';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', // Specify content type as JSON
+    };
+
+    try {
+      var url = Uri.parse('$apiUrl$endpoint');
+
+      var response = await http.delete(url, headers: headers);
+      if (response.statusCode == 200) {
+        AdvisePageController(context: context).handleLoadPostData(0);
+      } else {
+        // Handle other status codes if needed
+      }
+    } catch (error) {
+      // Handle errors
+    }
+  }
+
+  Future<void> handleUpdateVote(String id, int oldVoteId, int newVoteId) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/counsel/$id/votes/$oldVoteId';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', // Specify content type as JSON
+    };
+
+    Map<String, dynamic> data = {'updatedVoteId': newVoteId}; // Define your JSON data
+    var body = json.encode(data); // Encode the data to JSON
+    try {
+      var url = Uri.parse('$apiUrl$endpoint');
+
+      var response = await http.put(url, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        AdvisePageController(context: context).handleLoadPostData(0);
+      } else {
+        // Handle other status codes if needed
+      }
+    } catch (error) {
+      // Handle errors
+    }
   }
 }

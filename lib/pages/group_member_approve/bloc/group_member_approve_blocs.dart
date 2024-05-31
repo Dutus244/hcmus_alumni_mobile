@@ -7,7 +7,7 @@ class GroupMemberApproveBloc
     extends Bloc<GroupMemberApproveEvent, GroupMemberApproveState> {
   GroupMemberApproveBloc() : super(GroupMemberApproveState()) {
     on<StatusEvent>(_statusEvent);
-    on<RequestEvent>(_requestEvent);
+    on<RequestsEvent>(_requestsEvent);
     on<IndexRequestEvent>(_indexRequestEvent);
     on<HasReachedMaxRequestEvent>(_hasReachedMaxRequestEvent);
   }
@@ -17,9 +17,9 @@ class GroupMemberApproveBloc
     emit(state.copyWith(status: event.status));
   }
 
-  void _requestEvent(
-      RequestEvent event, Emitter<GroupMemberApproveState> emit) async {
-    emit(state.copyWith(request: event.request));
+  void _requestsEvent(
+      RequestsEvent event, Emitter<GroupMemberApproveState> emit) async {
+    emit(state.copyWith(requests: event.requests));
   }
 
   void _indexRequestEvent(

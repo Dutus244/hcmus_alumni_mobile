@@ -6,9 +6,7 @@ import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/common/values/colors.dart';
 import 'package:hcmus_alumni_mobile/common/values/fonts.dart';
 import 'package:hcmus_alumni_mobile/model/event.dart';
-import 'package:intl/intl.dart';
 
-import '../../../global.dart';
 import '../../../model/hall_of_fame.dart';
 import '../../../model/news.dart';
 import '../bloc/home_page_blocs.dart';
@@ -665,13 +663,13 @@ Widget homePage(BuildContext context) {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        listEvent(context, BlocProvider.of<HomePageBloc>(context).state.event),
+        listEvent(context, BlocProvider.of<HomePageBloc>(context).state.events),
         listNews(context, BlocProvider.of<HomePageBloc>(context).state.news),
         Container(
           height: 5.h,
         ),
         listHof(
-            context, BlocProvider.of<HomePageBloc>(context).state.hallOfFame),
+            context, BlocProvider.of<HomePageBloc>(context).state.hallOfFames),
         advise(context),
       ],
     ),

@@ -12,7 +12,6 @@ import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
-import '../../../global.dart';
 import '../bloc/group_page_blocs.dart';
 import '../bloc/group_page_events.dart';
 import '../bloc/group_page_states.dart';
@@ -47,7 +46,7 @@ AppBar buildAppBar(BuildContext context) {
                 ),
               ),
               Container(
-                width: 30.w,
+                width: 60.w,
               )
             ],
           ),
@@ -62,7 +61,7 @@ AppBar buildAppBar(BuildContext context) {
             ),
           ),
           Container(
-            width: 90.w,
+            width: 120.w,
             child: Row(
               children: [
                 GestureDetector(
@@ -83,6 +82,22 @@ AppBar buildAppBar(BuildContext context) {
                 ),
                 SizedBox(width: 10.w),
                 GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      "/groupSearch",
+                          (route) => false,
+                    );
+                  },
+                  child: Container(
+                    width: 20.w,
+                    height: 20.h,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/icons/search.png"))),
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                GestureDetector(
                   child: Container(
                     width: 20.w,
                     height: 20.h,
@@ -98,21 +113,18 @@ AppBar buildAppBar(BuildContext context) {
                   margin: EdgeInsets.only(),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamed("/signIn");
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        "/myProfilePage",
+                            (route) => false,
+                        arguments: {"route": 3},
+                      );
                     },
-                    child: Global.storageService.getUserIsLoggedIn()
-                        ? CircleAvatar(
+                    child: CircleAvatar(
                       radius: 10,
                       child: null,
                       backgroundImage:
                       AssetImage("assets/images/test1.png"),
                     )
-                        : Container(
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                              AssetImage("assets/icons/login.png"))),
-                    ),
                   ),
                 ),
               ],
@@ -227,7 +239,7 @@ Widget listGroupDiscover(BuildContext context,
           itemCount: (BlocProvider
               .of<GroupPageBloc>(context)
               .state
-              .groupDiscover
+              .groupDiscovers
               .length +
               1) ~/
               2 + 1,
@@ -252,7 +264,7 @@ Widget listGroupDiscover(BuildContext context,
                 if (BlocProvider
                     .of<GroupPageBloc>(context)
                     .state
-                    .groupDiscover
+                    .groupDiscovers
                     .isEmpty) {
                   return Column(
                     children: [
@@ -279,7 +291,7 @@ Widget listGroupDiscover(BuildContext context,
                     BlocProvider
                         .of<GroupPageBloc>(context)
                         .state
-                        .groupDiscover
+                        .groupDiscovers
                         .length / 2) {
                   if (BlocProvider
                       .of<GroupPageBloc>(context)
@@ -312,7 +324,7 @@ Widget listGroupDiscover(BuildContext context,
                                   (BlocProvider
                                       .of<GroupPageBloc>(context)
                                       .state
-                                      .groupDiscover[firstIndex])),
+                                      .groupDiscovers[firstIndex])),
                               Container(
                                 width: 10.w,
                               ),
@@ -320,14 +332,14 @@ Widget listGroupDiscover(BuildContext context,
                                   BlocProvider
                                       .of<GroupPageBloc>(context)
                                       .state
-                                      .groupDiscover
+                                      .groupDiscovers
                                       .length)
                                 groupDiscover(
                                     context,
                                     BlocProvider
                                         .of<GroupPageBloc>(context)
                                         .state
-                                        .groupDiscover[secondIndex]),
+                                        .groupDiscovers[secondIndex]),
                             ],
                           ),
                         )
@@ -344,7 +356,7 @@ Widget listGroupDiscover(BuildContext context,
                               (BlocProvider
                                   .of<GroupPageBloc>(context)
                                   .state
-                                  .groupDiscover[firstIndex])),
+                                  .groupDiscovers[firstIndex])),
                           Container(
                             width: 10.w,
                           ),
@@ -352,14 +364,14 @@ Widget listGroupDiscover(BuildContext context,
                               BlocProvider
                                   .of<GroupPageBloc>(context)
                                   .state
-                                  .groupDiscover
+                                  .groupDiscovers
                                   .length)
                             groupDiscover(
                                 context,
                                 BlocProvider
                                     .of<GroupPageBloc>(context)
                                     .state
-                                    .groupDiscover[secondIndex]),
+                                    .groupDiscovers[secondIndex]),
                         ],
                       ),
                     );
@@ -830,7 +842,7 @@ Widget listGroupJoined(BuildContext context,
           BlocProvider
               .of<GroupPageBloc>(context)
               .state
-              .groupJoined
+              .groupJoineds
               .length +
               1,
           itemBuilder: (BuildContext context, int index) {
@@ -854,7 +866,7 @@ Widget listGroupJoined(BuildContext context,
                 if (BlocProvider
                     .of<GroupPageBloc>(context)
                     .state
-                    .groupJoined
+                    .groupJoineds
                     .isEmpty) {
                   return Column(
                     children: [
@@ -881,7 +893,7 @@ Widget listGroupJoined(BuildContext context,
                     BlocProvider
                         .of<GroupPageBloc>(context)
                         .state
-                        .groupJoined
+                        .groupJoineds
                         .length) {
                   if (BlocProvider
                       .of<GroupPageBloc>(context)
@@ -907,7 +919,7 @@ Widget listGroupJoined(BuildContext context,
                             (BlocProvider
                                 .of<GroupPageBloc>(context)
                                 .state
-                                .groupJoined[index])),
+                                .groupJoineds[index])),
                       ],
                     );
                   } else {
@@ -916,7 +928,7 @@ Widget listGroupJoined(BuildContext context,
                         (BlocProvider
                             .of<GroupPageBloc>(context)
                             .state
-                            .groupJoined[index]));
+                            .groupJoineds[index]));
                   }
                 }
             }

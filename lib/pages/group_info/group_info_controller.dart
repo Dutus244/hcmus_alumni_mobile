@@ -33,9 +33,9 @@ class GroupInfoController {
         var jsonMap = json.decode(responseBody);
         var memberResponse = MemberResponse.fromJson(jsonMap);
 
-        context.read<GroupInfoBloc>().add(MemberEvent(memberResponse.member));
+        context.read<GroupInfoBloc>().add(MembersEvent(memberResponse.members));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleGetAdmin(String id, int page) async {
@@ -62,11 +62,11 @@ class GroupInfoController {
         responseBody = utf8.decode(response.bodyBytes);
         if (response.statusCode == 200) {
           jsonMap = json.decode(responseBody);
-          memberResponse.member.addAll(MemberResponse.fromJson(jsonMap).member);
+          memberResponse.members.addAll(MemberResponse.fromJson(jsonMap).members);
 
-          context.read<GroupInfoBloc>().add(AdminEvent(memberResponse.member));
+          context.read<GroupInfoBloc>().add(AdminsEvent(memberResponse.members));
         }
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 }

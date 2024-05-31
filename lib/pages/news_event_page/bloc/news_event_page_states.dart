@@ -13,7 +13,7 @@ class NewsEventPageState {
   final bool hasReachedMaxNews;
 
   final Status statusEvent;
-  final List<Event> event;
+  final List<Event> events;
   final int indexEvent;
   final bool hasReachedMaxEvent;
 
@@ -24,7 +24,7 @@ class NewsEventPageState {
     this.indexNews = 0,
     this.hasReachedMaxNews = false,
     this.statusEvent = Status.loading,
-    this.event = const [],
+    this.events = const [],
     this.indexEvent = 0,
     this.hasReachedMaxEvent = false,
   });
@@ -36,7 +36,7 @@ class NewsEventPageState {
     int? indexNews,
     bool? hasReachedMaxNews,
     Status? statusEvent,
-    List<Event>? event,
+    List<Event>? events,
     int? indexEvent,
     bool? hasReachedMaxEvent,
   }) {
@@ -47,7 +47,7 @@ class NewsEventPageState {
         indexNews: indexNews ?? this.indexNews,
         hasReachedMaxNews: hasReachedMaxNews ?? this.hasReachedMaxNews,
         statusEvent: statusEvent ?? this.statusEvent,
-        event: event ?? this.event,
+        events: events ?? this.events,
         indexEvent: indexEvent ?? this.indexEvent,
         hasReachedMaxEvent: hasReachedMaxEvent ?? this.hasReachedMaxEvent);
   }

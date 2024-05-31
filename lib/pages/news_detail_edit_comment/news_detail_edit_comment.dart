@@ -8,7 +8,6 @@ import '../../model/news.dart';
 import 'bloc/news_detail_edit_comment_blocs.dart';
 import 'bloc/news_detail_edit_comment_events.dart';
 import 'bloc/news_detail_edit_comment_states.dart';
-import 'news_detail_edit_comment_controller.dart';
 import 'widgets/news_detail_edit_comment_widget.dart';
 
 class NewsDetailEditComment extends StatefulWidget {

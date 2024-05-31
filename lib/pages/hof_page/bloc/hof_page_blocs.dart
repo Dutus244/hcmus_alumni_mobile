@@ -15,7 +15,7 @@ class HofPageBloc extends Bloc<HofPageEvent, HofPageState> {
     on<ClearFilterEvent>(_clearFilterEvent);
     on<HofPageResetEvent>(_hofPageResetEvent);
     on<StatusHofEvent>(_statusHofEvent);
-    on<HallOfFameEvent>(_hallOfFameEvent);
+    on<HallOfFamesEvent>(_hallOfFamesEvent);
     on<IndexHofEvent>(_indexHofEvent);
     on<HasReachedMaxHofEvent>(_hasReachedMaxHofEvent);
     on<ClearResultEvent>(_clearResultEvent);
@@ -52,9 +52,9 @@ class HofPageBloc extends Bloc<HofPageEvent, HofPageState> {
     emit(state.copyWith(statusHof: event.statusHof));
   }
 
-  void _hallOfFameEvent(
-      HallOfFameEvent event, Emitter<HofPageState> emit) async {
-    emit(state.copyWith(hallOfFame: event.hallOfFame));
+  void _hallOfFamesEvent(
+      HallOfFamesEvent event, Emitter<HofPageState> emit) async {
+    emit(state.copyWith(hallOfFames: event.hallOfFames));
   }
 
   void _indexHofEvent(IndexHofEvent event, Emitter<HofPageState> emit) {
@@ -81,7 +81,7 @@ class HofPageBloc extends Bloc<HofPageEvent, HofPageState> {
   void _clearResultEvent(ClearResultEvent event, Emitter<HofPageState> emit) {
     emit(state.copyWith(
         statusHof: Status.loading,
-        hallOfFame: const [],
+        hallOfFames: const [],
         indexHof: 0,
         hasReachedMaxHof: false));
   }

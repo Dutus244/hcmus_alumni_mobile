@@ -1,11 +1,11 @@
 import 'package:hcmus_alumni_mobile/model/group.dart';
 
 class GroupResponse {
-  final List<Group> group;
+  final List<Group> groups;
 
-  GroupResponse(this.group);
+  GroupResponse(this.groups);
 
   GroupResponse.fromJson(Map<String, dynamic> json)
-      : group =
+      : groups =
             (json["groups"] as List).map((i) => new Group.fromJson(i)).toList();
 }

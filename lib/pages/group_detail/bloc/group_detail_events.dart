@@ -18,10 +18,10 @@ class StatusPostEvent extends GroupDetailEvent {
   const StatusPostEvent(this.statusPost);
 }
 
-class PostEvent extends GroupDetailEvent {
-  final List<Post> post;
+class PostsEvent extends GroupDetailEvent {
+  final List<Post> posts;
 
-  const PostEvent(this.post);
+  const PostsEvent(this.posts);
 }
 
 class IndexPostEvent extends GroupDetailEvent {

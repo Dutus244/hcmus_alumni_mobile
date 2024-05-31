@@ -5,14 +5,14 @@ class GroupInfoEvent {
   const GroupInfoEvent();
 }
 
-class MemberEvent extends GroupInfoEvent {
-  final List<Member> member;
+class MembersEvent extends GroupInfoEvent {
+  final List<Member> members;
 
-  const MemberEvent(this.member);
+  const MembersEvent(this.members);
 }
 
-class AdminEvent extends GroupInfoEvent {
-  final List<Member> admin;
+class AdminsEvent extends GroupInfoEvent {
+  final List<Member> admins;
 
-  const AdminEvent(this.admin);
+  const AdminsEvent(this.admins);
 }

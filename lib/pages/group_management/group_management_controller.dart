@@ -33,7 +33,7 @@ class GroupManagementController {
         var group = Group.fromJson(jsonMap);
         context.read< GroupManagementBloc>().add(GroupEvent(group));
       } else {}
-    } catch (error, stacktrace) {}
+    } catch (error) {}
   }
 
   Future<void> handleExitGroup(String id, int secondRoute) async {
@@ -60,7 +60,7 @@ class GroupManagementController {
       } else {
         // Handle other status codes if needed
       }
-    } catch (error, stacktrace) {
+    } catch (error) {
       // Handle errors
     }
   }
@@ -105,7 +105,7 @@ class GroupManagementController {
         } else {
           // Handle other status codes if needed
         }
-      } catch (error, stacktrace) {
+      } catch (error) {
         // Handle errors
       }
     }

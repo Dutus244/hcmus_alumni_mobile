@@ -41,7 +41,7 @@ class _ListPicturePostGroupState extends State<ListPicturePostGroup> {
       child: Scaffold(
         appBar: buildAppBar(context, groupId, secondRoute),
         backgroundColor: AppColors.primaryText,
-        body: listPicture(post.picture),
+        body: listPicture(post.pictures),
       ),
     );
   }

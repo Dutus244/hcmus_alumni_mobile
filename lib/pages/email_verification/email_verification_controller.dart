@@ -32,10 +32,10 @@ class EmailVerificationController {
     map['email'] = email;
 
     try {
-      var response = await http.post(url, body: map);
+      await http.post(url, body: map);
       isResending = true;
       startResendCooldown();
-    } catch (error, stacktrace) {
+    } catch (error) {
       toastInfo(msg: "Có lỗi xảy ra khi gửi mã xác thực");
     }
   }
@@ -100,19 +100,19 @@ class EmailVerificationController {
                 } else {
                   // toastInfo(msg: "Email hoặc mật khẩu bị sai");
                 }
-              } catch (error, stacktrace) {
+              } catch (error) {
                 toastInfo(msg: "Có lỗi xảy ra");
               }
             } else {
               // toastInfo(msg: "Email hoặc mật khẩu bị sai");
             }
-          } catch (error, stacktrace) {
+          } catch (error) {
             toastInfo(msg: "Có lỗi xảy ra");
           }
         } else {
           toastInfo(msg: "Mã xác thực bị sai hoặc hết hạn");
         }
-      } catch (error, stacktrace) {
+      } catch (error) {
         toastInfo(msg: "Có lỗi xảy ra khi xác minh mã xác thực");
       }
     } catch (e) {}

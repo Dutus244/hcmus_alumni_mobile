@@ -1,16 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/bloc/forgot_password_events.dart';
-import 'package:hcmus_alumni_mobile/pages/forgot_password/forgot_password_controller.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/widgets/forgot_password_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/values/fonts.dart';
 import 'bloc/forgot_password_blocs.dart';
 import 'bloc/forgot_password_states.dart';
-import 'dart:io';
 
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});

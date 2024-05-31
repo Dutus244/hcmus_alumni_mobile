@@ -1,16 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hcmus_alumni_mobile/pages/register/register_controller.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/values/fonts.dart';
 import 'bloc/register_blocs.dart';
 import 'bloc/register_events.dart';
 import 'bloc/register_states.dart';
 import 'widgets/register_widget.dart';
-import 'dart:io';
 
 class Register extends StatefulWidget {
   const Register({super.key});

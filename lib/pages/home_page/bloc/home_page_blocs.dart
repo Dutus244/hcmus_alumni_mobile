@@ -5,20 +5,20 @@ import 'home_page_states.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
   HomePageBloc() : super(HomePageState()) {
-    on<EventEvent>(_eventEvent);
+    on<EventsEvent>(_eventsEvent);
     on<NewsEvent>(_newsEvent);
-    on<HallOfFameEvent>(_hallOfFameEvent);
+    on<HallOfFamesEvent>(_hallOfFamesEvent);
   }
 
-  void _eventEvent(EventEvent event, Emitter<HomePageState> emit) {
-    emit(state.copyWith(event: event.event));
+  void _eventsEvent(EventsEvent event, Emitter<HomePageState> emit) {
+    emit(state.copyWith(events: event.events));
   }
 
   void _newsEvent(NewsEvent event, Emitter<HomePageState> emit) {
     emit(state.copyWith(news: event.news));
   }
 
-  void _hallOfFameEvent(HallOfFameEvent event, Emitter<HomePageState> emit) {
-    emit(state.copyWith(hallOfFame: event.hallOfFame));
+  void _hallOfFamesEvent(HallOfFamesEvent event, Emitter<HomePageState> emit) {
+    emit(state.copyWith(hallOfFames: event.hallOfFames));
   }
 }
