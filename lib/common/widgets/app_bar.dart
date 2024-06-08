@@ -47,16 +47,22 @@ AppBar buildAppBar(BuildContext context, String title, int route) {
             width: 60.w,
             child: Row(
               children: [
-                GestureDetector(
-                  child: Container(
-                    width: 20.w,
-                    height: 20.h,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/icons/chat.png"))),
-                  ),
+                Global.storageService.permissionMessageCreate() ? Row(
+                  children: [
+                    GestureDetector(
+                      child: Container(
+                        width: 20.w,
+                        height: 20.h,
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage("assets/icons/chat.png"))),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                  ],
+                ) : Container(
+                  width: 30.w,
                 ),
-                SizedBox(width: 10.w),
                 Container(
                   width: 20.w,
                   height: 20.w,

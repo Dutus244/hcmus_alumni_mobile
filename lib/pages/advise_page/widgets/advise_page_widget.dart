@@ -15,6 +15,7 @@ import 'package:popover/popover.dart';
 import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../../../model/voter.dart';
 import '../bloc/advise_page_blocs.dart';
 import '../bloc/advise_page_states.dart';
@@ -93,7 +94,8 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
               case Status.loading:
                 return Column(
                   children: [
-                    buildCreatePostButton(context),
+                    if (Global.storageService.permissionCounselCreate())
+                      buildCreatePostButton(context),
                     loadingWidget(),
                   ],
                 );
@@ -104,7 +106,8 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
                     .isEmpty) {
                   return Column(
                     children: [
-                      buildCreatePostButton(context),
+                      if (Global.storageService.permissionCounselCreate())
+                        buildCreatePostButton(context),
                       Center(
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
@@ -138,7 +141,8 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
                     // Create a custom widget to combine button and news item
                     return Column(
                       children: [
-                        buildCreatePostButton(context),
+                        if (Global.storageService.permissionCounselCreate())
+                          buildCreatePostButton(context),
                         post(
                             context,
                             BlocProvider.of<AdvisePageBloc>(context)
@@ -246,9 +250,6 @@ Widget postOption(BuildContext context, Post post) {
                   ),
                 ),
               ),
-              Container(
-                height: 70.h,
-              )
             ],
           ),
         ),
@@ -534,7 +535,8 @@ Widget post(BuildContext context, Post post) {
                 children: [
                   Row(
                     children: [
-                      Radio(
+                      if (Global.storageService.permissionCounselVote())
+                        Radio(
                         value: post.votes[i].name,
                         groupValue: post.voteSelected,
                         onChanged: (value) {
@@ -979,26 +981,30 @@ Widget post(BuildContext context, Post post) {
             ],
           ),
         ),
-        Container(
-          margin: EdgeInsets.only(top: 5.h),
-          height: 1.h,
-          color: AppColors.primarySecondaryElement,
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.only(top: 3.h, bottom: 3.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
+        if (Global.storageService.permissionCounselReactionCreate() || Global.storageService.permissionCounselCommentCreate())
+          Column(
             children: [
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    AdvisePageController(context: context)
-                        .handleLikePost(post.id);
-                  },
-                  child: post.isReacted
-                      ? Container(
+              Container(
+                margin: EdgeInsets.only(top: 5.h),
+                height: 1.h,
+                color: AppColors.primarySecondaryElement,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.only(top: 3.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    if (Global.storageService.permissionCounselReactionCreate())
+                      Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          AdvisePageController(context: context)
+                              .handleLikePost(post.id);
+                        },
+                        child: post.isReacted
+                            ? Container(
                           margin: EdgeInsets.only(left: 40.w),
                           child: Row(
                             children: [
@@ -1023,7 +1029,7 @@ Widget post(BuildContext context, Post post) {
                             ],
                           ),
                         )
-                      : Container(
+                            : Container(
                           margin: EdgeInsets.only(left: 40.w),
                           child: Row(
                             children: [
@@ -1048,50 +1054,54 @@ Widget post(BuildContext context, Post post) {
                             ],
                           ),
                         ),
-                ),
-              ),
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/listCommentPostAdvise",
-                      (route) => false,
-                      arguments: {
-                        "route": 1,
-                        "id": post.id,
-                      },
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(right: 40.w),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 20.h,
-                          width: 20.w,
-                          child: Image.asset('assets/icons/comment.png'),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 5.w),
-                          child: Text(
-                            'Bình luận',
-                            style: TextStyle(
-                              fontFamily: AppFonts.Header2,
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.normal,
-                              color: AppColors.primaryText,
-                            ),
+                      ),
+                    ),
+                    if (Global.storageService.permissionCounselCommentCreate())
+                      Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            "/listCommentPostAdvise",
+                                (route) => false,
+                            arguments: {
+                              "route": 1,
+                              "id": post.id,
+                            },
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(right: 40.w),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 20.h,
+                                width: 20.w,
+                                child: Image.asset('assets/icons/comment.png'),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(left: 5.w),
+                                child: Text(
+                                  'Bình luận',
+                                  style: TextStyle(
+                                    fontFamily: AppFonts.Header2,
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.normal,
+                                    color: AppColors.primaryText,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ],
           ),
-        ),
         Container(
+          margin: EdgeInsets.only(top: 5.h),
           height: 5.h,
           color: AppColors.primarySecondaryElement,
         ),

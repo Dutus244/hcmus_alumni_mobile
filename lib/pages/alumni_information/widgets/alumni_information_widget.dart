@@ -182,14 +182,14 @@ void _showPickOptionsDialog(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            title: Text("Pick from Gallery"),
+            title: Text("Chọn từ thư viện"),
             onTap: () {
               _loadPicker(context, ImageSource.gallery,
                   func); // Pass context to _loadPicker
             },
           ),
           ListTile(
-            title: Text("Take a picture"),
+            title: Text("Chụp ảnh"),
             onTap: () {
               _loadPicker(context, ImageSource.camera,
                   func); // Pass context to _loadPicker

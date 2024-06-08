@@ -928,9 +928,6 @@ Widget postOption(BuildContext context, Post post, String groupId, int secondRou
                   ),
                 ),
               ),
-              Container(
-                height: 70.h,
-              )
             ],
           ),
         ),

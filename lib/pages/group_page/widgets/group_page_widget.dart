@@ -12,6 +12,7 @@ import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../bloc/group_page_blocs.dart';
 import '../bloc/group_page_events.dart';
 import '../bloc/group_page_states.dart';
@@ -45,9 +46,14 @@ AppBar buildAppBar(BuildContext context) {
                   ),
                 ),
               ),
-              Container(
-                width: 60.w,
-              )
+              if (Global.storageService.permissionGroupCreate())
+                Container(
+                  width: 30.w,
+                ),
+              if (Global.storageService.permissionGroupCreate())
+                Container(
+                  width: 30.w,
+                )
             ],
           ),
           Text(
@@ -61,26 +67,32 @@ AppBar buildAppBar(BuildContext context) {
             ),
           ),
           Container(
-            width: 120.w,
+            width: (Global.storageService.permissionGroupCreate() ? 30.w : 0.w) +
+  (Global.storageService.permissionMessageCreate() ? 30.w : 0.w + 60.w),
             child: Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/groupCreate",
-                          (route) => false,
-                      arguments: {"route": 3},
-                    );
-                  },
-                  child: Container(
-                    width: 20.w,
-                    height: 20.h,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/icons/add.png"))),
+                if (Global.storageService.permissionGroupCreate())
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            "/groupCreate",
+                                (route) => false,
+                            arguments: {"route": 3},
+                          );
+                        },
+                        child: Container(
+                          width: 20.w,
+                          height: 20.h,
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("assets/icons/add.png"))),
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                    ],
                   ),
-                ),
-                SizedBox(width: 10.w),
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
@@ -97,16 +109,21 @@ AppBar buildAppBar(BuildContext context) {
                   ),
                 ),
                 SizedBox(width: 10.w),
-                GestureDetector(
-                  child: Container(
-                    width: 20.w,
-                    height: 20.h,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/icons/chat.png"))),
+                if (Global.storageService.permissionMessageCreate())
+                  Row(
+                    children: [
+                      GestureDetector(
+                        child: Container(
+                          width: 20.w,
+                          height: 20.h,
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("assets/icons/chat.png"))),
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                    ],
                   ),
-                ),
-                SizedBox(width: 10.w),
                 Container(
                   width: 20.w,
                   height: 20.w,
@@ -127,6 +144,7 @@ AppBar buildAppBar(BuildContext context) {
                     )
                   ),
                 ),
+                SizedBox(width: 10.w),
               ],
             ),
           )

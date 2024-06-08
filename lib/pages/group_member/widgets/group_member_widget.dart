@@ -445,9 +445,6 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
                   ),
                 ),
               ),
-              Container(
-                height: 70.h,
-              )
             ],
           ),
         ),
