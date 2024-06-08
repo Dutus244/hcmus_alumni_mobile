@@ -49,6 +49,14 @@ import 'package:hcmus_alumni_mobile/pages/list_react_post_advise/bloc/list_inter
 import 'package:hcmus_alumni_mobile/pages/list_react_post_advise/list_interact_post_advise.dart';
 import 'package:hcmus_alumni_mobile/pages/list_react_post_group/bloc/list_interact_post_group_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/list_react_post_group/list_interact_post_group.dart';
+import 'package:hcmus_alumni_mobile/pages/my_profile_add_achievement/bloc/my_profile_add_achievement_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/my_profile_add_achievement/my_profile_add_achievement.dart';
+import 'package:hcmus_alumni_mobile/pages/my_profile_add_education/bloc/my_profile_add_education_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/my_profile_add_education/my_profile_add_education.dart';
+import 'package:hcmus_alumni_mobile/pages/my_profile_add_job/bloc/my_profile_add_job_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/my_profile_add_job/my_profile_add_job.dart';
+import 'package:hcmus_alumni_mobile/pages/my_profile_edit/bloc/my_profile_edit_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/my_profile_edit/my_profile_edit.dart';
 import 'package:hcmus_alumni_mobile/pages/my_profile_page/bloc/my_profile_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/my_profile_page/my_profile_page.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_blocs.dart';
@@ -349,6 +357,30 @@ class AppPages {
       PageEntity(
           route: AppRoutes.LIST_PICTURE_POST_GROUP,
           page: const ListPicturePostGroup()),
+      PageEntity(
+          route: AppRoutes.MY_PROFILE_EDIT,
+          page: const MyProfileEdit(),
+          bloc: BlocProvider(
+            create: (_) => MyProfileEditBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.MY_PROFILE_ADD_JOB,
+          page: const MyProfileAddJob(),
+          bloc: BlocProvider(
+            create: (_) => MyProfileAddJobBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.MY_PROFILE_ADD_EDUCATION,
+          page: const MyProfileAddEducation(),
+          bloc: BlocProvider(
+            create: (_) => MyProfileAddEducationBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.MY_PROFILE_ADD_ACHIEVEMENT,
+          page: const MyProfileAddAchievement(),
+          bloc: BlocProvider(
+            create: (_) => MyProfileAddAchievementBloc(),
+          )),
     ];
   }
 

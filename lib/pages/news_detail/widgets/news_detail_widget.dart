@@ -14,6 +14,7 @@ import 'package:popover/popover.dart';
 import '../../../common/function/handle_html_content.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../../../model/news.dart';
 import '../bloc/news_detail_events.dart';
 
@@ -332,7 +333,8 @@ Widget listComment(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        GestureDetector(
+        if (Global.storageService.permissionNewsCommentCreate())
+          GestureDetector(
           onTap: () {
             Navigator.of(context).pushNamedAndRemoveUntil(
               "/newsDetailWriteComment",
@@ -566,31 +568,36 @@ Widget buildCommentWidget(
                         ),
                       ),
                     ),
-                    Container(
-                      width: 50.w,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          "/newsDetailWriteChildrenComment",
-                          (route) => false,
-                          arguments: {
-                            "route": route,
-                            "news": news,
-                            "comment": comment,
-                          },
-                        );
-                      },
-                      child: Text(
-                        'Trả lời',
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.8),
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'Roboto',
-                        ),
+                    if (Global.storageService.permissionNewsCommentCreate())
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                "/newsDetailWriteChildrenComment",
+                                    (route) => false,
+                                arguments: {
+                                  "route": route,
+                                  "news": news,
+                                  "comment": comment,
+                                },
+                              );
+                            },
+                            child: Text(
+                              'Trả lời',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
                     if (comment.permissions.edit)
                       Row(
                         children: [

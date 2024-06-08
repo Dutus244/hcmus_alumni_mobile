@@ -450,9 +450,6 @@ Widget choosePrivacy(BuildContext context) {
                   ],
                 ),
               ),
-              Container(
-                height: 70.h,
-              )
             ],
           ),
         ),

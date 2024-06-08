@@ -14,6 +14,7 @@ import '../../../common/function/handle_html_content.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../bloc/event_detail_blocs.dart';
 import '../bloc/event_detail_states.dart';
 import '../event_detail_controller.dart';
@@ -367,7 +368,8 @@ Widget eventContent(BuildContext context, Event event) {
           ],
         ),
       ),
-      Center(
+      if (Global.storageService.permissionEventParticipantCreate())
+        Center(
         child: BlocProvider.of<EventDetailBloc>(context).state.isParticipated
             ? GestureDetector(
                 onTap: () {
@@ -543,7 +545,8 @@ Widget listComment(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        GestureDetector(
+        if (Global.storageService.permissionEventCommentCreate())
+          GestureDetector(
           onTap: () {
             Navigator.of(context).pushNamedAndRemoveUntil(
               "/eventDetailWriteComment",
@@ -769,31 +772,36 @@ Widget buildCommentWidget(
                         ),
                       ),
                     ),
-                    Container(
-                      width: 50.w,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          "/eventDetailWriteChildrenComment",
-                              (route) => false,
-                          arguments: {
-                            "route": route,
-                            "event": event,
-                            "comment": comment,
-                          },
-                        );
-                      },
-                      child: Text(
-                        'Trả lời',
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.8),
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header2,
-                        ),
+                    if (Global.storageService.permissionEventCommentCreate())
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                "/eventDetailWriteChildrenComment",
+                                    (route) => false,
+                                arguments: {
+                                  "route": route,
+                                  "event": event,
+                                  "comment": comment,
+                                },
+                              );
+                            },
+                            child: Text(
+                              'Trả lời',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
                     if (comment.permissions.edit)
                       Row(
                         children: [

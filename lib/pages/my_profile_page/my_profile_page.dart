@@ -36,7 +36,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
             return Scaffold(
               appBar: buildAppBar(context, route),
               backgroundColor: AppColors.primaryBackground,
-              body: myProfile(context),
+              body: myProfile(context, route),
             );
           }),
     );

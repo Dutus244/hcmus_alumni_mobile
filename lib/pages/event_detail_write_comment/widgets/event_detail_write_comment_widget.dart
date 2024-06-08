@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../global.dart';
 import '../../../model/event.dart';
 import '../bloc/event_detail_write_comment_blocs.dart';
 import '../bloc/event_detail_write_comment_events.dart';
@@ -163,11 +164,11 @@ Widget header(Event event) {
                   child: CircleAvatar(
                     radius: 10,
                     child: null,
-                    backgroundImage: AssetImage("assets/images/test1.png"),
+                    backgroundImage: NetworkImage(Global.storageService.getUserAvatarUrl()),
                   )),
             ),
             Text(
-              'Đặng Nguyễn Duy',
+              Global.storageService.getUserFullName(),
               maxLines: 1,
               style: TextStyle(
                 color: AppColors.primaryText,

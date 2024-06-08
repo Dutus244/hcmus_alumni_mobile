@@ -196,7 +196,6 @@ class NewsDetailController {
         var url = Uri.parse('$apiUrl$endpoint');
 
         var response = await http.delete(url, headers: headers);
-
         if (response.statusCode == 200) {
           NewsDetailController(context: context).handleGetNews(id);
           NewsDetailController(context: context).handleGetComment(id, 0);

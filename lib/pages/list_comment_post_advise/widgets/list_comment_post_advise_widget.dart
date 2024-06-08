@@ -9,6 +9,7 @@ import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../../../model/comment.dart';
 import '../../../model/creator.dart';
 import '../bloc/list_comment_post_advise_blocs.dart';
@@ -125,7 +126,8 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
           },
         ),
       ),
-      navigation(context, content, comment, id, func)
+      if (Global.storageService.permissionCounselCommentCreate())
+        navigation(context, content, comment, id, func)
     ],
   );
 }
