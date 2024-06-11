@@ -27,8 +27,11 @@ class Post {
   late int reactionCount;
   final Permissions permissions;
   List<Vote> votes;
-  String voteSelected;
+  String voteSelectedOne;
+  List<String> voteSelectedMultiple;
   int totalVote;
+  final bool allowMultipleVotes;
+  final bool allowAddOptions;
 
   Post(
       this.id,
@@ -45,8 +48,11 @@ class Post {
       this.reactionCount,
       this.permissions,
       this.votes,
-      this.voteSelected,
-      this.totalVote);
+      this.voteSelectedOne,
+      this.voteSelectedMultiple,
+      this.totalVote,
+      this.allowMultipleVotes,
+      this.allowAddOptions);
 
   Post.fromJson(Map<String, dynamic> json)
       : id = json["id"],
@@ -63,6 +69,11 @@ class Post {
         reactionCount = json["reactionCount"].toInt(),
         permissions = Permissions.fromJson(json['permissions']),
         votes = VoteResponse.fromJson(json).votes,
-        voteSelected = VoteResponse.fromJson(json).voteSelected,
-        totalVote = VoteResponse.fromJson(json).totalVote;
+        voteSelectedOne = VoteResponse.fromJson(json).voteSelectedOne,
+        voteSelectedMultiple = VoteResponse.fromJson(json).voteSelectedMultiple,
+        totalVote = VoteResponse.fromJson(json).totalVote,
+        // allowMultipleVotes = json["allowMultipleVotes"],
+        // allowAddOptions = json["allowAddOptions"];
+        allowMultipleVotes = true,
+        allowAddOptions = true;
 }

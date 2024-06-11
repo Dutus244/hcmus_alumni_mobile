@@ -40,4 +40,16 @@ class PageEvent extends WritePostGroupEvent {
   const PageEvent(this.page);
 }
 
+class AllowMultipleVotesEvent extends WritePostGroupEvent {
+  final bool allowMultipleVotes;
+
+  const AllowMultipleVotesEvent(this.allowMultipleVotes);
+}
+
+class AllowAddOptionsEvent extends WritePostGroupEvent {
+  final bool allowAddOptions;
+
+  const AllowAddOptionsEvent(this.allowAddOptions);
+}
+
 class WritePostGroupResetEvent extends WritePostGroupEvent {}

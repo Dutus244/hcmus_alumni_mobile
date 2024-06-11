@@ -20,29 +20,39 @@ class _WritePostGroupState extends State<WritePostGroup> {
   late int secondRoute;
 
   @override
+  void initState() {
+    super.initState();
+    context
+        .read<WritePostGroupBloc>()
+        .add(WritePostGroupResetEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       id = args["id"];
       secondRoute = args["secondRoute"];
-      context
-          .read<WritePostGroupBloc>()
-          .add(WritePostGroupResetEvent());
       // Now you can use the passedValue in your widget
     }
 
     return PopScope(
         canPop: false, // prevent back
         onPopInvoked: (_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/groupDetail",
-                (route) => false,
-            arguments: {
-              "id": id,
-              "secondRoute": secondRoute,
-            },
-          );
+          if (BlocProvider.of<WritePostGroupBloc>(context).state.page ==
+              0) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              "/groupDetail",
+                  (route) => false,
+              arguments: {
+                "id": id,
+                "secondRoute": secondRoute,
+              },
+            );
+          } else {
+            context.read<WritePostGroupBloc>().add(PageEvent(0));
+          }
         },
         child: BlocBuilder<WritePostGroupBloc, WritePostGroupState>(
             builder: (context, state) {

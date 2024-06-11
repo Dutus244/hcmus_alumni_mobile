@@ -181,7 +181,6 @@ Widget header(News news, Comment comment) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 2.h),
                     child: Text(
                       comment.creator.fullName,
                       maxLines: 1,
@@ -194,7 +193,6 @@ Widget header(News news, Comment comment) {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 2.h),
                     child: Text(
                       handleDatetime(comment.updateAt),
                       maxLines: 1,

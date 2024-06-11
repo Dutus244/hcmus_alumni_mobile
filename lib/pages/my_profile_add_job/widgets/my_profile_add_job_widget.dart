@@ -298,7 +298,7 @@ Widget chooseStartTime(BuildContext context) {
   }
 
   return Container(
-    height: 200.h,
+    height: 210.h,
     child: Stack(
       children: [
         SingleChildScrollView(
@@ -478,7 +478,7 @@ Widget chooseEndTime(BuildContext context) {
   }
 
   return Container(
-    height: 200.h,
+    height: 210.h,
     child: Stack(
       children: [
         SingleChildScrollView(

@@ -11,6 +11,8 @@ class WritePostAdviseBloc
     on<VotesEvent>(_votesEvent);
     on<PicturesEvent>(_picturesEvent);
     on<PageEvent>(_pageEvent);
+    on<AllowAddOptionsEvent>(_allowAddOptionsEvent);
+    on<AllowMultipleVotesEvent>(_allowMultipleVotesEvent);
     on<WritePostAdviseResetEvent>(_writePostAdviseResetEvent);
   }
 
@@ -36,6 +38,14 @@ class WritePostAdviseBloc
 
   void _pageEvent(PageEvent event, Emitter<WritePostAdviseState> emit) {
     emit(state.copyWith(page: event.page));
+  }
+
+  void _allowAddOptionsEvent(AllowAddOptionsEvent event, Emitter<WritePostAdviseState> emit) {
+    emit(state.copyWith(allowAddOptions: event.allowAddOptions));
+  }
+
+  void _allowMultipleVotesEvent(AllowMultipleVotesEvent event, Emitter<WritePostAdviseState> emit) {
+    emit(state.copyWith(allowMultipleVotes: event.allowMultipleVotes));
   }
 
   void _writePostAdviseResetEvent(

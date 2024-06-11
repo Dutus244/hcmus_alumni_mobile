@@ -40,14 +40,22 @@ class _EditPostGroupState extends State<EditPostGroup> {
     return PopScope(
         canPop: false, // prevent back
         onPopInvoked: (_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage",
-            (route) => false,
-            arguments: {
-              "route": 2,
-              "secondRoute": 0,
-            },
-          );
+          if (BlocProvider
+              .of<EditPostGroupBloc>(context)
+              .state
+              .page ==
+              0) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              "/groupDetail",
+                  (route) => false,
+              arguments: {
+                "id": id,
+                "secondRoute": secondRoute,
+              },
+            );
+          } else {
+            context.read<EditPostGroupBloc>().add(PageEvent(0));
+          }
         },
         child: BlocBuilder<EditPostGroupBloc, EditPostGroupState>(
             builder: (context, state) {

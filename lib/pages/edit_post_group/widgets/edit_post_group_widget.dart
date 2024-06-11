@@ -484,7 +484,6 @@ Widget writePost(BuildContext context, int secondRoute, String id, String groupI
                     (value) {
                   context.read<EditPostGroupBloc>().add(ContentEvent(value));
                 }),
-            chooseVote(context),
             choosePicture(context, (value) {
               context.read<EditPostGroupBloc>().add(PicturesEvent(value));
             }),

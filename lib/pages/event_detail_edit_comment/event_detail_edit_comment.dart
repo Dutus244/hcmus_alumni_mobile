@@ -32,12 +32,16 @@ class _EventDetailEditCommentState extends State<EventDetailEditComment> {
 
   @override
   Widget build(BuildContext context) {
+    var profile = 0;
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       route = args["route"];
       event = args["event"];
       comment = args["comment"];
+      if (args["profile"] != null) {
+        profile = args["profile"];
+      }
       context
           .read<EventDetailEditCommentBloc>()
           .add(CommentEvent(comment.content));
@@ -52,15 +56,16 @@ class _EventDetailEditCommentState extends State<EventDetailEditComment> {
             arguments: {
               "route": route,
               "id": event.id,
+              "profile": profile,
             },
           );
         },
         child: BlocBuilder<EventDetailEditCommentBloc,
             EventDetailEditCommentState>(builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, route, event),
+            appBar: buildAppBar(context, route, event, profile),
             backgroundColor: AppColors.primaryBackground,
-            body: eventDetailEditComment(context, event, route, comment),
+            body: eventDetailEditComment(context, event, route, comment, profile),
           );
         }));
   }

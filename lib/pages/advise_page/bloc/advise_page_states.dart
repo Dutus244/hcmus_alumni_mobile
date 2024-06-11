@@ -14,7 +14,6 @@ class AdvisePageState {
   final int indexVoter;
   final bool hasReachedMaxVoter;
 
-
   AdvisePageState({
     this.statusPost = Status.loading,
     this.posts = const [],

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'bloc/event_detail_edit_comment_blocs.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +14,7 @@ class EventDetailEditCommentController {
 
   const EventDetailEditCommentController({required this.context});
 
-  Future<void> handleEditComment(String id, String commentId, int route) async {
+  Future<void> handleEditComment(String id, String commentId, int route, int profile) async {
     final state = context.read<EventDetailEditCommentBloc>().state;
     String comment = state.comment;
 
@@ -41,13 +42,16 @@ class EventDetailEditCommentController {
           arguments: {
             "route": route,
             "id": id,
+            "profile": profile,
           },
         );
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa bình luận");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa bình luận");
     }
   }
 }

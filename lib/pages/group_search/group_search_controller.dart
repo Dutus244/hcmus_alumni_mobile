@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hcmus_alumni_mobile/model/group.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/group_response.dart';
 import 'bloc/group_search_blocs.dart';
@@ -96,9 +97,11 @@ class GroupSearchController {
         }
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách nhóm");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách nhóm");
     }
   }
 
@@ -134,9 +137,11 @@ class GroupSearchController {
         }
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi tham gia nhóm");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi tham gia nhóm");
     }
   }
 }

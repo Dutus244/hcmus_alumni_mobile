@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/group.dart';
 import '../../model/post.dart';
@@ -34,8 +35,12 @@ class GroupDetailController {
         var jsonMap = json.decode(responseBody);
         var group = Group.fromJson(jsonMap);
         context.read< GroupDetailBloc>().add(GroupEvent(group));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy thông tin nhóm");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy thông tin nhóm");
+    }
   }
 
   Future<void> handleLoadPostData(String id, int page) async {
@@ -98,9 +103,11 @@ class GroupDetailController {
         }
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết nhóm");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết nhóm");
     }
   }
 
@@ -123,9 +130,11 @@ class GroupDetailController {
         GroupDetailController(context: context).handleGetGroup(id);
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi tham gia nhóm");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi tham gia nhóm");
     }
   }
 
@@ -166,9 +175,11 @@ class GroupDetailController {
           return true;
         } else {
           // Handle other status codes if needed
+          toastInfo(msg: "Có lỗi xả ra khi xoá bài viết nhóm");
         }
       } catch (error) {
         // Handle errors
+        toastInfo(msg: "Có lỗi xả ra khi xoá bài viết nhóm");
       }
     }
     return shouldDelte ?? false;
@@ -203,6 +214,7 @@ class GroupDetailController {
             return;
           } else {
             // Handle other status codes if needed
+            toastInfo(msg: "Có lỗi xả ra khi huỷ thích bài viết nhóm");
           }
         } else {
           var response = await http.post(url, headers: headers, body: body);
@@ -213,6 +225,7 @@ class GroupDetailController {
             return;
           } else {
             // Handle other status codes if needed
+            toastInfo(msg: "Có lỗi xả ra khi thích bài viết nhóm");
           }
         }
       }
@@ -241,9 +254,11 @@ class GroupDetailController {
             arguments: {"route": 3, "secondRoute": secondRoute});
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi thoát nhóm");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi thoát nhóm");
     }
   }
 }

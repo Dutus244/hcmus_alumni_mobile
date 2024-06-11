@@ -420,7 +420,7 @@ Widget groupDiscover(BuildContext context, Group group) {
     },
     child: Container(
       width: 165.w,
-      height: 225.h,
+      height: 235.h,
       decoration: BoxDecoration(
         color: AppColors.primaryBackground,
         borderRadius: BorderRadius.circular(10.w),
@@ -475,10 +475,11 @@ Widget groupDiscover(BuildContext context, Group group) {
               if (group.privacy == 'PUBLIC')
                 Container(
                 margin: EdgeInsets.only(left: 10.w, top: 2.h, right: 10.w),
-                height: 25.h,
+                height: 35.h,
                 child: Row(
                   children: [
                     Container(
+                      margin: EdgeInsets.only(top: 5.h),
                         width: 40.w,
                         child: Stack(
                           children: [
@@ -856,13 +857,13 @@ Widget listGroupJoined(BuildContext context,
       Expanded(
         child: ListView.builder(
           controller: _scrollController,
-          itemCount:
-          BlocProvider
+          itemCount: (BlocProvider
               .of<GroupPageBloc>(context)
               .state
               .groupJoineds
               .length +
-              1,
+              1) ~/
+              2 + 1,
           itemBuilder: (BuildContext context, int index) {
             switch (BlocProvider
                 .of<GroupPageBloc>(context)
@@ -895,7 +896,7 @@ Widget listGroupJoined(BuildContext context,
                           child: Container(
                             margin: EdgeInsets.only(top: 20.h),
                             child: Text(
-                              'Bạn chưa tham gia nhóm nào',
+                              'Không có dữ liệu',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 11.sp,
@@ -912,7 +913,7 @@ Widget listGroupJoined(BuildContext context,
                         .of<GroupPageBloc>(context)
                         .state
                         .groupJoineds
-                        .length) {
+                        .length / 2) {
                   if (BlocProvider
                       .of<GroupPageBloc>(context)
                       .state
@@ -922,6 +923,8 @@ Widget listGroupJoined(BuildContext context,
                   // Return something indicating end of list, if needed
                   return loadingWidget();
                 } else {
+                  int firstIndex = index * 2;
+                  int secondIndex = firstIndex + 1;
                   if (index == 0) {
                     // Create a custom widget to combine button and news item
                     return Column(
@@ -932,21 +935,67 @@ Widget listGroupJoined(BuildContext context,
                         Container(
                           height: 10.h,
                         ),
-                        groupJoined(
-                            context,
-                            (BlocProvider
-                                .of<GroupPageBloc>(context)
-                                .state
-                                .groupJoineds[index])),
+                        Container(
+                          margin: EdgeInsets.only(
+                              right: 10.w, left: 10.w, bottom: 5.h),
+                          child: Row(
+                            children: [
+                              groupJoined(
+                                  context,
+                                  (BlocProvider
+                                      .of<GroupPageBloc>(context)
+                                      .state
+                                      .groupJoineds[firstIndex])),
+                              Container(
+                                width: 10.w,
+                              ),
+                              if (secondIndex <
+                                  BlocProvider
+                                      .of<GroupPageBloc>(context)
+                                      .state
+                                      .groupJoineds
+                                      .length)
+                                groupJoined(
+                                    context,
+                                    BlocProvider
+                                        .of<GroupPageBloc>(context)
+                                        .state
+                                        .groupJoineds[secondIndex]),
+                            ],
+                          ),
+                        )
                       ],
                     );
                   } else {
-                    return groupJoined(
-                        context,
-                        (BlocProvider
-                            .of<GroupPageBloc>(context)
-                            .state
-                            .groupJoineds[index]));
+                    return Container(
+                      margin:
+                      EdgeInsets.only(right: 10.w, left: 10.w, bottom: 5.h),
+                      child: Row(
+                        children: [
+                          groupJoined(
+                              context,
+                              (BlocProvider
+                                  .of<GroupPageBloc>(context)
+                                  .state
+                                  .groupJoineds[firstIndex])),
+                          Container(
+                            width: 10.w,
+                          ),
+                          if (secondIndex <
+                              BlocProvider
+                                  .of<GroupPageBloc>(context)
+                                  .state
+                                  .groupJoineds
+                                  .length)
+                            groupJoined(
+                                context,
+                                BlocProvider
+                                    .of<GroupPageBloc>(context)
+                                    .state
+                                    .groupJoineds[secondIndex]),
+                        ],
+                      ),
+                    );
                   }
                 }
             }
@@ -958,6 +1007,13 @@ Widget listGroupJoined(BuildContext context,
 }
 
 Widget groupJoined(BuildContext context, Group group) {
+  String typeGroup = '';
+  if (group.privacy == 'PUBLIC') {
+    typeGroup = 'Nhóm Công khai';
+  } else {
+    typeGroup = 'Nhóm Riêng tư';
+  }
+
   return GestureDetector(
     onTap: () {
       Navigator.of(context).pushNamedAndRemoveUntil(
@@ -970,36 +1026,100 @@ Widget groupJoined(BuildContext context, Group group) {
       );
     },
     child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
-      color: Colors.transparent,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+      width: 165.w,
+      height: 205.h,
+      decoration: BoxDecoration(
+        color: AppColors.primaryBackground,
+        borderRadius: BorderRadius.circular(10.w),
+        border: Border.all(
+          color: AppColors.primarySecondaryElement,
+        ),
+      ),
+      child: Stack(
         children: [
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                width: 40.w,
-                height: 35.h,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.h),
+                  borderRadius: BorderRadius.circular(10.h),
                   image: DecorationImage(
                     image: NetworkImage(group.coverUrl ?? ""),
                     fit: BoxFit.cover,
                   ),
                 ),
+                width: 165.w,
+                height: 90.h,
               ),
               Container(
-                width: 10.w,
-              ),
-              Text(
-                group.name,
-                style: TextStyle(
-                  color: AppColors.primaryText,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w900,
-                  fontFamily: AppFonts.Header2,
+                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
+                child: Text(
+                  group.name,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: AppFonts.Header2,
+                  ),
                 ),
-              )
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
+                child: Text(
+                  typeGroup + ' - ${handleParticipantCount(group.participantCount)} thành viên',
+                  maxLines: 2,
+                  style: TextStyle(
+                    color: AppColors.primaryText,
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: AppFonts.Header3,
+                  ),
+                ),
+              ),
+              if (group.privacy == 'PUBLIC')
+                Container(
+                  margin: EdgeInsets.only(left: 10.w, top: 2.h, right: 10.w),
+                  height: 35.h,
+                  child: Row(
+                    children: [
+                      Container(
+                          margin: EdgeInsets.only(top: 5.h),
+                          width: 40.w,
+                          child: Stack(
+                            children: [
+                              for (var i = 0; i < 2; i += 1)
+                                Positioned(
+                                  left: (0 + i * 16).w,
+                                  child: CircleAvatar(
+                                    radius: 12,
+                                    child: null,
+                                    backgroundImage:
+                                    AssetImage("assets/images/test1.png"),
+                                  ),
+                                )
+                            ],
+                          )
+                      ),
+                      Container(
+                        width: 90.w,
+                        child: Text(
+                          'Trần Phúc và 27 người bạn là thành viên',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: AppColors.primarySecondaryText,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header3,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
             ],
           ),
         ],

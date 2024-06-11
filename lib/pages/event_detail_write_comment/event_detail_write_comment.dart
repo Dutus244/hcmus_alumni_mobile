@@ -31,11 +31,15 @@ class _EventDetailWriteCommentState extends State<EventDetailWriteComment> {
 
   @override
   Widget build(BuildContext context) {
+    var profile = 0;
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       route = args["route"];
       event = args["event"];
+      if (args["profile"] != null) {
+        profile = args["profile"];
+      }
     }
 
     return PopScope(
@@ -43,19 +47,20 @@ class _EventDetailWriteCommentState extends State<EventDetailWriteComment> {
         onPopInvoked: (_) async {
           Navigator.of(context).pushNamedAndRemoveUntil(
             "/eventDetail",
-            (route) => false,
+                (route) => false,
             arguments: {
               "route": route,
               "id": event.id,
+              "profile": profile,
             },
           );
         },
         child: BlocBuilder<EventDetailWriteCommentBloc,
             EventDetailWriteCommentState>(builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, route, event),
+            appBar: buildAppBar(context, route, event, profile),
             backgroundColor: AppColors.primaryBackground,
-            body: eventDetailWriteComment(context, event, route),
+            body: eventDetailWriteComment(context, event, route, profile),
           );
         }));
   }

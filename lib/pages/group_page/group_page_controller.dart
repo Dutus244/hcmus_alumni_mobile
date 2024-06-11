@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/group.dart';
 import '../../model/group_response.dart';
@@ -82,8 +83,12 @@ class GroupPageController {
         context
             .read<GroupPageBloc>()
             .add(StatusGroupDiscoverEvent(Status.success));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách nhóm");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách nhóm");
+    }
   }
 
   Future<void> handleLoadGroupJoinedData(int page) async {
@@ -146,8 +151,12 @@ class GroupPageController {
         context
             .read<GroupPageBloc>()
             .add(StatusGroupJoinedEvent(Status.success));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách nhóm");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách nhóm");
+    }
   }
 
   Future<void> handleRequestJoinGroup(Group group) async {
@@ -181,9 +190,11 @@ class GroupPageController {
         }
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi tham gia nhóm");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi tham gia nhóm");
     }
   }
 }

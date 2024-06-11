@@ -8,6 +8,7 @@ import 'package:hcmus_alumni_mobile/model/news_response.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_events.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_states.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'package:http/http.dart' as http;
 
@@ -71,8 +72,12 @@ class NewsEventPageController {
           context.read<NewsEventPageBloc>().add(HasReachedMaxNewsEvent(true));
         }
         context.read<NewsEventPageBloc>().add(StatusNewsEvent(Status.success));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách tin tức");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách tin tức");
+    }
   }
 
   Future<void> handleLoadEventData(int page) async {
@@ -132,7 +137,11 @@ class NewsEventPageController {
           context.read<NewsEventPageBloc>().add(HasReachedMaxEventEvent(true));
         }
         context.read<NewsEventPageBloc>().add(StatusEventEvent(Status.success));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách sự kiện");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách sự kiện");
+    }
   }
 }

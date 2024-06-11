@@ -48,11 +48,19 @@ class _AdvisePageListVotersState extends State<AdvisePageListVoters> {
 
   @override
   Widget build(BuildContext context) {
+    var profile = 0;
+    var route = 0;
     Map<String, dynamic>? args =
     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       vote = args["vote"];
       post = args["post"];
+      if (args["profile"] != null) {
+        profile = args["profile"];
+      }
+      if (profile == 1) {
+        route = args["route"];
+      }
       // Now you can use the passedValue in your widget
       context
           .read<AdvisePageListVotersBloc>()
@@ -63,19 +71,26 @@ class _AdvisePageListVotersState extends State<AdvisePageListVoters> {
     return PopScope(
       canPop: false, // prevent back
       onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/applicationPage",
-              (route) => false,
-          arguments: {
-            "route": 2,
-            "secondRoute": 0,
-          },
-        );
+        if (profile == 0) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            "/applicationPage",
+                (route) => false,
+            arguments: {
+              "route": 2,
+              "secondRoute": 0,
+            },
+          );
+        }
+        else {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              "/myProfilePage", (route) => false,
+              arguments: {"route": route});
+        }
       },
       child: BlocBuilder<AdvisePageListVotersBloc, AdvisePageListVotersState>(
           builder: (context, state) {
             return Scaffold(
-              appBar: buildAppBar(context),
+              appBar: buildAppBar(context, profile, route),
               backgroundColor: AppColors.primaryBackground,
               body: listVoters(context, vote, post, _scrollController),
             );

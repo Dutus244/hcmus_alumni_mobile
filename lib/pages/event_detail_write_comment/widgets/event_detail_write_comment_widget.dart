@@ -12,7 +12,7 @@ import '../bloc/event_detail_write_comment_blocs.dart';
 import '../bloc/event_detail_write_comment_events.dart';
 import '../event_detail_write_comment_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int route, Event event) {
+AppBar buildAppBar(BuildContext context, int route, Event event, int profile) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -30,6 +30,7 @@ AppBar buildAppBar(BuildContext context, int route, Event event) {
                 arguments: {
                   "route": route,
                   "id": event.id,
+                  "profile": profile,
                 },
               );
             },
@@ -184,14 +185,14 @@ Widget header(Event event) {
   );
 }
 
-Widget buttonSend(BuildContext context, Event event, int route) {
+Widget buttonSend(BuildContext context, Event event, int route, int profile) {
   String comment =
       BlocProvider.of<EventDetailWriteCommentBloc>(context).state.comment;
   return GestureDetector(
     onTap: () {
       if (comment != "") {
         EventDetailWriteCommentController(context: context)
-            .handleLoadWriteComment(event.id, route);
+            .handleLoadWriteComment(event.id, route, profile);
       }
     },
     child: Container(
@@ -240,7 +241,7 @@ Widget buttonSend(BuildContext context, Event event, int route) {
   );
 }
 
-Widget navigation(BuildContext context, Event event, int route) {
+Widget navigation(BuildContext context, Event event, int route, int profile) {
   String comment = BlocProvider.of<EventDetailWriteCommentBloc>(context)
       .state
       .comment;
@@ -275,7 +276,7 @@ Widget navigation(BuildContext context, Event event, int route) {
                 onTap: () {
                   if (comment != "") {
                     EventDetailWriteCommentController(context: context)
-                        .handleLoadWriteComment(event.id, route);
+                        .handleLoadWriteComment(event.id, route, profile);
                   }
                 },
                 child: Container(
@@ -329,7 +330,7 @@ Widget navigation(BuildContext context, Event event, int route) {
   );
 }
 
-Widget eventDetailWriteComment(BuildContext context, Event event, int route) {
+Widget eventDetailWriteComment(BuildContext context, Event event, int route, profile) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -348,7 +349,7 @@ Widget eventDetailWriteComment(BuildContext context, Event event, int route) {
           ],
         ),
       ),
-     buttonSend(context, event, route)
+     buttonSend(context, event, route, profile)
     ],
   );
 }

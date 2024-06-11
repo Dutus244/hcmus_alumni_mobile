@@ -16,7 +16,7 @@ import '../bloc/event_detail_write_children_comment_blocs.dart';
 import '../bloc/event_detail_write_children_comment_events.dart';
 import '../event_detail_write_children_comment_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int route, Event event) {
+AppBar buildAppBar(BuildContext context, int route, Event event, int profile) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -34,6 +34,7 @@ AppBar buildAppBar(BuildContext context, int route, Event event) {
                 arguments: {
                   "route": route,
                   "id": event.id,
+                  "profile": profile,
                 },
               );
             },
@@ -181,7 +182,6 @@ Widget header(Event event, Comment comment) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 2.h),
                     child: Text(
                       comment.creator.fullName,
                       maxLines: 1,
@@ -194,7 +194,6 @@ Widget header(Event event, Comment comment) {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 2.h),
                     child: Text(
                       handleDatetime(comment.updateAt),
                       maxLines: 1,
@@ -295,7 +294,7 @@ Widget header(Event event, Comment comment) {
 }
 
 Widget navigation(
-    BuildContext context, Event event, int route, Comment comment) {
+    BuildContext context, Event event, int route, Comment comment, int profile) {
   String content = BlocProvider.of<EventDetailWriteChildrenCommentBloc>(context)
       .state
       .comment;
@@ -330,7 +329,7 @@ Widget navigation(
                 onTap: () {
                   if (content != "") {
                     EventDetailWriteChildrenCommentController(context: context)
-                        .handleLoadWriteComment(event.id, comment.id, route);
+                        .handleLoadWriteComment(event.id, comment.id, route, profile);
                   }
                 },
                 child: Container(
@@ -384,14 +383,14 @@ Widget navigation(
   );
 }
 
-Widget buttonSend(BuildContext context, Event event, int route, Comment Comment) {
+Widget buttonSend(BuildContext context, Event event, int route, Comment Comment, int profile) {
   String comment =
       BlocProvider.of<EventDetailWriteChildrenCommentBloc>(context).state.comment;
   return GestureDetector(
     onTap: () {
       if (comment != "") {
         EventDetailWriteChildrenCommentController(context: context)
-            .handleLoadWriteComment(event.id, Comment.id, route);
+            .handleLoadWriteComment(event.id, Comment.id, route, profile);
       }
     },
     child: Container(
@@ -441,7 +440,7 @@ Widget buttonSend(BuildContext context, Event event, int route, Comment Comment)
 }
 
 Widget eventDetailWriteChildrenComment(
-    BuildContext context, Event event, int route, Comment comment) {
+    BuildContext context, Event event, int route, Comment comment, int profile) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -459,7 +458,7 @@ Widget eventDetailWriteChildrenComment(
           ],
         ),
       ),
-      buttonSend(context, event, route, comment),
+      buttonSend(context, event, route, comment, profile),
     ],
   );
 }

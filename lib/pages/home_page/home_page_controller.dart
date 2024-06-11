@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hcmus_alumni_mobile/model/news_response.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'package:http/http.dart' as http;
 
@@ -34,8 +35,12 @@ class HomePageController {
         var jsonMap = json.decode(responseBody);
         var eventResponse = EventResponse.fromJson(jsonMap);
         context.read<HomePageBloc>().add(EventsEvent(eventResponse.events));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách sự kiện");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách sự kiện");
+    }
   }
 
   Future<void> handleLoadNewsData() async {
@@ -55,8 +60,12 @@ class HomePageController {
         var jsonMap = json.decode(responseBody);
         var newsResponse = NewsResponse.fromJson(jsonMap);
         context.read<HomePageBloc>().add(NewsEvent(newsResponse.news));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách tin tức");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách tin tức");
+    }
   }
 
   Future<void> handleLoadHallOfFameData() async {
@@ -79,7 +88,11 @@ class HomePageController {
         context
             .read<HomePageBloc>()
             .add(HallOfFamesEvent(hallOfFameResponse.hallOfFames));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết");
+    }
   }
 }

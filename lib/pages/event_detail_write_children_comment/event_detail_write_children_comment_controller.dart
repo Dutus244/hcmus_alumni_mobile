@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,7 +16,7 @@ class EventDetailWriteChildrenCommentController {
   const EventDetailWriteChildrenCommentController({required this.context});
 
   Future<void> handleLoadWriteComment(
-      String id, String commentId, int route) async {
+      String id, String commentId, int route, int profile) async {
     final state = context.read<EventDetailWriteChildrenCommentBloc>().state;
     String comment = state.comment;
 
@@ -43,13 +44,24 @@ class EventDetailWriteChildrenCommentController {
           arguments: {
             "route": route,
             "id": id,
+            "profile": profile,
           },
         );
       } else {
-        // Handle other status codes if needed
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 51401) {
+          toastInfo(msg: "Không tìm thấy bài viết");
+          return;
+        }
+        if (errorCode == 51402) {
+          toastInfo(msg: "Không tìm thấy bình luận cha");
+          return;
+        }
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi gửi bình luận");
     }
   }
 }

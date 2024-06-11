@@ -14,7 +14,7 @@ import '../../../model/voter.dart';
 import '../bloc/advise_page_list_voters_blocs.dart';
 import '../bloc/advise_page_list_voters_states.dart';
 
-AppBar buildAppBar(BuildContext context) {
+AppBar buildAppBar(BuildContext context, int profile, int route) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -26,14 +26,21 @@ AppBar buildAppBar(BuildContext context) {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/applicationPage",
-                    (route) => false,
-                arguments: {
-                  "route": 2,
-                  "secondRoute": 0,
-                },
-              );
+              if (profile == 0) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/applicationPage",
+                      (route) => false,
+                  arguments: {
+                    "route": 2,
+                    "secondRoute": 0,
+                  },
+                );
+              }
+              else {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/myProfilePage", (route) => false,
+                    arguments: {"route": route});
+              }
             },
             child: Container(
               padding: EdgeInsets.only(left: 0.w),

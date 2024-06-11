@@ -166,7 +166,6 @@ Widget buildCommentWidget(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 2.h),
                       child: Text(
                         comment.creator.fullName,
                         maxLines: 1,
@@ -179,7 +178,6 @@ Widget buildCommentWidget(
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(bottom: 2.h),
                       child: Text(
                         handleDatetime(comment.updateAt),
                         maxLines: 1,
@@ -713,6 +711,7 @@ AppBar buildAppBar(BuildContext context, String groupId, int secondRoute) {
       height: 40.h,
       margin: EdgeInsets.only(left: 0.w, right: 10.w),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
             onTap: () {
@@ -732,9 +731,6 @@ AppBar buildAppBar(BuildContext context, String groupId, int secondRoute) {
               color: Colors.black.withOpacity(0.5),
             ),
           ),
-          Container(
-            width: 10.w,
-          ),
           Text(
             'Bình luận',
             textAlign: TextAlign.center,
@@ -744,6 +740,9 @@ AppBar buildAppBar(BuildContext context, String groupId, int secondRoute) {
               fontSize: 16.sp,
               color: AppColors.secondaryHeader,
             ),
+          ),
+          Container(
+            width: 25.w,
           ),
         ],
       ),

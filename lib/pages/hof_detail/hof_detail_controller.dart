@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/hall_of_fame.dart';
 import 'bloc/hof_detail_blocs.dart';
@@ -39,10 +40,16 @@ class HofDetailController {
         var hallOfFame = HallOfFame.fromJson(jsonMap);
         context.read<HofDetailBloc>().add(HofEvent(hallOfFame));
       } else {
-        // Handle other status codes if needed
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 30300) {
+          toastInfo(msg: "Không tìm thấy bài viết");
+          return;
+        }
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi lấy bài viết");
     }
   }
 }

@@ -22,42 +22,62 @@ class SignInController {
   Future<void> handleSavePermission(List<String> permissions) async {
     if (hasPermission(permissions, Permissions.NEWS_COMMENT_CREATE)) {
       Global.storageService.setBool(Permissions.NEWS_COMMENT_CREATE, true);
+    } else {
+      Global.storageService.setBool(Permissions.NEWS_COMMENT_CREATE, false);
     }
 
     if (hasPermission(permissions, Permissions.EVENT_COMMENT_CREATE)) {
       Global.storageService.setBool(Permissions.EVENT_COMMENT_CREATE, true);
+    } else {
+      Global.storageService.setBool(Permissions.EVENT_COMMENT_CREATE, false);
     }
 
     if (hasPermission(permissions, Permissions.EVENT_PARTICIPANT_CREATE)) {
       Global.storageService.setBool(Permissions.EVENT_PARTICIPANT_CREATE, true);
+    } else {
+      Global.storageService.setBool(Permissions.EVENT_PARTICIPANT_CREATE, false);
     }
 
     if (hasPermission(permissions, Permissions.COUNSEL_CREATE)) {
       Global.storageService.setBool(Permissions.COUNSEL_CREATE, true);
+    } else {
+      Global.storageService.setBool(Permissions.COUNSEL_CREATE, false);
     }
 
     if (hasPermission(permissions, Permissions.COUNSEL_REACTION_CREATE)) {
       Global.storageService.setBool(Permissions.COUNSEL_REACTION_CREATE, true);
+    } else {
+      Global.storageService.setBool(Permissions.COUNSEL_REACTION_CREATE, false);
     }
 
     if (hasPermission(permissions, Permissions.COUNSEL_COMMENT_CREATE)) {
       Global.storageService.setBool(Permissions.COUNSEL_COMMENT_CREATE, true);
+    } else {
+      Global.storageService.setBool(Permissions.COUNSEL_COMMENT_CREATE, false);
     }
 
     if (hasPermission(permissions, Permissions.COUNSEL_VOTE)) {
       Global.storageService.setBool(Permissions.COUNSEL_VOTE, true);
+    } else {
+      Global.storageService.setBool(Permissions.COUNSEL_VOTE, false);
     }
 
     if (hasPermission(permissions, Permissions.GROUP_CREATE)) {
       Global.storageService.setBool(Permissions.GROUP_CREATE, true);
+    } else {
+      Global.storageService.setBool(Permissions.GROUP_CREATE, false);
     }
 
     if (hasPermission(permissions, Permissions.PROFILE_EDIT)) {
       Global.storageService.setBool(Permissions.PROFILE_EDIT, true);
+    } else {
+      Global.storageService.setBool(Permissions.PROFILE_EDIT, false);
     }
 
     if (hasPermission(permissions, Permissions.MESSAGE_CREATE)) {
       Global.storageService.setBool(Permissions.MESSAGE_CREATE, true);
+    } else {
+      Global.storageService.setBool(Permissions.MESSAGE_CREATE, false);
     }
   }
 
@@ -109,10 +129,23 @@ class SignInController {
         Navigator.of(context)
             .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
       } else {
-        toastInfo(msg: "Email hoặc mật khẩu bị sai");
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 10100) {
+          toastInfo(msg: "Email hoặc mật khẩu không hợp lệ");
+          return;
+        }
+        if (errorCode == 10101) {
+          toastInfo(msg: "Email hoặc mật khẩu không hợp lệ");
+          return;
+        }
+        if (errorCode == 10102) {
+          toastInfo(msg: "Lỗi đăng nhập");
+          return;
+        }
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xảy ra");
+      toastInfo(msg: "Có lỗi xảy ra khi đăng nhập");
     }
   }
 
@@ -141,7 +174,7 @@ class SignInController {
         toastInfo(msg: "Email hoặc mật khẩu bị sai");
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xảy ra");
+      toastInfo(msg: "Có lỗi xảy ra khi đăng nhập");
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/interact.dart';
 import '../../model/interact_response.dart';
@@ -89,7 +90,11 @@ class ListInteractPostGroupController {
         context
             .read<ListInteractPostGroupBloc>()
             .add(StatusInteractEvent(Status.success));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách tương tác");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách tương tác");
+    }
   }
 }

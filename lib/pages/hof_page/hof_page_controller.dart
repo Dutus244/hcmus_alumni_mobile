@@ -7,6 +7,7 @@ import 'package:hcmus_alumni_mobile/model/hall_of_fame.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/bloc/hof_page_events.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/bloc/hof_page_states.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/hall_of_fame_response.dart';
 import 'bloc/hof_page_blocs.dart';
@@ -121,9 +122,11 @@ class HofPageController {
         }
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết");
     }
   }
 }

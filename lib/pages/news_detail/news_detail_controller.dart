@@ -10,6 +10,7 @@ import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_blocs.dar
 import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_events.dart';
 import 'package:http/http.dart' as http;
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/news.dart';
 import '../../model/news_response.dart';
@@ -35,8 +36,17 @@ class NewsDetailController {
         var jsonMap = json.decode(responseBody);
         var news = News.fromJson(jsonMap);
         context.read<NewsDetailBloc>().add(NewsEvent(news));
-      } else {}
-    } catch (error) {}
+      } else {
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 40300) {
+          toastInfo(msg: "Không tìm thấy bài viết");
+          return;
+        }
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy bài viết");
+    }
   }
 
   Future<void> handleGetComment(String id, int page) async {
@@ -84,8 +94,12 @@ class NewsDetailController {
             ..addAll(commentResponse.comments);
           context.read<NewsDetailBloc>().add(CommentsEvent(updatedNewsList));
         }
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
+    }
   }
 
   Future<void> handleGetChildrenComment(String commentId) async {
@@ -107,39 +121,39 @@ class NewsDetailController {
         List<Comment> currentList =
             BlocProvider.of<NewsDetailBloc>(context).state.comments;
 
-        // Tìm bình luận cha trong toàn bộ cây bình luận
         Comment? parentComment = findParentComment(currentList, commentId);
 
-        // Nếu tìm thấy bình luận cha, thêm các bình luận con vào nó
         if (parentComment != null) {
           await parentComment.fetchChildrenComments(jsonMap);
         }
 
-        // Thông báo cho Bloc về sự thay đổi
         context.read<NewsDetailBloc>().add(CommentsEvent(currentList));
       } else {
-        // Xử lý lỗi hoặc trạng thái không mong muốn
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 41100) {
+          toastInfo(msg: "Không tìm thấy bình luận cha");
+          return;
+        }
       }
     } catch (error) {
-      // Xử lý lỗi
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
     }
   }
 
-// Hàm đệ qui để tìm bình luận cha trong toàn bộ cây bình luận
   Comment? findParentComment(List<Comment> comments, String commentId) {
     for (var comment in comments) {
       if (comment.id == commentId) {
-        return comment; // Bình luận hiện tại là bình luận cha
+        return comment;
       }
-      // Kiểm tra các bình luận con của bình luận hiện tại
       if (comment.childrenComments.isNotEmpty) {
         var parent = findParentComment(comment.childrenComments, commentId);
         if (parent != null) {
-          return parent; // Bình luận cha được tìm thấy trong các bình luận con
+          return parent;
         }
       }
     }
-    return null; // Không tìm thấy bình luận cha
+    return null;
   }
 
   Future<void> handleGetRelatedNews(String id) async {
@@ -159,8 +173,17 @@ class NewsDetailController {
         var jsonMap = json.decode(responseBody);
         var newsResponse = NewsResponse.fromJson(jsonMap);
         context.read<NewsDetailBloc>().add(RelatedNewsEvent(newsResponse.news));
-      } else {}
-    } catch (error) {}
+      } else {
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 40800) {
+          toastInfo(msg: "Không tìm thấy bài viết gốc");
+          return;
+        }
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết liên quan");
+    }
   }
 
   Future<void> handleDeleteComment(String id, String commentId) async {
@@ -200,10 +223,16 @@ class NewsDetailController {
           NewsDetailController(context: context).handleGetNews(id);
           NewsDetailController(context: context).handleGetComment(id, 0);
         } else {
-          // Handle other status codes if needed
+          Map<String, dynamic> jsonMap = json.decode(response.body);
+          int errorCode = jsonMap['error']['code'];
+          if (errorCode == 41400) {
+            toastInfo(msg: "Không tìm thấy bình luận");
+            return;
+          }
         }
       } catch (error) {
         // Handle errors
+        toastInfo(msg: "Có lỗi xả ra khi xoá bình luận");
       }
     }
     return shouldDelte ?? false;

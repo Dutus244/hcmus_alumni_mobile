@@ -14,6 +14,7 @@ AppBar buildAppBar(BuildContext context, String groupId, int secondRoute) {
       height: 40.h,
       margin: EdgeInsets.only(left: 0.w, right: 10.w),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
             onTap: () {
@@ -33,9 +34,6 @@ AppBar buildAppBar(BuildContext context, String groupId, int secondRoute) {
               color: Colors.black.withOpacity(0.5),
             ),
           ),
-          Container(
-            width: 10.w,
-          ),
           Text(
             'Hình ảnh',
             textAlign: TextAlign.center,
@@ -45,6 +43,9 @@ AppBar buildAppBar(BuildContext context, String groupId, int secondRoute) {
               fontSize: 16.sp,
               color: AppColors.secondaryHeader,
             ),
+          ),
+          Container(
+            width: 25.w,
           ),
         ],
       ),

@@ -2439,7 +2439,7 @@ Widget chooseBirthday(BuildContext context) {
   }
 
   return Container(
-    height: 200.h,
+    height: 210.h,
     child: Stack(
       children: [
         SingleChildScrollView(

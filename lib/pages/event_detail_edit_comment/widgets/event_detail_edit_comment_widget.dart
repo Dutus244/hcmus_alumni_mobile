@@ -13,7 +13,7 @@ import '../bloc/event_detail_edit_comment_blocs.dart';
 import '../bloc/event_detail_edit_comment_events.dart';
 import '../event_detail_edit_comment_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int route, Event event) {
+AppBar buildAppBar(BuildContext context, int route, Event event, int profile) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -27,10 +27,11 @@ AppBar buildAppBar(BuildContext context, int route, Event event) {
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
                 "/eventDetail",
-                    (route) => false,
+                (route) => false,
                 arguments: {
                   "route": route,
                   "id": event.id,
+                  "profile": profile,
                 },
               );
             },
@@ -192,8 +193,8 @@ Widget header(Event event) {
   );
 }
 
-Widget navigation(
-    BuildContext context, Event event, int route, Comment Comment) {
+Widget navigation(BuildContext context, Event event, int route, Comment Comment,
+    int profile) {
   String comment =
       BlocProvider.of<EventDetailEditCommentBloc>(context).state.comment;
   return Container(
@@ -227,7 +228,8 @@ Widget navigation(
                 onTap: () {
                   if (comment != "")
                     EventDetailEditCommentController(context: context)
-                        .handleEditComment(event.id, Comment.id, route);
+                        .handleEditComment(
+                            event.id, Comment.id, route, profile);
                 },
                 child: Container(
                   width: 70.w,
@@ -280,15 +282,15 @@ Widget navigation(
   );
 }
 
-Widget buttonEdit(BuildContext context, Event event, int route, Comment Comment) {
-  String comment = BlocProvider.of<EventDetailEditCommentBloc>(context)
-      .state
-      .comment;
+Widget buttonEdit(BuildContext context, Event event, int route, Comment Comment,
+    int profile) {
+  String comment =
+      BlocProvider.of<EventDetailEditCommentBloc>(context).state.comment;
   return GestureDetector(
     onTap: () {
       if (comment != "") {
         EventDetailEditCommentController(context: context)
-            .handleEditComment(event.id, Comment.id, route);
+            .handleEditComment(event.id, Comment.id, route, profile);
       }
     },
     child: Container(
@@ -305,40 +307,40 @@ Widget buttonEdit(BuildContext context, Event event, int route, Comment Comment)
       ),
       child: Center(
           child: Container(
-            margin: EdgeInsets.only(left: 12.w, right: 12.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Lưu',
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header1,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: comment != ""
-                          ? AppColors.primaryBackground
-                          : Colors.black.withOpacity(0.3)),
-                ),
-                Container(
-                  width: 6.w,
-                ),
-                SvgPicture.asset(
-                  "assets/icons/send.svg",
-                  width: 15.w,
-                  height: 15.h,
+        margin: EdgeInsets.only(left: 12.w, right: 12.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Lưu',
+              style: TextStyle(
+                  fontFamily: AppFonts.Header1,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
                   color: comment != ""
                       ? AppColors.primaryBackground
-                      : Colors.black.withOpacity(0.5),
-                ),
-              ],
+                      : Colors.black.withOpacity(0.3)),
             ),
-          )),
+            Container(
+              width: 6.w,
+            ),
+            SvgPicture.asset(
+              "assets/icons/send.svg",
+              width: 15.w,
+              height: 15.h,
+              color: comment != ""
+                  ? AppColors.primaryBackground
+                  : Colors.black.withOpacity(0.5),
+            ),
+          ],
+        ),
+      )),
     ),
   );
 }
 
-Widget eventDetailEditComment(
-    BuildContext context, Event event, int route, Comment comment) {
+Widget eventDetailEditComment(BuildContext context, Event event, int route,
+    Comment comment, int profile) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -357,12 +359,7 @@ Widget eventDetailEditComment(
           ],
         ),
       ),
-      buttonEdit(
-        context,
-        event,
-        route,
-        comment,
-      ),
+      buttonEdit(context, event, route, comment, profile),
     ],
   );
 }

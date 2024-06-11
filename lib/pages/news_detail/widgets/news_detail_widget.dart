@@ -483,7 +483,7 @@ Widget buildCommentWidget(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 2.h),
+                      margin: EdgeInsets.only(top: 0.h),
                       child: Text(
                         comment.creator.fullName,
                         maxLines: 1,
@@ -496,7 +496,7 @@ Widget buildCommentWidget(
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(bottom: 2.h),
+                      margin: EdgeInsets.only(bottom: 0.h),
                       child: Text(
                         handleDatetime(comment.updateAt),
                         maxLines: 1,
@@ -609,6 +609,68 @@ Widget buildCommentWidget(
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                 "/newsDetailEditComment",
                                 (route) => false,
+                                arguments: {
+                                  "route": route,
+                                  "news": news,
+                                  "comment": comment,
+                                },
+                              );
+                            },
+                            child: Text(
+                              'Chỉnh sửa',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    if (comment.permissions.delete)
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              NewsDetailController(context: context)
+                                  .handleDeleteComment(news.id, comment.id);
+                            },
+                            child: Text(
+                              'Xoá',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        if (index > 1)
+          Container(
+            margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
+            child: Row(
+              children: [
+                Row(
+                  children: [
+                    if (comment.permissions.edit)
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                "/newsDetailEditComment",
+                                    (route) => false,
                                 arguments: {
                                   "route": route,
                                   "news": news,

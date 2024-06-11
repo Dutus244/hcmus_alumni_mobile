@@ -25,12 +25,6 @@ class TagsEvent extends EditPostAdviseEvent {
   const TagsEvent(this.tags);
 }
 
-class ItemTagsEvent extends EditPostAdviseEvent {
-  final List<ValueItem> itemTags;
-
-  const ItemTagsEvent(this.itemTags);
-}
-
 class PicturesEvent extends EditPostAdviseEvent {
   final List<File> pictures;
 

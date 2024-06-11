@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'bloc/news_detail_edit_comment_blocs.dart';
 import 'package:http/http.dart' as http;
@@ -46,9 +47,11 @@ class NewsDetailEditCommentController {
         );
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa bình luận");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa bình luận");
     }
   }
 }

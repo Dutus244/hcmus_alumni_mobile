@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:multi_dropdown/models/value_item.dart';
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/post.dart';
 import 'bloc/edit_post_advise_blocs.dart';
@@ -19,23 +20,13 @@ class EditPostAdviseController {
   const EditPostAdviseController({required this.context});
 
   List<Map<String, dynamic>> convertTagsToJson(List<String> tags) {
-    return tags.map((tag) => {'id': tag}).toList();
+    return tags.map((tag) => {'name': tag}).toList();
   }
 
   Future<void> handleLoad(Post post) async {
 
-    List<String> tagsId = post.tags.map((tag) => tag.id.toString()).toList();
-    context.read<EditPostAdviseBloc>().add(TagsEvent(tagsId));
-    List<ValueItem> initialSelectedItems = [
-      ValueItem(label: 'Cựu sinh viên', value: '1'),
-      ValueItem(label: 'Trường học', value: '2'),
-      ValueItem(label: 'Cộng đồng', value: '3'),
-      ValueItem(label: 'Khởi nghiệp', value: '4'),
-      ValueItem(label: 'Nghề nghiệp', value: '5'),
-      ValueItem(label: 'Học tập', value: '6'),
-      ValueItem(label: 'Việc làm', value: '7'),
-    ].where((item) => tagsId.contains(item.value)).toList();
-    context.read<EditPostAdviseBloc>().add(ItemTagsEvent(initialSelectedItems));
+    List<String> tags = post.tags.map((tag) => tag.name.toString()).toList();
+    context.read<EditPostAdviseBloc>().add(TagsEvent(tags));
     context.read<EditPostAdviseBloc>().add(TitleEvent(post.title));
     context.read<EditPostAdviseBloc>().add(ContentEvent(post.content));
     context.read<EditPostAdviseBloc>().add(PictureNetworksEvent(post.pictures));
@@ -114,16 +105,24 @@ class EditPostAdviseController {
                 "secondRoute": 0,
               },
             );
-          } else {}
+          } else {
+            toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài tư vấn");
+            return;
+          }
         } catch (e) {
           // Exception occurred
-          print('Exception occurred: $e');
+          toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài tư vấn");
+          return;
         }
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài tư vấn");
+        return;
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài tư vấn");
+      return;
     }
   }
 }

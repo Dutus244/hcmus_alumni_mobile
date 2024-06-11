@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/comment.dart';
 import '../../model/comment_response.dart';
@@ -86,8 +87,12 @@ class ListCommentPostAdviseController {
         context
             .read<ListCommentPostGroupBloc>()
             .add(StatusCommentEvent(Status.success));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
+    }
   }
 
   Future<void> handleGetChildrenComment(String commentId) async {
@@ -109,41 +114,36 @@ class ListCommentPostAdviseController {
         List<Comment> currentList =
             BlocProvider.of<ListCommentPostGroupBloc>(context).state.comments;
 
-        // Tìm bình luận cha trong toàn bộ cây bình luận
         Comment? parentComment = findParentComment(currentList, commentId);
 
-        // Nếu tìm thấy bình luận cha, thêm các bình luận con vào nó
         if (parentComment != null) {
           await parentComment.fetchChildrenComments(jsonMap);
         }
 
-        // Thông báo cho Bloc về sự thay đổi
         context
             .read<ListCommentPostGroupBloc>()
             .add(CommentsEvent(currentList));
       } else {
-        // Xử lý lỗi hoặc trạng thái không mong muốn
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
       }
     } catch (error) {
-      // Xử lý lỗi
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
     }
   }
 
-// Hàm đệ qui để tìm bình luận cha trong toàn bộ cây bình luận
   Comment? findParentComment(List<Comment> comments, String commentId) {
     for (var comment in comments) {
       if (comment.id == commentId) {
-        return comment; // Bình luận hiện tại là bình luận cha
+        return comment;
       }
-      // Kiểm tra các bình luận con của bình luận hiện tại
       if (comment.childrenComments.isNotEmpty) {
         var parent = findParentComment(comment.childrenComments, commentId);
         if (parent != null) {
-          return parent; // Bình luận cha được tìm thấy trong các bình luận con
+          return parent;
         }
       }
     }
-    return null; // Không tìm thấy bình luận cha
+    return null;
   }
 
   Future<void> handleLoadWriteComment(String id) async {
@@ -173,9 +173,11 @@ class ListCommentPostAdviseController {
             .handleGetComment(id, 0);
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi gửi bình luận");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi gửi bình luận");
     }
   }
 
@@ -206,9 +208,11 @@ class ListCommentPostAdviseController {
             .handleGetComment(id, 0);
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi gửi bình luận");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi gửi bình luận");
     }
   }
 
@@ -239,9 +243,11 @@ class ListCommentPostAdviseController {
             .handleGetComment(id, 0);
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa bình luận");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa bình luận");
     }
   }
 
@@ -284,9 +290,11 @@ class ListCommentPostAdviseController {
               .handleGetComment(id, 0);
         } else {
           // Handle other status codes if needed
+          toastInfo(msg: "Có lỗi xả ra khi xoá bình luận");
         }
       } catch (error) {
         // Handle errors
+        toastInfo(msg: "Có lỗi xả ra khi xoá bình luận");
       }
     }
     return shouldDelte ?? false;

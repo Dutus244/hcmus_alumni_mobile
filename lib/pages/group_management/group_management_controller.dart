@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,8 +33,12 @@ class GroupManagementController {
         var jsonMap = json.decode(responseBody);
         var group = Group.fromJson(jsonMap);
         context.read< GroupManagementBloc>().add(GroupEvent(group));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy thông tin nhóm");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy thông tin nhóm");
+    }
   }
 
   Future<void> handleExitGroup(String id, int secondRoute) async {
@@ -59,9 +64,11 @@ class GroupManagementController {
             arguments: {"route": 3, "secondRoute": secondRoute});
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi thoát nhóm");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi thoát nhóm");
     }
   }
 
@@ -104,9 +111,11 @@ class GroupManagementController {
               arguments: {"route": 3, "secondRoute": secondRoute});
         } else {
           // Handle other status codes if needed
+          toastInfo(msg: "Có lỗi xả ra khi xoá nhóm");
         }
       } catch (error) {
         // Handle errors
+        toastInfo(msg: "Có lỗi xả ra khi xoá nhóm");
       }
     }
     return shouldDelte ?? false;

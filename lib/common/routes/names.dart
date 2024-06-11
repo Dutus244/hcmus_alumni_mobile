@@ -16,6 +16,7 @@ class AppRoutes {
   static const HOF_PAGE = "/hofPage";
   static const GROUP_PAGE = "/groupPage";
   static const MY_PROFILE_PAGE = "/myProfilePage";
+  static const OTHER_PROFILE_PAGE = "/otherProfilePage";
 
   static const NEWS_DETAIL = "/newsDetail";
   static const NEWS_DETAIL_WRITE_COMMENT = "/newsDetailWriteComment";
@@ -54,4 +55,8 @@ class AppRoutes {
   static const MY_PROFILE_ADD_JOB = "/myProfileAddJob";
   static const MY_PROFILE_ADD_EDUCATION = "/myProfileAddEducation";
   static const MY_PROFILE_ADD_ACHIEVEMENT = "/myProfileAddAchievement";
+  static const OTHER_PROFILE_DETAIL = "/otherProfileDetail";
+
+  static const OPTION_PAGE = "/optionPage";
+  static const CHANGE_PASSWORD = "/changePassword";
 }

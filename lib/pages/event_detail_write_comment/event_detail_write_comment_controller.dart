@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,7 +15,7 @@ class EventDetailWriteCommentController {
 
   const EventDetailWriteCommentController({required this.context});
 
-  Future<void> handleLoadWriteComment(String id, int route) async {
+  Future<void> handleLoadWriteComment(String id, int route, int profile) async {
     final state = context.read<EventDetailWriteCommentBloc>().state;
     String comment = state.comment;
     var apiUrl = dotenv.env['API_URL'];
@@ -36,9 +37,19 @@ class EventDetailWriteCommentController {
           arguments: {
             "route": route,
             "id": id,
+            "profile": profile,
           },
         );
-      } else {}
-    } catch (error) {}
+      } else {
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 51401) {
+          toastInfo(msg: "Không tìm thấy bài viết");
+          return;
+        }
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi gửi bình luận");
+    }
   }
 }
