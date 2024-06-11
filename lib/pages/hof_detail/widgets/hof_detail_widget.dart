@@ -77,44 +77,6 @@ AppBar buildAppBar(BuildContext context, int route) {
   );
 }
 
-Widget navigation(BuildContext context, int route) {
-  return Container(
-    height: 45.h,
-    child: Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  if (route == 0) {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        "/applicationPage", (route) => false,
-                        arguments: {"route": route, "secondRoute": 0});
-                  } else {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/hofPage",
-                      (route) => false,
-                    );
-                  }
-                },
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ],
-          ),
-        )
-      ],
-    ),
-  );
-}
-
 Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
   if (hallOfFame == null) {
     return loadingWidget();

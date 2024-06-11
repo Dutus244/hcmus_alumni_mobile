@@ -71,46 +71,6 @@ AppBar buildAppBar(BuildContext context, Group group, int secondRoute) {
   );
 }
 
-Widget navigation(BuildContext context, Group group, int secondRoute) {
-  return Container(
-    height: 45.h,
-    child: Column(
-      children: [
-        Container(
-          height: 1.h,
-          color: AppColors.primarySecondaryElement,
-        ),
-        Container(
-          margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/groupDetail",
-                    (route) => false,
-                    arguments: {
-                      "id": group.id,
-                      "secondRoute": secondRoute,
-                    },
-                  );
-                },
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ],
-          ),
-        )
-      ],
-    ),
-  );
-}
-
 Widget infoGroup(BuildContext context, Group group, int secondRoute) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
