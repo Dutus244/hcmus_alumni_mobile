@@ -49,10 +49,19 @@ class _ListInteractPostAdviseState extends State<ListInteractPostAdvise> {
 
   @override
   Widget build(BuildContext context) {
+    var profile = 0;
+    var route = 0;
+
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       id = args["id"];
+      if (args["profile"] != null) {
+        profile = args["profile"];
+      }
+      if (profile == 1) {
+        route = args["route"];
+      }
       ListInteractPostAdviseController(context: context)
           .handleGetListInteract(id, 0);
     }
@@ -60,15 +69,27 @@ class _ListInteractPostAdviseState extends State<ListInteractPostAdvise> {
     return PopScope(
       canPop: false, // prevent back
       onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": 2, "secondRoute": 0});
+        if (profile == 0) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            "/applicationPage",
+                (route) => false,
+            arguments: {
+              "route": 2,
+              "secondRoute": 0,
+            },
+          );
+        }
+        else {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              "/myProfilePage", (route) => false,
+              arguments: {"route": route});
+        }
       },
       child:
           BlocBuilder<ListInteractPostAdviseBloc, ListInteractPostAdviseState>(
               builder: (context, state) {
         return Scaffold(
-          appBar: buildAppBar(context),
+          appBar: buildAppBar(context, profile, route),
           backgroundColor: AppColors.primaryBackground,
           body: listInteract(context, _scrollController),
         );

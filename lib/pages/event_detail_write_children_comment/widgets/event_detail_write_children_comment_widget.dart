@@ -16,7 +16,7 @@ import '../bloc/event_detail_write_children_comment_blocs.dart';
 import '../bloc/event_detail_write_children_comment_events.dart';
 import '../event_detail_write_children_comment_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int route, Event event) {
+AppBar buildAppBar(BuildContext context, int route, Event event, int profile) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -34,6 +34,7 @@ AppBar buildAppBar(BuildContext context, int route, Event event) {
                 arguments: {
                   "route": route,
                   "id": event.id,
+                  "profile": profile,
                 },
               );
             },
@@ -181,7 +182,6 @@ Widget header(Event event, Comment comment) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 2.h),
                     child: Text(
                       comment.creator.fullName,
                       maxLines: 1,
@@ -194,7 +194,6 @@ Widget header(Event event, Comment comment) {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 2.h),
                     child: Text(
                       handleDatetime(comment.updateAt),
                       maxLines: 1,
@@ -294,104 +293,14 @@ Widget header(Event event, Comment comment) {
   );
 }
 
-Widget navigation(
-    BuildContext context, Event event, int route, Comment comment) {
-  String content = BlocProvider.of<EventDetailWriteChildrenCommentBloc>(context)
-      .state
-      .comment;
-  return Container(
-    height: 45.h,
-    child: Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/eventDetail",
-                    (route) => false,
-                    arguments: {
-                      "route": route,
-                      "id": event.id,
-                    },
-                  );
-                },
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (content != "") {
-                    EventDetailWriteChildrenCommentController(context: context)
-                        .handleLoadWriteComment(event.id, comment.id, route);
-                  }
-                },
-                child: Container(
-                  width: 70.w,
-                  height: 30.h,
-                  decoration: BoxDecoration(
-                    color: content != ""
-                        ? AppColors.primaryElement
-                        : AppColors.primaryBackground,
-                    borderRadius: BorderRadius.circular(15.w),
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  child: Center(
-                      child: Container(
-                    margin: EdgeInsets.only(left: 12.w, right: 12.w),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Gửi',
-                          style: TextStyle(
-                              fontFamily: AppFonts.Header2,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold,
-                              color: content != ""
-                                  ? AppColors.primaryBackground
-                                  : Colors.black.withOpacity(0.3)),
-                        ),
-                        Container(
-                          width: 6.w,
-                        ),
-                        SvgPicture.asset(
-                          "assets/icons/send.svg",
-                          width: 15.w,
-                          height: 15.h,
-                          color: comment != ""
-                              ? AppColors.primaryBackground
-                              : Colors.black.withOpacity(0.5),
-                        ),
-                      ],
-                    ),
-                  )),
-                ),
-              )
-            ],
-          ),
-        )
-      ],
-    ),
-  );
-}
-
-Widget buttonSend(BuildContext context, Event event, int route, Comment Comment) {
+Widget buttonSend(BuildContext context, Event event, int route, Comment Comment, int profile) {
   String comment =
       BlocProvider.of<EventDetailWriteChildrenCommentBloc>(context).state.comment;
   return GestureDetector(
     onTap: () {
       if (comment != "") {
         EventDetailWriteChildrenCommentController(context: context)
-            .handleLoadWriteComment(event.id, Comment.id, route);
+            .handleLoadWriteComment(event.id, Comment.id, route, profile);
       }
     },
     child: Container(
@@ -441,7 +350,7 @@ Widget buttonSend(BuildContext context, Event event, int route, Comment Comment)
 }
 
 Widget eventDetailWriteChildrenComment(
-    BuildContext context, Event event, int route, Comment comment) {
+    BuildContext context, Event event, int route, Comment comment, int profile) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -459,7 +368,7 @@ Widget eventDetailWriteChildrenComment(
           ],
         ),
       ),
-      buttonSend(context, event, route, comment),
+      buttonSend(context, event, route, comment, profile),
     ],
   );
 }

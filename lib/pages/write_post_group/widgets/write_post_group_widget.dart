@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
@@ -100,7 +101,7 @@ Widget buttonSend(BuildContext context, String id, int secondRoute) {
             : AppColors.primaryBackground,
         borderRadius: BorderRadius.circular(10.w),
         border: Border.all(
-          color: AppColors.primarySecondaryElement,
+          color: Colors.grey,
         ),
       ),
       child: Center(
@@ -178,156 +179,6 @@ Widget buttonFinishEditPicture(BuildContext context) {
           ],
         ),
       )),
-    ),
-  );
-}
-
-Widget navigation(BuildContext context, String id, int secondRoute) {
-  String title = BlocProvider.of<WritePostGroupBloc>(context).state.title;
-  String content = BlocProvider.of<WritePostGroupBloc>(context).state.content;
-
-  return Container(
-    height: 45.h,
-    child: Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/groupDetail",
-                    (route) => false,
-                    arguments: {
-                      "id": id,
-                      "secondRoute": secondRoute,
-                    },
-                  );
-                },
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (title != "" && content != "") {
-                    WritePostGroupController(context: context)
-                        .handlePost(id, secondRoute);
-                  }
-                },
-                child: Container(
-                  width: 80.w,
-                  height: 30.h,
-                  decoration: BoxDecoration(
-                    color: (title != "" && content != "")
-                        ? AppColors.primaryElement
-                        : AppColors.primaryBackground,
-                    borderRadius: BorderRadius.circular(15.w),
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  child: Center(
-                      child: Container(
-                    margin: EdgeInsets.only(left: 12.w, right: 12.w),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Đăng',
-                          style: TextStyle(
-                              fontFamily: AppFonts.Header2,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold,
-                              color: (title != "" && content != "")
-                                  ? AppColors.primaryBackground
-                                  : Colors.black.withOpacity(0.3)),
-                        ),
-                        Container(
-                          width: 6.w,
-                        ),
-                        SvgPicture.asset(
-                          "assets/icons/send.svg",
-                          width: 15.w,
-                          height: 15.h,
-                          color: (title != "" && content != "")
-                              ? AppColors.primaryBackground
-                              : Colors.black.withOpacity(0.5),
-                        ),
-                      ],
-                    ),
-                  )),
-                ),
-              )
-            ],
-          ),
-        )
-      ],
-    ),
-  );
-}
-
-Widget navigationEditPicture(BuildContext context) {
-  return Container(
-    height: 45.h,
-    child: Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  context.read<WritePostGroupBloc>().add(PageEvent(0));
-                },
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  context.read<WritePostGroupBloc>().add(PageEvent(0));
-                },
-                child: Container(
-                  width: 60.w,
-                  height: 30.h,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryElement,
-                    borderRadius: BorderRadius.circular(15.w),
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  child: Center(
-                      child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Xong',
-                          style: TextStyle(
-                              fontFamily: AppFonts.Header2,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primaryBackground),
-                        ),
-                      ],
-                    ),
-                  )),
-                ),
-              )
-            ],
-          ),
-        )
-      ],
     ),
   );
 }
@@ -531,9 +382,10 @@ Widget writePost(BuildContext context, String id, int secondRoute) {
           scrollDirection: Axis.vertical,
           children: [
             header(),
-            chooseTag((value) {
-              context.read<WritePostGroupBloc>().add(TagsEvent(value));
-            }),
+            // chooseTag((value) {
+            //   context.read<WritePostGroupBloc>().add(TagsEvent(value));
+            // }),
+            buildTextFieldTag(context),
             buildTextFieldTitle(context, 'Tiêu đề của bài viết', 'comment', '',
                 (value) {
               context.read<WritePostGroupBloc>().add(TitleEvent(value));
@@ -726,7 +578,7 @@ Widget choosePicture(
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(15.w),
-                color: AppColors.primaryElement,
+                color: Color.fromARGB(255, 230, 230, 230),
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -741,7 +593,7 @@ Widget choosePicture(
                         "assets/icons/picture.svg",
                         width: 12.w,
                         height: 12.h,
-                        color: AppColors.primaryBackground,
+                        color: AppColors.primaryText,
                       ),
                       Text(
                         'Chọn ảnh',
@@ -749,7 +601,7 @@ Widget choosePicture(
                             fontFamily: AppFonts.Header1,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primaryBackground),
+                            color: AppColors.primaryText),
                       ),
                     ],
                   ),
@@ -1490,7 +1342,7 @@ Widget chooseVote(BuildContext context) {
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.circular(15.w),
-              color: AppColors.primaryElement,
+              color: Color.fromARGB(255, 230, 230, 230),
               border: Border.all(
                 color: Colors.transparent,
               ),
@@ -1505,7 +1357,7 @@ Widget chooseVote(BuildContext context) {
                       "assets/icons/vote.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primaryBackground,
+                      color: AppColors.primaryText,
                     ),
                     Text(
                       'Tạo bình chọn',
@@ -1513,7 +1365,7 @@ Widget chooseVote(BuildContext context) {
                           fontFamily: AppFonts.Header1,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primaryBackground),
+                          color: AppColors.primaryText),
                     ),
                   ],
                 ),
@@ -1530,6 +1382,14 @@ Widget chooseVote(BuildContext context) {
       if (BlocProvider.of<WritePostGroupBloc>(context).state.votes.length > 0)
         GestureDetector(
           onTap: () {
+            if (BlocProvider.of<WritePostGroupBloc>(context)
+                .state
+                .votes
+                .length >=
+                10) {
+              toastInfo(msg: "Số lượng lựa chọn không được vượt quá 10");
+              return;
+            }
             List<String> currentList = List<String>.from(
                 BlocProvider.of<WritePostGroupBloc>(context).state.votes);
             currentList.add('');
@@ -1572,8 +1432,105 @@ Widget chooseVote(BuildContext context) {
               ),
             ),
           ),
-        )
+        ),
+      if (BlocProvider.of<WritePostGroupBloc>(context).state.votes.length > 0)
+        allowAddOptions(context, (value) {
+          context.read<WritePostGroupBloc>().add(AllowAddOptionsEvent(value));
+        }),
+      if (BlocProvider.of<WritePostGroupBloc>(context).state.votes.length > 0)
+        allowMultipleVotes(context, (value) {
+          context
+              .read<WritePostGroupBloc>()
+              .add(AllowMultipleVotesEvent(value));
+        })
     ],
+  );
+}
+
+Widget allowAddOptions(BuildContext context, void Function(bool value)? func) {
+  return Container(
+    margin: EdgeInsets.only(left: 20.w, right: 10.w, top: 10.h),
+    width: 300.w,
+    height: 30.h,
+    child: Row(
+      children: [
+        Container(
+          width: 16.w,
+          height: 16.w,
+          margin: EdgeInsets.only(left: 0.w, right: 10.w),
+          child: Checkbox(
+            checkColor: AppColors.primaryBackground,
+            fillColor: MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.selected)) {
+                  return AppColors.primaryElement; // Selected color
+                }
+                return Colors.transparent; // Unselected color
+              },
+            ),
+            onChanged: (value) => func!(value!),
+            value: BlocProvider.of<WritePostGroupBloc>(context)
+                .state
+                .allowAddOptions,
+          ),
+        ),
+        Container(
+          child: Text(
+            "Cho phép mọi người thêm lựa chọn",
+            style: TextStyle(
+              fontFamily: AppFonts.Header2,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 12.sp,
+            ),
+          ),
+        )
+      ],
+    ),
+  );
+}
+
+Widget allowMultipleVotes(
+    BuildContext context, void Function(bool value)? func) {
+  return Container(
+    margin: EdgeInsets.only(left: 20.w, right: 10.w, top: 10.h, bottom: 10.h),
+    width: 300.w,
+    height: 30.h,
+    child: Row(
+      children: [
+        Container(
+          width: 16.w,
+          height: 16.w,
+          margin: EdgeInsets.only(left: 0.w, right: 10.w),
+          child: Checkbox(
+            checkColor: AppColors.primaryBackground,
+            fillColor: MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.selected)) {
+                  return AppColors.primaryElement; // Selected color
+                }
+                return Colors.transparent; // Unselected color
+              },
+            ),
+            onChanged: (value) => func!(value!),
+            value: BlocProvider.of<WritePostGroupBloc>(context)
+                .state
+                .allowMultipleVotes,
+          ),
+        ),
+        Container(
+          child: Text(
+            "Cho phép mọi người chọn nhiều lựa chọn",
+            style: TextStyle(
+              fontFamily: AppFonts.Header2,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 12.sp,
+            ),
+          ),
+        )
+      ],
+    ),
   );
 }
 
@@ -1655,4 +1612,172 @@ Widget chooseTag(void Function(List<String> value)? func) {
       hint: 'Chọn thẻ',
     ),
   );
+}
+
+void deleteTag(BuildContext context, String tag) {
+  List<String> currentList =
+      BlocProvider.of<WritePostGroupBloc>(context).state.tags;
+  for (int i = 0; i < currentList.length; i += 1) {
+    if (currentList[i] == tag) {
+      currentList.removeAt(i);
+      break;
+    }
+  }
+  context.read<WritePostGroupBloc>().add(TagsEvent(currentList));
+}
+
+void addTag(BuildContext context, String tag) {
+  List<String> currentList =
+  List.from(BlocProvider.of<WritePostGroupBloc>(context).state.tags);
+  currentList.add(tag);
+  context.read<WritePostGroupBloc>().add(TagsEvent(currentList));
+}
+
+Widget buildTextFieldTag(BuildContext context) {
+  TextfieldTagsController<String> _stringTagController =
+  TextfieldTagsController<String>();
+
+  return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.w),
+      child: Column(
+        children: [
+          TextFieldTags<String>(
+            textfieldTagsController: _stringTagController,
+            initialTags:
+            BlocProvider.of<WritePostGroupBloc>(context).state.tags,
+            textSeparators: const [' ', ','],
+            letterCase: LetterCase.normal,
+            inputFieldBuilder: (context, inputFieldValues) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.h),
+                child: TextField(
+                  onTap: () {
+                    _stringTagController.getFocusNode?.requestFocus();
+                  },
+                  controller: inputFieldValues.textEditingController,
+                  focusNode: inputFieldValues.focusNode,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 13),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.primaryFourthElementText,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.w),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.primaryFourthElementText,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.w),
+                    ),
+                    helperStyle: const TextStyle(
+                      color: AppColors.primarySecondaryElement,
+                    ),
+                    hintText: inputFieldValues.tags.isNotEmpty
+                        ? ''
+                        : "Nhập #hashtag...",
+                    errorText: inputFieldValues.error,
+                    prefixIconConstraints:
+                    BoxConstraints(maxWidth: 300.w * 0.8),
+                    prefixIcon: inputFieldValues.tags.isNotEmpty
+                        ? SingleChildScrollView(
+                      controller: inputFieldValues.tagScrollController,
+                      scrollDirection: Axis.vertical,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8,
+                          bottom: 8,
+                          left: 8,
+                        ),
+                        child: Wrap(
+                            runSpacing: 4.0,
+                            spacing: 4.0,
+                            children:
+                            inputFieldValues.tags.map((String tag) {
+                              return Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20.0),
+                                  ),
+                                  color: AppColors.primaryElement,
+                                ),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 5.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 5.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    InkWell(
+                                      child: Text(
+                                        '#$tag',
+                                        style: TextStyle(
+                                            fontSize: 11.sp,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: AppFonts.Header2,
+                                            color: Colors.white),
+                                      ),
+                                      onTap: () {
+                                        //print("$tag selected");
+                                      },
+                                    ),
+                                    const SizedBox(width: 4.0),
+                                    InkWell(
+                                      child: const Icon(
+                                        Icons.cancel,
+                                        size: 14.0,
+                                        color: Color.fromARGB(
+                                            255, 233, 233, 233),
+                                      ),
+                                      onTap: () {
+                                        inputFieldValues
+                                            .onTagRemoved(tag);
+                                        deleteTag(context, tag);
+                                      },
+                                    )
+                                  ],
+                                ),
+                              );
+                            }).toList()),
+                      ),
+                    )
+                        : null,
+                  ),
+                  style: TextStyle(
+                    fontSize: 11.sp, // Adjust the font size here
+                  ),
+                  onChanged: (value) {
+                    inputFieldValues.onTagChanged(value);
+                  },
+                  onSubmitted: (value) {
+                    if (BlocProvider.of<WritePostGroupBloc>(context)
+                        .state
+                        .tags
+                        .length >=
+                        5) {
+                      toastInfo(msg: "Số lượng thẻ không được vượt quá 5");
+                      return;
+                    }
+                    if (!BlocProvider.of<WritePostGroupBloc>(context)
+                        .state
+                        .tags
+                        .contains(value)) {
+                      inputFieldValues.onTagSubmitted(value);
+                      addTag(context, value);
+                    } else {
+                      // Optionally, show a message to the user about the duplicate tag
+                      toastInfo(msg: "Bạn đã nhập tag này rồi");
+                    }
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ));
 }

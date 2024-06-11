@@ -163,19 +163,32 @@ Widget interact(BuildContext context, Interact interact) {
   );
 }
 
-AppBar buildAppBar(BuildContext context) {
+AppBar buildAppBar(BuildContext context, int profile, int route) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
       height: 40.h,
       margin: EdgeInsets.only(left: 0.w, right: 10.w),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage", (route) => false,
-                  arguments: {"route": 2, "secondRoute": 0});
+              if (profile == 0) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/applicationPage",
+                      (route) => false,
+                  arguments: {
+                    "route": 2,
+                    "secondRoute": 0,
+                  },
+                );
+              }
+              else {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/myProfilePage", (route) => false,
+                    arguments: {"route": route});
+              }
             },
             child: SvgPicture.asset(
               "assets/icons/back.svg",
@@ -183,9 +196,6 @@ AppBar buildAppBar(BuildContext context) {
               height: 25.h,
               color: Colors.black.withOpacity(0.5),
             ),
-          ),
-          Container(
-            width: 10.w,
           ),
           Text(
             'Người đã bày tỏ cảm xúc',
@@ -197,6 +207,9 @@ AppBar buildAppBar(BuildContext context) {
               color: AppColors.secondaryHeader,
             ),
           ),
+          Container(
+            width: 25.w,
+          )
         ],
       ),
     ),

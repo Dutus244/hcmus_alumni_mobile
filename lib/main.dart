@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hcmus_alumni_mobile/pages/other_profile_page/other_profile_page.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
 
 import 'common/routes/pages.dart';

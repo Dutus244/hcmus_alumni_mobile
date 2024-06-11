@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'dart:io';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/group.dart';
 import 'bloc/group_edit_blocs.dart';
@@ -64,10 +65,12 @@ class GroupEditController {
             "secondRoute": secondRoute,
           },
         );
-      } else {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa nhóm");
+      }
     } catch (e) {
       // Exception occurred
-      print('Exception occurred: $e');
+      toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa nhóm");
     }
   }
 }

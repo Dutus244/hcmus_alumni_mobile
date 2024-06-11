@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hcmus_alumni_mobile/model/member_response.dart';
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'package:http/http.dart' as http;
 
@@ -34,8 +35,12 @@ class GroupInfoController {
         var memberResponse = MemberResponse.fromJson(jsonMap);
 
         context.read<GroupInfoBloc>().add(MembersEvent(memberResponse.members));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy thành viên nhóm");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy thành viên nhóm");
+    }
   }
 
   Future<void> handleGetAdmin(String id, int page) async {
@@ -66,7 +71,11 @@ class GroupInfoController {
 
           context.read<GroupInfoBloc>().add(AdminsEvent(memberResponse.members));
         }
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy quản trị viên nhóm");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy quản trị viên nhóm");
+    }
   }
 }

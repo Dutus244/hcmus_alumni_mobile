@@ -50,12 +50,16 @@ class _EventDetailState extends State<EventDetail> {
 
   @override
   Widget build(BuildContext context) {
+    var profile = 0;
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     var route = 0;
     if (args != null) {
       route = args["route"];
       id = args["id"];
+      if (args["profile"] != null) {
+        profile = args["profile"];
+      }
       EventDetailController(context: context).handleGetEvent(id);
       // EventDetailController(context: context).handleGetRelatedEvent();
       EventDetailController(context: context).handleGetComment(id, 0);
@@ -66,19 +70,26 @@ class _EventDetailState extends State<EventDetail> {
     return PopScope(
       canPop: false, // prevent back
       onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": route, "secondRoute": 1});
+        if (profile == 0) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              "/applicationPage", (route) => false,
+              arguments: {"route": route, "secondRoute": 1});
+        }
+        else {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              "/myProfilePage", (route) => false,
+              arguments: {"route": route});
+        }
       },
       child: BlocBuilder<EventDetailBloc, EventDetailState>(
           builder: (context, state) {
         return Scaffold(
-          appBar: buildAppBar(context, route),
+          appBar: buildAppBar(context, route, profile),
           backgroundColor: AppColors.primaryBackground,
           body: BlocProvider.of<EventDetailBloc>(context).state.page == 0
               ? detail(context, BlocProvider.of<EventDetailBloc>(context)
               .state
-              .event,_scrollController, route)
+              .event,_scrollController, route, profile)
               : listParticipant(context, _scrollController, route),
         );
       }),

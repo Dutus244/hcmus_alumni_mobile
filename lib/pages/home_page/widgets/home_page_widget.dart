@@ -438,7 +438,7 @@ Widget listHof(BuildContext context, List<HallOfFame> hallOfFameList) {
           height: 5.h,
         ),
         SizedBox(
-          height: 120.h, // Đặt chiều cao cho ListView
+          height: 125.h, // Đặt chiều cao cho ListView
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [

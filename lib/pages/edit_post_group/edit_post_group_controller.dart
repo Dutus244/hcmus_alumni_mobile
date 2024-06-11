@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:multi_dropdown/models/value_item.dart';
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/post.dart';
 import 'bloc/edit_post_group_blocs.dart';
@@ -114,16 +115,24 @@ class EditPostGroupController {
                 "secondRoute": secondRoute,
               },
             );
-          } else {}
+          } else {
+            toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài viết nhóm");
+            return;
+          }
         } catch (e) {
           // Exception occurred
-          print('Exception occurred: $e');
+          toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài viết nhóm");
+          return;
         }
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài viết nhóm");
+        return;
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài viết nhóm");
+      return;
     }
   }
 }

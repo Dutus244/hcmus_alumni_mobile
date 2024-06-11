@@ -32,8 +32,19 @@ class EmailVerificationController {
     map['email'] = email;
 
     try {
-      await http.post(url, body: map);
-      isResending = true;
+      var response = await http.post(url, body: map);
+      if (response.statusCode != 200) {
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 10300) {
+          toastInfo(msg: "Email đã tồn tại");
+          return;
+        }
+        if (errorCode == 10302) {
+          toastInfo(msg: "Gửi mã xác thực thất bại");
+          return;
+        }
+      }
       startResendCooldown();
     } catch (error) {
       toastInfo(msg: "Có lỗi xảy ra khi gửi mã xác thực");
@@ -41,6 +52,7 @@ class EmailVerificationController {
   }
 
   void startResendCooldown() {
+    isResending = true;
     remainingTime = resendCooldown;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (remainingTime > 0) {
@@ -98,23 +110,56 @@ class EmailVerificationController {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       "/alumniInformation", (route) => false);
                 } else {
-                  // toastInfo(msg: "Email hoặc mật khẩu bị sai");
+                  Map<String, dynamic> jsonMap = json.decode(response.body);
+                  int errorCode = jsonMap['error']['code'];
+                  if (errorCode == 10100) {
+                    toastInfo(msg: "Email hoặc mật khẩu không hợp lệ");
+                    return;
+                  }
+                  if (errorCode == 10101) {
+                    toastInfo(msg: "Email hoặc mật khẩu không hợp lệ");
+                    return;
+                  }
+                  if (errorCode == 10102) {
+                    toastInfo(msg: "Lỗi đăng nhập");
+                    return;
+                  }
                 }
               } catch (error) {
                 toastInfo(msg: "Có lỗi xảy ra");
               }
             } else {
-              // toastInfo(msg: "Email hoặc mật khẩu bị sai");
+              Map<String, dynamic> jsonMap = json.decode(response.body);
+              int errorCode = jsonMap['error']['code'];
+              if (errorCode == 10200) {
+                toastInfo(msg: "Email hoặc mật khẩu không hợp lệ");
+                return;
+              }
+              if (errorCode == 10201) {
+                toastInfo(msg: "10201");
+                return;
+              }
             }
           } catch (error) {
             toastInfo(msg: "Có lỗi xảy ra");
           }
         } else {
-          toastInfo(msg: "Mã xác thực bị sai hoặc hết hạn");
+          Map<String, dynamic> jsonMap = json.decode(response.body);
+          int errorCode = jsonMap['error']['code'];
+          if (errorCode == 10402) {
+            toastInfo(msg: "Mã xác thực không hợp lệ hoặc đã hết hạn");
+            return;
+          }
+          if (errorCode == 10403) {
+            toastInfo(msg: "Xác minh mã xác thực thất bại");
+            return;
+          }
         }
       } catch (error) {
         toastInfo(msg: "Có lỗi xảy ra khi xác minh mã xác thực");
       }
-    } catch (e) {}
+    } catch (e) {
+      toastInfo(msg: "Có lỗi xảy ra khi xác minh mã xác thực");
+    }
   }
 }

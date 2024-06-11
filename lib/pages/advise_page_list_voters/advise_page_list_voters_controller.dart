@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/voter.dart';
 import '../../model/voter_response.dart';
@@ -78,9 +79,13 @@ class AdvisePageListVotersController {
         }
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi lấy danh sách người bình chọn");
+        return;
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi lấy danh sách người bình chọn");
+      return;
     }
   }
 }

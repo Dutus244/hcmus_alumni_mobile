@@ -129,93 +129,6 @@ Widget buttonCreate(BuildContext context) {
   );
 }
 
-Widget navigation(BuildContext context, int route) {
-  String name = BlocProvider.of<GroupCreateBloc>(context).state.name;
-
-  return Container(
-    height: 45.h,
-    child: Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/applicationPage",
-                    (route) => false,
-                    arguments: {
-                      "route": route,
-                      "secondRoute": 0,
-                    },
-                  );
-                },
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (name != "") {
-                    GroupCreateController(context: context).handleCreateGroup();
-                  }
-                },
-                child: Container(
-                  width: 70.w,
-                  height: 30.h,
-                  decoration: BoxDecoration(
-                    color: (name != "")
-                        ? AppColors.primaryElement
-                        : AppColors.primaryBackground,
-                    borderRadius: BorderRadius.circular(15.w),
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  child: Center(
-                      child: Container(
-                    margin: EdgeInsets.only(left: 12.w, right: 12.w),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Tạo',
-                          style: TextStyle(
-                              fontFamily: AppFonts.Header2,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold,
-                              color: (name != "")
-                                  ? AppColors.primaryBackground
-                                  : Colors.black.withOpacity(0.3)),
-                        ),
-                        Container(
-                          width: 6.w,
-                        ),
-                        SvgPicture.asset(
-                          "assets/icons/send.svg",
-                          width: 15.w,
-                          height: 15.h,
-                          color: (name != "")
-                              ? AppColors.primaryBackground
-                              : Colors.black.withOpacity(0.5),
-                        ),
-                      ],
-                    ),
-                  )),
-                ),
-              )
-            ],
-          ),
-        )
-      ],
-    ),
-  );
-}
-
 Widget buildTextFieldName(String hintText, String textType, String iconName,
     void Function(String value)? func) {
   return Container(
@@ -375,7 +288,6 @@ Widget choosePrivacy(BuildContext context) {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
                         value: 0,
                         groupValue: BlocProvider.of<GroupCreateBloc>(context)
@@ -433,7 +345,6 @@ Widget choosePrivacy(BuildContext context) {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
                         value: 1,
                         groupValue: BlocProvider.of<GroupCreateBloc>(context)

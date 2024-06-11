@@ -19,7 +19,7 @@ import '../bloc/event_detail_blocs.dart';
 import '../bloc/event_detail_states.dart';
 import '../event_detail_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int route) {
+AppBar buildAppBar(BuildContext context, int route, int profile) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -31,9 +31,16 @@ AppBar buildAppBar(BuildContext context, int route) {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage", (route) => false,
-                  arguments: {"route": route, "secondRoute": 1});
+              if (profile == 0) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/applicationPage", (route) => false,
+                    arguments: {"route": route, "secondRoute": 1});
+              }
+              else {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/myProfilePage", (route) => false,
+                    arguments: {"route": route});
+              }
             },
             child: Container(
               padding: EdgeInsets.only(left: 0.w),
@@ -500,7 +507,7 @@ Widget eventContent(BuildContext context, Event event) {
 }
 
 Widget detail(BuildContext context, Event? event,
-    ScrollController _scrollController, int route) {
+    ScrollController _scrollController, int route, int profile) {
   if (event == null) {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Expanded(
@@ -525,7 +532,7 @@ Widget detail(BuildContext context, Event? event,
           }),
           eventContent(context, event),
           listComment(context, event,
-              BlocProvider.of<EventDetailBloc>(context).state.comments, route),
+              BlocProvider.of<EventDetailBloc>(context).state.comments, route, profile),
           // listRelatedEvent(context,
           //     BlocProvider.of<EventDetailBloc>(context).state.relatedEvent)
         ],
@@ -535,7 +542,7 @@ Widget detail(BuildContext context, Event? event,
 }
 
 Widget listComment(
-    BuildContext context, Event? event, List<Comment> commentList, int route) {
+    BuildContext context, Event? event, List<Comment> commentList, int route, int profile) {
   if (event == null) {
     return Column(
       children: [],
@@ -554,6 +561,7 @@ Widget listComment(
               arguments: {
                 "route": route,
                 "event": event,
+                "profile": profile,
               },
             );
           },
@@ -610,7 +618,7 @@ Widget listComment(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             for (int i = 0; i < commentList.length; i += 1)
-              buildCommentWidget(context, event, commentList[i], 0, route)
+              buildCommentWidget(context, event, commentList[i], 0, route, profile)
           ],
         ),
         if (event.childrenCommentNumber > 5 &&
@@ -652,7 +660,7 @@ Widget listComment(
 }
 
 Widget buildCommentWidget(
-    BuildContext context, Event event, Comment comment, int index, int route) {
+    BuildContext context, Event event, Comment comment, int index, int route, int profile) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.h),
     child: Column(
@@ -687,7 +695,6 @@ Widget buildCommentWidget(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 2.h),
                       child: Text(
                         comment.creator.fullName,
                         maxLines: 1,
@@ -700,7 +707,6 @@ Widget buildCommentWidget(
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(bottom: 2.h),
                       child: Text(
                         handleDatetime(comment.updateAt),
                         maxLines: 1,
@@ -787,6 +793,7 @@ Widget buildCommentWidget(
                                   "route": route,
                                   "event": event,
                                   "comment": comment,
+                                  "profile": profile,
                                 },
                               );
                             },
@@ -817,6 +824,69 @@ Widget buildCommentWidget(
                                   "route": route,
                                   "event": event,
                                   "comment": comment,
+                                  "profile": profile,
+                                },
+                              );
+                            },
+                            child: Text(
+                              'Chỉnh sửa',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    if (comment.permissions.delete)
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              EventDetailController(context: context).handleDeleteComment(event.id, comment.id);
+                            },
+                            child: Text(
+                              'Xoá',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        if (index > 1)
+          Container(
+            margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
+            child: Row(
+              children: [
+                Row(
+                  children: [
+                    if (comment.permissions.edit)
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                "/eventDetailEditComment",
+                                    (route) => false,
+                                arguments: {
+                                  "route": route,
+                                  "event": event,
+                                  "comment": comment,
+                                  "profile": profile,
                                 },
                               );
                             },
@@ -871,7 +941,7 @@ Widget buildCommentWidget(
                         // This is divider
                         Container(
                             child: buildCommentWidget(context, event,
-                                comment.childrenComments[i], index + 1, route)),
+                                comment.childrenComments[i], index + 1, route, profile)),
                       ],
                     ))
             ],
@@ -1324,37 +1394,6 @@ Widget participant(BuildContext context, Participant participant) {
           ),
         ],
       ),
-    ),
-  );
-}
-
-Widget navigation(BuildContext context, int route) {
-  return Container(
-    height: 45.h,
-    child: Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/applicationPage", (route) => false,
-                      arguments: {"route": route, "secondRoute": 1});
-                },
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ],
-          ),
-        )
-      ],
     ),
   );
 }

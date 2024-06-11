@@ -7,6 +7,8 @@ class WritePostGroupState {
   List<String> votes;
   final List<File> pictures;
   final int page;
+  final bool allowMultipleVotes;
+  final bool allowAddOptions;
 
   WritePostGroupState(
       {this.title = "",
@@ -14,7 +16,9 @@ class WritePostGroupState {
       this.tags = const [],
       this.votes = const [],
       this.pictures = const [],
-      this.page = 0});
+      this.page = 0,
+      this.allowMultipleVotes = false,
+      this.allowAddOptions = false});
 
   WritePostGroupState copyWith(
       {String? title,
@@ -22,7 +26,9 @@ class WritePostGroupState {
       List<String>? tags,
       List<String>? votes,
       List<File>? pictures,
-      int? page}) {
+      int? page,
+      bool? allowMultipleVotes,
+      bool? allowAddOptions}) {
     return WritePostGroupState(
       title: title ?? this.title,
       content: content ?? this.content,
@@ -30,6 +36,8 @@ class WritePostGroupState {
       votes: votes ?? this.votes,
       pictures: pictures ?? this.pictures,
       page: page ?? this.page,
+      allowAddOptions: allowAddOptions ?? this.allowAddOptions,
+      allowMultipleVotes: allowMultipleVotes ?? this.allowMultipleVotes,
     );
   }
 }

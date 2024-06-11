@@ -307,7 +307,6 @@ Widget choosePrivacy(BuildContext context) {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
                         value: 0,
                         groupValue: BlocProvider.of<GroupEditBloc>(context)
@@ -365,7 +364,6 @@ Widget choosePrivacy(BuildContext context) {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
                         value: 1,
                         groupValue: BlocProvider.of<GroupEditBloc>(context)

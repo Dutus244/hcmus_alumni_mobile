@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hcmus_alumni_mobile/model/post.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/post_response.dart';
 import '../../model/voter.dart';
@@ -82,9 +83,13 @@ class AdvisePageController {
         }
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi lấy bài viết");
+        return;
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi lấy bài viết");
+      return;
     }
   }
 
@@ -117,6 +122,8 @@ class AdvisePageController {
             return;
           } else {
             // Handle other status codes if needed
+            toastInfo(msg: "Có lỗi xảy ra khi huỷ thích bài viết");
+            return;
           }
         } else {
           var response = await http.post(url, headers: headers, body: body);
@@ -127,6 +134,8 @@ class AdvisePageController {
             return;
           } else {
             // Handle other status codes if needed
+            toastInfo(msg: "Có lỗi xảy ra khi thích bài viết");
+            return;
           }
         }
       }
@@ -170,9 +179,13 @@ class AdvisePageController {
           return true;
         } else {
           // Handle other status codes if needed
+          toastInfo(msg: "Có lỗi xảy ra khi xoá bài viết");
+          return false;
         }
       } catch (error) {
         // Handle errors
+        toastInfo(msg: "Có lỗi xảy ra khi xoá bài viết");
+        return false;
       }
     }
     return shouldDelte ?? false;
@@ -197,9 +210,13 @@ class AdvisePageController {
         AdvisePageController(context: context).handleLoadPostData(0);
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+        return;
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+      return;
     }
   }
 
@@ -222,9 +239,13 @@ class AdvisePageController {
         AdvisePageController(context: context).handleLoadPostData(0);
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi huỷ lựa chọn");
+        return;
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi huỷ lựa chọn");
+      return;
     }
   }
 
@@ -249,9 +270,48 @@ class AdvisePageController {
         AdvisePageController(context: context).handleLoadPostData(0);
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+        return;
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+      return;
+    }
+  }
+
+  Future<void> handleAddVote(String id, String vote) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/counsel/$id/votes';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+
+    final map = <String, dynamic>{};
+    map['name'] = vote;
+    print(vote);
+
+    try {
+      var url = Uri.parse('$apiUrl$endpoint');
+
+      var response = await http.post(url, headers: headers, body: json.encode(map));
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 201) {
+        AdvisePageController(context: context).handleLoadPostData(0);
+      } else {
+        // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi thêm lựa chọn");
+        return;
+      }
+    } catch (error) {
+      // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi thêm lựa chọn");
+      return;
     }
   }
 }

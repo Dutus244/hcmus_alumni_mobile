@@ -9,6 +9,7 @@ import 'package:hcmus_alumni_mobile/model/event.dart';
 import 'package:hcmus_alumni_mobile/pages/event_detail/bloc/event_detail_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/event_detail/bloc/event_detail_events.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,9 +41,17 @@ class EventDetailController {
         var jsonMap = json.decode(responseBody);
         var event = Event.fromJson(jsonMap);
         context.read<EventDetailBloc>().add(EventEvent(event));
-      } else {}
+      } else {
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 50200) {
+          toastInfo(msg: "Không tìm thấy sự kiện");
+          return;
+        }
+      }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi lấy sự kiện");
     }
   }
 
@@ -96,8 +105,12 @@ class EventDetailController {
         if (commentResponse.comments.length < pageSize) {
           context.read<EventDetailBloc>().add(HasReachedMaxCommentEvent(true));
         }
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy bình luận");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy bình luận");
+    }
   }
 
   Future<void> handleGetChildrenComment(String commentId) async {
@@ -118,70 +131,39 @@ class EventDetailController {
         List<Comment> currentList =
             BlocProvider.of<EventDetailBloc>(context).state.comments;
 
-        // Tìm bình luận cha trong toàn bộ cây bình luận
         Comment? parentComment = findParentComment(currentList, commentId);
 
-        // Nếu tìm thấy bình luận cha, thêm các bình luận con vào nó
         if (parentComment != null) {
           await parentComment.fetchChildrenComments(jsonMap);
         }
 
         context.read<EventDetailBloc>().add(CommentsEvent(currentList));
-      } else {}
-    } catch (error) {}
+      } else {
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 51300) {
+          toastInfo(msg: "Không tìm thấy bình luận cha");
+          return;
+        }
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy bình luận");
+    }
   }
 
-  // Hàm đệ qui để tìm bình luận cha trong toàn bộ cây bình luận
   Comment? findParentComment(List<Comment> comments, String commentId) {
     for (var comment in comments) {
       if (comment.id == commentId) {
-        return comment; // Bình luận hiện tại là bình luận cha
+        return comment;
       }
-      // Kiểm tra các bình luận con của bình luận hiện tại
       if (comment.childrenComments.isNotEmpty) {
         var parent = findParentComment(comment.childrenComments, commentId);
         if (parent != null) {
-          return parent; // Bình luận cha được tìm thấy trong các bình luận con
+          return parent;
         }
       }
     }
-    return null; // Không tìm thấy bình luận cha
-  }
-
-  Future<void> handleGetRelatedEvent() async {
-    var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/events';
-    var pageSize = 3;
-    var page = 0;
-
-    var token = Global.storageService.getUserAuthToken();
-
-    var headers = <String, String>{
-      'Authorization': 'Bearer $token', // Include bearer token in the headers
-    };
-
-    try {
-      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
-
-      // Specify UTF-8 encoding for decoding response
-      var response = await http.get(url, headers: headers);
-      var responseBody = utf8.decode(response.bodyBytes);
-
-      if (response.statusCode == 200) {
-        // Convert the JSON string to a Map
-        var jsonMap = json.decode(responseBody);
-
-        // Pass the Map to the fromJson method
-        var eventResponse = EventResponse.fromJson(jsonMap);
-        context
-            .read<EventDetailBloc>()
-            .add(RelatedEventsEvent(eventResponse.events));
-      } else {
-        // Handle other status codes if needed
-      }
-    } catch (error) {
-      // Handle errors
-    }
+    return null;
   }
 
   Future<void> handleCheckIsParticipated(String id) async {
@@ -229,11 +211,26 @@ class EventDetailController {
 
       if (response.statusCode == 201) {
         context.read<EventDetailBloc>().add(IsParticipatedEvent(true));
+        EventDetailController(context: context).handleGetParticipant(id, 0);
       } else {
-        // Handle other status codes if needed
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 51000) {
+          toastInfo(msg: "Không tìm thấy sự kiện");
+          return;
+        }
+        if (errorCode == 51001) {
+          toastInfo(msg: "Đã tham gia sự kiện");
+          return;
+        }
+        if (errorCode == 51002) {
+          toastInfo(msg: "Số lượng người tham gia sự kiện đã đạt mức tối đa");
+          return;
+        }
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi tham gia sự kiện");
     }
   }
 
@@ -257,11 +254,14 @@ class EventDetailController {
       var response = await http.delete(url, headers: headers, body: body);
       if (response.statusCode == 200) {
         context.read<EventDetailBloc>().add(IsParticipatedEvent(false));
+        EventDetailController(context: context).handleGetParticipant(id, 0);
       } else {
         // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xả ra khi thoát sự kiện");
       }
     } catch (error) {
       // Handle errors
+      toastInfo(msg: "Có lỗi xả ra khi thoát sự kiện");
     }
   }
 
@@ -328,8 +328,17 @@ class EventDetailController {
         context
             .read<EventDetailBloc>()
             .add(StatusParticipantEvent(Status.success));
-      } else {}
-    } catch (error) {}
+      } else {
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 50900) {
+          toastInfo(msg: "Không tìm thấy sự kiện");
+          return;
+        }
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách người tham dự");
+    }
   }
 
   Future<void> handleDeleteComment(String id, String commentId) async {
@@ -370,10 +379,16 @@ class EventDetailController {
           EventDetailController(context: context).handleGetEvent(id);
           EventDetailController(context: context).handleGetComment(id, 0);
         } else {
-          // Handle other status codes if needed
+          Map<String, dynamic> jsonMap = json.decode(response.body);
+          int errorCode = jsonMap['error']['code'];
+          if (errorCode == 51600) {
+            toastInfo(msg: "Không tìm thấy bình luận");
+            return;
+          }
         }
       } catch (error) {
         // Handle errors
+        toastInfo(msg: "Có lỗi xả ra khi xoá bình luận");
       }
     }
     return shouldDelte ?? false;

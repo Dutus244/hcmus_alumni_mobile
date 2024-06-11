@@ -68,6 +68,10 @@ import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/bloc/news_de
 import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/news_detail_write_comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/news_event_page.dart';
+import 'package:hcmus_alumni_mobile/pages/option_page/option_page.dart';
+import 'package:hcmus_alumni_mobile/pages/other_profile_detail/other_profile_detail.dart';
+import 'package:hcmus_alumni_mobile/pages/other_profile_page/bloc/other_profile_page_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/other_profile_page/other_profile_page.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
 import 'package:hcmus_alumni_mobile/pages/welcome/bloc/welcome_blocs.dart';
@@ -194,6 +198,12 @@ class AppPages {
           page: const MyProfilePage(),
           bloc: BlocProvider(
             create: (_) => MyProfilePageBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.OTHER_PROFILE_PAGE,
+          page: const OtherProfilePage(),
+          bloc: BlocProvider(
+            create: (_) => OtherProfilePageBloc(),
           )),
       PageEntity(
           route: AppRoutes.NEWS_DETAIL,
@@ -381,6 +391,12 @@ class AppPages {
           bloc: BlocProvider(
             create: (_) => MyProfileAddAchievementBloc(),
           )),
+      PageEntity(
+          route: AppRoutes.OTHER_PROFILE_DETAIL,
+          page: const OtherProfileDetail()),
+      PageEntity(
+          route: AppRoutes.OPTION_PAGE,
+          page: const OptionPage()),
     ];
   }
 

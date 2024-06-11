@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'dart:io';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 
 class GroupCreateController {
@@ -63,10 +64,12 @@ class GroupCreateController {
             "secondRoute": 1,
           },
         );
-      } else {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi tạo nhóm");
+      }
     } catch (e) {
       // Exception occurred
-      print('Exception occurred: $e');
+      toastInfo(msg: "Có lỗi xả ra khi tạo nhóm");
     }
   }
 }

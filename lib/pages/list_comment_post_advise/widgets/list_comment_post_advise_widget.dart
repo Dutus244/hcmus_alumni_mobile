@@ -168,7 +168,6 @@ Widget buildCommentWidget(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 2.h),
                       child: Text(
                         comment.creator.fullName,
                         maxLines: 1,
@@ -181,7 +180,6 @@ Widget buildCommentWidget(
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(bottom: 2.h),
                       child: Text(
                         handleDatetime(comment.updateAt),
                         maxLines: 1,
@@ -284,6 +282,68 @@ Widget buildCommentWidget(
                           Container(
                             width: 50.w,
                           ),
+                          GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<ListCommentPostAdviseBloc>()
+                                  .add(ChildrenEvent(comment));
+                              context
+                                  .read<ListCommentPostAdviseBloc>()
+                                  .add(ContentEvent(comment.content));
+                              context
+                                  .read<ListCommentPostAdviseBloc>()
+                                  .add(ReplyEvent(2));
+                            },
+                            child: Text(
+                              'Chỉnh sửa',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    if (comment.permissions.delete)
+                      Row(
+                        children: [
+                          Container(
+                            width: 50.w,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              ListCommentPostAdviseController(context: context)
+                                  .handleDeleteComment(id, comment.id);
+                            },
+                            child: Text(
+                              'Xoá',
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.8),
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header2,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        if (index > 1 && (comment.permissions.edit || comment.permissions.delete))
+          Container(
+            margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
+            child: Row(
+              children: [
+                Row(
+                  children: [
+                    if (comment.permissions.edit)
+                      Row(
+                        children: [
                           GestureDetector(
                             onTap: () {
                               context
@@ -708,19 +768,32 @@ Widget navigation(BuildContext context, String content, Comment? comment,
   );
 }
 
-AppBar buildAppBar(BuildContext context) {
+AppBar buildAppBar(BuildContext context, int profile, int route) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
       height: 40.h,
       margin: EdgeInsets.only(left: 0.w, right: 10.w),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage", (route) => false,
-                  arguments: {"route": 2, "secondRoute": 0});
+              if (profile == 0) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/applicationPage",
+                      (route) => false,
+                  arguments: {
+                    "route": 2,
+                    "secondRoute": 0,
+                  },
+                );
+              }
+              else {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    "/myProfilePage", (route) => false,
+                    arguments: {"route": route});
+              }
             },
             child: SvgPicture.asset(
               "assets/icons/back.svg",
@@ -728,9 +801,6 @@ AppBar buildAppBar(BuildContext context) {
               height: 25.h,
               color: Colors.black.withOpacity(0.5),
             ),
-          ),
-          Container(
-            width: 10.w,
           ),
           Text(
             'Bình luận',
@@ -741,6 +811,9 @@ AppBar buildAppBar(BuildContext context) {
               fontSize: 16.sp,
               color: AppColors.secondaryHeader,
             ),
+          ),
+          Container(
+            width: 25.w,
           ),
         ],
       ),

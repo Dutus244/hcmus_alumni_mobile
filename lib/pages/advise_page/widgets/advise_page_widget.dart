@@ -14,6 +14,7 @@ import 'package:popover/popover.dart';
 
 import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/widgets/flutter_toast.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
 import '../../../model/voter.dart';
@@ -168,7 +169,7 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
 
 Widget postOption(BuildContext context, Post post) {
   return Container(
-    height: 90.h,
+    height: post.votes.length == 0 ? 90.h : 50.h,
     child: Stack(
       children: [
         SingleChildScrollView(
@@ -176,7 +177,8 @@ Widget postOption(BuildContext context, Post post) {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              GestureDetector(
+              if (post.votes.length == 0)
+                GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     "/editPostAdvise",
@@ -515,8 +517,9 @@ Widget post(BuildContext context, Post post) {
             ),
           ),
         ),
-        for (int i = 0; i < post.votes.length; i += 1)
-          Container(
+        if (!post.allowMultipleVotes)
+          for (int i = 0; i < post.votes.length; i += 1)
+            Container(
             width: 350.w,
             height: 35.h,
             margin: EdgeInsets.only(
@@ -538,14 +541,14 @@ Widget post(BuildContext context, Post post) {
                       if (Global.storageService.permissionCounselVote())
                         Radio(
                         value: post.votes[i].name,
-                        groupValue: post.voteSelected,
+                        groupValue: post.voteSelectedOne,
                         onChanged: (value) {
-                          if (post.voteSelected == "") {
+                          if (post.voteSelectedOne == "") {
                             AdvisePageController(context: context)
                                 .handleVote(post.id, post.votes[i].id);
                           } else {
                             for (int j = 0; j < post.votes.length; j += 1) {
-                              if (post.votes[j].name == post.voteSelected) {
+                              if (post.votes[j].name == post.voteSelectedOne) {
                                 AdvisePageController(context: context)
                                     .handleUpdateVote(post.id, post.votes[j].id, post.votes[i].id);
                               }
@@ -604,6 +607,188 @@ Widget post(BuildContext context, Post post) {
               ),
             ),
           ),
+        if (post.allowMultipleVotes)
+          for (int i = 0; i < post.votes.length; i += 1)
+            Container(
+              width: 350.w,
+              height: 35.h,
+              margin: EdgeInsets.only(
+                  top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(10.w),
+                border: Border.all(
+                  color: AppColors.primaryFourthElementText,
+                ),
+              ),
+              child: Container(
+                margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        if (Global.storageService.permissionCounselVote())
+                        Checkbox(
+                          checkColor: AppColors.primaryBackground,
+                          fillColor: MaterialStateProperty.resolveWith<Color?>(
+                                (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.selected)) {
+                                return AppColors.primaryElement; // Selected color
+                              }
+                              return Colors.transparent; // Unselected color
+                            },
+                          ),
+                          onChanged: (value) {
+                            if (value! == true) {
+                              AdvisePageController(context: context)
+                                  .handleVote(post.id, post.votes[i].id);
+                            } else {
+                              AdvisePageController(context: context)
+                                  .handleDeleteVote(post.id, post.votes[i].id);
+                            }
+                          },
+                          value: post.voteSelectedMultiple.contains(post.votes[i].name),
+                        ),
+                        Container(
+                          width: 220.w,
+                          child: Text(
+                            post.votes[i].name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontFamily: AppFonts.Header2,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                color: AppColors.primarySecondaryText),
+                          ),
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          "/advisePageListVoters",
+                              (route) => false,
+                          arguments: {
+                            "vote": post.votes[i],
+                            "post": post,
+                          },
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
+                            style: TextStyle(
+                                fontFamily: AppFonts.Header2,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                color: AppColors.primaryElement),
+                          ),
+                          Container(
+                            width: 5.w,
+                          ),
+                          SvgPicture.asset(
+                            "assets/icons/arrow_next.svg",
+                            height: 15.h,
+                            width: 15.w,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+        if (post.votes.length > 0 && post.allowAddOptions)
+          GestureDetector(
+            onTap: () {
+              if (post
+                  .votes
+                  .length >=
+                  10) {
+                toastInfo(msg: "Số lượng lựa chọn không được vượt quá 10");
+                return;
+              }
+              TextEditingController textController = TextEditingController();
+
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Thêm lựa chọn'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        controller: textController,
+                        decoration: InputDecoration(
+                          hintText: 'Thêm lựa chọn mới',
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: Text('Huỷ'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, {
+                        'confirmed': true,
+                        'vote': textController.text,
+                      }),
+                      child: Text('Thêm'),
+                    ),
+                  ],
+                ),
+              ).then((result) {
+                if (result != null && result['confirmed'] == true) {
+                  String vote = result['vote'];
+                  AdvisePageController(context: context)
+                      .handleAddVote(post.id, vote);
+                } else {
+                }
+              });
+            },
+            child: Container(
+              width: 350.w,
+              height: 35.h,
+              margin: EdgeInsets.only(
+                  top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(10.w),
+                border: Border.all(
+                  color: AppColors.primaryFourthElementText,
+                ),
+              ),
+              child: Container(
+                margin: EdgeInsets.only(left: 10.w),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/add.svg",
+                      width: 14.w,
+                      height: 14.h,
+                      color: AppColors.primarySecondaryText,
+                    ),
+                    Container(
+                      width: 5.w,
+                    ),
+                    Text(
+                      'Thêm lựa chọn',
+                      style: TextStyle(
+                          fontFamily: AppFonts.Header2,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                          color: AppColors.primarySecondaryText),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         Container(
           height: 5.h,
         ),
@@ -636,7 +821,7 @@ Widget post(BuildContext context, Post post) {
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
                 "/listPicturePostAdvise",
-                (route) => false,
+                    (route) => false,
                 arguments: {
                   "post": post,
                 },
@@ -677,7 +862,7 @@ Widget post(BuildContext context, Post post) {
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
                 "/listPicturePostAdvise",
-                (route) => false,
+                    (route) => false,
                 arguments: {
                   "post": post,
                 },
@@ -735,7 +920,7 @@ Widget post(BuildContext context, Post post) {
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
                 "/listPicturePostAdvise",
-                (route) => false,
+                    (route) => false,
                 arguments: {
                   "post": post,
                 },
@@ -811,7 +996,7 @@ Widget post(BuildContext context, Post post) {
             onTap: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
                 "/listPicturePostAdvise",
-                (route) => false,
+                    (route) => false,
                 arguments: {
                   "post": post,
                 },
@@ -1070,7 +1255,7 @@ Widget post(BuildContext context, Post post) {
                           );
                         },
                         child: Container(
-                          margin: EdgeInsets.only(right: 40.w),
+                          margin: Global.storageService.permissionCounselReactionCreate() ? EdgeInsets.only(right: 40.w) : EdgeInsets.only(left: 40.w),
                           child: Row(
                             children: [
                               Container(

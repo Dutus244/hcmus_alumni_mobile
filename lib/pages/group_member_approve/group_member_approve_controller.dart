@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hcmus_alumni_mobile/model/request_group.dart';
 import 'package:hcmus_alumni_mobile/model/request_group_response.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import 'bloc/group_member_approve_blocs.dart';
 import 'bloc/group_member_approve_events.dart';
 import 'bloc/group_member_approve_states.dart';
@@ -83,8 +84,12 @@ class GroupMemberApproveController {
               .add(HasReachedMaxRequestEvent(true));
         }
         context.read<GroupMemberApproveBloc>().add(StatusEvent(Status.success));
-      } else {}
-    } catch (error) {}
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách yêu cầu tham gia nhóm");
+      }
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách yêu cầu tham gia nhóm");
+    }
   }
 
   Future<void> handleApprovedRequest(String groupId, String userId) async {
@@ -97,13 +102,17 @@ class GroupMemberApproveController {
     };
 
     try {
-      var url = Uri.parse(
-          '$apiUrl$endpoint?status=APPROVED');
+      var url = Uri.parse('$apiUrl$endpoint?status=APPROVED');
       var response = await http.put(url, headers: headers);
       if (response.statusCode == 200) {
-        GroupMemberApproveController(context: context).handleGetMember(groupId, 0);
+        GroupMemberApproveController(context: context)
+            .handleGetMember(groupId, 0);
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi chấp nhập yêu cầu");
       }
-    } catch (error) {}
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi chấp nhập yêu cầu");
+    }
   }
 
   Future<void> handleDeneidRequest(String groupId, String userId) async {
@@ -116,12 +125,16 @@ class GroupMemberApproveController {
     };
 
     try {
-      var url = Uri.parse(
-          '$apiUrl$endpoint?status=DENIED');
+      var url = Uri.parse('$apiUrl$endpoint?status=DENIED');
       var response = await http.put(url, headers: headers);
       if (response.statusCode == 200) {
-        GroupMemberApproveController(context: context).handleGetMember(groupId, 0);
+        GroupMemberApproveController(context: context)
+            .handleGetMember(groupId, 0);
+      } else {
+        toastInfo(msg: "Có lỗi xả ra khi từ chối yêu cầu");
       }
-    } catch (error) {}
+    } catch (error) {
+      toastInfo(msg: "Có lỗi xả ra khi từ chối yêu cầu");
+    }
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hcmus_alumni_mobile/pages/write_post_advise/bloc/write_post_advise_events.dart';
 
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'bloc/write_post_advise_blocs.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +19,7 @@ class WritePostAdviseController {
   const WritePostAdviseController({required this.context});
 
   List<Map<String, dynamic>> convertTagsToJson(List<String> tags) {
-    return tags.map((tag) => {'id': tag}).toList();
+    return tags.map((tag) => {'name': tag}).toList();
   }
 
   List<Map<String, dynamic>> convertVoteToJson(List<String> vote) {
@@ -32,6 +33,8 @@ class WritePostAdviseController {
     List<String> tags = state.tags;
     List<String> vote = state.votes;
     List<File> pictures = state.pictures;
+    bool allowMultipleVotes = state.allowMultipleVotes;
+    bool allowAddOptions = state.allowAddOptions;
 
     if (vote.length > 0) {
       final shouldPost = await showDialog(
@@ -67,7 +70,9 @@ class WritePostAdviseController {
           'title': title,
           'content': content,
           'tags': convertTagsToJson(tags),
-          'votes': convertVoteToJson(vote)
+          'votes': convertVoteToJson(vote),
+          'allowMultipleVotes': allowMultipleVotes,
+          'allowAddOptions': allowAddOptions,
         };
 
         //encode Map to JSON
@@ -78,6 +83,7 @@ class WritePostAdviseController {
 
           var response = await http.post(url, headers: headers, body: body);
           var responseBody = utf8.decode(response.bodyBytes);
+          print(responseBody);
           if (response.statusCode == 201) {
             var jsonMap = json.decode(responseBody);
             String id = jsonMap["id"];
@@ -127,7 +133,16 @@ class WritePostAdviseController {
               print('Exception occurred: $e');
             }
           } else {
-            // Handle other status codes if needed
+            Map<String, dynamic> jsonMap = json.decode(response.body);
+            int errorCode = jsonMap['error']['code'];
+            if (errorCode == 60302) {
+              toastInfo(msg: "Số lượng thẻ không được vượt quá 5");
+              return;
+            }
+            if (errorCode == 60303) {
+              toastInfo(msg: "Số lượng lựa chọn không được vượt quá 10");
+              return;
+            }
           }
         } catch (error) {
           // Handle errors

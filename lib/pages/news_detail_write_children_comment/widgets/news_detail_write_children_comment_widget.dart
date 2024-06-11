@@ -181,7 +181,6 @@ Widget header(News news, Comment comment) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 2.h),
                     child: Text(
                       comment.creator.fullName,
                       maxLines: 1,
@@ -194,7 +193,6 @@ Widget header(News news, Comment comment) {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 2.h),
                     child: Text(
                       handleDatetime(comment.updateAt),
                       maxLines: 1,
@@ -292,96 +290,6 @@ Widget header(News news, Comment comment) {
         ),
       ),
     ],
-  );
-}
-
-Widget navigation(BuildContext context, News news, int route, Comment Comment) {
-  String comment = BlocProvider.of<NewsDetailWriteChildrenCommentBloc>(context)
-      .state
-      .comment;
-
-  return Container(
-    height: 45.h,
-    child: Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/newsDetail",
-                    (route) => false,
-                    arguments: {
-                      "route": route,
-                      "id": news.id,
-                    },
-                  );
-                },
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (comment != "") {
-                    NewsDetailWriteChildrenCommentController(context: context)
-                        .handleLoadWriteComment(news.id, Comment.id, route);
-                  }
-                },
-                child: Container(
-                  width: 70.w,
-                  height: 30.h,
-                  decoration: BoxDecoration(
-                    color: comment != ""
-                        ? AppColors.primaryElement
-                        : AppColors.primaryBackground,
-                    borderRadius: BorderRadius.circular(15.w),
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  child: Center(
-                      child: Container(
-                    margin: EdgeInsets.only(left: 12.w, right: 12.w),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Gửi',
-                          style: TextStyle(
-                              fontFamily: AppFonts.Header2,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold,
-                              color: comment != ""
-                                  ? AppColors.primaryBackground
-                                  : Colors.black.withOpacity(0.3)),
-                        ),
-                        Container(
-                          width: 6.w,
-                        ),
-                        SvgPicture.asset(
-                          "assets/icons/send.svg",
-                          width: 15.w,
-                          height: 15.h,
-                          color: comment != ""
-                              ? AppColors.primaryBackground
-                              : Colors.black.withOpacity(0.5),
-                        ),
-                      ],
-                    ),
-                  )),
-                ),
-              )
-            ],
-          ),
-        )
-      ],
-    ),
   );
 }
 
