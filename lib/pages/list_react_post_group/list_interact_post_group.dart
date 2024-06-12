@@ -18,12 +18,11 @@ class ListInteractPostGroup extends StatefulWidget {
 }
 
 class _ListInteractPostGroupState extends State<ListInteractPostGroup> {
-  late String id;
-  late String groupId;
-  late int secondRoute;
   late PageController pageController; // Không khởi tạo ở đây
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
+  late String id;
+  late String groupId;
 
   @override
   void initState() {
@@ -56,32 +55,17 @@ class _ListInteractPostGroupState extends State<ListInteractPostGroup> {
     if (args != null) {
       id = args["id"];
       groupId = args["groupId"];
-      secondRoute = args["secondRoute"];
       ListInteractPostGroupController(context: context)
           .handleGetListInteract(id, 0);
     }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/groupDetail",
-              (route) => false,
-          arguments: {
-            "id": groupId,
-            "secondRoute": secondRoute,
-          },
-        );
-      },
-      child:
-          BlocBuilder<ListInteractPostGroupBloc, ListInteractPostGroupState>(
-              builder: (context, state) {
-        return Scaffold(
-          appBar: buildAppBar(context, groupId, secondRoute),
-          backgroundColor: AppColors.primaryBackground,
-          body: listInteract(context, _scrollController),
-        );
-      }),
-    );
+    return BlocBuilder<ListInteractPostGroupBloc, ListInteractPostGroupState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: buildAppBar(context),
+            backgroundColor: AppColors.primaryBackground,
+            body: listInteract(context, _scrollController),
+          );
+        });
   }
 }

@@ -17,7 +17,6 @@ class GroupInfo extends StatefulWidget {
 }
 
 class _GroupInfoState extends State<GroupInfo> {
-  late int secondRoute;
   late Group group;
 
   @override
@@ -26,31 +25,17 @@ class _GroupInfoState extends State<GroupInfo> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       group = args["group"];
-      secondRoute = args["secondRoute"];
       GroupInfoController(context: context).handleGetAdmin(group.id, 0);
       GroupInfoController(context: context).handleGetMember(group.id, 0);
     }
 
-    return PopScope(
-        canPop: false, // prevent back
-        onPopInvoked: (_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/groupDetail",
-                (route) => false,
-            arguments: {
-              "id": group.id,
-              "secondRoute": secondRoute,
-            },
-          );
-        },
-        child:  BlocBuilder<GroupInfoBloc, GroupInfoState>(
+    return BlocBuilder<GroupInfoBloc, GroupInfoState>(
         builder: (context, state) {
-         return Scaffold(
-            appBar: buildAppBar(context, group, secondRoute),
+          return Scaffold(
+            appBar: buildAppBar(context, group),
             backgroundColor: AppColors.primaryBackground,
-            body: infoGroup(context, group, secondRoute),
+            body: infoGroup(context, group),
           );}
-        )
     );
   }
 }

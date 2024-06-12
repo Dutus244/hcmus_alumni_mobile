@@ -13,43 +13,18 @@ import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../bloc/hof_detail_blocs.dart';
 
-AppBar buildAppBar(BuildContext context, int route) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
       height: 40.h,
       margin: EdgeInsets.only(left: 0.w, right: 0.w),
-
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              if (route == 0) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/applicationPage", (route) => false,
-                    arguments: {"route": route, "secondRoute": 0});
-              } else {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/hofPage",
-                      (route) => false,
-                );
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Gương thành công',
@@ -62,13 +37,7 @@ AppBar buildAppBar(BuildContext context, int route) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [
-
-              ],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -215,7 +184,7 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
   }
 }
 
-Widget hofDetail(BuildContext context, int route) {
+Widget hofDetail(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,

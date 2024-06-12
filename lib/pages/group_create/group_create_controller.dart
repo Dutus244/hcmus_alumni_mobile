@@ -14,12 +14,17 @@ class GroupCreateController {
 
   const GroupCreateController({required this.context});
 
+  List<Map<String, dynamic>> convertTagsToJson(List<String> tags) {
+    return tags.map((tag) => {'name': tag}).toList();
+  }
+
   Future<void> handleCreateGroup() async {
     final state = context.read<GroupCreateBloc>().state;
     String name = state.name;
     String description = state.description;
     String privacy = state.privacy == 0 ? 'PUBLIC' : 'PRIVATE';
     List<File> pictures = state.pictures;
+    List<String> tags = state.tags;
 
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups';
@@ -36,6 +41,7 @@ class GroupCreateController {
     request.fields['name'] = name;
     request.fields['description'] = description;
     request.fields['privacy'] = privacy;
+    request.fields['tags'] = convertTagsToJson(tags).toString();
 
     for (var i = 0; i < pictures.length; i++) {
       request.files.add(

@@ -17,32 +17,22 @@ class MyProfileEdit extends StatefulWidget {
 
 class _MyProfileEditState extends State<MyProfileEdit> {
   @override
-  Widget build(BuildContext context) {
-    Map<String, dynamic>? args =
-    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    var route = 0;
-    if (args != null) {
-      route = args["route"];
-      context
-          .read<MyProfileEditBloc>()
-          .add(MyProfileEditResetEvent());
-    }
+  void initState() {
+    super.initState();
+    context
+        .read<MyProfileEditBloc>()
+        .add(MyProfileEditResetEvent());
+  }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/myProfilePage", (route) => false,
-            arguments: {"route": route});
-      },
-      child: BlocBuilder<MyProfileEditBloc, MyProfileEditState>(
-          builder: (context, state) {
-            return Scaffold(
-              appBar: buildAppBar(context, route),
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MyProfileEditBloc, MyProfileEditState>(
+        builder: (context, state) {
+          return Scaffold(
+              appBar: buildAppBar(context),
               backgroundColor: AppColors.primaryBackground,
-              body: myProfileEdit(context, route)
-            );
-          }),
-    );
+              body: myProfileEdit(context)
+          );
+        });
   }
 }

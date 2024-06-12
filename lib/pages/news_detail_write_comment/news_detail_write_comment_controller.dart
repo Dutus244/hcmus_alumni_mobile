@@ -14,7 +14,7 @@ class NewsDetailWriteCommentController {
 
   const NewsDetailWriteCommentController({required this.context});
 
-  Future<void> handleLoadWriteComment(String id, int route) async {
+  Future<void> handleLoadWriteComment(String id) async {
     final state = context.read<NewsDetailWriteCommentBloc>().state;
     String comment = state.comment;
 
@@ -37,14 +37,7 @@ class NewsDetailWriteCommentController {
 
       var response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 201) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/newsDetail",
-          (route) => false,
-          arguments: {
-            "route": route,
-            "id": id,
-          },
-        );
+        Navigator.pop(context);
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];

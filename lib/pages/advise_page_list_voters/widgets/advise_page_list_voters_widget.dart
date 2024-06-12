@@ -14,7 +14,7 @@ import '../../../model/voter.dart';
 import '../bloc/advise_page_list_voters_blocs.dart';
 import '../bloc/advise_page_list_voters_states.dart';
 
-AppBar buildAppBar(BuildContext context, int profile, int route, String page) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -24,37 +24,8 @@ AppBar buildAppBar(BuildContext context, int profile, int route, String page) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              if (profile == 0) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage",
-                      (route) => false,
-                  arguments: {
-                    "route": 2,
-                    "secondRoute": 0,
-                  },
-                );
-              }
-              else {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/myProfilePage", (route) => false,
-                    arguments: {"route": route, "page": page});
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Danh sách bình chọn',
@@ -67,11 +38,7 @@ AppBar buildAppBar(BuildContext context, int profile, int route, String page) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [],
-            ),
+            width: 60.w,
           )
         ],
       ),

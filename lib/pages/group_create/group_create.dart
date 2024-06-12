@@ -17,34 +17,19 @@ class GroupCreate extends StatefulWidget {
 
 class _WritePostAdviseState extends State<GroupCreate> {
   @override
-  Widget build(BuildContext context) {
-    var route;
-    Map<String, dynamic>? args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    if (args != null) {
-      route = args["route"];
-      context.read<GroupCreateBloc>().add(GroupCreateResetEvent());
-      // Now you can use the passedValue in your widget
-    }
+  void initState() {
+    super.initState();
+    context.read<GroupCreateBloc>().add(GroupCreateResetEvent());
+  }
 
-    return PopScope(
-        canPop: false, // prevent back
-        onPopInvoked: (_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage",
-            (route) => false,
-            arguments: {
-              "route": route,
-              "secondRoute": 0,
-            },
-          );
-        },
-        child: BlocBuilder<GroupCreateBloc, GroupCreateState>(
-            builder: (context, state) {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GroupCreateBloc, GroupCreateState>(
+        builder: (context, state) {
           return Scaffold(
-              appBar: buildAppBar(context, route),
+              appBar: buildAppBar(context),
               backgroundColor: AppColors.primaryBackground,
-              body: groupCreate(context, route));
-        }));
+              body: groupCreate(context));
+        });
   }
 }

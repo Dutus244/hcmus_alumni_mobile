@@ -25,12 +25,6 @@ class TagsEvent extends EditPostGroupEvent {
   const TagsEvent(this.tags);
 }
 
-class ItemTagsEvent extends EditPostGroupEvent {
-  final List<ValueItem> itemTags;
-
-  const ItemTagsEvent(this.itemTags);
-}
-
 class PicturesEvent extends EditPostGroupEvent {
   final List<File> pictures;
 

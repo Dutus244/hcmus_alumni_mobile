@@ -34,4 +34,10 @@ class PicturesEvent extends GroupEditEvent {
   const PicturesEvent(this.pictures);
 }
 
+class TagsEvent extends GroupEditEvent {
+  final List<String> tags;
+
+  const TagsEvent(this.tags);
+}
+
 class GroupEditResetEvent extends GroupEditEvent {}

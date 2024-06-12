@@ -12,7 +12,7 @@ import '../bloc/event_detail_write_comment_blocs.dart';
 import '../bloc/event_detail_write_comment_events.dart';
 import '../event_detail_write_comment_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int route, Event event, int profile) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -22,31 +22,8 @@ AppBar buildAppBar(BuildContext context, int route, Event event, int profile) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/eventDetail",
-                    (route) => false,
-                arguments: {
-                  "route": route,
-                  "id": event.id,
-                  "profile": profile,
-                },
-              );
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Sự kiện',
@@ -59,11 +36,7 @@ AppBar buildAppBar(BuildContext context, int route, Event event, int profile) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -185,14 +158,14 @@ Widget header(Event event) {
   );
 }
 
-Widget buttonSend(BuildContext context, Event event, int route, int profile) {
+Widget buttonSend(BuildContext context, Event event) {
   String comment =
       BlocProvider.of<EventDetailWriteCommentBloc>(context).state.comment;
   return GestureDetector(
     onTap: () {
       if (comment != "") {
         EventDetailWriteCommentController(context: context)
-            .handleLoadWriteComment(event.id, route, profile);
+            .handleLoadWriteComment(event.id);
       }
     },
     child: Container(
@@ -276,7 +249,7 @@ Widget navigation(BuildContext context, Event event, int route, int profile) {
                 onTap: () {
                   if (comment != "") {
                     EventDetailWriteCommentController(context: context)
-                        .handleLoadWriteComment(event.id, route, profile);
+                        .handleLoadWriteComment(event.id);
                   }
                 },
                 child: Container(
@@ -330,7 +303,7 @@ Widget navigation(BuildContext context, Event event, int route, int profile) {
   );
 }
 
-Widget eventDetailWriteComment(BuildContext context, Event event, int route, profile) {
+Widget eventDetailWriteComment(BuildContext context, Event event) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -349,7 +322,7 @@ Widget eventDetailWriteComment(BuildContext context, Event event, int route, pro
           ],
         ),
       ),
-     buttonSend(context, event, route, profile)
+     buttonSend(context, event)
     ],
   );
 }

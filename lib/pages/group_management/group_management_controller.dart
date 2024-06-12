@@ -41,7 +41,7 @@ class GroupManagementController {
     }
   }
 
-  Future<void> handleExitGroup(String id, int secondRoute) async {
+  Future<void> handleExitGroup(String id) async {
     String userId = '';
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$id/members/$userId';
@@ -59,9 +59,7 @@ class GroupManagementController {
       var response = await http.delete(url, headers: headers);
 
       if (response.statusCode == 200) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": 3, "secondRoute": secondRoute});
+        Navigator.pop(context);
       } else {
         // Handle other status codes if needed
         toastInfo(msg: "Có lỗi xả ra khi thoát nhóm");
@@ -72,7 +70,7 @@ class GroupManagementController {
     }
   }
 
-  Future<void> handleDeleteGroup(String id, int secondRoute) async {
+  Future<void> handleDeleteGroup(String id) async {
     final shouldDelte = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -106,9 +104,7 @@ class GroupManagementController {
 
         var response = await http.delete(url, headers: headers);
         if (response.statusCode == 200) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/applicationPage", (route) => false,
-              arguments: {"route": 3, "secondRoute": secondRoute});
+          Navigator.pop(context);
         } else {
           // Handle other status codes if needed
           toastInfo(msg: "Có lỗi xả ra khi xoá nhóm");

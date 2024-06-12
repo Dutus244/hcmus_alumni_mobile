@@ -53,51 +53,22 @@ class _ListCommentPostAdviseState extends State<ListCommentPostAdvise> {
 
   @override
   Widget build(BuildContext context) {
-    var profile = 0;
-    var route = 0;
-
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       id = args["id"];
-      if (args["profile"] != null) {
-        profile = args["profile"];
-      }
-      if (profile == 1) {
-        route = args["route"];
-      }
       ListCommentPostAdviseController(context: context).handleGetComment(id, 0);
     }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        if (profile == 0) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage",
-                (route) => false,
-            arguments: {
-              "route": 2,
-              "secondRoute": 0,
-            },
+    return BlocBuilder<ListCommentPostAdviseBloc, ListCommentPostAdviseState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: buildAppBar(context),
+            backgroundColor: AppColors.primaryBackground,
+            body: listComment(context, _scrollController, id, (value) {
+              context.read<ListCommentPostAdviseBloc>().add(ContentEvent(value));
+            }),
           );
-        }
-        else {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/myProfilePage", (route) => false,
-              arguments: {"route": route});
-        }
-      },
-      child: BlocBuilder<ListCommentPostAdviseBloc, ListCommentPostAdviseState>(
-          builder: (context, state) {
-        return Scaffold(
-          appBar: buildAppBar(context, profile, route),
-          backgroundColor: AppColors.primaryBackground,
-          body: listComment(context, _scrollController, id, (value) {
-            context.read<ListCommentPostAdviseBloc>().add(ContentEvent(value));
-          }),
-        );
-      }),
-    );
+        });
   }
 }

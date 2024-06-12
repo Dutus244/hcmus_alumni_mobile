@@ -34,7 +34,7 @@ AppBar buildAppBar(BuildContext context) {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     "/applicationPage",
                         (route) => false,
-                    arguments: {"route": 0, "secondRoute": 0},
+                    arguments: {"route": 0},
                   );
                 },
                 child: Container(
@@ -75,12 +75,13 @@ AppBar buildAppBar(BuildContext context) {
                   Row(
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
+                        onTap: () async {
+                          await Navigator.pushNamed(
+                            context,
                             "/groupCreate",
-                                (route) => false,
-                            arguments: {"route": 3},
                           );
+                          GroupPageController(context: context).handleLoadGroupDiscoverData(0);
+                          GroupPageController(context: context).handleLoadGroupJoinedData(0);
                         },
                         child: Container(
                           width: 20.w,
@@ -94,11 +95,13 @@ AppBar buildAppBar(BuildContext context) {
                     ],
                   ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
+                  onTap: () async {
+                    await Navigator.pushNamed(
+                      context,
                       "/groupSearch",
-                          (route) => false,
                     );
+                    GroupPageController(context: context).handleLoadGroupDiscoverData(0);
+                    GroupPageController(context: context).handleLoadGroupJoinedData(0);
                   },
                   child: Container(
                     width: 20.w,
@@ -130,10 +133,9 @@ AppBar buildAppBar(BuildContext context) {
                   margin: EdgeInsets.only(),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
+                      Navigator.pushNamed(
+                        context,
                         "/myProfilePage",
-                            (route) => false,
-                        arguments: {"page": "applicationPage", "route": 3},
                       );
                     },
                     child: CircleAvatar(
@@ -592,15 +594,16 @@ Widget infoGroup(BuildContext context, Group group) {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
+                onTap: () async {
+                  await Navigator.pushNamed(
+                    context,
                     "/groupDetail",
-                        (route) => false,
                     arguments: {
                       "id": group.id,
-                      "secondRoute": 0,
                     },
                   );
+                  GroupPageController(context: context).handleLoadGroupDiscoverData(0);
+                  GroupPageController(context: context).handleLoadGroupJoinedData(0);
                 },
                 child: Container(
                   margin: EdgeInsets.only(top: 15.h),
@@ -1015,15 +1018,16 @@ Widget groupJoined(BuildContext context, Group group) {
   }
 
   return GestureDetector(
-    onTap: () {
-      Navigator.of(context).pushNamedAndRemoveUntil(
+    onTap: () async {
+      await Navigator.pushNamed(
+        context,
         "/groupDetail",
-            (route) => false,
         arguments: {
           "id": group.id,
-          "secondRoute": 1,
         },
       );
+      GroupPageController(context: context).handleLoadGroupDiscoverData(0);
+      GroupPageController(context: context).handleLoadGroupJoinedData(0);
     },
     child: Container(
       width: 165.w,

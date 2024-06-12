@@ -11,7 +11,7 @@ import '../../../common/values/fonts.dart';
 import '../bloc/my_profile_add_achievement_events.dart';
 import '../bloc/my_profile_add_achievement_blocs.dart';
 
-AppBar buildAppBar(BuildContext context, int route) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -21,25 +21,8 @@ AppBar buildAppBar(BuildContext context, int route) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/myProfileEdit", (route) => false,
-                  arguments: {"route": route});
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Thành tựu nổi bật',
@@ -52,7 +35,7 @@ AppBar buildAppBar(BuildContext context, int route) {
             ),
           ),
           Container(
-            width: 25.w,
+            width: 60.w,
           )
         ],
       ),

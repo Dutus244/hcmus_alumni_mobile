@@ -27,39 +27,14 @@ class _WritePostAdviseState extends State<WritePostAdvise> {
 
   @override
   Widget build(BuildContext context) {
-    var route;
-    Map<String, dynamic>? args =
-    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    if (args != null) {
-      route = args["route"];
-      // Now you can use the passedValue in your widget
-    }
-
-    return PopScope(
-        canPop: false, // prevent back
-        onPopInvoked: (_) async {
-          if (BlocProvider.of<WritePostAdviseBloc>(context).state.page ==
-              0) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              "/applicationPage",
-                  (route) => false,
-              arguments: {
-                "route": route,
-                "secondRoute": 0,
-              },
-            );
-          } else {
-            context.read<WritePostAdviseBloc>().add(PageEvent(0));
-          }
-        },
-        child: BlocBuilder<WritePostAdviseBloc, WritePostAdviseState>(
-            builder: (context, state) {
+    return BlocBuilder<WritePostAdviseBloc, WritePostAdviseState>(
+        builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, route),
-            backgroundColor: AppColors.primaryBackground,
-            body: BlocProvider.of<WritePostAdviseBloc>(context)
-                .state.page == 0 ? writePost(context, route) : editPicture(context, route)
+              appBar: buildAppBar(context),
+              backgroundColor: AppColors.primaryBackground,
+              body: BlocProvider.of<WritePostAdviseBloc>(context)
+                  .state.page == 0 ? writePost(context) : editPicture(context)
           );
-        }));
+        });
   }
 }

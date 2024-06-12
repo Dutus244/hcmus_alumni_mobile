@@ -10,7 +10,6 @@ class EditPostGroupBloc
     on<TitleEvent>(_titleEvent);
     on<ContentEvent>(_contentEvent);
     on<TagsEvent>(_tagsEvent);
-    on<ItemTagsEvent>(_itemTagsEvent);
     on<PictureNetworksEvent>(_pictureNetworksEvent);
     on<PicturesEvent>(_picturesEvent);
     on<DeletePicturesEvent>(_deletePicturesEvent);
@@ -28,10 +27,6 @@ class EditPostGroupBloc
 
   void _tagsEvent(TagsEvent event, Emitter<EditPostGroupState> emit) {
     emit(state.copyWith(tags: event.tags));
-  }
-
-  void _itemTagsEvent(ItemTagsEvent event, Emitter<EditPostGroupState> emit) {
-    emit(state.copyWith(itemTags: event.itemTags));
   }
 
   void _pictureNetworksEvent(

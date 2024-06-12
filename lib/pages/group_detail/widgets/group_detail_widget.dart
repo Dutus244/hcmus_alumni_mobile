@@ -19,7 +19,7 @@ import 'package:hcmus_alumni_mobile/pages/group_detail/bloc/group_detail_blocs.d
 
 import '../group_detail_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int secondRoute, int search) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -29,31 +29,8 @@ AppBar buildAppBar(BuildContext context, int secondRoute, int search) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              if (search == 0) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/applicationPage", (route) => false,
-                    arguments: {"route": 3, "secondRoute": secondRoute});
-              }
-              else {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/groupSearch", (route) => false);
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Nhóm',
@@ -66,11 +43,7 @@ AppBar buildAppBar(BuildContext context, int secondRoute, int search) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -79,7 +52,7 @@ AppBar buildAppBar(BuildContext context, int secondRoute, int search) {
   );
 }
 
-Widget informationGroup(BuildContext context, Group group, int secondRoute) {
+Widget informationGroup(BuildContext context, Group group) {
   String typeGroup = '';
   if (group.privacy == 'PUBLIC') {
     typeGroup = 'Nhóm Công khai';
@@ -123,12 +96,11 @@ Widget informationGroup(BuildContext context, Group group, int secondRoute) {
       ),
       GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamedAndRemoveUntil(
+          Navigator.pushNamed(
+            context,
             "/groupInfo",
-                (route) => false,
             arguments: {
               "group": group,
-              "secondRoute": secondRoute,
             },
           );
         },
@@ -213,17 +185,17 @@ Widget informationGroup(BuildContext context, Group group, int secondRoute) {
   );
 }
 
-Widget buildCreatePostButton(BuildContext context, Group group, int secondRoute) {
+Widget buildCreatePostButton(BuildContext context, Group group) {
   return GestureDetector(
-    onTap: () {
-      Navigator.of(context).pushNamedAndRemoveUntil(
+    onTap: () async {
+      await Navigator.pushNamed(
+        context,
         "/writePostGroup",
-            (route) => false,
         arguments: {
           "id": group.id,
-          "secondRoute": secondRoute,
         },
       );
+      GroupDetailController(context: context).handleLoadPostData(group.id, 0);
     },
     child: Container(
       height: 40.h,
@@ -340,23 +312,22 @@ Widget space() {
   );
 }
 
-Widget joinedGroup(BuildContext context, Group group, int secondRoute) {
+Widget joinedGroup(BuildContext context, Group group) {
   return GestureDetector(
     onTap: () {
       if (group.userRole == 'MEMBER') {
         showModalBottomSheet(
           isScrollControlled: true,
           context: context,
-          builder: (ctx) => exitGroup(context, group, secondRoute),
+          builder: (ctx) => exitGroup(context, group),
         );
       }
       else {
-        Navigator.of(context).pushNamedAndRemoveUntil(
+        Navigator.pushNamed(
+          context,
           "/groupManagement",
-              (route) => false,
           arguments: {
             "group": group,
-            "secondRoute": secondRoute,
           },
         );
       }
@@ -438,10 +409,11 @@ Widget joinedGroup(BuildContext context, Group group, int secondRoute) {
   );
 }
 
-Widget exitGroup(BuildContext context, Group group, int secondRoute) {
+Widget exitGroup(BuildContext context, Group group) {
   return GestureDetector(
-    onTap: () {
-      GroupDetailController(context: context).handleExitGroup(group.id, secondRoute);
+    onTap: () async {
+      await GroupDetailController(context: context).handleExitGroup(group.id);
+      Navigator.pop(context);
     },
     child: Container(
       height: 60.h,
@@ -476,7 +448,7 @@ Widget exitGroup(BuildContext context, Group group, int secondRoute) {
 }
 
 Widget groupPrivateNotJoined(
-    BuildContext context, Group? group, int secondRoute) {
+    BuildContext context, Group? group) {
   if (group == null) {
     return loadingWidget();
   } else {
@@ -488,7 +460,7 @@ Widget groupPrivateNotJoined(
           child: ListView(
             scrollDirection: Axis.vertical,
             children: [
-              informationGroup(context, group, secondRoute),
+              informationGroup(context, group),
               joinGroup(context, group),
               Container(
                 margin: EdgeInsets.only(left: 10.w, top: 20.h),
@@ -613,7 +585,7 @@ Widget groupPrivateNotJoined(
 }
 
 Widget group(BuildContext context, ScrollController _scrollController,
-    Group? group, int secondRoute) {
+    Group? group) {
   if (group == null) {
     return loadingWidget();
   } else {
@@ -634,11 +606,11 @@ Widget group(BuildContext context, ScrollController _scrollController,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      informationGroup(context, group, secondRoute),
+                      informationGroup(context, group),
                       if (!joined) joinGroup(context, group),
-                      if (joined) joinedGroup(context, group, secondRoute),
+                      if (joined) joinedGroup(context, group),
                       space(),
-                      if (joined) buildCreatePostButton(context, group, secondRoute),
+                      if (joined) buildCreatePostButton(context, group),
                       loadingWidget(),
                     ],
                   );
@@ -651,11 +623,11 @@ Widget group(BuildContext context, ScrollController _scrollController,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        informationGroup(context, group, secondRoute),
+                        informationGroup(context, group),
                         if (!joined) joinGroup(context, group),
-                        if (joined) joinedGroup(context, group, secondRoute),
+                        if (joined) joinedGroup(context, group),
                         space(),
-                        if (joined) buildCreatePostButton(context, group, secondRoute),
+                        if (joined) buildCreatePostButton(context, group),
                         Center(
                             child: Container(
                           margin: EdgeInsets.only(top: 20.h),
@@ -691,16 +663,16 @@ Widget group(BuildContext context, ScrollController _scrollController,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          informationGroup(context, group, secondRoute),
+                          informationGroup(context, group),
                           if (!joined) joinGroup(context, group),
-                          if (joined) joinedGroup(context, group, secondRoute),
+                          if (joined) joinedGroup(context, group),
                           space(),
-                          if (joined) buildCreatePostButton(context, group, secondRoute),
+                          if (joined) buildCreatePostButton(context, group),
                           post(
                               context,
                               BlocProvider.of<GroupDetailBloc>(context)
                                   .state
-                                  .posts[index], group, secondRoute),
+                                  .posts[index], group),
                         ],
                       );
                     } else {
@@ -708,7 +680,7 @@ Widget group(BuildContext context, ScrollController _scrollController,
                           context,
                           BlocProvider.of<GroupDetailBloc>(context)
                               .state
-                              .posts[index], group, secondRoute);
+                              .posts[index], group);
                     }
                   }
               }
@@ -720,133 +692,7 @@ Widget group(BuildContext context, ScrollController _scrollController,
   }
 }
 
-class ButtonOptionPost extends StatefulWidget {
-  final Post post;
-  final String groupId;
-  final int secondRoute;
-
-  const ButtonOptionPost(this.post, this.groupId, this.secondRoute, {Key? key}) : super(key: key);
-
-  @override
-  State<ButtonOptionPost> createState() => _ButtonOptionPostState();
-}
-
-class _ButtonOptionPostState extends State<ButtonOptionPost> {
-  @override
-  Widget build(BuildContext context) {
-    Post post = widget.post; // Accessing post from the widget instance
-    String groupId = widget.groupId;
-    int secondRoute = widget.secondRoute;
-    return GestureDetector(
-      onTap: () {
-        showPopover(
-          context: context,
-          bodyBuilder: (context) =>
-              BlocBuilder<GroupDetailBloc, GroupDetailState>(
-            builder: (context, state) {
-              return Container(
-                width: 130.w,
-                height: 45.h,
-                child: Container(
-                  margin: EdgeInsets.only(left: 5.w, right: 5.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 5.h,
-                      ),
-                      if (post.permissions.edit)
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              "/editPostGroup",
-                              (route) => false,
-                              arguments: {
-                                "id": groupId,
-                                "secondRoute": secondRoute,
-                                "post": post,
-                              },
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/edit.svg",
-                                width: 16.w,
-                                height: 16.h,
-                                color: AppColors.primarySecondaryText,
-                              ),
-                              Container(
-                                width: 5.w,
-                              ),
-                              Text(
-                                'Chỉnh sửa bài viết',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: AppFonts.Header2,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      Container(
-                        height: 10.h,
-                      ),
-                      if (post.permissions.delete)
-                        GestureDetector(
-                          onTap: () {
-                            GroupDetailController(context: context)
-                                .handleDeletePost(post.id, groupId);
-                          },
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/trash.svg",
-                                width: 16.w,
-                                height: 16.h,
-                                color: AppColors.primarySecondaryText,
-                              ),
-                              Container(
-                                width: 5.w,
-                              ),
-                              Text(
-                                'Xoá bài viết',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: AppFonts.Header2,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-          onPop: () {},
-          direction: PopoverDirection.bottom,
-          width: 170.w,
-          height: 60.h,
-        );
-      },
-      child: Container(
-        width: 17.w,
-        height: 17.h,
-        decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage("assets/icons/3dot.png"))),
-      ),
-    );
-  }
-}
-
-Widget postOption(BuildContext context, Post post, String groupId, int secondRoute) {
+Widget postOption(BuildContext context, Post post, String groupId) {
   return Container(
     height: 90.h,
     child: Stack(
@@ -858,12 +704,11 @@ Widget postOption(BuildContext context, Post post, String groupId, int secondRou
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
+                  Navigator.pushNamed(
+                    context,
                     "/editPostGroup",
-                        (route) => false,
                     arguments: {
                       "id": groupId,
-                      "secondRoute": secondRoute,
                       "post": post,
                     },
                   );
@@ -938,7 +783,7 @@ Widget postOption(BuildContext context, Post post, String groupId, int secondRou
   );
 }
 
-Widget post(BuildContext context, Post post, Group group, int secondRoute) {
+Widget post(BuildContext context, Post post, Group group) {
   return Container(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1005,7 +850,7 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                     showModalBottomSheet(
                       isScrollControlled: true,
                       context: context,
-                      builder: (ctx) => postOption(context, post, group.id, secondRoute),
+                      builder: (ctx) => postOption(context, post, group.id),
                     );
                   },
                   child: Container(
@@ -1128,14 +973,13 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
+                        Navigator.pushNamed(
+                          context,
                           "/groupDetailListVoters",
-                              (route) => false,
                           arguments: {
                             "vote": post.votes[i],
                             "post": post,
                             "group": group,
-                            "secondRoute": secondRoute,
                           },
                         );
                       },
@@ -1223,14 +1067,13 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
+                        Navigator.pushNamed(
+                          context,
                           "/groupDetailListVoters",
-                              (route) => false,
                           arguments: {
                             "vote": post.votes[i],
                             "post": post,
                             "group": group,
-                            "secondRoute": secondRoute,
                           },
                         );
                       },
@@ -1353,12 +1196,11 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
         if (post.pictures.length == 1)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostGroup",
-                (route) => false,
                 arguments: {
                   "post": post,
-                  "secondRoute": secondRoute,
                   "groupId": group.id,
                 },
               );
@@ -1379,12 +1221,11 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
         if (post.pictures.length == 2)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostGroup",
-                (route) => false,
                 arguments: {
                   "post": post,
-                  "secondRoute": secondRoute,
                   "groupId": group.id,
                 },
               );
@@ -1422,12 +1263,11 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
         if (post.pictures.length == 3)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostGroup",
-                (route) => false,
                 arguments: {
                   "post": post,
-                  "secondRoute": secondRoute,
                   "groupId": group.id,
                 },
               );
@@ -1482,12 +1322,11 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
         if (post.pictures.length == 4)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostGroup",
-                (route) => false,
                 arguments: {
                   "post": post,
-                  "secondRoute": secondRoute,
                   "groupId": group.id,
                 },
               );
@@ -1560,12 +1399,11 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
         if (post.pictures.length == 5)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostGroup",
-                (route) => false,
                 arguments: {
                   "post": post,
-                  "secondRoute": secondRoute,
                   "groupId": group.id,
                 },
               );
@@ -1673,11 +1511,10 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
+                  Navigator.pushNamed(
+                    context,
                     "/listInteractPostGroup",
-                    (route) => false,
                     arguments: {
-                      "secondRoute": secondRoute,
                       "id": post.id,
                       "groupId": group.id,
                     },
@@ -1709,12 +1546,11 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
+                onTap: () async {
+                  Navigator.pushNamed(
+                    context,
                     "/listCommentPostGroup",
-                    (route) => false,
                     arguments: {
-                      "secondRoute": secondRoute,
                       "id": post.id,
                       "groupId": group.id,
                     },
@@ -1751,8 +1587,8 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    // GroupDetailController(context: context)
-                    //     .handleLikePost(post.id);
+                    GroupDetailController(context: context)
+                        .handleLikePost(post.id);
                   },
                   child: post.isReacted
                       ? Container(
@@ -1809,7 +1645,16 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
               ),
               Center(
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      "/listCommentPostGroup",
+                      arguments: {
+                        "id": post.id,
+                        "groupId": group.id,
+                      },
+                    );
+                  },
                   child: Container(
                     margin: EdgeInsets.only(right: 40.w),
                     child: Row(

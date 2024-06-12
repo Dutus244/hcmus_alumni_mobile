@@ -17,15 +17,13 @@ class MyProfileAddEducation extends StatefulWidget {
 }
 
 class _MyProfileAddEducationState extends State<MyProfileAddEducation> {
+  int option = 0;
+  late Education education;
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    var route = 0;
-    var option = 0;
-    late Education education;
     if (args != null) {
-      route = args["route"];
       option = args["option"];
       context.read<MyProfileAddEducationBloc>().add(MyProfileAddEducationResetEvent());
       if (option == 1) {
@@ -37,20 +35,12 @@ class _MyProfileAddEducationState extends State<MyProfileAddEducation> {
       }
     }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/myProfilePage", (route) => false,
-            arguments: {"route": route});
-      },
-      child: BlocBuilder<MyProfileAddEducationBloc, MyProfileAddEducationState>(
-          builder: (context, state) {
-        return Scaffold(
-            appBar: buildAppBar(context, route),
-            backgroundColor: AppColors.primaryBackground,
-            body: myProfileAddEducation(context));
-      }),
-    );
+    return BlocBuilder<MyProfileAddEducationBloc, MyProfileAddEducationState>(
+        builder: (context, state) {
+          return Scaffold(
+              appBar: buildAppBar(context),
+              backgroundColor: AppColors.primaryBackground,
+              body: myProfileAddEducation(context));
+        });
   }
 }

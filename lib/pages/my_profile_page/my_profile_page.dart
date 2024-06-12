@@ -20,7 +20,6 @@ class MyProfilePage extends StatefulWidget {
 class _MyProfilePageState extends State<MyProfilePage> {
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
-  String page = '';
 
   @override
   void initState() {
@@ -52,33 +51,15 @@ class _MyProfilePageState extends State<MyProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic>? args =
-    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    var route = 0;
-    if (args != null) {
-      route = args["route"];
-      page = args["page"];
-    }
-
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        if (page == "applicationPage") {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/applicationPage", (route) => false,
-              arguments: {"route": route, "secondRoute": 0});
-        }
-      },
-      child: BlocBuilder<MyProfilePageBloc, MyProfilePageState>(
-          builder: (context, state) {
-            return Scaffold(
-              appBar: buildAppBar(context, route),
-              backgroundColor: AppColors.primaryBackground,
-              body:  BlocProvider.of<MyProfilePageBloc>(context).state.page == 0
-                  ? listPosts(context, _scrollController, route, page)
-                  : listEvent(context, _scrollController, route, page),
-            );
-          }),
-    );
+    return BlocBuilder<MyProfilePageBloc, MyProfilePageState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: buildAppBar(context),
+            backgroundColor: AppColors.primaryBackground,
+            body:  BlocProvider.of<MyProfilePageBloc>(context).state.page == 0
+                ? listPosts(context, _scrollController)
+                : listEvent(context, _scrollController),
+          );
+        });
   }
 }

@@ -49,20 +49,12 @@ class _GroupSearchState extends State<GroupSearch> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": 3, "secondRoute": 0});
-      },
-      child: BlocBuilder<GroupSearchBloc, GroupSearchState>(builder: (context, state) {
-        return Scaffold(
-          appBar: buildAppBar(context),
-          backgroundColor: AppColors.primaryBackground,
-          body: listGroup(context, _scrollController),
-        );
-      }),
-    );
+    return BlocBuilder<GroupSearchBloc, GroupSearchState>(builder: (context, state) {
+      return Scaffold(
+        appBar: buildAppBar(context),
+        backgroundColor: AppColors.primaryBackground,
+        body: listGroup(context, _scrollController),
+      );
+    });
   }
 }

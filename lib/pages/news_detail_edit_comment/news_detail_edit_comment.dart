@@ -28,14 +28,12 @@ class _NewsDetailEditCommentState extends State<NewsDetailEditComment> {
 
   late News news;
   late Comment comment;
-  late int route;
 
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
-      route = args["route"];
       news = args["news"];
       comment = args["comment"];
       context
@@ -43,25 +41,13 @@ class _NewsDetailEditCommentState extends State<NewsDetailEditComment> {
           .add(CommentEvent(comment.content));
     }
 
-    return PopScope(
-        canPop: false, // prevent back
-        onPopInvoked: (_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/newsDetail",
-            (route) => false,
-            arguments: {
-              "route": route,
-              "id": news.id,
-            },
-          );
-        },
-        child: BlocBuilder<NewsDetailEditCommentBloc,
-            NewsDetailEditCommentState>(builder: (context, state) {
-          return Scaffold(
-            appBar: buildAppBar(context, route, news),
-            backgroundColor: AppColors.primaryBackground,
-            body: newsDetailEditComment(context, news, route, comment),
-          );
-        }));
+    return BlocBuilder<NewsDetailEditCommentBloc,
+        NewsDetailEditCommentState>(builder: (context, state) {
+      return Scaffold(
+        appBar: buildAppBar(context),
+        backgroundColor: AppColors.primaryBackground,
+        body: newsDetailEditComment(context, news, comment),
+      );
+    });
   }
 }

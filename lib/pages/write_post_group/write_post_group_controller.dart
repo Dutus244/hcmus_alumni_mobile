@@ -24,7 +24,7 @@ class WritePostGroupController {
     return vote.map((vote) => {'name': vote}).toList();
   }
 
-  Future<void> handlePost(String groupId, int secondRoute) async {
+  Future<void> handlePost(String groupId) async {
     final state = context.read<WritePostGroupBloc>().state;
     String title = state.title;
     String content = state.content;
@@ -115,14 +115,7 @@ class WritePostGroupController {
                 context
                     .read<WritePostGroupBloc>()
                     .add(WritePostGroupResetEvent());
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/groupDetail",
-                      (route) => false,
-                  arguments: {
-                    "id": groupId,
-                    "secondRoute": secondRoute,
-                  },
-                );
+                Navigator.pop(context);
               } else {}
             } catch (e) {
               // Exception occurred
@@ -194,14 +187,7 @@ class WritePostGroupController {
               context
                   .read<WritePostGroupBloc>()
                   .add(WritePostGroupResetEvent());
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/groupDetail",
-                    (route) => false,
-                arguments: {
-                  "id": groupId,
-                  "secondRoute": secondRoute,
-                },
-              );
+              Navigator.pop(context);
             } else {}
           } catch (e) {
             // Exception occurred

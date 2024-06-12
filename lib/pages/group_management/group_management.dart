@@ -17,7 +17,6 @@ class GroupManagement extends StatefulWidget {
 }
 
 class _GroupManagementState extends State<GroupManagement> {
-  late int secondRoute;
   late Group group;
 
   @override
@@ -26,29 +25,16 @@ class _GroupManagementState extends State<GroupManagement> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       group = args["group"];
-      secondRoute = args["secondRoute"];
       GroupManagementController(context: context).handleGetGroup(group.id);
     }
 
-    return PopScope(
-        canPop: false, // prevent back
-        onPopInvoked: (_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/groupDetail",
-            (route) => false,
-            arguments: {
-              "id": group.id,
-              "secondRoute": secondRoute,
-            },
-          );
-        },
-        child: BlocBuilder<GroupManagementBloc, GroupManagementState>(
-            builder: (context, state) {
+    return BlocBuilder<GroupManagementBloc, GroupManagementState>(
+        builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, group, secondRoute),
+            appBar: buildAppBar(context),
             backgroundColor: AppColors.primaryBackground,
-            body: groupManagement(context, state.group, secondRoute),
+            body: groupManagement(context, state.group),
           );
-        }));
+        });
   }
 }

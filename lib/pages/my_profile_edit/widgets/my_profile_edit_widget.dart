@@ -19,7 +19,7 @@ import '../../../common/values/fonts.dart';
 import '../../../common/widgets/flutter_toast.dart';
 import '../bloc/my_profile_edit_events.dart';
 
-AppBar buildAppBar(BuildContext context, int route) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -29,25 +29,8 @@ AppBar buildAppBar(BuildContext context, int route) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/myProfilePage", (route) => false,
-                  arguments: {"route": route});
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Thông tin cá nhân',
@@ -59,22 +42,9 @@ AppBar buildAppBar(BuildContext context, int route) {
               color: AppColors.secondaryHeader,
             ),
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/tick.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
-          ),
+          Container(
+            width: 60.w,
+          )
         ],
       ),
     ),
@@ -82,7 +52,7 @@ AppBar buildAppBar(BuildContext context, int route) {
   );
 }
 
-Widget myProfileEdit(BuildContext context, int route) {
+Widget myProfileEdit(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -101,9 +71,9 @@ Widget myProfileEdit(BuildContext context, int route) {
           editContact(context),
           editAboutMe(context),
           editAlumni(context),
-          editJob(context, route),
-          editEducation(context, route),
-          editAchievement(context, route),
+          editJob(context),
+          editEducation(context),
+          editAchievement(context),
         ],
       )),
     ],
@@ -1078,7 +1048,7 @@ Widget editAlumni(BuildContext context) {
   );
 }
 
-Widget editJob(BuildContext context, int route) {
+Widget editJob(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -1106,13 +1076,16 @@ Widget editJob(BuildContext context, int route) {
       for (int i = 0;
           i < BlocProvider.of<MyProfileEditBloc>(context).state.jobs.length;
           i += 1)
-        job(context, BlocProvider.of<MyProfileEditBloc>(context).state.jobs[i],
-            route),
+        job(context, BlocProvider.of<MyProfileEditBloc>(context).state.jobs[i]),
       GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/myProfileAddJob", (route) => false,
-              arguments: {"route": route, "option": 0});
+          Navigator.pushNamed(
+            context,
+            "/myProfileAddJob",
+            arguments: {
+              "option": 0
+            },
+          );
         },
         child: Container(
           color: Colors.transparent,
@@ -1147,7 +1120,7 @@ Widget editJob(BuildContext context, int route) {
   );
 }
 
-Widget job(BuildContext context, Job job, int route) {
+Widget job(BuildContext context, Job job) {
   return Container(
     margin: EdgeInsets.only(left: 10.w, right: 10.w),
     child: Row(
@@ -1215,7 +1188,7 @@ Widget job(BuildContext context, Job job, int route) {
             showModalBottomSheet(
               isScrollControlled: true,
               context: context,
-              builder: (ctx) => jobOption(context, job, route),
+              builder: (ctx) => jobOption(context, job),
             );
           },
           child: SvgPicture.asset(
@@ -1230,7 +1203,7 @@ Widget job(BuildContext context, Job job, int route) {
   );
 }
 
-Widget jobOption(BuildContext context, Job job, int route) {
+Widget jobOption(BuildContext context, Job job) {
   return Container(
     height: 90.h,
     child: Stack(
@@ -1242,9 +1215,13 @@ Widget jobOption(BuildContext context, Job job, int route) {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/myProfileAddJob", (route) => false,
-                      arguments: {"route": route, "option": 1, "job": job});
+                  Navigator.pushNamed(
+                    context,
+                    "/myProfileAddJob",
+                    arguments: {
+                      "option": 1, "job": job
+                    },
+                  );
                 },
                 child: Container(
                   margin: EdgeInsets.only(left: 10.w, top: 10.h),
@@ -1310,7 +1287,7 @@ Widget jobOption(BuildContext context, Job job, int route) {
   );
 }
 
-Widget editEducation(BuildContext context, int route) {
+Widget editEducation(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -1344,13 +1321,16 @@ Widget editEducation(BuildContext context, int route) {
           i += 1)
         education(
             context,
-            BlocProvider.of<MyProfileEditBloc>(context).state.educations[i],
-            route),
+            BlocProvider.of<MyProfileEditBloc>(context).state.educations[i]),
       GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/myProfileAddEducation", (route) => false,
-              arguments: {"route": route, "option": 0});
+          Navigator.pushNamed(
+            context,
+            "/myProfileAddEducation",
+            arguments: {
+              "option": 0
+            },
+          );
         },
         child: Container(
           color: Colors.transparent,
@@ -1385,7 +1365,7 @@ Widget editEducation(BuildContext context, int route) {
   );
 }
 
-Widget education(BuildContext context, Education education, int route) {
+Widget education(BuildContext context, Education education) {
   return Container(
     margin: EdgeInsets.only(left: 10.w, right: 10.w),
     child: Row(
@@ -1453,7 +1433,7 @@ Widget education(BuildContext context, Education education, int route) {
             showModalBottomSheet(
               isScrollControlled: true,
               context: context,
-              builder: (ctx) => educationOption(context, education, route),
+              builder: (ctx) => educationOption(context, education),
             );
           },
           child: SvgPicture.asset(
@@ -1468,7 +1448,7 @@ Widget education(BuildContext context, Education education, int route) {
   );
 }
 
-Widget educationOption(BuildContext context, Education education, int route) {
+Widget educationOption(BuildContext context, Education education) {
   return Container(
     height: 90.h,
     child: Stack(
@@ -1480,12 +1460,14 @@ Widget educationOption(BuildContext context, Education education, int route) {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/myProfileAddEducation", (route) => false, arguments: {
-                    "route": route,
-                    "option": 1,
-                    "job": education
-                  });
+                  Navigator.pushNamed(
+                    context,
+                    "/myProfileAddEducation",
+                    arguments: {
+                      "option": 1,
+                      "education": education
+                    },
+                  );
                 },
                 child: Container(
                   margin: EdgeInsets.only(left: 10.w, top: 10.h),
@@ -1551,7 +1533,7 @@ Widget educationOption(BuildContext context, Education education, int route) {
   );
 }
 
-Widget editAchievement(BuildContext context, int route) {
+Widget editAchievement(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -1585,13 +1567,16 @@ Widget editAchievement(BuildContext context, int route) {
       i += 1)
         achievement(
             context,
-            BlocProvider.of<MyProfileEditBloc>(context).state.achievements[i],
-            route),
+            BlocProvider.of<MyProfileEditBloc>(context).state.achievements[i]),
       GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/myProfileAddAchievement", (route) => false,
-              arguments: {"route": route, "option": 0});
+          Navigator.pushNamed(
+            context,
+            "/myProfileAddAchievement",
+            arguments: {
+              "option": 0
+            },
+          );
         },
         child: Container(
           color: Colors.transparent,
@@ -1626,7 +1611,7 @@ Widget editAchievement(BuildContext context, int route) {
   );
 }
 
-Widget achievement(BuildContext context, Achievement achievement, int route) {
+Widget achievement(BuildContext context, Achievement achievement) {
   return Container(
     margin: EdgeInsets.only(left: 10.w, right: 10.w),
     child: Row(
@@ -1694,7 +1679,7 @@ Widget achievement(BuildContext context, Achievement achievement, int route) {
             showModalBottomSheet(
               isScrollControlled: true,
               context: context,
-              builder: (ctx) => achievementOption(context, achievement, route),
+              builder: (ctx) => achievementOption(context, achievement),
             );
           },
           child: SvgPicture.asset(
@@ -1709,7 +1694,7 @@ Widget achievement(BuildContext context, Achievement achievement, int route) {
   );
 }
 
-Widget achievementOption(BuildContext context, Achievement achievement, int route) {
+Widget achievementOption(BuildContext context, Achievement achievement) {
   return Container(
     height: 90.h,
     child: Stack(
@@ -1721,12 +1706,14 @@ Widget achievementOption(BuildContext context, Achievement achievement, int rout
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/myProfileAddAchievement", (route) => false, arguments: {
-                    "route": route,
-                    "option": 1,
-                    "achievement": achievement
-                  });
+                  Navigator.pushNamed(
+                    context,
+                    "/myProfileAddAchievement",
+                    arguments: {
+                      "option": 1,
+                      "achievement": achievement
+                    },
+                  );
                 },
                 child: Container(
                   margin: EdgeInsets.only(left: 10.w, top: 10.h),

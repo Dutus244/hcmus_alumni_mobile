@@ -23,14 +23,12 @@ import '../bloc/advise_page_states.dart';
 
 Widget buildCreatePostButton(BuildContext context) {
   return GestureDetector(
-    onTap: () {
-      Navigator.of(context).pushNamedAndRemoveUntil(
+    onTap: () async {
+      await Navigator.pushNamed(
+        context,
         "/writePostAdvise",
-        (route) => false,
-        arguments: {
-          "route": 2,
-        },
       );
+      AdvisePageController(context: context).handleLoadPostData(0);
     },
     child: Container(
       height: 40.h,
@@ -179,15 +177,15 @@ Widget postOption(BuildContext context, Post post) {
             children: [
               if (post.votes.length == 0)
                 GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
+                onTap: () async {
+                  await Navigator.pushNamed(
+                    context,
                     "/editPostAdvise",
-                    (route) => false,
                     arguments: {
-                      "route": 2,
                       "post": post,
                     },
                   );
+                  AdvisePageController(context: context).handleLoadPostData(0);
                 },
                 child: Container(
                   margin: EdgeInsets.only(left: 10.w, top: 10.h),
@@ -258,127 +256,6 @@ Widget postOption(BuildContext context, Post post) {
       ],
     ),
   );
-}
-
-class ButtonOptionPost extends StatefulWidget {
-  final Post post;
-
-  const ButtonOptionPost(this.post, {Key? key}) : super(key: key);
-
-  @override
-  State<ButtonOptionPost> createState() => _ButtonOptionPostState();
-}
-
-class _ButtonOptionPostState extends State<ButtonOptionPost> {
-  @override
-  Widget build(BuildContext context) {
-    Post post = widget.post; // Accessing post from the widget instance
-    return GestureDetector(
-      onTap: () {
-        showPopover(
-          context: context,
-          bodyBuilder: (context) =>
-              BlocBuilder<AdvisePageBloc, AdvisePageState>(
-            builder: (context, state) {
-              return Container(
-                width: 130.w,
-                height: 45.h,
-                child: Container(
-                  margin: EdgeInsets.only(left: 5.w, right: 5.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 5.h,
-                      ),
-                      if (post.permissions.edit)
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              "/editPostAdvise",
-                              (route) => false,
-                              arguments: {
-                                "route": 2,
-                                "post": post,
-                              },
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/edit.svg",
-                                width: 16.w,
-                                height: 16.h,
-                                color: AppColors.primarySecondaryText,
-                              ),
-                              Container(
-                                width: 5.w,
-                              ),
-                              Text(
-                                'Chỉnh sửa bài viết',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: AppFonts.Header2,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      Container(
-                        height: 10.h,
-                      ),
-                      if (post.permissions.delete)
-                        GestureDetector(
-                          onTap: () {
-                            AdvisePageController(context: context)
-                                .handleDeletePost(post.id);
-                          },
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/trash.svg",
-                                width: 16.w,
-                                height: 16.h,
-                                color: AppColors.primarySecondaryText,
-                              ),
-                              Container(
-                                width: 5.w,
-                              ),
-                              Text(
-                                'Xoá bài viết',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: AppFonts.Header2,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-          onPop: () {},
-          direction: PopoverDirection.bottom,
-          width: 170.w,
-          height: 60.h,
-        );
-      },
-      child: Container(
-        width: 17.w,
-        height: 17.h,
-        decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage("assets/icons/3dot.png"))),
-      ),
-    );
-  }
 }
 
 Widget post(BuildContext context, Post post) {
@@ -572,10 +449,10 @@ Widget post(BuildContext context, Post post) {
                     ],
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
+                    onTap: () async {
+                      Navigator.pushNamed(
+                        context,
                         "/advisePageListVoters",
-                            (route) => false,
                         arguments: {
                           "vote": post.votes[i],
                           "post": post,
@@ -667,9 +544,9 @@ Widget post(BuildContext context, Post post) {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
+                        Navigator.pushNamed(
+                          context,
                           "/advisePageListVoters",
-                              (route) => false,
                           arguments: {
                             "vote": post.votes[i],
                             "post": post,
@@ -795,9 +672,9 @@ Widget post(BuildContext context, Post post) {
         if (post.pictures.length == 1)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostAdvise",
-                (route) => false,
                 arguments: {
                   "post": post,
                 },
@@ -819,9 +696,9 @@ Widget post(BuildContext context, Post post) {
         if (post.pictures.length == 2)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostAdvise",
-                    (route) => false,
                 arguments: {
                   "post": post,
                 },
@@ -860,9 +737,9 @@ Widget post(BuildContext context, Post post) {
         if (post.pictures.length == 3)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostAdvise",
-                    (route) => false,
                 arguments: {
                   "post": post,
                 },
@@ -918,9 +795,9 @@ Widget post(BuildContext context, Post post) {
         if (post.pictures.length == 4)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostAdvise",
-                    (route) => false,
                 arguments: {
                   "post": post,
                 },
@@ -994,9 +871,9 @@ Widget post(BuildContext context, Post post) {
         if (post.pictures.length == 5)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostAdvise",
-                    (route) => false,
                 arguments: {
                   "post": post,
                 },
@@ -1105,11 +982,10 @@ Widget post(BuildContext context, Post post) {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
+                  Navigator.pushNamed(
+                    context,
                     "/listInteractPostAdvise",
-                    (route) => false,
                     arguments: {
-                      "route": 1,
                       "id": post.id,
                     },
                   );
@@ -1140,15 +1016,15 @@ Widget post(BuildContext context, Post post) {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
+                onTap: () async {
+                  await Navigator.pushNamed(
+                    context,
                     "/listCommentPostAdvise",
-                    (route) => false,
                     arguments: {
-                      "route": 1,
                       "id": post.id,
                     },
                   );
+                  AdvisePageController(context: context).handleLoadPostData(0);
                 },
                 child: Container(
                   padding: EdgeInsets.only(right: 10.w),
@@ -1245,11 +1121,10 @@ Widget post(BuildContext context, Post post) {
                       Center(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
+                          Navigator.pushNamed(
+                            context,
                             "/listCommentPostAdvise",
-                                (route) => false,
                             arguments: {
-                              "route": 1,
                               "id": post.id,
                             },
                           );

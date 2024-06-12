@@ -17,15 +17,14 @@ class MyProfileAddAchievement extends StatefulWidget {
 }
 
 class _MyProfileAddAchievementState extends State<MyProfileAddAchievement> {
+  int option = 0;
+  late Achievement achievement;
+
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    var route = 0;
-    var option = 0;
-    late Achievement achievement;
     if (args != null) {
-      route = args["route"];
       option = args["option"];
       context.read<MyProfileAddAchievementBloc>().add(MyProfileAddAchievementResetEvent());
       if (option == 1) {
@@ -36,20 +35,12 @@ class _MyProfileAddAchievementState extends State<MyProfileAddAchievement> {
       }
     }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/myProfilePage", (route) => false,
-            arguments: {"route": route});
-      },
-      child: BlocBuilder<MyProfileAddAchievementBloc, MyProfileAddAchievementState>(
-          builder: (context, state) {
-        return Scaffold(
-            appBar: buildAppBar(context, route),
-            backgroundColor: AppColors.primaryBackground,
-            body: myProfileAddJob(context));
-      }),
-    );
+    return BlocBuilder<MyProfileAddAchievementBloc, MyProfileAddAchievementState>(
+        builder: (context, state) {
+          return Scaffold(
+              appBar: buildAppBar(context),
+              backgroundColor: AppColors.primaryBackground,
+              body: myProfileAddJob(context));
+        });
   }
 }

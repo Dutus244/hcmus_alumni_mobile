@@ -8,6 +8,7 @@ import 'package:hcmus_alumni_mobile/model/event.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_events.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_states.dart';
+import 'package:hcmus_alumni_mobile/pages/news_event_page/news_event_page_controller.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
@@ -190,13 +191,11 @@ Widget listNews(BuildContext context, ScrollController _scrollController) {
 
 Widget news(BuildContext context, News news) {
   return GestureDetector(
-    onTap: () {
-      // context.read<NewsEventPageBloc>().add(NewsEventPageResetEvent());
-      Navigator.of(context).pushNamedAndRemoveUntil(
+    onTap: () async {
+      Navigator.pushNamed(
+        context,
         "/newsDetail",
-        (route) => false,
         arguments: {
-          "route": 1,
           "id": news.id,
         },
       );
@@ -468,12 +467,13 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
 
 Widget event(BuildContext context, Event event) {
   return GestureDetector(
-    onTap: () {
-      // context.read<NewsEventPageBloc>().add(NewsEventPageResetEvent());
-      Navigator.of(context).pushNamedAndRemoveUntil(
+    onTap: () async {
+      Navigator.pushNamed(
+        context,
         "/eventDetail",
-        (route) => false,
-        arguments: {"route": 1, "id": event.id},
+        arguments: {
+          "id": event.id,
+        },
       );
     },
     child: Container(

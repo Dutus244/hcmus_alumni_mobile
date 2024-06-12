@@ -19,7 +19,7 @@ import '../bloc/write_post_group_events.dart';
 import '../bloc/write_post_group_blocs.dart';
 import '../write_post_group_controller.dart';
 
-AppBar buildAppBar(BuildContext context, String id, int secondRoute) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -29,35 +29,8 @@ AppBar buildAppBar(BuildContext context, String id, int secondRoute) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              if (BlocProvider.of<WritePostGroupBloc>(context).state.page ==
-                  0) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/groupDetail",
-                  (route) => false,
-                  arguments: {
-                    "id": id,
-                    "secondRoute": secondRoute,
-                  },
-                );
-              } else {
-                context.read<WritePostGroupBloc>().add(PageEvent(0));
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Tạo bài viết',
@@ -70,11 +43,7 @@ AppBar buildAppBar(BuildContext context, String id, int secondRoute) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -83,13 +52,13 @@ AppBar buildAppBar(BuildContext context, String id, int secondRoute) {
   );
 }
 
-Widget buttonSend(BuildContext context, String id, int secondRoute) {
+Widget buttonSend(BuildContext context, String id) {
   String title = BlocProvider.of<WritePostGroupBloc>(context).state.title;
   String content = BlocProvider.of<WritePostGroupBloc>(context).state.content;
   return GestureDetector(
     onTap: () {
       if (title != "" && content != "") {
-        WritePostGroupController(context: context).handlePost(id, secondRoute);
+        WritePostGroupController(context: context).handlePost(id);
       }
     },
     child: Container(
@@ -372,7 +341,7 @@ Widget buildTextFieldVote(BuildContext context, int index, String hintText,
   );
 }
 
-Widget writePost(BuildContext context, String id, int secondRoute) {
+Widget writePost(BuildContext context, String id) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -398,7 +367,7 @@ Widget writePost(BuildContext context, String id, int secondRoute) {
           ],
         ),
       ),
-      buttonSend(context, id, secondRoute),
+      buttonSend(context, id),
     ],
   );
 }

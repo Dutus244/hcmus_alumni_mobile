@@ -9,7 +9,7 @@ import '../../../model/achievement.dart';
 import '../../../model/education.dart';
 import '../../../model/job.dart';
 
-AppBar buildAppBar(BuildContext context, int route) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -19,25 +19,8 @@ AppBar buildAppBar(BuildContext context, int route) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/otherProfilePage", (route) => false,
-                  arguments: {"route": route});
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Thông tin cá nhân',
@@ -50,13 +33,7 @@ AppBar buildAppBar(BuildContext context, int route) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [
-
-              ],
-            ),
+            width: 60.w,
           )
         ],
       ),

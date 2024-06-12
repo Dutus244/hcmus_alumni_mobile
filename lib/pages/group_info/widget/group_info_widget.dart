@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hcmus_alumni_mobile/pages/group_info/group_info_controller.dart';
 
 import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/colors.dart';
@@ -10,7 +11,7 @@ import '../../../common/values/fonts.dart';
 import '../../../model/group.dart';
 import '../bloc/group_info_blocs.dart';
 
-AppBar buildAppBar(BuildContext context, Group group, int secondRoute) {
+AppBar buildAppBar(BuildContext context, Group group) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -20,35 +21,11 @@ AppBar buildAppBar(BuildContext context, Group group, int secondRoute) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/groupDetail",
-                (route) => false,
-                arguments: {
-                  "id": group.id,
-                  "secondRoute": secondRoute,
-                },
-              );
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             group.name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: AppFonts.Header0,
@@ -58,11 +35,7 @@ AppBar buildAppBar(BuildContext context, Group group, int secondRoute) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -71,7 +44,7 @@ AppBar buildAppBar(BuildContext context, Group group, int secondRoute) {
   );
 }
 
-Widget infoGroup(BuildContext context, Group group, int secondRoute) {
+Widget infoGroup(BuildContext context, Group group) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -268,16 +241,16 @@ Widget infoGroup(BuildContext context, Group group, int secondRoute) {
                       Container(
                         margin: EdgeInsets.only(right: 15.w, top: 5.h),
                         child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
+                            onTap: () async {
+                              await Navigator.pushNamed(
+                                context,
                                 "/groupMember",
-                                (route) => false,
                                 arguments: {
                                   "group": group,
-                                  "secondRoute": secondRoute,
-                                  "route": 0,
                                 },
                               );
+                              GroupInfoController(context: context).handleGetAdmin(group.id, 0);
+                              GroupInfoController(context: context).handleGetMember(group.id, 0);
                             },
                             child: Text(
                               "Xem tất cả",

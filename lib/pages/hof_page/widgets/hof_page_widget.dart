@@ -23,25 +23,8 @@ AppBar buildAppBar(BuildContext context) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage", (route) => false,
-                  arguments: {"route": 0, "secondRoute": 0});
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Gương thành công',
@@ -54,13 +37,7 @@ AppBar buildAppBar(BuildContext context) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [
-
-              ],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -497,11 +474,10 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
 Widget hof(BuildContext context, HallOfFame hallOfFame) {
   return GestureDetector(
     onTap: () {
-      Navigator.of(context).pushNamedAndRemoveUntil(
+      Navigator.pushNamed(
+        context,
         "/hofDetail",
-        (route) => false,
         arguments: {
-          "route": 1,
           "id": hallOfFame.id,
         },
       );

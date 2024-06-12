@@ -163,7 +163,7 @@ Widget interact(BuildContext context, Interact interact) {
   );
 }
 
-AppBar buildAppBar(BuildContext context, String groupId, int secondRoute) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -171,26 +171,8 @@ AppBar buildAppBar(BuildContext context, String groupId, int secondRoute) {
       margin: EdgeInsets.only(left: 0.w, right: 10.w),
       child: Row(
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/groupDetail",
-                    (route) => false,
-                arguments: {
-                  "id": groupId,
-                  "secondRoute": secondRoute,
-                },
-              );
-            },
-            child: SvgPicture.asset(
-              "assets/icons/back.svg",
-              width: 25.w,
-              height: 25.h,
-              color: Colors.black.withOpacity(0.5),
-            ),
-          ),
           Container(
-            width: 10.w,
+            width: 5.w,
           ),
           Text(
             'Người đã bày tỏ cảm xúc',
@@ -202,6 +184,9 @@ AppBar buildAppBar(BuildContext context, String groupId, int secondRoute) {
               color: AppColors.secondaryHeader,
             ),
           ),
+          Container(
+            width: 60.w,
+          )
         ],
       ),
     ),
