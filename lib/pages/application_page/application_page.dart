@@ -20,10 +20,15 @@ class _ApplicationPageState extends State<ApplicationPage> {
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    var route = 0;
     var secondRoute = 0;
     if (args != null) {
-      var route = args["route"];
-      secondRoute = args["secondRoute"];
+      if (args["route"] != null) {
+        route = args["route"];
+      }
+      if (args["secondRoute"] != null) {
+        secondRoute = args["secondRoute"];
+      }
       context
           .read<ApplicationPageBloc>()
           .add(TriggerApplicationPageEvent(route));

@@ -133,7 +133,7 @@ AppBar buildAppBar(BuildContext context) {
                       Navigator.of(context).pushNamedAndRemoveUntil(
                         "/myProfilePage",
                             (route) => false,
-                        arguments: {"route": 3},
+                        arguments: {"page": "applicationPage", "route": 3},
                       );
                     },
                     child: CircleAvatar(

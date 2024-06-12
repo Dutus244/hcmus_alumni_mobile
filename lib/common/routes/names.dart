@@ -50,6 +50,7 @@ class AppRoutes {
   static const LIST_INTERACT_POST_GROUP = "/listInteractPostGroup";
   static const LIST_COMMENT_POST_GROUP = "/listCommentPostGroup";
   static const LIST_PICTURE_POST_GROUP = "/listPicturePostGroup";
+  static const GROUP_DETAIL_LIST_VOTERS = "/groupDetailListVoters";
 
   static const MY_PROFILE_EDIT = "/myProfileEdit";
   static const MY_PROFILE_ADD_JOB = "/myProfileAddJob";

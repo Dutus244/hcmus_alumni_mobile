@@ -25,6 +25,9 @@ class _AdvisePageListVotersState extends State<AdvisePageListVoters> {
   bool _isFetchingData = false;
   late Vote vote;
   late Post post;
+  String page = "";
+  int profile = 0;
+  int route = 0;
 
   @override
   void initState() {
@@ -42,30 +45,34 @@ class _AdvisePageListVotersState extends State<AdvisePageListVoters> {
       });
 
       AdvisePageListVotersController(context: context).handleLoadVoterData(
-          BlocProvider.of<AdvisePageListVotersBloc>(context).state.indexVoter, post.id, vote.id);
+          BlocProvider.of<AdvisePageListVotersBloc>(context).state.indexVoter,
+          post.id,
+          vote.id);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var profile = 0;
-    var route = 0;
     Map<String, dynamic>? args =
-    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       vote = args["vote"];
       post = args["post"];
       if (args["profile"] != null) {
         profile = args["profile"];
       }
-      if (profile == 1) {
+      if (args["route"] != null) {
         route = args["route"];
+      }
+      if (args["page"] != null) {
+        page = args["page"];
       }
       // Now you can use the passedValue in your widget
       context
           .read<AdvisePageListVotersBloc>()
           .add(AdvisePageListVotersResetEvent());
-      AdvisePageListVotersController(context: context).handleLoadVoterData(0, post.id, vote.id);
+      AdvisePageListVotersController(context: context)
+          .handleLoadVoterData(0, post.id, vote.id);
     }
 
     return PopScope(
@@ -74,27 +81,26 @@ class _AdvisePageListVotersState extends State<AdvisePageListVoters> {
         if (profile == 0) {
           Navigator.of(context).pushNamedAndRemoveUntil(
             "/applicationPage",
-                (route) => false,
+            (route) => false,
             arguments: {
               "route": 2,
               "secondRoute": 0,
             },
           );
-        }
-        else {
+        } else {
           Navigator.of(context).pushNamedAndRemoveUntil(
               "/myProfilePage", (route) => false,
-              arguments: {"route": route});
+              arguments: {"page": page, "route": route});
         }
       },
       child: BlocBuilder<AdvisePageListVotersBloc, AdvisePageListVotersState>(
           builder: (context, state) {
-            return Scaffold(
-              appBar: buildAppBar(context, profile, route),
-              backgroundColor: AppColors.primaryBackground,
-              body: listVoters(context, vote, post, _scrollController),
-            );
-          }),
+        return Scaffold(
+          appBar: buildAppBar(context, profile, route, page),
+          backgroundColor: AppColors.primaryBackground,
+          body: listVoters(context, vote, post, _scrollController),
+        );
+      }),
     );
   }
 }

@@ -20,7 +20,7 @@ class EditPostGroup extends StatefulWidget {
 class _EditPostGroupState extends State<EditPostGroup> {
   late Post post;
   late String id;
-  late int secondRoute;
+  int secondRoute = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +28,10 @@ class _EditPostGroupState extends State<EditPostGroup> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       id = args["id"];
-      secondRoute = args["secondRoute"];
       post = args["post"];
+      if (args["secondRoute"] != null) {
+        secondRoute = args["secondRoute"];
+      }
       // Now you can use the passedValue in your widget
       context
           .read<EditPostGroupBloc>()

@@ -32,7 +32,7 @@ class EditPostAdviseController {
     context.read<EditPostAdviseBloc>().add(PictureNetworksEvent(post.pictures));
   }
 
-  Future<void> handlePost(String id) async {
+  Future<void> handlePost(String id, int route, int profile, String page) async {
     final state = context.read<EditPostAdviseBloc>().state;
     String title = state.title;
     String content = state.content;
@@ -97,14 +97,21 @@ class EditPostAdviseController {
             context
                 .read<EditPostAdviseBloc>()
                 .add(EditPostAdviseResetEvent());
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              "/applicationPage",
-              (route) => false,
-              arguments: {
-                "route": 2,
-                "secondRoute": 0,
-              },
-            );
+            if (profile == 0) {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/applicationPage",
+                    (route) => false,
+                arguments: {
+                  "route": route,
+                  "secondRoute": 0,
+                },
+              );
+            }
+            else {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  "/myProfilePage", (route) => false,
+                  arguments: {"page": page, "route": route});
+            }
           } else {
             toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài tư vấn");
             return;

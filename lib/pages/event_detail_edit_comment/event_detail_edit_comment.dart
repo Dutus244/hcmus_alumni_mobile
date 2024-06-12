@@ -18,6 +18,11 @@ class EventDetailEditComment extends StatefulWidget {
 }
 
 class _EventDetailEditCommentState extends State<EventDetailEditComment> {
+  late Event event;
+  late Comment comment;
+  int route = 0;
+  int profile = 0;
+
   @override
   void initState() {
     super.initState();
@@ -26,19 +31,16 @@ class _EventDetailEditCommentState extends State<EventDetailEditComment> {
         .add(EventDetailEditCommentResetEvent());
   }
 
-  late Event event;
-  late Comment comment;
-  late int route;
-
   @override
   Widget build(BuildContext context) {
-    var profile = 0;
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
-      route = args["route"];
       event = args["event"];
       comment = args["comment"];
+      if (args["route"] != null) {
+        route = args["route"];
+      }
       if (args["profile"] != null) {
         profile = args["profile"];
       }
@@ -65,7 +67,8 @@ class _EventDetailEditCommentState extends State<EventDetailEditComment> {
           return Scaffold(
             appBar: buildAppBar(context, route, event, profile),
             backgroundColor: AppColors.primaryBackground,
-            body: eventDetailEditComment(context, event, route, comment, profile),
+            body:
+                eventDetailEditComment(context, event, route, comment, profile),
           );
         }));
   }

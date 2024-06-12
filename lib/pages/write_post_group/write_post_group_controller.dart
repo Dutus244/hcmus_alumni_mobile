@@ -17,7 +17,7 @@ class WritePostGroupController {
   const WritePostGroupController({required this.context});
 
   List<Map<String, dynamic>> convertTagsToJson(List<String> tags) {
-    return tags.map((tag) => {'id': tag}).toList();
+    return tags.map((tag) => {'name': tag}).toList();
   }
 
   List<Map<String, dynamic>> convertVoteToJson(List<String> vote) {
@@ -31,6 +31,8 @@ class WritePostGroupController {
     List<String> tags = state.tags;
     List<String> vote = state.votes;
     List<File> pictures = state.pictures;
+    bool allowMultipleVotes = state.allowMultipleVotes;
+    bool allowAddOptions = state.allowAddOptions;
 
     if (vote.length > 0) {
       final shouldPost = await showDialog(
@@ -67,7 +69,9 @@ class WritePostGroupController {
           'title': title,
           'content': content,
           'tags': convertTagsToJson(tags),
-          'vote': convertVoteToJson(vote)
+          'votes': convertVoteToJson(vote),
+          'allowMultipleVotes': allowMultipleVotes,
+          'allowAddOptions': allowAddOptions,
         };
 
         //encode Map to JSON
@@ -79,9 +83,8 @@ class WritePostGroupController {
           var response = await http.post(url, headers: headers, body: body);
           var responseBody = utf8.decode(response.bodyBytes);
           if (response.statusCode == 201) {
-            // var jsonMap = json.decode(responseBody);
-            // String id = jsonMap["id"];
-            String id = responseBody;
+            var jsonMap = json.decode(responseBody);
+            String id = jsonMap["id"];
             var endpoint =
                 '/groups/posts/$id/images'; // Thay YOUR_API_URL bằng URL của API của bạn
 
@@ -159,9 +162,8 @@ class WritePostGroupController {
         var response = await http.post(url, headers: headers, body: body);
         var responseBody = utf8.decode(response.bodyBytes);
         if (response.statusCode == 201) {
-          // var jsonMap = json.decode(responseBody);
-          // String id = jsonMap["id"];
-          String id = responseBody;
+          var jsonMap = json.decode(responseBody);
+          String id = jsonMap["id"];
           var endpoint =
               '/groups/posts/$id/images'; // Thay YOUR_API_URL bằng URL của API của bạn
 
@@ -210,6 +212,7 @@ class WritePostGroupController {
         }
       } catch (error) {
         // Handle errors
+        print('Exception occurred: $error');
       }
     }
   }

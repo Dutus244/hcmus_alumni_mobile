@@ -18,7 +18,7 @@ import '../bloc/edit_post_advise_blocs.dart';
 import '../bloc/edit_post_advise_events.dart';
 import '../edit_post_advise_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int route, String id, int profile) {
+AppBar buildAppBar(BuildContext context, int route, String id, int profile, String page) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -48,7 +48,7 @@ AppBar buildAppBar(BuildContext context, int route, String id, int profile) {
                 else {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       "/myProfilePage", (route) => false,
-                      arguments: {"route": route});
+                      arguments: {"page": page, "route": route});
                 }
               } else {
                 context.read<EditPostAdviseBloc>().add(PageEvent(0));
@@ -92,7 +92,7 @@ AppBar buildAppBar(BuildContext context, int route, String id, int profile) {
   );
 }
 
-Widget buttonEdit(BuildContext context, int route, String id) {
+Widget buttonEdit(BuildContext context, int route, String id, int profile, String page) {
   String title = BlocProvider
       .of<EditPostAdviseBloc>(context)
       .state
@@ -104,7 +104,7 @@ Widget buttonEdit(BuildContext context, int route, String id) {
   return GestureDetector(
     onTap: () {
       if (title != "" && content != "") {
-        EditPostAdviseController(context: context).handlePost(id);
+        EditPostAdviseController(context: context).handlePost(id, route, profile, page);
       }
     },
     child: Container(
@@ -312,7 +312,7 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
   );
 }
 
-Widget writePost(BuildContext context, int route, String id) {
+Widget writePost(BuildContext context, int route, String id, int profile, String page) {
   TextEditingController controller = TextEditingController();
   controller.text = BlocProvider
       .of<EditPostAdviseBloc>(context)
@@ -342,7 +342,7 @@ Widget writePost(BuildContext context, int route, String id) {
           ],
         ),
       ),
-      buttonEdit(context, route, id),
+      buttonEdit(context, route, id, profile, page),
     ],
   );
 }

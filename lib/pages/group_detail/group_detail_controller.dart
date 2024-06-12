@@ -261,4 +261,128 @@ class GroupDetailController {
       toastInfo(msg: "Có lỗi xả ra khi thoát nhóm");
     }
   }
+
+  Future<void> handleVote(String groupId, String id, int newVoteId) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/groups/$id/votes/$newVoteId';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', // Specify content type as JSON
+    };
+
+    try {
+      var url = Uri.parse('$apiUrl$endpoint');
+
+      var response = await http.post(url, headers: headers);
+      if (response.statusCode == 201) {
+        GroupDetailController(context: context).handleLoadPostData(groupId, 0);
+      } else {
+        // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+        return;
+      }
+    } catch (error) {
+      // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+      return;
+    }
+  }
+
+  Future<void> handleDeleteVote(String groupId, String id, int voteId) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/groups/$id/votes/$voteId';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', // Specify content type as JSON
+    };
+
+    try {
+      var url = Uri.parse('$apiUrl$endpoint');
+
+      var response = await http.delete(url, headers: headers);
+      if (response.statusCode == 200) {
+        GroupDetailController(context: context).handleLoadPostData(groupId, 0);
+      } else {
+        // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi huỷ lựa chọn");
+        return;
+      }
+    } catch (error) {
+      // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi huỷ lựa chọn");
+      return;
+    }
+  }
+
+  Future<void> handleUpdateVote(String groupId, String id, int oldVoteId, int newVoteId) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/groups/$id/votes/$oldVoteId';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', // Specify content type as JSON
+    };
+
+    Map<String, dynamic> data = {'updatedVoteId': newVoteId}; // Define your JSON data
+    var body = json.encode(data); // Encode the data to JSON
+    try {
+      var url = Uri.parse('$apiUrl$endpoint');
+
+      var response = await http.put(url, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        GroupDetailController(context: context).handleLoadPostData(groupId, 0);
+      } else {
+        // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+        return;
+      }
+    } catch (error) {
+      // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+      return;
+    }
+  }
+
+  Future<void> handleAddVote(String groupId, String id, String vote) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/groups/$id/votes';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+
+    final map = <String, dynamic>{};
+    map['name'] = vote;
+    print(vote);
+
+    try {
+      var url = Uri.parse('$apiUrl$endpoint');
+
+      var response = await http.post(url, headers: headers, body: json.encode(map));
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 201) {
+        GroupDetailController(context: context).handleLoadPostData(groupId, 0);
+      } else {
+        // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi thêm lựa chọn");
+        return;
+      }
+    } catch (error) {
+      // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi thêm lựa chọn");
+      return;
+    }
+  }
 }

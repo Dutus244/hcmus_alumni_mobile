@@ -382,9 +382,6 @@ Widget writePost(BuildContext context, String id, int secondRoute) {
           scrollDirection: Axis.vertical,
           children: [
             header(),
-            // chooseTag((value) {
-            //   context.read<WritePostGroupBloc>().add(TagsEvent(value));
-            // }),
             buildTextFieldTag(context),
             buildTextFieldTitle(context, 'Tiêu đề của bài viết', 'comment', '',
                 (value) {
@@ -1575,45 +1572,6 @@ Widget header() {
   );
 }
 
-Widget chooseTag(void Function(List<String> value)? func) {
-  List<String> selectedValues = [];
-
-  return Container(
-    height: 35.h,
-    margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
-    child: MultiSelectDropDown(
-      onOptionSelected: (List<ValueItem> selectedOptions) {
-        selectedValues =
-            selectedOptions.map((option) => option.value.toString()).toList();
-        if (func != null) {
-          func(selectedValues);
-        }
-      },
-      options: const <ValueItem>[
-        ValueItem(label: 'Cựu sinh viên', value: '1'),
-        ValueItem(label: 'Trường học', value: '2'),
-        ValueItem(label: 'Cộng đồng', value: '3'),
-        ValueItem(label: 'Khởi nghiệp', value: '4'),
-        ValueItem(label: 'Nghề nghiệp', value: '5'),
-        ValueItem(label: 'Học tập', value: '6'),
-        ValueItem(label: 'Việc làm', value: '7'),
-      ],
-      selectionType: SelectionType.multi,
-      chipConfig: const ChipConfig(wrapType: WrapType.scroll),
-      dropdownHeight: 300,
-      optionTextStyle: const TextStyle(
-          color: AppColors.primaryText,
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-          fontFamily: AppFonts.Header2),
-      hintStyle: const TextStyle(fontSize: 12, fontFamily: AppFonts.Header2),
-      selectedOptionIcon:
-          const Icon(Icons.check_circle, color: AppColors.primaryElement),
-      hint: 'Chọn thẻ',
-    ),
-  );
-}
-
 void deleteTag(BuildContext context, String tag) {
   List<String> currentList =
       BlocProvider.of<WritePostGroupBloc>(context).state.tags;
@@ -1648,6 +1606,7 @@ Widget buildTextFieldTag(BuildContext context) {
             textSeparators: const [' ', ','],
             letterCase: LetterCase.normal,
             inputFieldBuilder: (context, inputFieldValues) {
+              inputFieldValues.tags = BlocProvider.of<WritePostGroupBloc>(context).state.tags;
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.h),
                 child: TextField(
