@@ -12,7 +12,7 @@ import '../../../model/event.dart';
 import '../bloc/other_profile_page_blocs.dart';
 import '../bloc/other_profile_page_states.dart';
 
-AppBar buildAppBar(BuildContext context, int route) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -22,25 +22,8 @@ AppBar buildAppBar(BuildContext context, int route) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage", (route) => false,
-                  arguments: {"route": route, "secondRoute": 0});
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Nguyễn Duy',
@@ -53,13 +36,7 @@ AppBar buildAppBar(BuildContext context, int route) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [
-
-              ],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -68,18 +45,18 @@ AppBar buildAppBar(BuildContext context, int route) {
   );
 }
 
-Widget myProfile(BuildContext context, int route) {
+Widget myProfile(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
-      header(context, route),
-      detail(context, route),
+      header(context),
+      detail(context),
     ],
   );
 }
 
-Widget header(BuildContext context, int route) {
+Widget header(BuildContext context) {
   bool isFriend = true;
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -351,7 +328,7 @@ Widget header(BuildContext context, int route) {
   );
 }
 
-Widget detail(BuildContext context, int route) {
+Widget detail(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -426,10 +403,9 @@ Widget detail(BuildContext context, int route) {
       ),
       GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamedAndRemoveUntil(
+          Navigator.pushNamed(
+            context,
             "/otherProfileDetail",
-                (route) => false,
-            arguments: {"route": route},
           );
         },
         child: Container(
@@ -752,7 +728,7 @@ Widget deleteFriend(BuildContext context) {
   );
 }
 
-Widget listEvent(BuildContext context, ScrollController _scrollController, int route) {
+Widget listEvent(BuildContext context, ScrollController _scrollController) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
@@ -770,7 +746,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    myProfile(context, route),
+                    myProfile(context),
                     Container(
                       height: 10.h,
                     ),
@@ -801,7 +777,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      myProfile(context, route),
+                      myProfile(context),
                       Container(
                         height: 10.h,
                       ),
@@ -855,7 +831,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        myProfile(context, route),
+                        myProfile(context),
                         Container(
                           height: 10.h,
                         ),
@@ -878,7 +854,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
                             context,
                             BlocProvider.of<OtherProfilePageBloc>(context)
                                 .state
-                                .events[index], route),
+                                .events[index]),
                       ],
                     );
                   } else {
@@ -886,7 +862,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
                         context,
                         BlocProvider.of<OtherProfilePageBloc>(context)
                             .state
-                            .events[index], route);
+                            .events[index]);
                   }
                 }
             }
@@ -897,14 +873,16 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
   );
 }
 
-Widget event(BuildContext context, Event event, int route) {
+Widget event(BuildContext context, Event event) {
   return GestureDetector(
     onTap: () {
       // context.read<OtherProfilePageBloc>().add(NewsEventPageResetEvent());
-      Navigator.of(context).pushNamedAndRemoveUntil(
+      Navigator.pushNamed(
+        context,
         "/eventDetail",
-            (route) => false,
-        arguments: {"route": route, "id": event.id, "profile": 1},
+        arguments: {
+          "id": event.id,
+        },
       );
     },
     child: Container(

@@ -19,10 +19,9 @@ class GroupMemberApprove extends StatefulWidget {
 }
 
 class _GroupMemberApproveState extends State<GroupMemberApprove> {
-  late int secondRoute;
-  late Group group;
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
+  late Group group;
 
   @override
   void initState() {
@@ -48,29 +47,16 @@ class _GroupMemberApproveState extends State<GroupMemberApprove> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       group = args["group"];
-      secondRoute = args["secondRoute"];
       GroupMemberApproveController(context: context)
           .handleGetMember(group.id, 0);
     }
 
-    return PopScope(
-        canPop: false, // prevent back
-        onPopInvoked: (_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/groupManagement",
-            (route) => false,
-            arguments: {
-              "group": group,
-              "secondRoute": secondRoute,
-            },
-          );
-        },
-        child: BlocBuilder<GroupMemberApproveBloc, GroupMemberApproveState>(
-            builder: (context, state) {
+    return BlocBuilder<GroupMemberApproveBloc, GroupMemberApproveState>(
+        builder: (context, state) {
           return Scaffold(
-              appBar: buildAppBar(context, group, secondRoute),
+              appBar: buildAppBar(context),
               backgroundColor: AppColors.primaryBackground,
               body: listRequest(context, _scrollController, group.id));
-        }));
+        });
   }
 }

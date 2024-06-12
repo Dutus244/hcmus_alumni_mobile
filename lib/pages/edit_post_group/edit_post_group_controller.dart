@@ -20,29 +20,18 @@ class EditPostGroupController {
   const EditPostGroupController({required this.context});
 
   List<Map<String, dynamic>> convertTagsToJson(List<String> tags) {
-    return tags.map((tag) => {'id': tag}).toList();
+    return tags.map((tag) => {'name': tag}).toList();
   }
 
   Future<void> handleLoad(Post post) async {
-
-    List<String> tagsId = post.tags.map((tag) => tag.id.toString()).toList();
-    context.read<EditPostGroupBloc>().add(TagsEvent(tagsId));
-    List<ValueItem> initialSelectedItems = [
-      ValueItem(label: 'Cựu sinh viên', value: '1'),
-      ValueItem(label: 'Trường học', value: '2'),
-      ValueItem(label: 'Cộng đồng', value: '3'),
-      ValueItem(label: 'Khởi nghiệp', value: '4'),
-      ValueItem(label: 'Nghề nghiệp', value: '5'),
-      ValueItem(label: 'Học tập', value: '6'),
-      ValueItem(label: 'Việc làm', value: '7'),
-    ].where((item) => tagsId.contains(item.value)).toList();
-    context.read<EditPostGroupBloc>().add(ItemTagsEvent(initialSelectedItems));
+    List<String> tags = post.tags.map((tag) => tag.name.toString()).toList();
+    context.read<EditPostGroupBloc>().add(TagsEvent(tags));
     context.read<EditPostGroupBloc>().add(TitleEvent(post.title));
     context.read<EditPostGroupBloc>().add(ContentEvent(post.content));
     context.read<EditPostGroupBloc>().add(PictureNetworksEvent(post.pictures));
   }
 
-  Future<void> handlePost(String id, String groupId, int secondRoute) async {
+  Future<void> handlePost(String id, String groupId) async {
     final state = context.read<EditPostGroupBloc>().state;
     String title = state.title;
     String content = state.content;
@@ -107,14 +96,7 @@ class EditPostGroupController {
             context
                 .read<EditPostGroupBloc>()
                 .add(EditPostGroupResetEvent());
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              "/groupDetail",
-                  (route) => false,
-              arguments: {
-                "id": groupId,
-                "secondRoute": secondRoute,
-              },
-            );
+            Navigator.pop(context);
           } else {
             toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài viết nhóm");
             return;

@@ -16,7 +16,7 @@ class EventDetailWriteChildrenCommentController {
   const EventDetailWriteChildrenCommentController({required this.context});
 
   Future<void> handleLoadWriteComment(
-      String id, String commentId, int route, int profile) async {
+      String id, String commentId) async {
     final state = context.read<EventDetailWriteChildrenCommentBloc>().state;
     String comment = state.comment;
 
@@ -38,15 +38,7 @@ class EventDetailWriteChildrenCommentController {
 
       var response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 201) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/eventDetail",
-          (route) => false,
-          arguments: {
-            "route": route,
-            "id": id,
-            "profile": profile,
-          },
-        );
+        Navigator.pop(context);
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];

@@ -10,7 +10,7 @@ import '../../../common/function/handle_participant_count.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 
-AppBar buildAppBar(BuildContext context, Group group, int secondRoute) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -20,30 +20,8 @@ AppBar buildAppBar(BuildContext context, Group group, int secondRoute) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/groupDetail",
-                    (route) => false,
-                arguments: {
-                  "id": group.id,
-                  "secondRoute": secondRoute,
-                },
-              );
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Quản lý nhóm',
@@ -56,11 +34,7 @@ AppBar buildAppBar(BuildContext context, Group group, int secondRoute) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -69,7 +43,7 @@ AppBar buildAppBar(BuildContext context, Group group, int secondRoute) {
   );
 }
 
-Widget groupManagement(BuildContext context, Group? group, int secondRoute) {
+Widget groupManagement(BuildContext context, Group? group) {
   if (group == null) {
     return loadingWidget();
   }
@@ -137,15 +111,15 @@ Widget groupManagement(BuildContext context, Group? group, int secondRoute) {
               color: AppColors.primarySecondaryElement,
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
+              onTap: () async {
+                await Navigator.pushNamed(
+                  context,
                   "/groupEdit",
-                      (route) => false,
                   arguments: {
                     "group": group,
-                    "secondRoute": secondRoute,
                   },
                 );
+                GroupManagementController(context: context).handleGetGroup(group.id);
               },
               child: Container(
                 color: Colors.transparent,
@@ -174,15 +148,15 @@ Widget groupManagement(BuildContext context, Group? group, int secondRoute) {
               ),
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
+              onTap: () async {
+                await Navigator.pushNamed(
+                  context,
                   "/groupMemberApprove",
-                      (route) => false,
                   arguments: {
                     "group": group,
-                    "secondRoute": secondRoute,
                   },
                 );
+                GroupManagementController(context: context).handleGetGroup(group.id);
               },
               child: Container(
                 color: Colors.transparent,
@@ -212,16 +186,15 @@ Widget groupManagement(BuildContext context, Group? group, int secondRoute) {
               ),
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
+              onTap: () async {
+                await Navigator.pushNamed(
+                  context,
                   "/groupMember",
-                      (route) => false,
                   arguments: {
                     "group": group,
-                    "secondRoute": secondRoute,
-                    "route": 1,
                   },
                 );
+                GroupManagementController(context: context).handleGetGroup(group.id);
               },
               child: Container(
                 color: Colors.transparent,
@@ -252,7 +225,7 @@ Widget groupManagement(BuildContext context, Group? group, int secondRoute) {
             ),
             GestureDetector(
               onTap: () {
-                GroupManagementController(context: context).handleExitGroup(group.id, secondRoute);
+                GroupManagementController(context: context).handleExitGroup(group.id);
               },
               child: Container(
                 color: Colors.transparent,
@@ -283,7 +256,7 @@ Widget groupManagement(BuildContext context, Group? group, int secondRoute) {
             ),
             GestureDetector(
               onTap: () {
-                GroupManagementController(context: context).handleDeleteGroup(group.id, secondRoute);
+                GroupManagementController(context: context).handleDeleteGroup(group.id);
               },
               child: Container(
                 color: Colors.transparent,

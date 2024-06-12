@@ -17,7 +17,6 @@ class GroupEdit extends StatefulWidget {
 }
 
 class _GroupEditState extends State<GroupEdit> {
-  late int secondRoute;
   late Group group;
 
   @override
@@ -26,7 +25,6 @@ class _GroupEditState extends State<GroupEdit> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       group = args["group"];
-      secondRoute = args["secondRoute"];
       context.read<GroupEditBloc>().add(GroupEditResetEvent());
       context.read<GroupEditBloc>().add(NameEvent(group.name));
       context.read<GroupEditBloc>().add(DescriptionEvent(group.description));
@@ -34,24 +32,12 @@ class _GroupEditState extends State<GroupEdit> {
       context.read<GroupEditBloc>().add(NetworkPictureEvent(group.coverUrl ?? ''));
     }
 
-    return PopScope(
-        canPop: false, // prevent back
-        onPopInvoked: (_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/groupManagement",
-            (route) => false,
-            arguments: {
-              "group": group,
-              "secondRoute": secondRoute,
-            },
-          );
-        },
-        child: BlocBuilder<GroupEditBloc, GroupEditState>(
-            builder: (context, state) {
+    return BlocBuilder<GroupEditBloc, GroupEditState>(
+        builder: (context, state) {
           return Scaffold(
-              appBar: buildAppBar(context, group, secondRoute),
+              appBar: buildAppBar(context),
               backgroundColor: AppColors.primaryBackground,
-              body: groupEdit(context, group, secondRoute));
-        }));
+              body: groupEdit(context, group));
+        });
   }
 }

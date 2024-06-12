@@ -16,7 +16,7 @@ import '../../../global.dart';
 import '../bloc/group_create_blocs.dart';
 import '../bloc/group_create_events.dart';
 
-AppBar buildAppBar(BuildContext context, int route) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -26,30 +26,8 @@ AppBar buildAppBar(BuildContext context, int route) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/applicationPage",
-                (route) => false,
-                arguments: {
-                  "route": route,
-                  "secondRoute": 0,
-                },
-              );
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Tạo nhóm',
@@ -62,11 +40,7 @@ AppBar buildAppBar(BuildContext context, int route) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -439,7 +413,7 @@ void addTag(BuildContext context, String tag) {
 
 Widget buildTextFieldTag(BuildContext context) {
   TextfieldTagsController<String> _stringTagController =
-      TextfieldTagsController<String>();
+  TextfieldTagsController<String>();
 
   return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.w),
@@ -447,10 +421,12 @@ Widget buildTextFieldTag(BuildContext context) {
         children: [
           TextFieldTags<String>(
             textfieldTagsController: _stringTagController,
-            initialTags: BlocProvider.of<GroupCreateBloc>(context).state.tags,
+            initialTags:
+            BlocProvider.of<GroupCreateBloc>(context).state.tags,
             textSeparators: const [' ', ','],
             letterCase: LetterCase.normal,
             inputFieldBuilder: (context, inputFieldValues) {
+              inputFieldValues.tags = BlocProvider.of<GroupCreateBloc>(context).state.tags;
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.h),
                 child: TextField(
@@ -461,99 +437,115 @@ Widget buildTextFieldTag(BuildContext context) {
                   focusNode: inputFieldValues.focusNode,
                   decoration: InputDecoration(
                     isDense: true,
+                    contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 13),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: AppColors.primaryFourthElementText,
                         width: 1.0,
                       ),
-                      borderRadius: BorderRadius.circular(15.w),
+                      borderRadius: BorderRadius.circular(10.w),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: AppColors.primaryFourthElementText,
                         width: 1.0,
                       ),
-                      borderRadius: BorderRadius.circular(15.w),
+                      borderRadius: BorderRadius.circular(10.w),
                     ),
                     helperStyle: const TextStyle(
                       color: AppColors.primarySecondaryElement,
                     ),
-                    hintText:
-                        inputFieldValues.tags.isNotEmpty ? '' : "Nhập #hashtag...",
+                    hintText: inputFieldValues.tags.isNotEmpty
+                        ? ''
+                        : "Nhập #hashtag...",
                     errorText: inputFieldValues.error,
                     prefixIconConstraints:
-                        BoxConstraints(maxWidth: 300.w * 0.8),
+                    BoxConstraints(maxWidth: 300.w * 0.8),
                     prefixIcon: inputFieldValues.tags.isNotEmpty
                         ? SingleChildScrollView(
-                            controller: inputFieldValues.tagScrollController,
-                            scrollDirection: Axis.vertical,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                top: 8,
-                                bottom: 8,
-                                left: 8,
-                              ),
-                              child: Wrap(
-                                  runSpacing: 4.0,
-                                  spacing: 4.0,
-                                  children:
-                                      inputFieldValues.tags.map((String tag) {
-                                    return Container(
-                                      decoration: const BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(20.0),
-                                        ),
-                                        color: AppColors.primaryElement,
+                      controller: inputFieldValues.tagScrollController,
+                      scrollDirection: Axis.vertical,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8,
+                          bottom: 8,
+                          left: 8,
+                        ),
+                        child: Wrap(
+                            runSpacing: 4.0,
+                            spacing: 4.0,
+                            children:
+                            inputFieldValues.tags.map((String tag) {
+                              return Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20.0),
+                                  ),
+                                  color: AppColors.primaryElement,
+                                ),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 5.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 5.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    InkWell(
+                                      child: Text(
+                                        '#$tag',
+                                        style: TextStyle(
+                                            fontSize: 11.sp,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: AppFonts.Header2,
+                                            color: Colors.white),
                                       ),
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 5.0),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 5.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          InkWell(
-                                            child: Text(
-                                              '#$tag',
-                                              style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: AppFonts.Header2,
-                                                  color: Colors.white),
-                                            ),
-                                            onTap: () {
-                                              //print("$tag selected");
-                                            },
-                                          ),
-                                          const SizedBox(width: 4.0),
-                                          InkWell(
-                                            child: const Icon(
-                                              Icons.cancel,
-                                              size: 14.0,
-                                              color: Color.fromARGB(
-                                                  255, 233, 233, 233),
-                                            ),
-                                            onTap: () {
-                                              inputFieldValues
-                                                  .onTagRemoved(tag);
-                                              deleteTag(context, tag);
-                                            },
-                                          )
-                                        ],
+                                      onTap: () {
+                                        //print("$tag selected");
+                                      },
+                                    ),
+                                    const SizedBox(width: 4.0),
+                                    InkWell(
+                                      child: const Icon(
+                                        Icons.cancel,
+                                        size: 14.0,
+                                        color: Color.fromARGB(
+                                            255, 233, 233, 233),
                                       ),
-                                    );
-                                  }).toList()),
-                            ),
-                          )
+                                      onTap: () {
+                                        inputFieldValues
+                                            .onTagRemoved(tag);
+                                        deleteTag(context, tag);
+                                      },
+                                    )
+                                  ],
+                                ),
+                              );
+                            }).toList()),
+                      ),
+                    )
                         : null,
+                  ),
+                  style: TextStyle(
+                    fontSize: 11.sp, // Adjust the font size here
                   ),
                   onChanged: (value) {
                     inputFieldValues.onTagChanged(value);
                   },
                   onSubmitted: (value) {
-                    if (!BlocProvider.of<GroupCreateBloc>(context).state.tags.contains(value)) {
+                    if (BlocProvider.of<GroupCreateBloc>(context)
+                        .state
+                        .tags
+                        .length >=
+                        5) {
+                      toastInfo(msg: "Số lượng thẻ không được vượt quá 5");
+                      return;
+                    }
+                    if (!BlocProvider.of<GroupCreateBloc>(context)
+                        .state
+                        .tags
+                        .contains(value)) {
                       inputFieldValues.onTagSubmitted(value);
                       addTag(context, value);
                     } else {
@@ -610,7 +602,7 @@ Widget header() {
   );
 }
 
-Widget groupCreate(BuildContext context, int route) {
+Widget groupCreate(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,

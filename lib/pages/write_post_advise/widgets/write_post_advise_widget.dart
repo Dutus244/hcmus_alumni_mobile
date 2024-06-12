@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hcmus_alumni_mobile/pages/write_post_advise/bloc/write_post_advise_blocs.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 import '../../../common/values/colors.dart';
@@ -18,7 +17,7 @@ import '../../../global.dart';
 import '../bloc/write_post_advise_events.dart';
 import '../write_post_advise_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int route) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -28,35 +27,8 @@ AppBar buildAppBar(BuildContext context, int route) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              if (BlocProvider.of<WritePostAdviseBloc>(context).state.page ==
-                  0) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage",
-                  (route) => false,
-                  arguments: {
-                    "route": route,
-                    "secondRoute": 0,
-                  },
-                );
-              } else {
-                context.read<WritePostAdviseBloc>().add(PageEvent(0));
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Tạo bài viết',
@@ -69,11 +41,7 @@ AppBar buildAppBar(BuildContext context, int route) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -82,7 +50,7 @@ AppBar buildAppBar(BuildContext context, int route) {
   );
 }
 
-Widget buttonSend(BuildContext context, int route) {
+Widget buttonSend(BuildContext context) {
   String title = BlocProvider.of<WritePostAdviseBloc>(context).state.title;
   String content = BlocProvider.of<WritePostAdviseBloc>(context).state.content;
   return GestureDetector(
@@ -372,7 +340,7 @@ Widget buildTextFieldVote(BuildContext context, int index, String hintText,
   );
 }
 
-Widget writePost(BuildContext context, int route) {
+Widget writePost(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -398,12 +366,12 @@ Widget writePost(BuildContext context, int route) {
           ],
         ),
       ),
-      buttonSend(context, route),
+      buttonSend(context),
     ],
   );
 }
 
-Widget editPicture(BuildContext context, int route) {
+Widget editPicture(BuildContext context) {
   return Column(
     children: [
       Expanded(

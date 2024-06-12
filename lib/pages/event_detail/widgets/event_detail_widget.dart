@@ -19,7 +19,7 @@ import '../bloc/event_detail_blocs.dart';
 import '../bloc/event_detail_states.dart';
 import '../event_detail_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int route, int profile) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -29,32 +29,8 @@ AppBar buildAppBar(BuildContext context, int route, int profile) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              if (profile == 0) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/applicationPage", (route) => false,
-                    arguments: {"route": route, "secondRoute": 1});
-              }
-              else {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/myProfilePage", (route) => false,
-                    arguments: {"route": route});
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Sự kiện',
@@ -67,13 +43,7 @@ AppBar buildAppBar(BuildContext context, int route, int profile) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [
-
-              ],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -507,7 +477,7 @@ Widget eventContent(BuildContext context, Event event) {
 }
 
 Widget detail(BuildContext context, Event? event,
-    ScrollController _scrollController, int route, int profile) {
+    ScrollController _scrollController) {
   if (event == null) {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Expanded(
@@ -532,7 +502,7 @@ Widget detail(BuildContext context, Event? event,
           }),
           eventContent(context, event),
           listComment(context, event,
-              BlocProvider.of<EventDetailBloc>(context).state.comments, route, profile),
+              BlocProvider.of<EventDetailBloc>(context).state.comments),
           // listRelatedEvent(context,
           //     BlocProvider.of<EventDetailBloc>(context).state.relatedEvent)
         ],
@@ -542,7 +512,7 @@ Widget detail(BuildContext context, Event? event,
 }
 
 Widget listComment(
-    BuildContext context, Event? event, List<Comment> commentList, int route, int profile) {
+    BuildContext context, Event? event, List<Comment> commentList) {
   if (event == null) {
     return Column(
       children: [],
@@ -554,16 +524,15 @@ Widget listComment(
       children: [
         if (Global.storageService.permissionEventCommentCreate())
           GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
+          onTap: () async {
+            await Navigator.pushNamed(
+              context,
               "/eventDetailWriteComment",
-              (route) => false,
               arguments: {
-                "route": route,
                 "event": event,
-                "profile": profile,
               },
             );
+            EventDetailController(context: context).handleGetComment(event.id, 0);
           },
           child: Container(
               width: 340.w,
@@ -618,7 +587,7 @@ Widget listComment(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             for (int i = 0; i < commentList.length; i += 1)
-              buildCommentWidget(context, event, commentList[i], 0, route, profile)
+              buildCommentWidget(context, event, commentList[i], 0)
           ],
         ),
         if (event.childrenCommentNumber > 5 &&
@@ -660,7 +629,7 @@ Widget listComment(
 }
 
 Widget buildCommentWidget(
-    BuildContext context, Event event, Comment comment, int index, int route, int profile) {
+    BuildContext context, Event event, Comment comment, int index) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.h),
     child: Column(
@@ -785,17 +754,16 @@ Widget buildCommentWidget(
                             width: 50.w,
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
+                            onTap: () async {
+                              await Navigator.pushNamed(
+                                context,
                                 "/eventDetailWriteChildrenComment",
-                                    (route) => false,
                                 arguments: {
-                                  "route": route,
                                   "event": event,
                                   "comment": comment,
-                                  "profile": profile,
                                 },
                               );
+                              EventDetailController(context: context).handleGetComment(event.id, 0);
                             },
                             child: Text(
                               'Trả lời',
@@ -816,17 +784,16 @@ Widget buildCommentWidget(
                             width: 50.w,
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
+                            onTap: () async {
+                              await Navigator.pushNamed(
+                                context,
                                 "/eventDetailEditComment",
-                                    (route) => false,
                                 arguments: {
-                                  "route": route,
                                   "event": event,
                                   "comment": comment,
-                                  "profile": profile,
                                 },
                               );
+                              EventDetailController(context: context).handleGetComment(event.id, 0);
                             },
                             child: Text(
                               'Chỉnh sửa',
@@ -878,17 +845,16 @@ Widget buildCommentWidget(
                       Row(
                         children: [
                           GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
+                            onTap: () async {
+                              await Navigator.pushNamed(
+                                context,
                                 "/eventDetailEditComment",
-                                    (route) => false,
                                 arguments: {
-                                  "route": route,
                                   "event": event,
                                   "comment": comment,
-                                  "profile": profile,
                                 },
                               );
+                              EventDetailController(context: context).handleGetComment(event.id, 0);
                             },
                             child: Text(
                               'Chỉnh sửa',
@@ -941,7 +907,7 @@ Widget buildCommentWidget(
                         // This is divider
                         Container(
                             child: buildCommentWidget(context, event,
-                                comment.childrenComments[i], index + 1, route, profile)),
+                                comment.childrenComments[i], index + 1)),
                       ],
                     ))
             ],
@@ -1261,7 +1227,7 @@ Widget event(BuildContext context, Event event) {
 }
 
 Widget listParticipant(
-    BuildContext context, ScrollController _scrollController, int route) {
+    BuildContext context, ScrollController _scrollController) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [

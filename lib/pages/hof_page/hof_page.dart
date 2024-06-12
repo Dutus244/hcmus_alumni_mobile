@@ -45,20 +45,12 @@ class _HofPageState extends State<HofPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": 0, "secondRoute": 1});
-      },
-      child: BlocBuilder<HofPageBloc, HofPageState>(builder: (context, state) {
-        return Scaffold(
-          appBar: buildAppBar(context),
-          backgroundColor: AppColors.primaryBackground,
-          body: listHof(context, _scrollController),
-        );
-      }),
-    );
+    return BlocBuilder<HofPageBloc, HofPageState>(builder: (context, state) {
+      return Scaffold(
+        appBar: buildAppBar(context),
+        backgroundColor: AppColors.primaryBackground,
+        body: listHof(context, _scrollController),
+      );
+    });
   }
 }

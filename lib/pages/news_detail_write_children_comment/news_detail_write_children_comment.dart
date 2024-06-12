@@ -30,37 +30,23 @@ class _NewsDetailWriteChildrenCommentState
 
   late News news;
   late Comment comment;
-  late int route;
 
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
-      route = args["route"];
       news = args["news"];
       comment = args["comment"];
     }
 
-    return PopScope(
-        canPop: false, // prevent back
-        onPopInvoked: (_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/newsDetail",
-            (route) => false,
-            arguments: {
-              "route": route,
-              "id": news.id,
-            },
-          );
-        },
-        child: BlocBuilder<NewsDetailWriteChildrenCommentBloc,
-            NewsDetailWriteChildrenCommentState>(builder: (context, state) {
-          return Scaffold(
-            appBar: buildAppBar(context, route, news),
-            backgroundColor: AppColors.primaryBackground,
-            body: newsDetailWriteChildrenComment(context, news, route, comment),
-          );
-        }));
+    return BlocBuilder<NewsDetailWriteChildrenCommentBloc,
+        NewsDetailWriteChildrenCommentState>(builder: (context, state) {
+      return Scaffold(
+        appBar: buildAppBar(context),
+        backgroundColor: AppColors.primaryBackground,
+        body: newsDetailWriteChildrenComment(context, news, comment),
+      );
+    });
   }
 }

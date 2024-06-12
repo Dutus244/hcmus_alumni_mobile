@@ -22,12 +22,11 @@ class ListCommentPostGroup extends StatefulWidget {
 }
 
 class _ListCommentPostGroupState extends State<ListCommentPostGroup> {
-  late String id;
-  late String groupId;
-  late int secondRoute;
   late PageController pageController; // Không khởi tạo ở đây
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
+  late String id;
+  late String groupId;
 
   @override
   void initState() {
@@ -60,32 +59,18 @@ class _ListCommentPostGroupState extends State<ListCommentPostGroup> {
     if (args != null) {
       id = args["id"];
       groupId = args["groupId"];
-      secondRoute = args["secondRoute"];
       ListCommentPostAdviseController(context: context).handleGetComment(id, 0);
     }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/groupDetail",
-              (route) => false,
-          arguments: {
-            "id": groupId,
-            "secondRoute": secondRoute,
-          },
-        );
-      },
-      child: BlocBuilder<ListCommentPostGroupBloc, ListCommentPostGroupState>(
-          builder: (context, state) {
-        return Scaffold(
-          appBar: buildAppBar(context, groupId, secondRoute),
-          backgroundColor: AppColors.primaryBackground,
-          body: listComment(context, _scrollController, id, (value) {
-            context.read<ListCommentPostGroupBloc>().add(ContentEvent(value));
-          }),
-        );
-      }),
-    );
+    return BlocBuilder<ListCommentPostGroupBloc, ListCommentPostGroupState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: buildAppBar(context),
+            backgroundColor: AppColors.primaryBackground,
+            body: listComment(context, _scrollController, id, (value) {
+              context.read<ListCommentPostGroupBloc>().add(ContentEvent(value));
+            }),
+          );
+        });
   }
 }

@@ -22,35 +22,17 @@ class _HofDetailState extends State<HofDetail> {
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    var route = 0;
     if (args != null) {
-      route = args["route"];
       id = args["id"];
       HofDetailController(context: context).handleGetHof(id);
     }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        if (route == 0) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/applicationPage", (route) => false,
-              arguments: {"route": route, "secondRoute": 0});
-        } else {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/hofPage",
-            (route) => false,
-          );
-        }
-      },
-      child:
-          BlocBuilder<HofDetailBloc, HofDetailState>(builder: (context, state) {
-        return Scaffold(
-          appBar: buildAppBar(context, route),
-          backgroundColor: AppColors.primaryBackground,
-          body: hofDetail(context, route),
-        );
-      }),
-    );
+    return BlocBuilder<HofDetailBloc, HofDetailState>(builder: (context, state) {
+      return Scaffold(
+        appBar: buildAppBar(context),
+        backgroundColor: AppColors.primaryBackground,
+        body: hofDetail(context),
+      );
+    });
   }
 }

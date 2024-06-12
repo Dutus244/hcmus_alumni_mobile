@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hcmus_alumni_mobile/model/picture.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:textfield_tags/textfield_tags.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
@@ -17,7 +18,7 @@ import '../bloc/edit_post_group_blocs.dart';
 import '../bloc/edit_post_group_events.dart';
 import '../edit_post_group_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int secondRoute, String postId, String groupId) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -27,38 +28,8 @@ AppBar buildAppBar(BuildContext context, int secondRoute, String postId, String 
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              if (BlocProvider
-                  .of<EditPostGroupBloc>(context)
-                  .state
-                  .page ==
-                  0) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/groupDetail",
-                      (route) => false,
-                  arguments: {
-                    "id": groupId,
-                    "secondRoute": secondRoute,
-                  },
-                );
-              } else {
-                context.read<EditPostGroupBloc>().add(PageEvent(0));
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Sửa bài viết',
@@ -71,11 +42,7 @@ AppBar buildAppBar(BuildContext context, int secondRoute, String postId, String 
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -84,7 +51,7 @@ AppBar buildAppBar(BuildContext context, int secondRoute, String postId, String 
   );
 }
 
-Widget buttonEdit(BuildContext context, int secondRoute, String postId, String groupId) {
+Widget buttonEdit(BuildContext context, String postId, String groupId) {
   String title = BlocProvider
       .of<EditPostGroupBloc>(context)
       .state
@@ -96,7 +63,7 @@ Widget buttonEdit(BuildContext context, int secondRoute, String postId, String g
   return GestureDetector(
     onTap: () {
       if (title != "" && content != "") {
-        EditPostGroupController(context: context).handlePost(postId, groupId, secondRoute);
+        EditPostGroupController(context: context).handlePost(postId, groupId);
       }
     },
     child: Container(
@@ -304,7 +271,7 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
   );
 }
 
-Widget writePost(BuildContext context, int secondRoute, String id, String groupId) {
+Widget writePost(BuildContext context, String id, String groupId) {
   TextEditingController controller = TextEditingController();
   controller.text = BlocProvider
       .of<EditPostGroupBloc>(context)
@@ -319,9 +286,7 @@ Widget writePost(BuildContext context, int secondRoute, String id, String groupI
           scrollDirection: Axis.vertical,
           children: [
             header(),
-            chooseTag(context, (value) {
-              context.read<EditPostGroupBloc>().add(TagsEvent(value));
-            }),
+            buildTextFieldTag(context),
             buildTextFieldTitle(context, 'Tiêu đề của bài viết', 'comment', '',
                     (value) {
                   context.read<EditPostGroupBloc>().add(TitleEvent(value));
@@ -336,12 +301,12 @@ Widget writePost(BuildContext context, int secondRoute, String id, String groupI
           ],
         ),
       ),
-      buttonEdit(context, secondRoute, id, groupId),
+      buttonEdit(context, id, groupId),
     ],
   );
 }
 
-Widget editPicture(BuildContext context, int route) {
+Widget editPicture(BuildContext context) {
   return Column(
     children: [
       Expanded(
@@ -1938,53 +1903,171 @@ Widget header() {
   );
 }
 
-Widget chooseTag(BuildContext context,
-    void Function(List<String> value)? func) {
-  List<String> selectedValues = [];
+void deleteTag(BuildContext context, String tag) {
+  List<String> currentList =
+      BlocProvider.of<EditPostGroupBloc>(context).state.tags;
+  for (int i = 0; i < currentList.length; i += 1) {
+    if (currentList[i] == tag) {
+      currentList.removeAt(i);
+      break;
+    }
+  }
+  context.read<EditPostGroupBloc>().add(TagsEvent(currentList));
+}
 
-  return Container(
-    height: 35.h,
-    margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
-    child: MultiSelectDropDown(
-      selectedOptions:
-      BlocProvider
-          .of<EditPostGroupBloc>(context)
-          .state
-          .itemTags,
-      onOptionSelected: (List<ValueItem> selectedOptions) {
-        selectedValues =
-            selectedOptions.map((option) => option.value.toString()).toList();
-        if (func != null) {
-          func(selectedValues);
-        }
-      },
-      options: const <ValueItem>[
-        ValueItem(label: 'Cựu sinh viên', value: '1'),
-        ValueItem(label: 'Trường học', value: '2'),
-        ValueItem(label: 'Cộng đồng', value: '3'),
-        ValueItem(label: 'Khởi nghiệp', value: '4'),
-        ValueItem(label: 'Nghề nghiệp', value: '5'),
-        ValueItem(label: 'Học tập', value: '6'),
-        ValueItem(label: 'Việc làm', value: '7'),
-      ],
-      selectionType: SelectionType.multi,
-      chipConfig: const ChipConfig(wrapType: WrapType.scroll),
-      dropdownHeight: 300,
-      optionTextStyle: const TextStyle(
-        color: AppColors.primaryText,
-        fontSize: 12,
-        fontWeight: FontWeight.bold,
-        fontFamily: AppFonts.Header2,
-      ),
-      hintStyle: const TextStyle(
-        fontSize: 12,
-        fontFamily: AppFonts.Header2,
-      ),
-      selectedOptionIcon: const Icon(
-        Icons.check_circle,
-        color: AppColors.primaryElement,
-      ),
-      hint: 'Chọn thẻ',
-    ),
-  );
+void addTag(BuildContext context, String tag) {
+  List<String> currentList =
+  List.from(BlocProvider.of<EditPostGroupBloc>(context).state.tags);
+  currentList.add(tag);
+  context.read<EditPostGroupBloc>().add(TagsEvent(currentList));
+}
+
+Widget buildTextFieldTag(BuildContext context) {
+  TextfieldTagsController<String> _stringTagController =
+  TextfieldTagsController<String>();
+
+  return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10.w),
+      child: Column(
+        children: [
+          TextFieldTags<String>(
+            textfieldTagsController: _stringTagController,
+            initialTags:
+            BlocProvider.of<EditPostGroupBloc>(context).state.tags,
+            textSeparators: const [' ', ','],
+            letterCase: LetterCase.normal,
+            inputFieldBuilder: (context, inputFieldValues) {
+              inputFieldValues.tags = BlocProvider.of<EditPostGroupBloc>(context).state.tags;
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.h),
+                child: TextField(
+                  onTap: () {
+                    _stringTagController.getFocusNode?.requestFocus();
+                  },
+                  controller: inputFieldValues.textEditingController,
+                  focusNode: inputFieldValues.focusNode,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 13),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.primaryFourthElementText,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.w),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: AppColors.primaryFourthElementText,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.w),
+                    ),
+                    helperStyle: const TextStyle(
+                      color: AppColors.primarySecondaryElement,
+                    ),
+                    hintText: inputFieldValues.tags.isNotEmpty
+                        ? ''
+                        : "Nhập #hashtag...",
+                    errorText: inputFieldValues.error,
+                    prefixIconConstraints:
+                    BoxConstraints(maxWidth: 300.w * 0.8),
+                    prefixIcon: inputFieldValues.tags.isNotEmpty
+                        ? SingleChildScrollView(
+                      controller: inputFieldValues.tagScrollController,
+                      scrollDirection: Axis.vertical,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8,
+                          bottom: 8,
+                          left: 8,
+                        ),
+                        child: Wrap(
+                            runSpacing: 4.0,
+                            spacing: 4.0,
+                            children:
+                            inputFieldValues.tags.map((String tag) {
+                              return Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(20.0),
+                                  ),
+                                  color: AppColors.primaryElement,
+                                ),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 5.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 5.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    InkWell(
+                                      child: Text(
+                                        '#$tag',
+                                        style: TextStyle(
+                                            fontSize: 11.sp,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: AppFonts.Header2,
+                                            color: Colors.white),
+                                      ),
+                                      onTap: () {
+                                        //print("$tag selected");
+                                      },
+                                    ),
+                                    const SizedBox(width: 4.0),
+                                    InkWell(
+                                      child: const Icon(
+                                        Icons.cancel,
+                                        size: 14.0,
+                                        color: Color.fromARGB(
+                                            255, 233, 233, 233),
+                                      ),
+                                      onTap: () {
+                                        inputFieldValues
+                                            .onTagRemoved(tag);
+                                        deleteTag(context, tag);
+                                      },
+                                    )
+                                  ],
+                                ),
+                              );
+                            }).toList()),
+                      ),
+                    )
+                        : null,
+                  ),
+                  style: TextStyle(
+                    fontSize: 11.sp, // Adjust the font size here
+                  ),
+                  onChanged: (value) {
+                    inputFieldValues.onTagChanged(value);
+                  },
+                  onSubmitted: (value) {
+                    if (BlocProvider.of<EditPostGroupBloc>(context)
+                        .state
+                        .tags
+                        .length >=
+                        5) {
+                      toastInfo(msg: "Số lượng thẻ không được vượt quá 5");
+                      return;
+                    }
+                    if (!BlocProvider.of<EditPostGroupBloc>(context)
+                        .state
+                        .tags
+                        .contains(value)) {
+                      inputFieldValues.onTagSubmitted(value);
+                      addTag(context, value);
+                    } else {
+                      // Optionally, show a message to the user about the duplicate tag
+                      toastInfo(msg: "Bạn đã nhập tag này rồi");
+                    }
+                  },
+                ),
+              );
+            },
+          ),
+        ],
+      ));
 }

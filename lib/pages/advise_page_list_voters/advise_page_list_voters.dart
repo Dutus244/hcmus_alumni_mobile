@@ -25,9 +25,6 @@ class _AdvisePageListVotersState extends State<AdvisePageListVoters> {
   bool _isFetchingData = false;
   late Vote vote;
   late Post post;
-  String page = "";
-  int profile = 0;
-  int route = 0;
 
   @override
   void initState() {
@@ -58,15 +55,6 @@ class _AdvisePageListVotersState extends State<AdvisePageListVoters> {
     if (args != null) {
       vote = args["vote"];
       post = args["post"];
-      if (args["profile"] != null) {
-        profile = args["profile"];
-      }
-      if (args["route"] != null) {
-        route = args["route"];
-      }
-      if (args["page"] != null) {
-        page = args["page"];
-      }
       // Now you can use the passedValue in your widget
       context
           .read<AdvisePageListVotersBloc>()
@@ -75,32 +63,13 @@ class _AdvisePageListVotersState extends State<AdvisePageListVoters> {
           .handleLoadVoterData(0, post.id, vote.id);
     }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        if (profile == 0) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage",
-            (route) => false,
-            arguments: {
-              "route": 2,
-              "secondRoute": 0,
-            },
+    return BlocBuilder<AdvisePageListVotersBloc, AdvisePageListVotersState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: buildAppBar(context),
+            backgroundColor: AppColors.primaryBackground,
+            body: listVoters(context, vote, post, _scrollController),
           );
-        } else {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/myProfilePage", (route) => false,
-              arguments: {"page": page, "route": route});
-        }
-      },
-      child: BlocBuilder<AdvisePageListVotersBloc, AdvisePageListVotersState>(
-          builder: (context, state) {
-        return Scaffold(
-          appBar: buildAppBar(context, profile, route, page),
-          backgroundColor: AppColors.primaryBackground,
-          body: listVoters(context, vote, post, _scrollController),
-        );
-      }),
-    );
+        });
   }
 }

@@ -17,7 +17,6 @@ class WritePostGroup extends StatefulWidget {
 
 class _WritePostGroupState extends State<WritePostGroup> {
   late String id;
-  late int secondRoute;
 
   @override
   void initState() {
@@ -33,35 +32,17 @@ class _WritePostGroupState extends State<WritePostGroup> {
     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       id = args["id"];
-      secondRoute = args["secondRoute"];
       // Now you can use the passedValue in your widget
     }
 
-    return PopScope(
-        canPop: false, // prevent back
-        onPopInvoked: (_) async {
-          if (BlocProvider.of<WritePostGroupBloc>(context).state.page ==
-              0) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              "/groupDetail",
-                  (route) => false,
-              arguments: {
-                "id": id,
-                "secondRoute": secondRoute,
-              },
-            );
-          } else {
-            context.read<WritePostGroupBloc>().add(PageEvent(0));
-          }
-        },
-        child: BlocBuilder<WritePostGroupBloc, WritePostGroupState>(
-            builder: (context, state) {
+    return BlocBuilder<WritePostGroupBloc, WritePostGroupState>(
+        builder: (context, state) {
           return Scaffold(
-            appBar: buildAppBar(context, id, secondRoute),
-            backgroundColor: AppColors.primaryBackground,
-            body: BlocProvider.of<WritePostGroupBloc>(context)
-                .state.page == 0 ? writePost(context, id, secondRoute) : editPicture(context)
+              appBar: buildAppBar(context),
+              backgroundColor: AppColors.primaryBackground,
+              body: BlocProvider.of<WritePostGroupBloc>(context)
+                  .state.page == 0 ? writePost(context, id) : editPicture(context)
           );
-        }));
+        });
   }
 }

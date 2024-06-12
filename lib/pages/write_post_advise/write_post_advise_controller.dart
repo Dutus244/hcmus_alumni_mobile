@@ -119,14 +119,7 @@ class WritePostAdviseController {
                 context
                     .read<WritePostAdviseBloc>()
                     .add(WritePostAdviseResetEvent());
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage",
-                  (route) => false,
-                  arguments: {
-                    "route": 2,
-                    "secondRoute": 0,
-                  },
-                );
+                Navigator.pop(context);
               } else {}
             } catch (e) {
               // Exception occurred
@@ -209,14 +202,7 @@ class WritePostAdviseController {
               context
                   .read<WritePostAdviseBloc>()
                   .add(WritePostAdviseResetEvent());
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/applicationPage",
-                (route) => false,
-                arguments: {
-                  "route": 2,
-                  "secondRoute": 0,
-                },
-              );
+              Navigator.pop(context);
             } else {}
           } catch (e) {
             // Exception occurred

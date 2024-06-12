@@ -26,6 +26,7 @@ class _GroupDetailListVotersState extends State<GroupDetailListVoters> {
   bool _isFetchingData = false;
   late Vote vote;
   late Post post;
+  late Group group;
 
   @override
   void initState() {
@@ -49,13 +50,10 @@ class _GroupDetailListVotersState extends State<GroupDetailListVoters> {
 
   @override
   Widget build(BuildContext context) {
-    late int secondRoute;
-    late Group group;
     Map<String, dynamic>? args =
     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       group = args["group"];
-      secondRoute = args["secondRoute"];
       vote = args["vote"];
       post = args["post"];
       // Now you can use the passedValue in your widget
@@ -65,26 +63,13 @@ class _GroupDetailListVotersState extends State<GroupDetailListVoters> {
       GroupDetailListVotersController(context: context).handleLoadVoterData(0, post.id, vote.id);
     }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/groupDetail",
-              (route) => false,
-          arguments: {
-            "id": group.id,
-            "secondRoute": secondRoute,
-          },
-        );
-      },
-      child: BlocBuilder<GroupDetailListVotersBloc, GroupDetailListVotersState>(
-          builder: (context, state) {
-            return Scaffold(
-              appBar: buildAppBar(context, group, secondRoute),
-              backgroundColor: AppColors.primaryBackground,
-              body: listVoters(context, vote, post, _scrollController),
-            );
-          }),
-    );
+    return BlocBuilder<GroupDetailListVotersBloc, GroupDetailListVotersState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: buildAppBar(context),
+            backgroundColor: AppColors.primaryBackground,
+            body: listVoters(context, vote, post, _scrollController),
+          );
+        });
   }
 }

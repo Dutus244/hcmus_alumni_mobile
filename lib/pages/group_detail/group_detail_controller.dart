@@ -34,6 +34,9 @@ class GroupDetailController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var group = Group.fromJson(jsonMap);
+        if (group.isJoined || group.privacy == "PUBLIC") {
+          GroupDetailController(context: context).handleLoadPostData(id, 0);
+        }
         context.read< GroupDetailBloc>().add(GroupEvent(group));
       } else {
         toastInfo(msg: "Có lỗi xả ra khi lấy thông tin nhóm");
@@ -232,7 +235,7 @@ class GroupDetailController {
     }
   }
 
-  Future<void> handleExitGroup(String id, int secondRoute) async {
+  Future<void> handleExitGroup(String id) async {
     String userId = '30ff6fa7-035f-42e4-aa13-55c1c94ded1e';
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$id/members/$userId';
@@ -249,9 +252,7 @@ class GroupDetailController {
 
       var response = await http.delete(url, headers: headers);
       if (response.statusCode == 200) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": 3, "secondRoute": secondRoute});
+        Navigator.pop(context);
       } else {
         // Handle other status codes if needed
         toastInfo(msg: "Có lỗi xả ra khi thoát nhóm");

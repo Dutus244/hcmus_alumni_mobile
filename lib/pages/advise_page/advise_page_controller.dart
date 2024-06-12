@@ -293,14 +293,11 @@ class AdvisePageController {
 
     final map = <String, dynamic>{};
     map['name'] = vote;
-    print(vote);
 
     try {
       var url = Uri.parse('$apiUrl$endpoint');
 
       var response = await http.post(url, headers: headers, body: json.encode(map));
-      print(response.statusCode);
-      print(response.body);
       if (response.statusCode == 201) {
         AdvisePageController(context: context).handleLoadPostData(0);
       } else {

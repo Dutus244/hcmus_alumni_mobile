@@ -7,7 +7,7 @@ import 'package:hcmus_alumni_mobile/model/picture.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 
-AppBar buildAppBar(BuildContext context, String groupId, int secondRoute) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -16,23 +16,8 @@ AppBar buildAppBar(BuildContext context, String groupId, int secondRoute) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/groupDetail",
-                    (route) => false,
-                arguments: {
-                  "id": groupId,
-                  "secondRoute": secondRoute,
-                },
-              );
-            },
-            child: SvgPicture.asset(
-              "assets/icons/back.svg",
-              width: 25.w,
-              height: 25.h,
-              color: Colors.black.withOpacity(0.5),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Hình ảnh',
@@ -45,8 +30,8 @@ AppBar buildAppBar(BuildContext context, String groupId, int secondRoute) {
             ),
           ),
           Container(
-            width: 25.w,
-          ),
+            width: 60.w,
+          )
         ],
       ),
     ),

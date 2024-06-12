@@ -21,7 +21,7 @@ AppBar buildAppBar(BuildContext context, String title, int route) {
               Navigator.of(context).pushNamedAndRemoveUntil(
                 "/applicationPage",
                 (route) => false,
-                arguments: {"route": 0, "secondRoute": 0},
+                arguments: {"route": 0},
               );
             },
             child: Container(
@@ -69,9 +69,10 @@ AppBar buildAppBar(BuildContext context, String title, int route) {
                   margin: EdgeInsets.only(),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                          "/myProfilePage", (route) => false,
-                          arguments: {"page": "applicationPage", "route": route});
+                      Navigator.pushNamed(
+                        context,
+                          "/myProfilePage"
+                      );
                     },
                     child: CircleAvatar(
                       radius: 10,

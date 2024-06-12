@@ -22,8 +22,6 @@ class _EventDetailWriteChildrenCommentState
     extends State<EventDetailWriteChildrenComment> {
   late Event event;
   late Comment comment;
-  int route = 0;
-  int profile = 0;
 
   @override
   void initState() {
@@ -40,35 +38,16 @@ class _EventDetailWriteChildrenCommentState
     if (args != null) {
       event = args["event"];
       comment = args["comment"];
-      if (args["route"]) {
-        route = args["route"];
-      }
-      if (args["profile"] != null) {
-        profile = args["profile"];
-      }
     }
 
-    return PopScope(
-        canPop: false, // prevent back
-        onPopInvoked: (_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/eventDetail",
-            (route) => false,
-            arguments: {
-              "route": route,
-              "id": event.id,
-              "profile": profile,
-            },
-          );
-        },
-        child: BlocBuilder<EventDetailWriteChildrenCommentBloc,
-            EventDetailWriteChildrenCommentState>(builder: (context, state) {
-          return Scaffold(
-            appBar: buildAppBar(context, route, event, profile),
-            backgroundColor: AppColors.primaryBackground,
-            body:
-                eventDetailWriteChildrenComment(context, event, route, comment, profile),
-          );
-        }));
+    return BlocBuilder<EventDetailWriteChildrenCommentBloc,
+        EventDetailWriteChildrenCommentState>(builder: (context, state) {
+      return Scaffold(
+        appBar: buildAppBar(context),
+        backgroundColor: AppColors.primaryBackground,
+        body:
+        eventDetailWriteChildrenComment(context, event, comment),
+      );
+    });
   }
 }

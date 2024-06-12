@@ -18,7 +18,7 @@ import '../../../global.dart';
 import '../../../model/news.dart';
 import '../bloc/news_detail_events.dart';
 
-AppBar buildAppBar(BuildContext context, int route) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -28,25 +28,8 @@ AppBar buildAppBar(BuildContext context, int route) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage", (route) => false,
-                  arguments: {"route": route, "secondRoute": 0});
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Tin tức',
@@ -59,13 +42,7 @@ AppBar buildAppBar(BuildContext context, int route) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [
-
-              ],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -323,7 +300,7 @@ Widget newsContent(BuildContext context, News? news) {
 }
 
 Widget listComment(
-    BuildContext context, News? news, List<Comment> commentList, int route) {
+    BuildContext context, News? news, List<Comment> commentList) {
   if (news == null) {
     return Column(
       children: [],
@@ -335,15 +312,15 @@ Widget listComment(
       children: [
         if (Global.storageService.permissionNewsCommentCreate())
           GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushNamedAndRemoveUntil(
+          onTap: () async {
+            await Navigator.pushNamed(
+              context,
               "/newsDetailWriteComment",
-              (route) => false,
               arguments: {
-                "route": route,
                 "news": news,
               },
             );
+            NewsDetailController(context: context).handleGetComment(news.id, 0);
           },
           child: Container(
               width: 340.w,
@@ -398,7 +375,7 @@ Widget listComment(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             for (int i = 0; i < commentList.length; i += 1)
-              buildCommentWidget(context, news, commentList[i], 0, route)
+              buildCommentWidget(context, news, commentList[i], 0)
           ],
         ),
         if (news.childrenCommentNumber > 5 &&
@@ -448,7 +425,7 @@ Widget listComment(
 }
 
 Widget buildCommentWidget(
-    BuildContext context, News news, Comment comment, int index, int route) {
+    BuildContext context, News news, Comment comment, int index) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.h),
     child: Column(
@@ -575,16 +552,16 @@ Widget buildCommentWidget(
                             width: 50.w,
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
+                            onTap: () async {
+                              await Navigator.pushNamed(
+                                context,
                                 "/newsDetailWriteChildrenComment",
-                                    (route) => false,
                                 arguments: {
-                                  "route": route,
                                   "news": news,
                                   "comment": comment,
                                 },
                               );
+                              NewsDetailController(context: context).handleGetComment(news.id, 0);
                             },
                             child: Text(
                               'Trả lời',
@@ -605,16 +582,16 @@ Widget buildCommentWidget(
                             width: 50.w,
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
+                            onTap: () async {
+                              await Navigator.pushNamed(
+                                context,
                                 "/newsDetailEditComment",
-                                (route) => false,
                                 arguments: {
-                                  "route": route,
                                   "news": news,
                                   "comment": comment,
                                 },
                               );
+                              NewsDetailController(context: context).handleGetComment(news.id, 0);
                             },
                             child: Text(
                               'Chỉnh sửa',
@@ -667,16 +644,16 @@ Widget buildCommentWidget(
                       Row(
                         children: [
                           GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
+                            onTap: () async {
+                              await Navigator.pushNamed(
+                                context,
                                 "/newsDetailEditComment",
-                                    (route) => false,
                                 arguments: {
-                                  "route": route,
                                   "news": news,
                                   "comment": comment,
                                 },
                               );
+                              NewsDetailController(context: context).handleGetComment(news.id, 0);
                             },
                             child: Text(
                               'Chỉnh sửa',
@@ -731,7 +708,7 @@ Widget buildCommentWidget(
                       // This is divider
                       Container(
                           child: buildCommentWidget(context, news,
-                              comment.childrenComments[i], index + 1, route)),
+                              comment.childrenComments[i], index + 1)),
                     ],
                   ))
               ],
@@ -777,11 +754,10 @@ Widget listRelatedNews(BuildContext context, List<News> newsList) {
 Widget news(BuildContext context, News news) {
   return GestureDetector(
     onTap: () {
-      Navigator.of(context).pushNamedAndRemoveUntil(
+      Navigator.pushNamed(
+        context,
         "/newsDetail",
-        (route) => false,
         arguments: {
-          "route": 1,
           "id": news.id,
         },
       );
@@ -1281,7 +1257,7 @@ class _ButtonEditTextState extends State<ButtonEditText> {
   }
 }
 
-Widget newsDetail(BuildContext context, int route) {
+Widget newsDetail(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -1295,8 +1271,7 @@ Widget newsDetail(BuildContext context, int route) {
             listComment(
                 context,
                 BlocProvider.of<NewsDetailBloc>(context).state.news,
-                BlocProvider.of<NewsDetailBloc>(context).state.comments,
-                route),
+                BlocProvider.of<NewsDetailBloc>(context).state.comments),
             listRelatedNews(context,
                 BlocProvider.of<NewsDetailBloc>(context).state.relatedNews),
           ],

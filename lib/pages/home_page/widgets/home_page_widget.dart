@@ -80,11 +80,10 @@ Widget listEvent(BuildContext context, List<Event> eventList) {
 Widget event(BuildContext context, Event event) {
   return GestureDetector(
     onTap: () {
-      Navigator.of(context).pushNamedAndRemoveUntil(
+      Navigator.pushNamed(
+        context,
         "/eventDetail",
-        (route) => false,
         arguments: {
-          "route": 0,
           "id": event.id,
         },
       );
@@ -300,11 +299,10 @@ Widget listNews(BuildContext context, List<News> newsList) {
 Widget news(BuildContext context, News news) {
   return GestureDetector(
     onTap: () {
-      Navigator.of(context).pushNamedAndRemoveUntil(
+      Navigator.pushNamed(
+        context,
         "/newsDetail",
-        (route) => false,
         arguments: {
-          "route": 0,
           "id": news.id,
         },
       );
@@ -416,9 +414,9 @@ Widget listHof(BuildContext context, List<HallOfFame> hallOfFameList) {
               margin: EdgeInsets.only(right: 15.w),
               child: GestureDetector(
                   onTap: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
+                    Navigator.pushNamed(
+                      context,
                       "/hofPage",
-                      (route) => false,
                     );
                   },
                   child: Text(
@@ -458,11 +456,10 @@ Widget listHof(BuildContext context, List<HallOfFame> hallOfFameList) {
 Widget hof(BuildContext context, HallOfFame hallOfFame) {
   return GestureDetector(
     onTap: () {
-      Navigator.of(context).pushNamedAndRemoveUntil(
+      Navigator.pushNamed(
+        context,
         "/hofDetail",
-        (route) => false,
         arguments: {
-          "route": 0,
           "id": hallOfFame.id,
         },
       );
@@ -618,12 +615,9 @@ Widget advise(BuildContext context) {
               alignment: Alignment.centerRight,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
+                  Navigator.pushNamed(
+                    context,
                     "/writePostAdvise",
-                    (route) => false,
-                    arguments: {
-                      "route": 0,
-                    },
                   );
                 },
                 child: Container(

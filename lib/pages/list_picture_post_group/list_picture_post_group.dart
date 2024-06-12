@@ -14,7 +14,6 @@ class ListPicturePostGroup extends StatefulWidget {
 class _ListPicturePostGroupState extends State<ListPicturePostGroup> {
   late Post post;
   late String groupId;
-  late int secondRoute;
 
   @override
   Widget build(BuildContext context) {
@@ -23,26 +22,12 @@ class _ListPicturePostGroupState extends State<ListPicturePostGroup> {
     if (args != null) {
       post = args["post"];
       groupId = args["groupId"];
-      secondRoute = args["secondRoute"];
     }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/groupDetail",
-              (route) => false,
-          arguments: {
-            "id": groupId,
-            "secondRoute": secondRoute,
-          },
-        );
-      },
-      child: Scaffold(
-        appBar: buildAppBar(context, groupId, secondRoute),
-        backgroundColor: AppColors.primaryText,
-        body: listPicture(post.pictures),
-      ),
+    return Scaffold(
+      appBar: buildAppBar(context),
+      backgroundColor: AppColors.primaryText,
+      body: listPicture(post.pictures),
     );
   }
 }

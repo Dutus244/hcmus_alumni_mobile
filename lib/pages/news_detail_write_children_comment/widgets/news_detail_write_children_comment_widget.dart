@@ -16,7 +16,7 @@ import '../bloc/news_detail_write_children_comment_blocs.dart';
 import '../bloc/news_detail_write_children_comment_events.dart';
 import '../news_detail_write_children_comment_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int route, News news) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -26,33 +26,11 @@ AppBar buildAppBar(BuildContext context, int route, News news) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                "/newsDetail",
-                (route) => false,
-                arguments: {
-                  "route": route,
-                  "id": news.id,
-                },
-              );
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
-            'Sự kiện',
+            'Tin tức',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: AppFonts.Header0,
@@ -62,11 +40,7 @@ AppBar buildAppBar(BuildContext context, int route, News news) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -293,7 +267,7 @@ Widget header(News news, Comment comment) {
   );
 }
 
-Widget buttonSend(BuildContext context, News news, int route, Comment Comment) {
+Widget buttonSend(BuildContext context, News news, Comment Comment) {
   String comment = BlocProvider.of<NewsDetailWriteChildrenCommentBloc>(context)
       .state
       .comment;
@@ -301,7 +275,7 @@ Widget buttonSend(BuildContext context, News news, int route, Comment Comment) {
     onTap: () {
       if (comment != "") {
         NewsDetailWriteChildrenCommentController(context: context)
-            .handleLoadWriteComment(news.id, Comment.id, route);
+            .handleLoadWriteComment(news.id, Comment.id);
       }
     },
     child: Container(
@@ -351,7 +325,7 @@ Widget buttonSend(BuildContext context, News news, int route, Comment Comment) {
 }
 
 Widget newsDetailWriteChildrenComment(
-    BuildContext context, News news, int route, Comment comment) {
+    BuildContext context, News news, Comment comment) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -369,7 +343,7 @@ Widget newsDetailWriteChildrenComment(
           ],
         ),
       ),
-      buttonSend(context, news, route, comment),
+      buttonSend(context, news, comment),
     ],
   );
 }

@@ -24,8 +24,6 @@ class _EventDetailState extends State<EventDetail> {
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
   late String id;
-  int route = 0;
-  int profile = 0;
 
   @override
   void initState() {
@@ -56,46 +54,24 @@ class _EventDetailState extends State<EventDetail> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       id = args["id"];
-      if (args["route"] != null) {
-        route = args["route"];
-      }
-      if (args["profile"] != null) {
-        profile = args["profile"];
-      }
       EventDetailController(context: context).handleGetEvent(id);
       EventDetailController(context: context).handleGetComment(id, 0);
       EventDetailController(context: context).handleCheckIsParticipated(id);
       EventDetailController(context: context).handleGetParticipant(id, 0);
     }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        if (profile == 0) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/applicationPage", (route) => false,
-              arguments: {"route": route, "secondRoute": 1});
-        } else {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/myProfilePage", (route) => false,
-              arguments: {"route": route});
-        }
-      },
-      child: BlocBuilder<EventDetailBloc, EventDetailState>(
-          builder: (context, state) {
-        return Scaffold(
-          appBar: buildAppBar(context, route, profile),
-          backgroundColor: AppColors.primaryBackground,
-          body: BlocProvider.of<EventDetailBloc>(context).state.page == 0
-              ? detail(
-                  context,
-                  BlocProvider.of<EventDetailBloc>(context).state.event,
-                  _scrollController,
-                  route,
-                  profile)
-              : listParticipant(context, _scrollController, route),
-        );
-      }),
-    );
+    return BlocBuilder<EventDetailBloc, EventDetailState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: buildAppBar(context),
+            backgroundColor: AppColors.primaryBackground,
+            body: BlocProvider.of<EventDetailBloc>(context).state.page == 0
+                ? detail(
+                context,
+                BlocProvider.of<EventDetailBloc>(context).state.event,
+                _scrollController)
+                : listParticipant(context, _scrollController),
+          );
+        });
   }
 }

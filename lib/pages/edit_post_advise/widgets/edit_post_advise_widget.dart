@@ -18,7 +18,7 @@ import '../bloc/edit_post_advise_blocs.dart';
 import '../bloc/edit_post_advise_events.dart';
 import '../edit_post_advise_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int route, String id, int profile, String page) {
+AppBar buildAppBar(BuildContext context, String id) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -28,45 +28,8 @@ AppBar buildAppBar(BuildContext context, int route, String id, int profile, Stri
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              if (BlocProvider
-                  .of<EditPostAdviseBloc>(context)
-                  .state
-                  .page ==
-                  0) {
-                if (profile == 0) {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/applicationPage",
-                        (route) => false,
-                    arguments: {
-                      "route": route,
-                      "secondRoute": 0,
-                    },
-                  );
-                }
-                else {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/myProfilePage", (route) => false,
-                      arguments: {"page": page, "route": route});
-                }
-              } else {
-                context.read<EditPostAdviseBloc>().add(PageEvent(0));
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Sửa bài viết',
@@ -79,11 +42,7 @@ AppBar buildAppBar(BuildContext context, int route, String id, int profile, Stri
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -92,7 +51,7 @@ AppBar buildAppBar(BuildContext context, int route, String id, int profile, Stri
   );
 }
 
-Widget buttonEdit(BuildContext context, int route, String id, int profile, String page) {
+Widget buttonEdit(BuildContext context, String id) {
   String title = BlocProvider
       .of<EditPostAdviseBloc>(context)
       .state
@@ -104,7 +63,7 @@ Widget buttonEdit(BuildContext context, int route, String id, int profile, Strin
   return GestureDetector(
     onTap: () {
       if (title != "" && content != "") {
-        EditPostAdviseController(context: context).handlePost(id, route, profile, page);
+        EditPostAdviseController(context: context).handlePost(id);
       }
     },
     child: Container(
@@ -312,7 +271,7 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
   );
 }
 
-Widget writePost(BuildContext context, int route, String id, int profile, String page) {
+Widget writePost(BuildContext context, String id) {
   TextEditingController controller = TextEditingController();
   controller.text = BlocProvider
       .of<EditPostAdviseBloc>(context)
@@ -342,12 +301,12 @@ Widget writePost(BuildContext context, int route, String id, int profile, String
           ],
         ),
       ),
-      buttonEdit(context, route, id, profile, page),
+      buttonEdit(context, id),
     ],
   );
 }
 
-Widget editPicture(BuildContext context, int route) {
+Widget editPicture(BuildContext context) {
   return Column(
     children: [
       Expanded(

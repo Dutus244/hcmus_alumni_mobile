@@ -14,7 +14,7 @@ class EventDetailEditCommentController {
 
   const EventDetailEditCommentController({required this.context});
 
-  Future<void> handleEditComment(String id, String commentId, int route, int profile) async {
+  Future<void> handleEditComment(String id, String commentId) async {
     final state = context.read<EventDetailEditCommentBloc>().state;
     String comment = state.comment;
 
@@ -36,15 +36,7 @@ class EventDetailEditCommentController {
       var response = await http.put(url, headers: headers, body: body);
 
       if (response.statusCode == 200) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/eventDetail",
-              (route) => false,
-          arguments: {
-            "route": route,
-            "id": id,
-            "profile": profile,
-          },
-        );
+        Navigator.pop(context);
       } else {
         // Handle other status codes if needed
         toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa bình luận");

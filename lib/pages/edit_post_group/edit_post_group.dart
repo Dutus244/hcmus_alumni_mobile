@@ -20,7 +20,6 @@ class EditPostGroup extends StatefulWidget {
 class _EditPostGroupState extends State<EditPostGroup> {
   late Post post;
   late String id;
-  int secondRoute = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +28,6 @@ class _EditPostGroupState extends State<EditPostGroup> {
     if (args != null) {
       id = args["id"];
       post = args["post"];
-      if (args["secondRoute"] != null) {
-        secondRoute = args["secondRoute"];
-      }
       // Now you can use the passedValue in your widget
       context
           .read<EditPostGroupBloc>()
@@ -39,34 +35,14 @@ class _EditPostGroupState extends State<EditPostGroup> {
       EditPostGroupController(context: context).handleLoad(post);
     }
 
-    return PopScope(
-        canPop: false, // prevent back
-        onPopInvoked: (_) async {
-          if (BlocProvider
-              .of<EditPostGroupBloc>(context)
-              .state
-              .page ==
-              0) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              "/groupDetail",
-                  (route) => false,
-              arguments: {
-                "id": id,
-                "secondRoute": secondRoute,
-              },
-            );
-          } else {
-            context.read<EditPostGroupBloc>().add(PageEvent(0));
-          }
-        },
-        child: BlocBuilder<EditPostGroupBloc, EditPostGroupState>(
-            builder: (context, state) {
+    return BlocBuilder<EditPostGroupBloc, EditPostGroupState>(
+        builder: (context, state) {
           return Scaffold(
-              appBar: buildAppBar(context, secondRoute, post.id, id),
+              appBar: buildAppBar(context),
               backgroundColor: AppColors.primaryBackground,
               body: BlocProvider.of<EditPostGroupBloc>(context).state.page == 0
-                  ? writePost(context, secondRoute, post.id, id)
-                  : editPicture(context, secondRoute));
-        }));
+                  ? writePost(context, post.id, id)
+                  : editPicture(context));
+        });
   }
 }

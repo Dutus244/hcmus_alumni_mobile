@@ -27,30 +27,20 @@ class _NewsDetailState extends State<NewsDetail> {
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    var route = 0;
     if (args != null) {
-      route = args["route"];
       id = args["id"];
       NewsDetailController(context: context).handleGetNews(id);
       NewsDetailController(context: context).handleGetComment(id, 0);
       NewsDetailController(context: context).handleGetRelatedNews(id);
     }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": route, "secondRoute": 0});
-      },
-      child: BlocBuilder<NewsDetailBloc, NewsDetailState>(
-          builder: (context, state) {
-        return Scaffold(
-          appBar: buildAppBar(context, route),
-          backgroundColor: AppColors.primaryBackground,
-          body: newsDetail(context, route),
-        );
-      }),
-    );
+    return BlocBuilder<NewsDetailBloc, NewsDetailState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: buildAppBar(context),
+            backgroundColor: AppColors.primaryBackground,
+            body: newsDetail(context),
+          );
+        });
   }
 }

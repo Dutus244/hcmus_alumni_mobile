@@ -20,8 +20,6 @@ class EventDetailEditComment extends StatefulWidget {
 class _EventDetailEditCommentState extends State<EventDetailEditComment> {
   late Event event;
   late Comment comment;
-  int route = 0;
-  int profile = 0;
 
   @override
   void initState() {
@@ -38,38 +36,19 @@ class _EventDetailEditCommentState extends State<EventDetailEditComment> {
     if (args != null) {
       event = args["event"];
       comment = args["comment"];
-      if (args["route"] != null) {
-        route = args["route"];
-      }
-      if (args["profile"] != null) {
-        profile = args["profile"];
-      }
       context
           .read<EventDetailEditCommentBloc>()
           .add(CommentEvent(comment.content));
     }
 
-    return PopScope(
-        canPop: false, // prevent back
-        onPopInvoked: (_) async {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/eventDetail",
-            (route) => false,
-            arguments: {
-              "route": route,
-              "id": event.id,
-              "profile": profile,
-            },
-          );
-        },
-        child: BlocBuilder<EventDetailEditCommentBloc,
-            EventDetailEditCommentState>(builder: (context, state) {
-          return Scaffold(
-            appBar: buildAppBar(context, route, event, profile),
-            backgroundColor: AppColors.primaryBackground,
-            body:
-                eventDetailEditComment(context, event, route, comment, profile),
-          );
-        }));
+    return BlocBuilder<EventDetailEditCommentBloc,
+        EventDetailEditCommentState>(builder: (context, state) {
+      return Scaffold(
+        appBar: buildAppBar(context),
+        backgroundColor: AppColors.primaryBackground,
+        body:
+        eventDetailEditComment(context, event, comment),
+      );
+    });
   }
 }

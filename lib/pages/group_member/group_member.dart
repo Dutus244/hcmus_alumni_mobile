@@ -19,11 +19,9 @@ class GroupMember extends StatefulWidget {
 }
 
 class _GroupMemberState extends State<GroupMember> {
-  late int secondRoute;
-  late Group group;
-  late int route;
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
+  late Group group;
 
   @override
   void initState() {
@@ -57,42 +55,15 @@ class _GroupMemberState extends State<GroupMember> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       group = args["group"];
-      secondRoute = args["secondRoute"];
-      route = args["route"];
       GroupMemberController(context: context).handleGetAdmin(group.id, 0);
     }
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        if (route == 0) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/groupInfo",
-                (route) => false,
-            arguments: {
-              "group": group,
-              "secondRoute": secondRoute,
-            },
+    return BlocBuilder<GroupMemberBloc, GroupMemberState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: buildAppBar(context),
+            backgroundColor: AppColors.primaryBackground,
+            body: listMember(context, _scrollController, group),
           );
-        }
-        else {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            "/groupManagement",
-                (route) => false,
-            arguments: {
-              "group": group,
-              "secondRoute": secondRoute,
-            },
-          );
-        }
-      },
-      child: BlocBuilder<GroupMemberBloc, GroupMemberState>(
-          builder: (context, state) {
-        return Scaffold(
-          appBar: buildAppBar(context, group, secondRoute, route),
-          backgroundColor: AppColors.primaryBackground,
-          body: listMember(context, _scrollController, group, secondRoute),
-        );
-      }),
-    );
+        });
   }
 }

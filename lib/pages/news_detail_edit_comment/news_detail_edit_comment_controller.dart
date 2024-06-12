@@ -14,7 +14,7 @@ class NewsDetailEditCommentController {
 
   const NewsDetailEditCommentController({required this.context});
 
-  Future<void> handleEditComment(String id, String commentId, int route) async {
+  Future<void> handleEditComment(String id, String commentId) async {
     final state = context.read<NewsDetailEditCommentBloc>().state;
     String comment = state.comment;
 
@@ -37,14 +37,7 @@ class NewsDetailEditCommentController {
       var response = await http.put(url, headers: headers, body: body);
 
       if (response.statusCode == 200) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/newsDetail",
-              (route) => false,
-          arguments: {
-            "route": route,
-            "id": id,
-          },
-        );
+        Navigator.pop(context);
       } else {
         // Handle other status codes if needed
         toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa bình luận");

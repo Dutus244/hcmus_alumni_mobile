@@ -22,8 +22,6 @@ class _GroupDetailState extends State<GroupDetail> {
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
   late String id;
-  late int secondRoute;
-  var search = 0;
 
   @override
   void initState() {
@@ -51,44 +49,25 @@ class _GroupDetailState extends State<GroupDetail> {
     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       id = args["id"];
-      secondRoute = args["secondRoute"];
-      if (args["search"] != null) {
-        search = args["search"];
-      }
       GroupDetailController(context: context).handleGetGroup(id);
-      GroupDetailController(context: context).handleLoadPostData(id, 0);
     }
 
-    return PopScope(
-      canPop: false, // prevent back
-      onPopInvoked: (_) async {
-        if (search == 0) {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/applicationPage", (route) => false,
-              arguments: {"route": 3, "secondRoute": secondRoute});
-        }
-        else {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/groupSearch", (route) => false);
-        }
-      },
-      child: BlocBuilder<GroupDetailBloc, GroupDetailState>(
-          builder: (context, state) {
-            if (state.group != null && state.group!.privacy == "PRIVATE" && !state.group!.isJoined) {
-              return Scaffold(
-                appBar: buildAppBar(context, secondRoute, search),
+    return BlocBuilder<GroupDetailBloc, GroupDetailState>(
+        builder: (context, state) {
+          if (state.group != null && state.group!.privacy == "PRIVATE" && !state.group!.isJoined) {
+            return Scaffold(
+              appBar: buildAppBar(context),
+              backgroundColor: AppColors.primaryBackground,
+              body: groupPrivateNotJoined(context, state.group),
+            );
+          }
+          else {
+            return Scaffold(
+                appBar: buildAppBar(context),
                 backgroundColor: AppColors.primaryBackground,
-                body: groupPrivateNotJoined(context, state.group, secondRoute),
-              );
-            }
-            else {
-              return Scaffold(
-                appBar: buildAppBar(context, secondRoute, search),
-                backgroundColor: AppColors.primaryBackground,
-                body: group(context, _scrollController, state.group, secondRoute)
-              );
-            }
-          }),
-    );
+                body: group(context, _scrollController, state.group)
+            );
+          }
+        });
   }
 }

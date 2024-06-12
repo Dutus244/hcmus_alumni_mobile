@@ -176,14 +176,15 @@ class GroupPageController {
       var response = await http.post(url, headers: headers);
       if (response.statusCode == 201) {
         if (group.privacy == 'PUBLIC') {
-          Navigator.of(context).pushNamedAndRemoveUntil(
+          await Navigator.pushNamed(
+            context,
             "/groupDetail",
-                (route) => false,
             arguments: {
               "id": group.id,
-              "secondRoute": 1,
             },
           );
+          GroupPageController(context: context).handleLoadGroupDiscoverData(0);
+          GroupPageController(context: context).handleLoadGroupJoinedData(0);
         }
         else {
           GroupPageController(context: context).handleLoadGroupDiscoverData(0);

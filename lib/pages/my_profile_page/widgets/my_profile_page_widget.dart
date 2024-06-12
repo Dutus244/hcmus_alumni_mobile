@@ -20,7 +20,7 @@ import '../bloc/my_profile_page_states.dart';
 import '../bloc/my_profile_page_events.dart';
 import '../my_profile_page_controller.dart';
 
-AppBar buildAppBar(BuildContext context, int route) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -30,25 +30,8 @@ AppBar buildAppBar(BuildContext context, int route) {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage", (route) => false,
-                  arguments: {"route": route, "secondRoute": 0});
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Nguyễn Duy',
@@ -61,13 +44,7 @@ AppBar buildAppBar(BuildContext context, int route) {
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [
-
-              ],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -76,18 +53,18 @@ AppBar buildAppBar(BuildContext context, int route) {
   );
 }
 
-Widget myProfile(BuildContext context, int route) {
+Widget myProfile(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
-      header(context, route),
-      detail(context, route),
+      header(context),
+      detail(context),
     ],
   );
 }
 
-Widget header(BuildContext context, int route) {
+Widget header(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -99,7 +76,8 @@ Widget header(BuildContext context, int route) {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/groups/35765714-67c9-4852-8298-bc65ba6bf503/cover'),
+                  image: NetworkImage(
+                      'https://storage.googleapis.com/hcmus-alumverse/images/groups/35765714-67c9-4852-8298-bc65ba6bf503/cover'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -108,17 +86,20 @@ Widget header(BuildContext context, int route) {
             ),
             Positioned(
               left: 10.w,
-              bottom: 0.h, // Đẩy CircleAvatar xuống dưới một nửa chiều cao của nó để nó nằm ở mép
+              bottom: 0.h,
+              // Đẩy CircleAvatar xuống dưới một nửa chiều cao của nó để nó nằm ở mép
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/groups/35765714-67c9-4852-8298-bc65ba6bf503/cover'),
+                    image: NetworkImage(
+                        'https://storage.googleapis.com/hcmus-alumverse/images/groups/35765714-67c9-4852-8298-bc65ba6bf503/cover'),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(65.w),
                   border: Border.all(
                     color: Colors.white,
-                    width: 5.w, // Thay đổi giá trị width để làm cho viền dày hơn
+                    width:
+                        5.w, // Thay đổi giá trị width để làm cho viền dày hơn
                   ),
                 ),
                 height: 130.w,
@@ -162,7 +143,8 @@ Widget header(BuildContext context, int route) {
                 ),
               ),
               child: Container(
-                margin: EdgeInsets.only(left: 5.w, right: 5.w, top: 2.h, bottom: 2.h),
+                margin: EdgeInsets.only(
+                    left: 5.w, right: 5.w, top: 2.h, bottom: 2.h),
                 child: Text(
                   'Tài khoản chưa xác thực',
                   style: TextStyle(
@@ -206,9 +188,10 @@ Widget header(BuildContext context, int route) {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/myProfileEdit", (route) => false,
-                  arguments: {"route": route});
+              Navigator.pushNamed(
+                context,
+                "/myProfileEdit",
+              );
             },
             child: Container(
               margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
@@ -250,9 +233,10 @@ Widget header(BuildContext context, int route) {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/optionPage", (route) => false,
-                  arguments: {"route": route});
+              Navigator.pushNamed(
+                context,
+                "/optionPage",
+              );
             },
             child: Container(
               margin: EdgeInsets.only(right: 10.w, top: 10.h),
@@ -291,14 +275,14 @@ Widget header(BuildContext context, int route) {
   );
 }
 
-Widget detail(BuildContext context, int route) {
+Widget detail(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
       Container(
         margin: EdgeInsets.only(left: 10.w, top: 10.h),
-        child:  Text(
+        child: Text(
           'Chi tiết',
           style: TextStyle(
             fontFamily: AppFonts.Header2,
@@ -366,9 +350,10 @@ Widget detail(BuildContext context, int route) {
       ),
       GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              "/myProfileEdit", (route) => false,
-              arguments: {"route": route});
+          Navigator.pushNamed(
+            context,
+            "/myProfileEdit",
+          );
         },
         child: Container(
           margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
@@ -378,7 +363,8 @@ Widget detail(BuildContext context, int route) {
                 width: 17.w,
                 height: 17.h,
                 decoration: const BoxDecoration(
-                    image: DecorationImage(image: AssetImage("assets/icons/3dot.png"))),
+                    image: DecorationImage(
+                        image: AssetImage("assets/icons/3dot.png"))),
               ),
               Container(
                 width: 10.w,
@@ -413,7 +399,7 @@ Widget listFriend(BuildContext context) {
     children: [
       Container(
         margin: EdgeInsets.only(left: 10.w, top: 10.h),
-        child:  Text(
+        child: Text(
           'Bạn bè',
           style: TextStyle(
             fontFamily: AppFonts.Header2,
@@ -425,7 +411,7 @@ Widget listFriend(BuildContext context) {
       ),
       Container(
         margin: EdgeInsets.only(left: 10.w, top: 2.h),
-        child:  Text(
+        child: Text(
           '300 người bạn',
           style: TextStyle(
             fontFamily: AppFonts.Header3,
@@ -448,7 +434,8 @@ Widget listFriend(BuildContext context) {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.w),
                     image: DecorationImage(
-                      image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -481,7 +468,8 @@ Widget listFriend(BuildContext context) {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.w),
                     image: DecorationImage(
-                      image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -514,7 +502,8 @@ Widget listFriend(BuildContext context) {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.w),
                     image: DecorationImage(
-                      image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -555,7 +544,8 @@ Widget listFriend(BuildContext context) {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.w),
                     image: DecorationImage(
-                      image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -588,7 +578,8 @@ Widget listFriend(BuildContext context) {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.w),
                     image: DecorationImage(
-                      image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -621,7 +612,8 @@ Widget listFriend(BuildContext context) {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.w),
                     image: DecorationImage(
-                      image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -687,9 +679,9 @@ Widget buildButtonChooseNewsOrEvent(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color: BlocProvider.of<MyProfilePageBloc>(context)
-                        .state
-                        .page ==
-                        1
+                                .state
+                                .page ==
+                            1
                         ? AppColors.primaryElement
                         : AppColors.primaryBackground),
               ),
@@ -723,9 +715,9 @@ Widget buildButtonChooseNewsOrEvent(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color: BlocProvider.of<MyProfilePageBloc>(context)
-                        .state
-                        .page ==
-                        1
+                                .state
+                                .page ==
+                            1
                         ? AppColors.primaryBackground
                         : AppColors.primaryElement),
               ),
@@ -737,7 +729,7 @@ Widget buildButtonChooseNewsOrEvent(
   );
 }
 
-Widget listEvent(BuildContext context, ScrollController _scrollController, int route, String page) {
+Widget listEvent(BuildContext context, ScrollController _scrollController) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
@@ -745,15 +737,15 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
         child: ListView.builder(
           controller: _scrollController,
           itemCount:
-          BlocProvider.of<MyProfilePageBloc>(context).state.events.length +
-              1,
+              BlocProvider.of<MyProfilePageBloc>(context).state.events.length +
+                  1,
           itemBuilder: (BuildContext context, int index) {
             switch (
-            BlocProvider.of<MyProfilePageBloc>(context).state.statusEvent) {
+                BlocProvider.of<MyProfilePageBloc>(context).state.statusEvent) {
               case Status.loading:
                 return Column(
                   children: [
-                    myProfile(context, route),
+                    myProfile(context),
                     Container(
                       height: 10.h,
                     ),
@@ -773,7 +765,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
                     .isEmpty) {
                   return Column(
                     children: [
-                      myProfile(context, route),
+                      myProfile(context),
                       Container(
                         height: 10.h,
                       ),
@@ -785,17 +777,17 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
                       ),
                       Center(
                           child: Container(
-                            margin: EdgeInsets.only(top: 20.h),
-                            child: Text(
-                              'Không có dữ liệu',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
-                              ),
-                            ),
-                          )),
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text(
+                          'Không có dữ liệu',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header2,
+                          ),
+                        ),
+                      )),
                     ],
                   );
                 }
@@ -816,7 +808,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
                     // Create a custom widget to combine button and news item
                     return Column(
                       children: [
-                        myProfile(context, route),
+                        myProfile(context),
                         Container(
                           height: 10.h,
                         ),
@@ -830,7 +822,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
                             context,
                             BlocProvider.of<MyProfilePageBloc>(context)
                                 .state
-                                .events[index], route),
+                                .events[index]),
                       ],
                     );
                   } else {
@@ -838,7 +830,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
                         context,
                         BlocProvider.of<MyProfilePageBloc>(context)
                             .state
-                            .events[index], route);
+                            .events[index]);
                   }
                 }
             }
@@ -849,14 +841,13 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, int r
   );
 }
 
-Widget event(BuildContext context, Event event, int route) {
+Widget event(BuildContext context, Event event) {
   return GestureDetector(
     onTap: () {
-      // context.read<MyProfilePageBloc>().add(NewsEventPageResetEvent());
-      Navigator.of(context).pushNamedAndRemoveUntil(
+      Navigator.pushNamed(
+        context,
         "/eventDetail",
-            (route) => false,
-        arguments: {"route": route, "id": event.id, "profile": 1},
+        arguments: {"id": event.id},
       );
     },
     child: Container(
@@ -1126,7 +1117,7 @@ Widget event(BuildContext context, Event event, int route) {
   );
 }
 
-Widget listPosts(BuildContext context, ScrollController _scrollController, int route, String page) {
+Widget listPosts(BuildContext context, ScrollController _scrollController) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
@@ -1134,13 +1125,15 @@ Widget listPosts(BuildContext context, ScrollController _scrollController, int r
         child: ListView.builder(
           controller: _scrollController,
           itemCount:
-          BlocProvider.of<MyProfilePageBloc>(context).state.posts.length + 1,
+              BlocProvider.of<MyProfilePageBloc>(context).state.posts.length +
+                  1,
           itemBuilder: (BuildContext context, int index) {
-            switch (BlocProvider.of<MyProfilePageBloc>(context).state.statusPost) {
+            switch (
+                BlocProvider.of<MyProfilePageBloc>(context).state.statusPost) {
               case Status.loading:
                 return Column(
                   children: [
-                    myProfile(context, route),
+                    myProfile(context),
                     Container(
                       height: 10.h,
                     ),
@@ -1160,7 +1153,7 @@ Widget listPosts(BuildContext context, ScrollController _scrollController, int r
                     .isEmpty) {
                   return Column(
                     children: [
-                      myProfile(context, route),
+                      myProfile(context),
                       Container(
                         height: 10.h,
                       ),
@@ -1172,17 +1165,17 @@ Widget listPosts(BuildContext context, ScrollController _scrollController, int r
                       ),
                       Center(
                           child: Container(
-                            margin: EdgeInsets.only(top: 20.h),
-                            child: Text(
-                              'Không có bài viết',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
-                              ),
-                            ),
-                          )),
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text(
+                          'Không có bài viết',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header2,
+                          ),
+                        ),
+                      )),
                     ],
                   );
                 }
@@ -1203,7 +1196,7 @@ Widget listPosts(BuildContext context, ScrollController _scrollController, int r
                     // Create a custom widget to combine button and news item
                     return Column(
                       children: [
-                        myProfile(context, route),
+                        myProfile(context),
                         Container(
                           height: 10.h,
                         ),
@@ -1217,7 +1210,7 @@ Widget listPosts(BuildContext context, ScrollController _scrollController, int r
                             context,
                             BlocProvider.of<MyProfilePageBloc>(context)
                                 .state
-                                .posts[index], route, page),
+                                .posts[index]),
                       ],
                     );
                   } else {
@@ -1225,7 +1218,7 @@ Widget listPosts(BuildContext context, ScrollController _scrollController, int r
                         context,
                         BlocProvider.of<MyProfilePageBloc>(context)
                             .state
-                            .posts[index], route, page);
+                            .posts[index]);
                   }
                 }
             }
@@ -1236,7 +1229,7 @@ Widget listPosts(BuildContext context, ScrollController _scrollController, int r
   );
 }
 
-Widget postOption(BuildContext context, Post post, int route, String page) {
+Widget postOption(BuildContext context, Post post) {
   return Container(
     height: post.votes.length == 0 ? 90.h : 50.h,
     child: Stack(
@@ -1248,49 +1241,49 @@ Widget postOption(BuildContext context, Post post, int route, String page) {
             children: [
               if (post.votes.length == 0)
                 GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/editPostAdvise",
-                        (route) => false,
-                    arguments: {
-                      "route": route,
-                      "post": post,
-                      "profile": 1,
-                    },
-                  );
-                },
-                child: Container(
-                  margin: EdgeInsets.only(left: 10.w, top: 10.h),
-                  color: Colors.transparent,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/edit.svg",
-                        width: 14.w,
-                        height: 14.h,
-                        color: AppColors.primaryText,
-                      ),
-                      Container(
-                        width: 10.w,
-                      ),
-                      Text(
-                        'Chỉnh sửa bài viết',
-                        style: TextStyle(
-                          fontFamily: AppFonts.Header2,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
+                  onTap: () async {
+                    await Navigator.pushNamed(
+                      context,
+                      "/editPostAdvise",
+                      arguments: {
+                        "post": post,
+                      },
+                    );
+                    MyProfilePageController(context: context)
+                        .handleLoadPostData(0);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: 10.w, top: 10.h),
+                    color: Colors.transparent,
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icons/edit.svg",
+                          width: 14.w,
+                          height: 14.h,
                           color: AppColors.primaryText,
                         ),
-                      ),
-                    ],
+                        Container(
+                          width: 10.w,
+                        ),
+                        Text(
+                          'Chỉnh sửa bài viết',
+                          style: TextStyle(
+                            fontFamily: AppFonts.Header2,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryText,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
               GestureDetector(
                 onTap: () async {
                   bool shouldDelete =
-                  await MyProfilePageController(context: context)
-                      .handleDeletePost(post.id);
+                      await MyProfilePageController(context: context)
+                          .handleDeletePost(post.id);
                   if (shouldDelete) {
                     Navigator.pop(context); // Close the modal after deletion
                   }
@@ -1330,128 +1323,8 @@ Widget postOption(BuildContext context, Post post, int route, String page) {
   );
 }
 
-class ButtonOptionPost extends StatefulWidget {
-  final Post post;
 
-  const ButtonOptionPost(this.post, {Key? key}) : super(key: key);
-
-  @override
-  State<ButtonOptionPost> createState() => _ButtonOptionPostState();
-}
-
-class _ButtonOptionPostState extends State<ButtonOptionPost> {
-  @override
-  Widget build(BuildContext context) {
-    Post post = widget.post; // Accessing post from the widget instance
-    return GestureDetector(
-      onTap: () {
-        showPopover(
-          context: context,
-          bodyBuilder: (context) =>
-              BlocBuilder<MyProfilePageBloc, MyProfilePageState>(
-                builder: (context, state) {
-                  return Container(
-                    width: 130.w,
-                    height: 45.h,
-                    child: Container(
-                      margin: EdgeInsets.only(left: 5.w, right: 5.w),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: 5.h,
-                          ),
-                          if (post.permissions.edit)
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                  "/editPostAdvise",
-                                      (route) => false,
-                                  arguments: {
-                                    "route": 2,
-                                    "post": post,
-                                  },
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    "assets/icons/edit.svg",
-                                    width: 16.w,
-                                    height: 16.h,
-                                    color: AppColors.primarySecondaryText,
-                                  ),
-                                  Container(
-                                    width: 5.w,
-                                  ),
-                                  Text(
-                                    'Chỉnh sửa bài viết',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: AppFonts.Header2,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.sp,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          Container(
-                            height: 10.h,
-                          ),
-                          if (post.permissions.delete)
-                            GestureDetector(
-                              onTap: () {
-                                MyProfilePageController(context: context)
-                                    .handleDeletePost(post.id);
-                              },
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    "assets/icons/trash.svg",
-                                    width: 16.w,
-                                    height: 16.h,
-                                    color: AppColors.primarySecondaryText,
-                                  ),
-                                  Container(
-                                    width: 5.w,
-                                  ),
-                                  Text(
-                                    'Xoá bài viết',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: AppFonts.Header2,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.sp,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-          onPop: () {},
-          direction: PopoverDirection.bottom,
-          width: 170.w,
-          height: 60.h,
-        );
-      },
-      child: Container(
-        width: 17.w,
-        height: 17.h,
-        decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage("assets/icons/3dot.png"))),
-      ),
-    );
-  }
-}
-
-Widget post(BuildContext context, Post post, int route, String page) {
+Widget post(BuildContext context, Post post) {
   return Container(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1475,7 +1348,7 @@ Widget post(BuildContext context, Post post, int route, String page) {
                       radius: 10,
                       child: null,
                       backgroundImage:
-                      NetworkImage(post.creator.avatarUrl ?? ""),
+                          NetworkImage(post.creator.avatarUrl ?? ""),
                     )),
               ),
               Container(
@@ -1518,7 +1391,7 @@ Widget post(BuildContext context, Post post, int route, String page) {
                     showModalBottomSheet(
                       isScrollControlled: true,
                       context: context,
-                      builder: (ctx) => postOption(context, post, route, page),
+                      builder: (ctx) => postOption(context, post),
                     );
                   },
                   child: Container(
@@ -1618,9 +1491,11 @@ Widget post(BuildContext context, Post post, int route, String page) {
                                     .handleVote(post.id, post.votes[i].id);
                               } else {
                                 for (int j = 0; j < post.votes.length; j += 1) {
-                                  if (post.votes[j].name == post.voteSelectedOne) {
+                                  if (post.votes[j].name ==
+                                      post.voteSelectedOne) {
                                     MyProfilePageController(context: context)
-                                        .handleUpdateVote(post.id, post.votes[j].id, post.votes[i].id);
+                                        .handleUpdateVote(post.id,
+                                            post.votes[j].id, post.votes[i].id);
                                   }
                                 }
                               }
@@ -1643,15 +1518,12 @@ Widget post(BuildContext context, Post post, int route, String page) {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
+                        Navigator.pushNamed(
+                          context,
                           "/advisePageListVoters",
-                              (route) => false,
                           arguments: {
                             "vote": post.votes[i],
                             "post": post,
-                            "profile": 1,
-                            "route": route,
-                            "page": page,
                           },
                         );
                       },
@@ -1704,10 +1576,12 @@ Widget post(BuildContext context, Post post, int route, String page) {
                         if (Global.storageService.permissionCounselVote())
                           Checkbox(
                             checkColor: AppColors.primaryBackground,
-                            fillColor: MaterialStateProperty.resolveWith<Color?>(
-                                  (Set<MaterialState> states) {
+                            fillColor:
+                                MaterialStateProperty.resolveWith<Color?>(
+                              (Set<MaterialState> states) {
                                 if (states.contains(MaterialState.selected)) {
-                                  return AppColors.primaryElement; // Selected color
+                                  return AppColors
+                                      .primaryElement; // Selected color
                                 }
                                 return Colors.transparent; // Unselected color
                               },
@@ -1718,10 +1592,12 @@ Widget post(BuildContext context, Post post, int route, String page) {
                                     .handleVote(post.id, post.votes[i].id);
                               } else {
                                 MyProfilePageController(context: context)
-                                    .handleDeleteVote(post.id, post.votes[i].id);
+                                    .handleDeleteVote(
+                                        post.id, post.votes[i].id);
                               }
                             },
-                            value: post.voteSelectedMultiple.contains(post.votes[i].name),
+                            value: post.voteSelectedMultiple
+                                .contains(post.votes[i].name),
                           ),
                         Container(
                           width: 220.w,
@@ -1740,15 +1616,12 @@ Widget post(BuildContext context, Post post, int route, String page) {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
+                        Navigator.pushNamed(
+                          context,
                           "/advisePageListVoters",
-                              (route) => false,
                           arguments: {
                             "vote": post.votes[i],
                             "post": post,
-                            "profile": 1,
-                            "route": route,
-                            "page": page,
                           },
                         );
                       },
@@ -1780,10 +1653,7 @@ Widget post(BuildContext context, Post post, int route, String page) {
         if (post.votes.length > 0 && post.allowAddOptions)
           GestureDetector(
             onTap: () {
-              if (post
-                  .votes
-                  .length >=
-                  10) {
+              if (post.votes.length >= 10) {
                 toastInfo(msg: "Số lượng lựa chọn không được vượt quá 10");
                 return;
               }
@@ -1823,8 +1693,7 @@ Widget post(BuildContext context, Post post, int route, String page) {
                   String vote = result['vote'];
                   MyProfilePageController(context: context)
                       .handleAddVote(post.id, vote);
-                } else {
-                }
+                } else {}
               });
             },
             child: Container(
@@ -1871,13 +1740,11 @@ Widget post(BuildContext context, Post post, int route, String page) {
         if (post.pictures.length == 1)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostAdvise",
-                    (route) => false,
                 arguments: {
                   "post": post,
-                  "profile": 1,
-                  "route": route,
                 },
               );
             },
@@ -1897,13 +1764,11 @@ Widget post(BuildContext context, Post post, int route, String page) {
         if (post.pictures.length == 2)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostAdvise",
-                    (route) => false,
                 arguments: {
                   "post": post,
-                  "profile": 1,
-                  "route": route,
                 },
               );
             },
@@ -1940,13 +1805,11 @@ Widget post(BuildContext context, Post post, int route, String page) {
         if (post.pictures.length == 3)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostAdvise",
-                    (route) => false,
                 arguments: {
                   "post": post,
-                  "profile": 1,
-                  "route": route,
                 },
               );
             },
@@ -2000,13 +1863,11 @@ Widget post(BuildContext context, Post post, int route, String page) {
         if (post.pictures.length == 4)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostAdvise",
-                    (route) => false,
                 arguments: {
                   "post": post,
-                  "profile": 1,
-                  "route": route,
                 },
               );
             },
@@ -2078,13 +1939,11 @@ Widget post(BuildContext context, Post post, int route, String page) {
         if (post.pictures.length == 5)
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
+              Navigator.pushNamed(
+                context,
                 "/listPicturePostAdvise",
-                    (route) => false,
                 arguments: {
                   "post": post,
-                  "profile": 1,
-                  "route": route,
                 },
               );
             },
@@ -2145,7 +2004,7 @@ Widget post(BuildContext context, Post post, int route, String page) {
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image:
-                                  NetworkImage(post.pictures[3].pictureUrl),
+                                      NetworkImage(post.pictures[3].pictureUrl),
                                 ),
                               ),
                             ),
@@ -2191,13 +2050,11 @@ Widget post(BuildContext context, Post post, int route, String page) {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
+                  Navigator.pushNamed(
+                    context,
                     "/listInteractPostAdvise",
-                        (route) => false,
                     arguments: {
-                      "route": route,
                       "id": post.id,
-                      "profile": 1,
                     },
                   );
                 },
@@ -2228,13 +2085,11 @@ Widget post(BuildContext context, Post post, int route, String page) {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
+                  Navigator.pushNamed(
+                    context,
                     "/listCommentPostAdvise",
-                        (route) => false,
                     arguments: {
-                      "route": route,
                       "id": post.id,
-                      "profile": 1,
                     },
                   );
                 },
@@ -2254,7 +2109,8 @@ Widget post(BuildContext context, Post post, int route, String page) {
             ],
           ),
         ),
-        if (Global.storageService.permissionCounselReactionCreate() || Global.storageService.permissionCounselCommentCreate())
+        if (Global.storageService.permissionCounselReactionCreate() ||
+            Global.storageService.permissionCounselCommentCreate())
           Column(
             children: [
               Container(
@@ -2278,79 +2134,81 @@ Widget post(BuildContext context, Post post, int route, String page) {
                           },
                           child: post.isReacted
                               ? Container(
-                            margin: EdgeInsets.only(left: 40.w),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/like.svg",
-                                  width: 20.w,
-                                  height: 20.h,
-                                  color: AppColors.primaryElement,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Text(
-                                    'Thích',
-                                    style: TextStyle(
-                                      fontFamily: AppFonts.Header2,
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.normal,
-                                      color: AppColors.primaryElement,
-                                    ),
+                                  margin: EdgeInsets.only(left: 40.w),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/like.svg",
+                                        width: 20.w,
+                                        height: 20.h,
+                                        color: AppColors.primaryElement,
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.only(left: 5.w),
+                                        child: Text(
+                                          'Thích',
+                                          style: TextStyle(
+                                            fontFamily: AppFonts.Header2,
+                                            fontSize: 10.sp,
+                                            fontWeight: FontWeight.normal,
+                                            color: AppColors.primaryElement,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
+                                )
                               : Container(
-                            margin: EdgeInsets.only(left: 40.w),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/like.svg",
-                                  width: 20.w,
-                                  height: 20.h,
-                                  color: AppColors.primaryText,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Text(
-                                    'Thích',
-                                    style: TextStyle(
-                                      fontFamily: AppFonts.Header2,
-                                      fontSize: 10.sp,
-                                      fontWeight: FontWeight.normal,
-                                      color: AppColors.primaryText,
-                                    ),
+                                  margin: EdgeInsets.only(left: 40.w),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/like.svg",
+                                        width: 20.w,
+                                        height: 20.h,
+                                        color: AppColors.primaryText,
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.only(left: 5.w),
+                                        child: Text(
+                                          'Thích',
+                                          style: TextStyle(
+                                            fontFamily: AppFonts.Header2,
+                                            fontSize: 10.sp,
+                                            fontWeight: FontWeight.normal,
+                                            color: AppColors.primaryText,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
                         ),
                       ),
                     if (Global.storageService.permissionCounselCommentCreate())
                       Center(
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushNamedAndRemoveUntil(
+                            Navigator.pushNamed(
+                              context,
                               "/listCommentPostAdvise",
-                                  (route) => false,
                               arguments: {
-                                "route": route,
                                 "id": post.id,
-                                "profile": 1,
                               },
                             );
                           },
                           child: Container(
-                            margin: Global.storageService.permissionCounselReactionCreate() ? EdgeInsets.only(right: 40.w) : EdgeInsets.only(left: 40.w),
+                            margin: Global.storageService
+                                    .permissionCounselReactionCreate()
+                                ? EdgeInsets.only(right: 40.w)
+                                : EdgeInsets.only(left: 40.w),
                             child: Row(
                               children: [
                                 Container(
                                   height: 20.h,
                                   width: 20.w,
-                                  child: Image.asset('assets/icons/comment.png'),
+                                  child:
+                                      Image.asset('assets/icons/comment.png'),
                                 ),
                                 Container(
                                   padding: EdgeInsets.only(left: 5.w),

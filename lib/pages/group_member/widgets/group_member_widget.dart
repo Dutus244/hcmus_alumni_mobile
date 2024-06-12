@@ -13,7 +13,7 @@ import '../../../model/member.dart';
 import '../bloc/group_member_blocs.dart';
 import '../bloc/group_member_states.dart';
 
-AppBar buildAppBar(BuildContext context, Group group, int secondRoute, int route) {
+AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -23,42 +23,8 @@ AppBar buildAppBar(BuildContext context, Group group, int secondRoute, int route
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              if (route == 0) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/groupInfo",
-                      (route) => false,
-                  arguments: {
-                    "group": group,
-                    "secondRoute": secondRoute,
-                  },
-                );
-              }
-              else {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/groupManagement",
-                      (route) => false,
-                  arguments: {
-                    "group": group,
-                    "secondRoute": secondRoute,
-                  },
-                );
-              }
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 0.w),
-              child: SizedBox(
-                width: 25.w,
-                height: 25.h,
-                child: SvgPicture.asset(
-                  "assets/icons/back.svg",
-                  width: 25.w,
-                  height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ),
+          Container(
+            width: 5.w,
           ),
           Text(
             'Thành viên',
@@ -71,11 +37,7 @@ AppBar buildAppBar(BuildContext context, Group group, int secondRoute, int route
             ),
           ),
           Container(
-            width: 25.w,
-            color: Colors.transparent,
-            child: Row(
-              children: [],
-            ),
+            width: 60.w,
           )
         ],
       ),
@@ -85,7 +47,7 @@ AppBar buildAppBar(BuildContext context, Group group, int secondRoute, int route
 }
 
 Widget listMember(BuildContext context, ScrollController _scrollController,
-    Group group, int secondRoute) {
+    Group group) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [

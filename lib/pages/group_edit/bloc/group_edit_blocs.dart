@@ -10,6 +10,7 @@ class GroupEditBloc extends Bloc<GroupEditEvent, GroupEditState> {
     on<PrivacyEvent>(_privacyEvent);
     on<NetworkPictureEvent>(_networkPictureEvent);
     on<PicturesEvent>(_picturesEvent);
+    on<TagsEvent>(_tagsEvent);
     on<GroupEditResetEvent>(_groupEditResetEvent);
   }
 
@@ -32,6 +33,10 @@ class GroupEditBloc extends Bloc<GroupEditEvent, GroupEditState> {
 
   void _picturesEvent(PicturesEvent event, Emitter<GroupEditState> emit) {
     emit(state.copyWith(pictures: event.pictures));
+  }
+
+  void _tagsEvent(TagsEvent event, Emitter<GroupEditState> emit) {
+    emit(state.copyWith(tags: event.tags));
   }
 
   void _groupEditResetEvent(

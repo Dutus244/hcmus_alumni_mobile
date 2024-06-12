@@ -15,7 +15,7 @@ class EventDetailWriteCommentController {
 
   const EventDetailWriteCommentController({required this.context});
 
-  Future<void> handleLoadWriteComment(String id, int route, int profile) async {
+  Future<void> handleLoadWriteComment(String id) async {
     final state = context.read<EventDetailWriteCommentBloc>().state;
     String comment = state.comment;
     var apiUrl = dotenv.env['API_URL'];
@@ -31,15 +31,7 @@ class EventDetailWriteCommentController {
       var url = Uri.parse('$apiUrl$endpoint');
       var response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 201) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/eventDetail",
-          (route) => false,
-          arguments: {
-            "route": route,
-            "id": id,
-            "profile": profile,
-          },
-        );
+        Navigator.pop(context);
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];

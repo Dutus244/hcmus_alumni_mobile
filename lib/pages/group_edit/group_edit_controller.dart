@@ -15,7 +15,7 @@ class GroupEditController {
 
   const GroupEditController({required this.context});
 
-  Future<void> handleEditGroup(Group group, int secondRoute) async {
+  Future<void> handleEditGroup(Group group) async {
     final state = context.read<GroupEditBloc>().state;
     String name = state.name;
     String description = state.description;
@@ -57,14 +57,7 @@ class GroupEditController {
       // Convert the streamed response to a regular HTTP response
       var response = await http.Response.fromStream(streamedResponse);
       if (response.statusCode == 200) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          "/groupManagement",
-              (route) => false,
-          arguments: {
-            "group": group,
-            "secondRoute": secondRoute,
-          },
-        );
+        Navigator.pop(context);
       } else {
         toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa nhóm");
       }
