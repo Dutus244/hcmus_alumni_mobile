@@ -114,7 +114,6 @@ class MyProfilePageController {
       // Specify UTF-8 encoding for decoding response
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
-      print(responseBody);
       if (response.statusCode == 200) {
         // Convert the JSON string to a Map
         var jsonMap = json.decode(responseBody);
@@ -329,6 +328,41 @@ class MyProfilePageController {
     } catch (error) {
       // Handle errors
       toastInfo(msg: "Có lỗi xả ra khi cập nhật lựa chọn");
+    }
+  }
+
+  Future<void> handleAddVote(String id, String vote) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/counsel/$id/votes';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+
+    final map = <String, dynamic>{};
+    map['name'] = vote;
+    print(vote);
+
+    try {
+      var url = Uri.parse('$apiUrl$endpoint');
+
+      var response = await http.post(url, headers: headers, body: json.encode(map));
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 201) {
+        MyProfilePageController(context: context).handleLoadPostData(0);
+      } else {
+        // Handle other status codes if needed
+        toastInfo(msg: "Có lỗi xảy ra khi thêm lựa chọn");
+        return;
+      }
+    } catch (error) {
+      // Handle errors
+      toastInfo(msg: "Có lỗi xảy ra khi thêm lựa chọn");
+      return;
     }
   }
 }

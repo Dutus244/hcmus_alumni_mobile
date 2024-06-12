@@ -7,8 +7,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:popover/popover.dart';
 import '../../../common/function/handle_datetime.dart';
 import '../../../common/function/handle_participant_count.dart';
+import '../../../common/function/handle_percentage_vote.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/widgets/flutter_toast.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../model/group.dart';
 import '../../../model/post.dart';
@@ -1071,6 +1073,280 @@ Widget post(BuildContext context, Post post, Group group, int secondRoute) {
             ),
           ),
         ),
+        if (!post.allowMultipleVotes)
+          for (int i = 0; i < post.votes.length; i += 1)
+            Container(
+              width: 350.w,
+              height: 35.h,
+              margin: EdgeInsets.only(
+                  top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(10.w),
+                border: Border.all(
+                  color: AppColors.primaryFourthElementText,
+                ),
+              ),
+              child: Container(
+                margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Radio(
+                            value: post.votes[i].name,
+                            groupValue: post.voteSelectedOne,
+                            onChanged: (value) {
+                              if (post.voteSelectedOne == "") {
+                                GroupDetailController(context: context)
+                                    .handleVote(group.id, post.id, post.votes[i].id);
+                              } else {
+                                for (int j = 0; j < post.votes.length; j += 1) {
+                                  if (post.votes[j].name == post.voteSelectedOne) {
+                                    GroupDetailController(context: context)
+                                        .handleUpdateVote(group.id, post.id, post.votes[j].id, post.votes[i].id);
+                                  }
+                                }
+                              }
+                            },
+                          ),
+                        Container(
+                          width: 220.w,
+                          child: Text(
+                            post.votes[i].name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontFamily: AppFonts.Header2,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                color: AppColors.primarySecondaryText),
+                          ),
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          "/groupDetailListVoters",
+                              (route) => false,
+                          arguments: {
+                            "vote": post.votes[i],
+                            "post": post,
+                            "group": group,
+                            "secondRoute": secondRoute,
+                          },
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
+                            style: TextStyle(
+                                fontFamily: AppFonts.Header2,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                color: AppColors.primaryElement),
+                          ),
+                          Container(
+                            width: 5.w,
+                          ),
+                          SvgPicture.asset(
+                            "assets/icons/arrow_next.svg",
+                            height: 15.h,
+                            width: 15.w,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+        if (post.allowMultipleVotes)
+          for (int i = 0; i < post.votes.length; i += 1)
+            Container(
+              width: 350.w,
+              height: 35.h,
+              margin: EdgeInsets.only(
+                  top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(10.w),
+                border: Border.all(
+                  color: AppColors.primaryFourthElementText,
+                ),
+              ),
+              child: Container(
+                margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Checkbox(
+                            checkColor: AppColors.primaryBackground,
+                            fillColor: MaterialStateProperty.resolveWith<Color?>(
+                                  (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.selected)) {
+                                  return AppColors.primaryElement; // Selected color
+                                }
+                                return Colors.transparent; // Unselected color
+                              },
+                            ),
+                            onChanged: (value) {
+                              if (value! == true) {
+                                GroupDetailController(context: context)
+                                    .handleVote(group.id, post.id, post.votes[i].id);
+                              } else {
+                                GroupDetailController(context: context)
+                                    .handleDeleteVote(group.id, post.id, post.votes[i].id);
+                              }
+                            },
+                            value: post.voteSelectedMultiple.contains(post.votes[i].name),
+                          ),
+                        Container(
+                          width: 220.w,
+                          child: Text(
+                            post.votes[i].name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontFamily: AppFonts.Header2,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                color: AppColors.primarySecondaryText),
+                          ),
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          "/groupDetailListVoters",
+                              (route) => false,
+                          arguments: {
+                            "vote": post.votes[i],
+                            "post": post,
+                            "group": group,
+                            "secondRoute": secondRoute,
+                          },
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
+                            style: TextStyle(
+                                fontFamily: AppFonts.Header2,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                color: AppColors.primaryElement),
+                          ),
+                          Container(
+                            width: 5.w,
+                          ),
+                          SvgPicture.asset(
+                            "assets/icons/arrow_next.svg",
+                            height: 15.h,
+                            width: 15.w,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+        if (post.votes.length > 0 && post.allowAddOptions)
+          GestureDetector(
+            onTap: () {
+              if (post
+                  .votes
+                  .length >=
+                  10) {
+                toastInfo(msg: "Số lượng lựa chọn không được vượt quá 10");
+                return;
+              }
+              TextEditingController textController = TextEditingController();
+
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text('Thêm lựa chọn'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        controller: textController,
+                        decoration: InputDecoration(
+                          hintText: 'Thêm lựa chọn mới',
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: Text('Huỷ'),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, {
+                        'confirmed': true,
+                        'vote': textController.text,
+                      }),
+                      child: Text('Thêm'),
+                    ),
+                  ],
+                ),
+              ).then((result) {
+                if (result != null && result['confirmed'] == true) {
+                  String vote = result['vote'];
+                  GroupDetailController(context: context)
+                      .handleAddVote(group.id, post.id, vote);
+                } else {
+                }
+              });
+            },
+            child: Container(
+              width: 350.w,
+              height: 35.h,
+              margin: EdgeInsets.only(
+                  top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(10.w),
+                border: Border.all(
+                  color: AppColors.primaryFourthElementText,
+                ),
+              ),
+              child: Container(
+                margin: EdgeInsets.only(left: 10.w),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/add.svg",
+                      width: 14.w,
+                      height: 14.h,
+                      color: AppColors.primarySecondaryText,
+                    ),
+                    Container(
+                      width: 5.w,
+                    ),
+                    Text(
+                      'Thêm lựa chọn',
+                      style: TextStyle(
+                          fontFamily: AppFonts.Header2,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                          color: AppColors.primarySecondaryText),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         Container(
           height: 5.h,
         ),

@@ -23,6 +23,8 @@ import 'package:hcmus_alumni_mobile/pages/group_create/bloc/group_create_blocs.d
 import 'package:hcmus_alumni_mobile/pages/group_create/group_create.dart';
 import 'package:hcmus_alumni_mobile/pages/group_detail/bloc/group_detail_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/group_detail/group_detail.dart';
+import 'package:hcmus_alumni_mobile/pages/group_detail_list_voters/bloc/group_detail_list_voters_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/group_detail_list_voters/group_detail_list_voters.dart';
 import 'package:hcmus_alumni_mobile/pages/group_edit/bloc/group_edit_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/group_edit/group_edit.dart';
 import 'package:hcmus_alumni_mobile/pages/group_info/bloc/group_info_blocs.dart';
@@ -367,6 +369,12 @@ class AppPages {
       PageEntity(
           route: AppRoutes.LIST_PICTURE_POST_GROUP,
           page: const ListPicturePostGroup()),
+      PageEntity(
+          route: AppRoutes.GROUP_DETAIL_LIST_VOTERS,
+          page: const GroupDetailListVoters(),
+          bloc: BlocProvider(
+            create: (_) => GroupDetailListVotersBloc(),
+          )),
       PageEntity(
           route: AppRoutes.MY_PROFILE_EDIT,
           page: const MyProfileEdit(),

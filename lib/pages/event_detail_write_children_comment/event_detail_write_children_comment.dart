@@ -20,6 +20,11 @@ class EventDetailWriteChildrenComment extends StatefulWidget {
 
 class _EventDetailWriteChildrenCommentState
     extends State<EventDetailWriteChildrenComment> {
+  late Event event;
+  late Comment comment;
+  int route = 0;
+  int profile = 0;
+
   @override
   void initState() {
     super.initState();
@@ -28,19 +33,16 @@ class _EventDetailWriteChildrenCommentState
         .add(EventDetailWriteChildrenCommentResetEvent());
   }
 
-  late Event event;
-  late Comment comment;
-  late int route;
-
   @override
   Widget build(BuildContext context) {
-    var profile = 0;
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
-      route = args["route"];
       event = args["event"];
       comment = args["comment"];
+      if (args["route"]) {
+        route = args["route"];
+      }
       if (args["profile"] != null) {
         profile = args["profile"];
       }

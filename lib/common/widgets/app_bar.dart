@@ -71,7 +71,7 @@ AppBar buildAppBar(BuildContext context, String title, int route) {
                     onTap: () {
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           "/myProfilePage", (route) => false,
-                          arguments: {"route": route});
+                          arguments: {"page": "applicationPage", "route": route});
                     },
                     child: CircleAvatar(
                       radius: 10,

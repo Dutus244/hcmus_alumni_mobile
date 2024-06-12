@@ -20,10 +20,12 @@ class EventDetail extends StatefulWidget {
 }
 
 class _EventDetailState extends State<EventDetail> {
-  late String id;
   late PageController pageController; // Không khởi tạo ở đây
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
+  late String id;
+  int route = 0;
+  int profile = 0;
 
   @override
   void initState() {
@@ -50,18 +52,17 @@ class _EventDetailState extends State<EventDetail> {
 
   @override
   Widget build(BuildContext context) {
-    var profile = 0;
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    var route = 0;
     if (args != null) {
-      route = args["route"];
       id = args["id"];
+      if (args["route"] != null) {
+        route = args["route"];
+      }
       if (args["profile"] != null) {
         profile = args["profile"];
       }
       EventDetailController(context: context).handleGetEvent(id);
-      // EventDetailController(context: context).handleGetRelatedEvent();
       EventDetailController(context: context).handleGetComment(id, 0);
       EventDetailController(context: context).handleCheckIsParticipated(id);
       EventDetailController(context: context).handleGetParticipant(id, 0);
@@ -74,8 +75,7 @@ class _EventDetailState extends State<EventDetail> {
           Navigator.of(context).pushNamedAndRemoveUntil(
               "/applicationPage", (route) => false,
               arguments: {"route": route, "secondRoute": 1});
-        }
-        else {
+        } else {
           Navigator.of(context).pushNamedAndRemoveUntil(
               "/myProfilePage", (route) => false,
               arguments: {"route": route});
@@ -87,9 +87,12 @@ class _EventDetailState extends State<EventDetail> {
           appBar: buildAppBar(context, route, profile),
           backgroundColor: AppColors.primaryBackground,
           body: BlocProvider.of<EventDetailBloc>(context).state.page == 0
-              ? detail(context, BlocProvider.of<EventDetailBloc>(context)
-              .state
-              .event,_scrollController, route, profile)
+              ? detail(
+                  context,
+                  BlocProvider.of<EventDetailBloc>(context).state.event,
+                  _scrollController,
+                  route,
+                  profile)
               : listParticipant(context, _scrollController, route),
         );
       }),

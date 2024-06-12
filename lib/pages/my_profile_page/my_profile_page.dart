@@ -20,6 +20,7 @@ class MyProfilePage extends StatefulWidget {
 class _MyProfilePageState extends State<MyProfilePage> {
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
+  String page = '';
 
   @override
   void initState() {
@@ -56,14 +57,17 @@ class _MyProfilePageState extends State<MyProfilePage> {
     var route = 0;
     if (args != null) {
       route = args["route"];
+      page = args["page"];
     }
 
     return PopScope(
       canPop: false, // prevent back
       onPopInvoked: (_) async {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": route, "secondRoute": 0});
+        if (page == "applicationPage") {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              "/applicationPage", (route) => false,
+              arguments: {"route": route, "secondRoute": 0});
+        }
       },
       child: BlocBuilder<MyProfilePageBloc, MyProfilePageState>(
           builder: (context, state) {
@@ -71,8 +75,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
               appBar: buildAppBar(context, route),
               backgroundColor: AppColors.primaryBackground,
               body:  BlocProvider.of<MyProfilePageBloc>(context).state.page == 0
-                  ? listPosts(context, _scrollController, route)
-                  : listEvent(context, _scrollController, route),
+                  ? listPosts(context, _scrollController, route, page)
+                  : listEvent(context, _scrollController, route, page),
             );
           }),
     );

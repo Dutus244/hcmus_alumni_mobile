@@ -8,13 +8,14 @@ import '../../../common/function/handle_percentage_vote.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../model/group.dart';
 import '../../../model/post.dart';
 import '../../../model/vote.dart';
 import '../../../model/voter.dart';
-import '../bloc/advise_page_list_voters_blocs.dart';
-import '../bloc/advise_page_list_voters_states.dart';
+import '../bloc/group_detail_list_voters_blocs.dart';
+import '../bloc/group_detail_list_voters_states.dart';
 
-AppBar buildAppBar(BuildContext context, int profile, int route, String page) {
+AppBar buildAppBar(BuildContext context, Group group, int secondRoute) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
@@ -26,21 +27,14 @@ AppBar buildAppBar(BuildContext context, int profile, int route, String page) {
         children: [
           GestureDetector(
             onTap: () {
-              if (profile == 0) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  "/applicationPage",
-                      (route) => false,
-                  arguments: {
-                    "route": 2,
-                    "secondRoute": 0,
-                  },
-                );
-              }
-              else {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    "/myProfilePage", (route) => false,
-                    arguments: {"route": route, "page": page});
-              }
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/groupDetail",
+                    (route) => false,
+                arguments: {
+                  "id": group.id,
+                  "secondRoute": secondRoute,
+                },
+              );
             },
             child: Container(
               padding: EdgeInsets.only(left: 0.w),
@@ -89,9 +83,9 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
           child: ListView.builder(
             controller: _scrollController,
             itemCount:
-            BlocProvider.of<AdvisePageListVotersBloc>(context).state.voters.length + 1,
+            BlocProvider.of<GroupDetailListVotersBloc>(context).state.voters.length + 1,
             itemBuilder: (BuildContext context, int index) {
-              switch (BlocProvider.of<AdvisePageListVotersBloc>(context).state.statusVoter) {
+              switch (BlocProvider.of<GroupDetailListVotersBloc>(context).state.statusVoter) {
                 case Status.loading:
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +126,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                     ],
                   );
                 case Status.success:
-                  if (BlocProvider.of<AdvisePageListVotersBloc>(context)
+                  if (BlocProvider.of<GroupDetailListVotersBloc>(context)
                       .state
                       .voters
                       .isEmpty) {
@@ -188,11 +182,11 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                     );
                   }
                   if (index >=
-                      BlocProvider.of<AdvisePageListVotersBloc>(context)
+                      BlocProvider.of<GroupDetailListVotersBloc>(context)
                           .state
                           .voters
                           .length) {
-                    if (BlocProvider.of<AdvisePageListVotersBloc>(context)
+                    if (BlocProvider.of<GroupDetailListVotersBloc>(context)
                         .state
                         .hasReachedMaxVoter) {
                       return SizedBox();
@@ -242,7 +236,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                           ),
                           voter(
                               context,
-                              BlocProvider.of<AdvisePageListVotersBloc>(context)
+                              BlocProvider.of<GroupDetailListVotersBloc>(context)
                                   .state
                                   .voters[index]),
                         ],
@@ -250,7 +244,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                     } else {
                       return voter(
                           context,
-                          BlocProvider.of<AdvisePageListVotersBloc>(context)
+                          BlocProvider.of<GroupDetailListVotersBloc>(context)
                               .state
                               .voters[index]);
                     }

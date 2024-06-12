@@ -19,21 +19,24 @@ class EditPostAdvise extends StatefulWidget {
 
 class _EditPostAdviseState extends State<EditPostAdvise> {
   late Post post;
+  int route = 0;
+  int profile = 0;
+  String page = "";
 
   @override
   Widget build(BuildContext context) {
-    var route;
-    var profile = 0;
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
-      route = args["route"];
       post = args["post"];
+      if (args["route"] != null) {
+        route = args["route"];
+      }
       if (args["profile"] != null) {
         profile = args["profile"];
       }
-      if (profile == 1) {
-        route = args["route"];
+      if (args["page"] != null) {
+        page = args["page"];
       }
       // Now you can use the passedValue in your widget
       context
@@ -63,7 +66,7 @@ class _EditPostAdviseState extends State<EditPostAdvise> {
             else {
               Navigator.of(context).pushNamedAndRemoveUntil(
                   "/myProfilePage", (route) => false,
-                  arguments: {"route": route});
+                  arguments: {"page": page, "route": route});
             }
           } else {
             context.read<EditPostAdviseBloc>().add(PageEvent(0));
@@ -72,10 +75,10 @@ class _EditPostAdviseState extends State<EditPostAdvise> {
         child: BlocBuilder<EditPostAdviseBloc, EditPostAdviseState>(
             builder: (context, state) {
           return Scaffold(
-              appBar: buildAppBar(context, route, post.id, profile),
+              appBar: buildAppBar(context, route, post.id, profile, page),
               backgroundColor: AppColors.primaryBackground,
               body: BlocProvider.of<EditPostAdviseBloc>(context).state.page == 0
-                  ? writePost(context, route, post.id)
+                  ? writePost(context, route, post.id, profile, page)
                   : editPicture(context, route));
         }));
   }
