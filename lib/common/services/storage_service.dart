@@ -50,6 +50,10 @@ class StorageService {
     return _prefs.getString(AppConstants.STORAGE_USER_AVATAR_URL) ?? '';
   }
 
+  String getUserId() {
+    return _prefs.getString(AppConstants.STORAGE_USER_ID) ?? '';
+  }
+
   // Permission
   bool permissionNewsCommentCreate() {
     return _prefs.getBool(Permissions.NEWS_COMMENT_CREATE) ?? false;

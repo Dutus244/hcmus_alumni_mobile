@@ -127,7 +127,7 @@ class SignInController {
         handleSavePermission(permissions);
         toastInfo(msg: "Đăng nhập thành công");
         Navigator.of(context)
-            .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
+            .pushNamedAndRemoveUntil("/applicationPage", (route) => false, arguments: {"route": 0});
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
@@ -169,7 +169,7 @@ class SignInController {
         handleSavePermission(permissions);
         toastInfo(msg: "Đăng nhập thành công");
         Navigator.of(context)
-            .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
+            .pushNamedAndRemoveUntil("/applicationPage", (route) => false, arguments: {"route": 0});
       } else {
         toastInfo(msg: "Email hoặc mật khẩu bị sai");
       }

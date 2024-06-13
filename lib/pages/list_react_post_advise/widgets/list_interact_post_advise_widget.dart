@@ -8,6 +8,7 @@ import 'package:hcmus_alumni_mobile/pages/list_react_post_advise/bloc/list_inter
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../../../model/interact.dart';
 import '../bloc/list_interact_post_advise_states.dart';
 
@@ -120,9 +121,23 @@ Widget listInteract(BuildContext context, ScrollController _scrollController) {
 
 Widget interact(BuildContext context, Interact interact) {
   return GestureDetector(
-    onTap: () {},
+    onTap: () {
+      if (interact.creator.id ==
+          Global.storageService.getUserId()) {
+        Navigator.pushNamed(
+          context,
+          "/myProfilePage",
+        );
+      } else {
+        Navigator.pushNamed(context, "/otherProfilePage",
+            arguments: {
+              "id": interact.creator.id,
+            });
+      }
+    },
     child: Container(
       margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
+      color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

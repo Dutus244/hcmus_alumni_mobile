@@ -443,6 +443,18 @@ Widget buildCommentWidget(
                 margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 child: GestureDetector(
                     onTap: () {
+                      if (comment.creator.id ==
+                          Global.storageService.getUserId()) {
+                        Navigator.pushNamed(
+                          context,
+                          "/myProfilePage",
+                        );
+                      } else {
+                        Navigator.pushNamed(context, "/otherProfilePage",
+                            arguments: {
+                              "id": comment.creator.id,
+                            });
+                      }
                       // Xử lý khi người dùng tap vào hình ảnh
                     },
                     child: CircleAvatar(

@@ -9,6 +9,7 @@ import 'package:hcmus_alumni_mobile/pages/group_member/group_member_controller.d
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../../../model/member.dart';
 import '../bloc/group_member_blocs.dart';
 import '../bloc/group_member_states.dart';
@@ -214,7 +215,20 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
 
 Widget member(BuildContext context, Member member, Group group) {
   return GestureDetector(
-    onTap: () {},
+    onTap: () {
+      if (member.participant.id ==
+          Global.storageService.getUserId()) {
+        Navigator.pushNamed(
+          context,
+          "/myProfilePage",
+        );
+      } else {
+        Navigator.pushNamed(context, "/otherProfilePage",
+            arguments: {
+              "id": member.participant.id,
+            });
+      }
+    },
     child: Container(
       margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
       color: Colors.transparent,

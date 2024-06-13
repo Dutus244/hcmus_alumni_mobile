@@ -11,6 +11,7 @@ import 'package:hcmus_alumni_mobile/pages/alumni_verification/alumni_verificatio
 import 'package:hcmus_alumni_mobile/pages/alumni_verification/bloc/alumni_verification_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/application_page/application_page.dart';
 import 'package:hcmus_alumni_mobile/pages/application_page/bloc/application_page_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/change_password/bloc/change_password_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/change_password_forgot/bloc/change_password_forgot_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/change_password_forgot/change_password_forgot.dart';
 import 'package:hcmus_alumni_mobile/pages/edit_post_advise/bloc/edit_post_advise_blocs.dart';
@@ -70,18 +71,22 @@ import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/bloc/news_de
 import 'package:hcmus_alumni_mobile/pages/news_detail_write_comment/news_detail_write_comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/news_event_page.dart';
+import 'package:hcmus_alumni_mobile/pages/notification_page/bloc/notification_page_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/notification_page/notification_page.dart';
 import 'package:hcmus_alumni_mobile/pages/option_page/option_page.dart';
 import 'package:hcmus_alumni_mobile/pages/other_profile_detail/other_profile_detail.dart';
 import 'package:hcmus_alumni_mobile/pages/other_profile_page/bloc/other_profile_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/other_profile_page/other_profile_page.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
+import 'package:hcmus_alumni_mobile/pages/terms_of_service/term_of_service.dart';
 import 'package:hcmus_alumni_mobile/pages/welcome/bloc/welcome_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/welcome/welcome.dart';
 import 'package:hcmus_alumni_mobile/pages/write_post_advise/write_post_advise.dart';
 import 'package:hcmus_alumni_mobile/pages/write_post_group/bloc/write_post_group_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/write_post_group/write_post_group.dart';
 
+import '../../pages/change_password/change_password.dart';
 import '../../pages/edit_post_advise/edit_post_advise.dart';
 import '../../pages/edit_post_group/bloc/edit_post_group_blocs.dart';
 import '../../pages/edit_post_group/edit_post_group.dart';
@@ -206,6 +211,12 @@ class AppPages {
           page: const OtherProfilePage(),
           bloc: BlocProvider(
             create: (_) => OtherProfilePageBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.NOTIFICATION_PAGE,
+          page: const NotificationPage(),
+          bloc: BlocProvider(
+            create: (_) => NotificationPageBloc(),
           )),
       PageEntity(
           route: AppRoutes.NEWS_DETAIL,
@@ -405,6 +416,15 @@ class AppPages {
       PageEntity(
           route: AppRoutes.OPTION_PAGE,
           page: const OptionPage()),
+      PageEntity(
+          route: AppRoutes.CHANGE_PASSWORD,
+          page: const ChangePassword(),
+          bloc: BlocProvider(
+            create: (_) => ChangePasswordBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.TERM_OF_SERVICE,
+          page: const TermOfService()),
     ];
   }
 

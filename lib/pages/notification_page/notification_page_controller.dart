@@ -18,7 +18,7 @@ class NotificationPageController {
 
   const NotificationPageController({required this.context});
 
-  Future<void> handleLoadEventsData(int page) async {
+  Future<void> handleLoadNotificationsData(int page) async {
     if (page == 0) {
       context.read<NotificationPageBloc>().add(HasReachedMaxNotificationEvent(false));
       context.read<NotificationPageBloc>().add(IndexNotificationEvent(1));
@@ -32,8 +32,8 @@ class NotificationPageController {
           BlocProvider.of<NotificationPageBloc>(context).state.indexNotification + 1));
     }
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/events';
-    var pageSize = 5;
+    var endpoint = '/notifications';
+    var pageSize = 10;
     var token = Global.storageService.getUserAuthToken();
 
     var headers = <String, String>{

@@ -80,7 +80,7 @@ class _AdvisePageState extends State<AdvisePage> {
       child: BlocBuilder<AdvisePageBloc, AdvisePageState>(
           builder: (context, state) {
         return Scaffold(
-          appBar: buildAppBar(context, 'Tư vấn & Cố vấn', 2),
+          appBar: buildAppBar(context, 'Tư vấn & Cố vấn'),
           backgroundColor: AppColors.primaryBackground,
           body: listPost(context, _scrollController),
         );

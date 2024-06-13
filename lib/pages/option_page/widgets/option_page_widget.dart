@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../common/values/colors.dart';
+import '../../../common/values/constants.dart';
 import '../../../common/values/fonts.dart';
+import '../../../global.dart';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
@@ -65,7 +67,9 @@ Widget optionPage(BuildContext context) {
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/changePassword');
+            },
             child: Container(
               color: Colors.transparent,
               margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
@@ -219,7 +223,9 @@ Widget optionPage(BuildContext context) {
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/termOfService');
+            },
             child: Container(
               color: Colors.transparent,
               margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
@@ -259,7 +265,20 @@ Widget optionPage(BuildContext context) {
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Global.storageService
+                  .setString(AppConstants.STORAGE_USER_AUTH_TOKEN, '');
+              Global.storageService
+                  .setBool(AppConstants.STORAGE_USER_IS_LOGGED_IN, false);
+              Global.storageService
+                  .setBool(AppConstants.STORAGE_USER_REMEMBER_LOGIN, false);
+              Global.storageService
+                  .setString(AppConstants.STORAGE_USER_EMAIL, '');
+              Global.storageService
+                  .setString(AppConstants.STORAGE_USER_PASSWORD, '');
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil("/signIn", (route) => false);
+            },
             child: Container(
               color: Colors.transparent,
               margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),

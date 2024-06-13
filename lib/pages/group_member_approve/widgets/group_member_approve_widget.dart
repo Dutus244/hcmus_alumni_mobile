@@ -9,6 +9,7 @@ import 'package:hcmus_alumni_mobile/pages/group_member_approve/group_member_appr
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../../../model/group.dart';
 import '../bloc/group_member_approve_blocs.dart';
 import '../bloc/group_member_approve_states.dart';
@@ -133,7 +134,20 @@ Widget listRequest(
 
 Widget request(BuildContext context, RequestGroup request, String groupId) {
   return GestureDetector(
-    onTap: () {},
+    onTap: () {
+      if (request.participant.id ==
+          Global.storageService.getUserId()) {
+        Navigator.pushNamed(
+          context,
+          "/myProfilePage",
+        );
+      } else {
+        Navigator.pushNamed(context, "/otherProfilePage",
+            arguments: {
+              "id": request.participant.id,
+            });
+      }
+    },
     child: Container(
       margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
       color: Colors.transparent,

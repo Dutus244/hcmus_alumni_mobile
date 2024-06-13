@@ -9,6 +9,7 @@ import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../../../model/comment.dart';
 import '../../../model/creator.dart';
 import '../bloc/list_comment_post_group_blocs.dart';
@@ -150,6 +151,18 @@ Widget buildCommentWidget(
                 child: GestureDetector(
                     onTap: () {
                       // Xử lý khi người dùng tap vào hình ảnh
+                      if (comment.creator.id ==
+                          Global.storageService.getUserId()) {
+                        Navigator.pushNamed(
+                          context,
+                          "/myProfilePage",
+                        );
+                      } else {
+                        Navigator.pushNamed(context, "/otherProfilePage",
+                            arguments: {
+                              "id": comment.creator.id,
+                            });
+                      }
                     },
                     child: CircleAvatar(
                       radius: 10,
