@@ -276,7 +276,21 @@ Widget post(BuildContext context, Post post) {
                 margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 child: GestureDetector(
                     onTap: () {
-                      // Xử lý khi người dùng tap vào hình ảnh
+                      if (post.creator.id == Global.storageService.getUserId()) {
+                        Navigator.pushNamed(
+                          context,
+                          "/myProfilePage",
+                        );
+                      }
+                      else {
+                        Navigator.pushNamed(
+                          context,
+                          "/otherProfilePage",
+                          arguments: {
+                            "id": post.creator.id,
+                          }
+                        );
+                      }
                     },
                     child: CircleAvatar(
                       radius: 10,

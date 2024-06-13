@@ -8,7 +8,7 @@ class User {
   final String sex;
   final String dob;
   final String socialLink;
-  final Faculty faculty;
+  final Faculty? faculty;
   final String degree;
   final String aboutMe;
   final String avatarUrl;
@@ -29,16 +29,16 @@ class User {
       this.coverUrl);
 
   User.fromJson(Map<String, dynamic> json)
-      : id = json["id"]["voteId"],
-        email = json["email"],
-        fullName = json["fullName"],
-        phone = json["phone"],
-        sex = json["sex"],
-        dob = json["dob"],
-        socialLink = json["socialLink"],
+      : id = json["id"] ?? "",
+        email = json["email"] ?? "",
+        fullName = json["fullName"] ?? "",
+        phone = json["phone"] ?? "",
+        sex = json["sex"] ?? "",
+        dob = json["dob"] ?? "",
+        socialLink = json["socialLink"] ?? "",
         faculty = Faculty.fromJson(json["faculty"]),
-        degree = json["degree"],
-        aboutMe = json["aboutMe"],
-        avatarUrl = json["avatarUrl"],
-        coverUrl = json["coverUrl"];
+        degree = json["degree"] ?? "",
+        aboutMe = json["aboutMe"] ?? "",
+        avatarUrl = json["avatarUrl"] ?? "",
+        coverUrl = json["coverUrl"] ?? "";
 }

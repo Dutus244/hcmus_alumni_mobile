@@ -17,6 +17,8 @@ class AppRoutes {
   static const GROUP_PAGE = "/groupPage";
   static const MY_PROFILE_PAGE = "/myProfilePage";
   static const OTHER_PROFILE_PAGE = "/otherProfilePage";
+  static const NOTIFICATION_PAGE = "/notificationPage";
+  static const FRIEND_PAGE = "/friendPage";
 
   static const NEWS_DETAIL = "/newsDetail";
   static const NEWS_DETAIL_WRITE_COMMENT = "/newsDetailWriteComment";
@@ -60,4 +62,5 @@ class AppRoutes {
 
   static const OPTION_PAGE = "/optionPage";
   static const CHANGE_PASSWORD = "/changePassword";
+  static const TERM_OF_SERVICE = "/termOfService";
 }

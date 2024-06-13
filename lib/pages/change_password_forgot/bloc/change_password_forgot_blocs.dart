@@ -8,7 +8,7 @@ class ChangePasswordForgotBloc
   ChangePasswordForgotBloc() : super(ChangePasswordForgotState()) {
     on<PasswordEvent>(_passwordEvent);
     on<RePasswordEvent>(_rePasswordEvent);
-    on<ChangePasswordForgotResetEvent>(_registerResetEvent);
+    on<ChangePasswordForgotResetEvent>(_changePasswordForgotResetEvent);
   }
 
   void _passwordEvent(
@@ -21,7 +21,7 @@ class ChangePasswordForgotBloc
     emit(state.copyWith(rePassword: event.rePassword));
   }
 
-  void _registerResetEvent(ChangePasswordForgotResetEvent event,
+  void _changePasswordForgotResetEvent(ChangePasswordForgotResetEvent event,
       Emitter<ChangePasswordForgotState> emit) {
     emit(ChangePasswordForgotState()); // Reset the state to its initial state
   }

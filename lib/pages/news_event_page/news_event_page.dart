@@ -85,7 +85,7 @@ class _NewsEventPageState extends State<NewsEventPage> {
           builder: (context, state) {
         return Container(
           child: Scaffold(
-            appBar: buildAppBar(context, 'Tin tức & Sự kiện', 1),
+            appBar: buildAppBar(context, 'Tin tức & Sự kiện'),
             backgroundColor: AppColors.primaryBackground,
             body: BlocProvider.of<NewsEventPageBloc>(context).state.page == 0
                 ? listNews(context, _scrollController)

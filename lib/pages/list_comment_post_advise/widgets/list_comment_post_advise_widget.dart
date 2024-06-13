@@ -152,6 +152,18 @@ Widget buildCommentWidget(
                 child: GestureDetector(
                     onTap: () {
                       // Xử lý khi người dùng tap vào hình ảnh
+                      if (comment.creator.id ==
+                          Global.storageService.getUserId()) {
+                        Navigator.pushNamed(
+                          context,
+                          "/myProfilePage",
+                        );
+                      } else {
+                        Navigator.pushNamed(context, "/otherProfilePage",
+                            arguments: {
+                              "id": comment.creator.id,
+                            });
+                      }
                     },
                     child: CircleAvatar(
                       radius: 10,
@@ -334,7 +346,8 @@ Widget buildCommentWidget(
               ],
             ),
           ),
-        if (index > 1 && (comment.permissions.edit || comment.permissions.delete))
+        if (index > 1 &&
+            (comment.permissions.edit || comment.permissions.delete))
           Container(
             margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
             child: Row(
@@ -474,9 +487,7 @@ Widget buildTextFieldContent1(BuildContext context, String hintText,
 Widget buildTextFieldContent2(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
   TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<ListCommentPostAdviseBloc>(context)
-          .state
-          .content);
+      text: BlocProvider.of<ListCommentPostAdviseBloc>(context).state.content);
 
   return Container(
       width: 300.w,
@@ -544,7 +555,9 @@ Widget navigation(BuildContext context, String content, Comment? comment,
               children: [
                 buildTextFieldContent1(
                     context, 'Bình luận của bạn', 'comment', '', (value) {
-                  context.read<ListCommentPostAdviseBloc>().add(ContentEvent(value));
+                  context
+                      .read<ListCommentPostAdviseBloc>()
+                      .add(ContentEvent(value));
                 }),
                 GestureDetector(
                   onTap: () {
@@ -631,7 +644,9 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                   children: [
                     buildTextFieldContent2(
                         context, 'Bình luận của bạn', 'comment', '', (value) {
-                      context.read<ListCommentPostAdviseBloc>().add(ContentEvent(value));
+                      context
+                          .read<ListCommentPostAdviseBloc>()
+                          .add(ContentEvent(value));
                     }),
                     GestureDetector(
                       onTap: () {
@@ -714,7 +729,9 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                   children: [
                     buildTextFieldContent2(
                         context, 'Bình luận của bạn', 'comment', '', (value) {
-                      context.read<ListCommentPostAdviseBloc>().add(ContentEvent(value));
+                      context
+                          .read<ListCommentPostAdviseBloc>()
+                          .add(ContentEvent(value));
                     }),
                     GestureDetector(
                       onTap: BlocProvider.of<ListCommentPostAdviseBloc>(context)

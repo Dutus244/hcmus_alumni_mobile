@@ -8,6 +8,7 @@ import '../../../common/function/handle_percentage_vote.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../../../model/group.dart';
 import '../../../model/post.dart';
 import '../../../model/vote.dart';
@@ -237,7 +238,20 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
 
 Widget voter(BuildContext context, Voter voter) {
   return GestureDetector(
-    onTap: () {},
+    onTap: () {
+      if (voter.participant.id ==
+          Global.storageService.getUserId()) {
+        Navigator.pushNamed(
+          context,
+          "/myProfilePage",
+        );
+      } else {
+        Navigator.pushNamed(context, "/otherProfilePage",
+            arguments: {
+              "id": voter.participant.id,
+            });
+      }
+    },
     child: Container(
       margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
       color: Colors.transparent,

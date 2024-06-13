@@ -6,7 +6,7 @@ import '../../global.dart';
 import '../values/colors.dart';
 import '../values/fonts.dart';
 
-AppBar buildAppBar(BuildContext context, String title, int route) {
+AppBar buildAppBar(BuildContext context, String title) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
     title: Container(
