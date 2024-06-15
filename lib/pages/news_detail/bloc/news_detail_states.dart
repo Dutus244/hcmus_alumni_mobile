@@ -1,5 +1,4 @@
 import 'package:hcmus_alumni_mobile/model/comment.dart';
-import 'package:hcmus_alumni_mobile/model/creator.dart';
 import 'package:hcmus_alumni_mobile/model/faculty.dart';
 import 'package:hcmus_alumni_mobile/model/status.dart';
 

@@ -11,7 +11,8 @@ import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
 import '../../../model/comment.dart';
-import '../../../model/creator.dart';
+import '../../../model/faculty.dart';
+import '../../../model/user.dart';
 import '../bloc/list_comment_post_group_blocs.dart';
 import '../bloc/list_comment_post_group_events.dart';
 import '../bloc/list_comment_post_group_states.dart';
@@ -560,7 +561,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                             .read<ListCommentPostGroupBloc>()
                             .add(ContentEvent(''));
                         context.read<ListCommentPostGroupBloc>().add(
-                            ChildrenEvent(Comment('', Creator('', '', ''), '',
+                            ChildrenEvent(Comment('', User('', '', '', '', '', '', '', Faculty(0,''), '', '', '', ''), '',
                                 0, '', '', Permissions(false, false))));
                       },
                       child: Text(
@@ -643,7 +644,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                             .read<ListCommentPostGroupBloc>()
                             .add(ContentEvent(''));
                         context.read<ListCommentPostGroupBloc>().add(
-                            ChildrenEvent(Comment('', Creator('', '', ''), '',
+                            ChildrenEvent(Comment('', User('', '', '', '', '', '', '', Faculty(0,''), '', '', '', ''), '',
                                 0, '', '', Permissions(false, false))));
                       },
                       child: Text(

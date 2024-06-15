@@ -11,37 +11,26 @@ import '../../../common/widgets/loading_widget.dart';
 import '../../../model/event.dart';
 import '../bloc/other_profile_page_blocs.dart';
 import '../bloc/other_profile_page_states.dart';
+import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
-    title: Container(
-      height: 40.h,
-      margin: EdgeInsets.only(left: 0.w, right: 0.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 5.w,
+    flexibleSpace: Center(
+      child: Container(
+        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        child: Text(
+          'Nguyễn Duy',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: AppFonts.Header0,
+            fontWeight: FontWeight.bold,
+            fontSize: 16.sp,
+            color: AppColors.secondaryHeader,
           ),
-          Text(
-            'Nguyễn Duy',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: AppFonts.Header0,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
-              color: AppColors.secondaryHeader,
-            ),
-          ),
-          Container(
-            width: 60.w,
-          )
-        ],
+        ),
       ),
     ),
-    centerTitle: true, // Đặt tiêu đề vào giữa
   );
 }
 
@@ -52,6 +41,295 @@ Widget myProfile(BuildContext context) {
     children: [
       header(context),
       detail(context),
+      listFriend(context),
+    ],
+  );
+}
+
+Widget listFriend(BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Container(
+        margin: EdgeInsets.only(left: 10.w, top: 10.h),
+        child: Text(
+          'Bạn bè',
+          style: TextStyle(
+            fontFamily: AppFonts.Header2,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primaryText,
+          ),
+        ),
+      ),
+      Container(
+        margin: EdgeInsets.only(left: 10.w, top: 2.h),
+        child: Text(
+          '300 người bạn',
+          style: TextStyle(
+            fontFamily: AppFonts.Header3,
+            fontSize: 12.sp,
+            fontWeight: FontWeight.normal,
+            color: AppColors.primarySecondaryText,
+          ),
+        ),
+      ),
+      Container(
+        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.w),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  height: 90.h,
+                  width: 90.h,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  width: 110.w,
+                  height: 30.h,
+                  child: Text(
+                    'Phạm Huỳnh Bảo Anh',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header2,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.w),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  height: 90.h,
+                  width: 90.h,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  width: 110.w,
+                  height: 30.h,
+                  child: Text(
+                    'Phạm Huỳnh Bảo Anh',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header2,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.w),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  height: 90.h,
+                  width: 90.h,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  width: 110.w,
+                  height: 30.h,
+                  child: Text(
+                    'Phạm Huỳnh Bảo Anh',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header2,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+      Container(
+        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.w),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  height: 90.h,
+                  width: 90.h,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  width: 110.w,
+                  height: 30.h,
+                  child: Text(
+                    'Phạm Huỳnh Bảo Anh',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header2,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.w),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  height: 90.h,
+                  width: 90.h,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  width: 110.w,
+                  height: 30.h,
+                  child: Text(
+                    'Phạm Huỳnh Bảo Anh',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header2,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.w),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  height: 90.h,
+                  width: 90.h,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  width: 110.w,
+                  height: 30.h,
+                  child: Text(
+                    'Phạm Huỳnh Bảo Anh',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header2,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryText,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+      GestureDetector(
+        onTap: () async {
+
+        },
+        child: Container(
+            width: 340.w,
+            height: 40.h,
+            margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.w),
+              color: Color.fromARGB(255, 230, 230, 230),
+              border: Border.all(
+                color: Colors.transparent,
+              ),
+            ),
+            child: Container(
+                height: 20.h,
+                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
+                child: Center(
+                  child: Text(
+                    'Xem tất cả bạn bè',
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header2,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ))),
+      ),
+      Container(
+        margin: EdgeInsets.only(top: 10.h),
+        height: 3.h,
+        color: AppColors.primarySecondaryElement,
+      ),
     ],
   );
 }
@@ -441,251 +719,6 @@ Widget detail(BuildContext context) {
         margin: EdgeInsets.only(top: 10.h),
         height: 3.h,
         color: AppColors.primarySecondaryElement,
-      ),
-    ],
-  );
-}
-
-Widget listFriend(BuildContext context) {
-  return Column(
-    children: [
-      Container(
-        margin: EdgeInsets.only(left: 10.w, top: 10.h),
-        child:  Text(
-          'Bạn bè',
-          style: TextStyle(
-            fontFamily: AppFonts.Header2,
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryText,
-          ),
-        ),
-      ),
-      Container(
-        margin: EdgeInsets.only(left: 10.w, top: 2.h),
-        child:  Text(
-          '300 người bạn',
-          style: TextStyle(
-            fontFamily: AppFonts.Header3,
-            fontSize: 12.sp,
-            fontWeight: FontWeight.normal,
-            color: AppColors.primarySecondaryText,
-          ),
-        ),
-      ),
-      Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header2,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header2,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header2,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
-      ),
-      Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header2,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header2,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header2,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
       ),
     ],
   );

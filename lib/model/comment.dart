@@ -1,10 +1,9 @@
 import 'package:hcmus_alumni_mobile/model/permissions.dart';
-
-import 'creator.dart';
+import 'package:hcmus_alumni_mobile/model/user.dart';
 
 class Comment {
   final String id;
-  final Creator creator;
+  final User creator;
   final String content;
   final int childrenCommentNumber;
   late List<Comment> childrenComments= [];
@@ -17,7 +16,7 @@ class Comment {
 
   Comment.fromJson(Map<String, dynamic> json)
       : id = json["id"],
-        creator = Creator.fromJson(json["creator"]),
+        creator = User.fromJson(json["creator"]),
         content = json["content"],
         childrenCommentNumber = json["childrenCommentNumber"].toInt(),
         createAt = json["createAt"],

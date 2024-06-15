@@ -2,8 +2,7 @@ import 'package:hcmus_alumni_mobile/model/faculty.dart';
 import 'package:hcmus_alumni_mobile/model/status.dart';
 import 'package:hcmus_alumni_mobile/model/tags.dart';
 import 'package:hcmus_alumni_mobile/model/tags_response.dart';
-
-import 'creator.dart';
+import 'package:hcmus_alumni_mobile/model/user.dart';
 
 class Event {
   final String id;
@@ -18,7 +17,7 @@ class Event {
   final List<Tags> tags;
   final Faculty faculty;
   final Status status;
-  final Creator creator;
+  final User creator;
   final String organizationLocation;
   final String organizationTime;
 
@@ -52,7 +51,7 @@ class Event {
         tags = TagsResponse.fromJson(json).tags,
         faculty = Faculty.fromJson(json["faculty"]),
         status = Status.fromJson(json["status"]),
-        creator = Creator.fromJson(json["creator"]),
+        creator = User.fromJson(json["creator"]),
         organizationLocation = json["organizationLocation"],
         organizationTime = json["organizationTime"];
 }

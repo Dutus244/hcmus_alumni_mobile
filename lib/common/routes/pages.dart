@@ -20,6 +20,10 @@ import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification.
 import 'package:hcmus_alumni_mobile/pages/event_detail/event_detail.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/bloc/forgot_password_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/forgot_password/forgot_password.dart';
+import 'package:hcmus_alumni_mobile/pages/friend_list/bloc/friend_list_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/friend_list/friend_list.dart';
+import 'package:hcmus_alumni_mobile/pages/friend_page/bloc/friend_page_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/friend_page/friend_page.dart';
 import 'package:hcmus_alumni_mobile/pages/group_create/bloc/group_create_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/group_create/group_create.dart';
 import 'package:hcmus_alumni_mobile/pages/group_detail/bloc/group_detail_blocs.dart';
@@ -217,6 +221,12 @@ class AppPages {
           page: const NotificationPage(),
           bloc: BlocProvider(
             create: (_) => NotificationPageBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.FRIEND_PAGE,
+          page: const FriendPage(),
+          bloc: BlocProvider(
+            create: (_) => FriendPageBloc(),
           )),
       PageEntity(
           route: AppRoutes.NEWS_DETAIL,
@@ -425,6 +435,12 @@ class AppPages {
       PageEntity(
           route: AppRoutes.TERM_OF_SERVICE,
           page: const TermOfService()),
+      PageEntity(
+          route: AppRoutes.FRIEND_LIST,
+          page: const FriendList(),
+          bloc: BlocProvider(
+            create: (_) => FriendListBloc(),
+          )),
     ];
   }
 

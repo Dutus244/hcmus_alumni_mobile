@@ -7,10 +7,9 @@ import 'package:hcmus_alumni_mobile/model/picture_response.dart';
 import 'package:hcmus_alumni_mobile/model/status.dart';
 import 'package:hcmus_alumni_mobile/model/tags.dart';
 import 'package:hcmus_alumni_mobile/model/tags_response.dart';
+import 'package:hcmus_alumni_mobile/model/user.dart';
 import 'package:hcmus_alumni_mobile/model/vote.dart';
 import 'package:hcmus_alumni_mobile/model/vote_response.dart';
-
-import 'creator.dart';
 
 class Post {
   final String id;
@@ -21,7 +20,7 @@ class Post {
   final String publishedAt;
   final List<Tags> tags;
   final Status status;
-  final Creator creator;
+  final User creator;
   final List<Picture> pictures;
   late bool isReacted;
   late int reactionCount;
@@ -63,7 +62,7 @@ class Post {
         publishedAt = json["publishedAt"],
         tags = TagsResponse.fromJson(json).tags,
         status = Status.fromJson(json["status"]),
-        creator = Creator.fromJson(json["creator"]),
+        creator = User.fromJson(json["creator"]),
         pictures = PictureResponse.fromJson(json).pictures,
         isReacted = json["isReacted"],
         reactionCount = json["reactionCount"].toInt(),
@@ -72,8 +71,6 @@ class Post {
         voteSelectedOne = VoteResponse.fromJson(json).voteSelectedOne,
         voteSelectedMultiple = VoteResponse.fromJson(json).voteSelectedMultiple,
         totalVote = VoteResponse.fromJson(json).totalVote,
-        // allowMultipleVotes = json["allowMultipleVotes"],
-        // allowAddOptions = json["allowAddOptions"];
-        allowMultipleVotes = true,
-        allowAddOptions = true;
+        allowMultipleVotes = json["allowMultipleVotes"],
+        allowAddOptions = json["allowAddOptions"];
 }

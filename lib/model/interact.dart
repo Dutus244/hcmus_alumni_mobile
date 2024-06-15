@@ -1,8 +1,8 @@
-import 'package:hcmus_alumni_mobile/model/creator.dart';
 import 'package:hcmus_alumni_mobile/model/react.dart';
+import 'package:hcmus_alumni_mobile/model/user.dart';
 
 class Interact {
-  final Creator creator;
+  final User creator;
   final React react;
 
   Interact(
@@ -11,6 +11,6 @@ class Interact {
   );
 
   Interact.fromJson(Map<String, dynamic> json)
-      : creator = Creator.fromJson(json["creator"]),
+      : creator = User.fromJson(json["creator"]),
         react = React.fromJson(json["react"]);
 }

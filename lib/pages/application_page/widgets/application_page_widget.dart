@@ -8,6 +8,7 @@ import 'package:hcmus_alumni_mobile/pages/group_page/group_page.dart';
 import 'package:hcmus_alumni_mobile/pages/home_page/home_page.dart';
 import 'package:hcmus_alumni_mobile/pages/notification_page/notification_page.dart';
 import '../../../common/values/colors.dart';
+import '../../friend_page/friend_page.dart';
 import '../../news_event_page/news_event_page.dart';
 import '../bloc/application_page_events.dart';
 
@@ -21,7 +22,7 @@ Widget buildPage(int index, int secondIndex) {
     GroupPage(
       page: secondIndex,
     ),
-    Center(child: Text('Home5')),
+    const FriendPage(),
     const NotificationPage(),
   ];
 

@@ -16,37 +16,26 @@ import '../../../model/group.dart';
 import '../bloc/group_edit_blocs.dart';
 import '../bloc/group_edit_events.dart';
 import '../group_edit_controller.dart';
+import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
-    title: Container(
-      height: 40.h,
-      margin: EdgeInsets.only(left: 0.w, right: 0.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 5.w,
+    flexibleSpace: Center(
+      child: Container(
+        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        child: Text(
+          'Chỉnh sửa nhóm',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: AppFonts.Header0,
+            fontWeight: FontWeight.bold,
+            fontSize: 16.sp,
+            color: AppColors.secondaryHeader,
           ),
-          Text(
-            'Chỉnh sửa nhóm',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: AppFonts.Header0,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
-              color: AppColors.secondaryHeader,
-            ),
-          ),
-          Container(
-            width: 60.w,
-          )
-        ],
+        ),
       ),
     ),
-    centerTitle: true, // Đặt tiêu đề vào giữa
   );
 }
 

@@ -1,11 +1,12 @@
-import 'package:hcmus_alumni_mobile/model/creator.dart';
+
 import 'package:hcmus_alumni_mobile/model/permissions.dart';
+import 'package:hcmus_alumni_mobile/model/user.dart';
 import 'status.dart';
 
 class Group {
   final String id;
   final String name;
-  final Creator creator;
+  final User creator;
   final String description;
   final String? type;
   final String? coverUrl;
@@ -39,7 +40,7 @@ class Group {
   Group.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         name = json["name"],
-        creator = Creator.fromJson(json["creator"]),
+        creator = User.fromJson(json["creator"]),
         description = json["description"],
         type = json["type"],
         coverUrl = json["coverUrl"],

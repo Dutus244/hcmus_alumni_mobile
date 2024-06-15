@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hcmus_alumni_mobile/model/faculty.dart';
 import 'package:hcmus_alumni_mobile/model/permissions.dart';
+import 'package:hcmus_alumni_mobile/model/user.dart';
 
 import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/colors.dart';
@@ -11,7 +13,6 @@ import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
 import '../../../model/comment.dart';
-import '../../../model/creator.dart';
 import '../bloc/list_comment_post_advise_blocs.dart';
 import '../bloc/list_comment_post_advise_events.dart';
 import '../bloc/list_comment_post_advise_states.dart';
@@ -624,7 +625,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                             .read<ListCommentPostAdviseBloc>()
                             .add(ContentEvent(''));
                         context.read<ListCommentPostAdviseBloc>().add(
-                            ChildrenEvent(Comment('', Creator('', '', ''), '',
+                            ChildrenEvent(Comment('', User('', '', '', '', '', '', '', Faculty(0,''), '', '', '', ''), '',
                                 0, '', '', Permissions(false, false))));
                       },
                       child: Text(
@@ -709,7 +710,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                             .read<ListCommentPostAdviseBloc>()
                             .add(ContentEvent(''));
                         context.read<ListCommentPostAdviseBloc>().add(
-                            ChildrenEvent(Comment('', Creator('', '', ''), '',
+                            ChildrenEvent(Comment('', User('', '', '', '', '', '', '', Faculty(0,''), '', '' '', '', ''), '',
                                 0, '', '', Permissions(false, false))));
                       },
                       child: Text(

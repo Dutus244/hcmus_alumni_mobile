@@ -15,37 +15,26 @@ import '../../../model/vote.dart';
 import '../../../model/voter.dart';
 import '../bloc/group_detail_list_voters_blocs.dart';
 import '../bloc/group_detail_list_voters_states.dart';
+import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
-    title: Container(
-      height: 40.h,
-      margin: EdgeInsets.only(left: 0.w, right: 0.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 5.w,
+    flexibleSpace: Center(
+      child: Container(
+        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        child: Text(
+          'Lượt bình chọn',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: AppFonts.Header0,
+            fontWeight: FontWeight.bold,
+            fontSize: 16.sp,
+            color: AppColors.secondaryHeader,
           ),
-          Text(
-            'Danh sách bình chọn',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: AppFonts.Header0,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
-              color: AppColors.secondaryHeader,
-            ),
-          ),
-          Container(
-            width: 60.w,
-          )
-        ],
+        ),
       ),
     ),
-    centerTitle: true, // Đặt tiêu đề vào giữa
   );
 }
 
@@ -239,7 +228,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
 Widget voter(BuildContext context, Voter voter) {
   return GestureDetector(
     onTap: () {
-      if (voter.participant.id ==
+      if (voter.user.id ==
           Global.storageService.getUserId()) {
         Navigator.pushNamed(
           context,
@@ -248,7 +237,7 @@ Widget voter(BuildContext context, Voter voter) {
       } else {
         Navigator.pushNamed(context, "/otherProfilePage",
             arguments: {
-              "id": voter.participant.id,
+              "id": voter.user.id,
             });
       }
     },
@@ -266,14 +255,14 @@ Widget voter(BuildContext context, Voter voter) {
                 child: CircleAvatar(
                   radius: 10,
                   child: null,
-                  backgroundImage: NetworkImage(voter.participant.avatarUrl),
+                  backgroundImage: NetworkImage(voter.user.avatarUrl),
                 ),
               ),
               Container(
                 width: 10.w,
               ),
               Text(
-                voter.participant.fullName,
+                voter.user.fullName,
                 style: TextStyle(
                   color: AppColors.primaryText,
                   fontSize: 12.sp,

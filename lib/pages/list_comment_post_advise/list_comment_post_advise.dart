@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hcmus_alumni_mobile/model/creator.dart';
 import 'package:hcmus_alumni_mobile/model/permissions.dart';
 import 'package:hcmus_alumni_mobile/pages/list_comment_post_advise/widgets/list_comment_post_advise_widget.dart';
 

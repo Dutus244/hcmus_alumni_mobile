@@ -13,37 +13,26 @@ import '../../../global.dart';
 import '../../../model/member.dart';
 import '../bloc/group_member_blocs.dart';
 import '../bloc/group_member_states.dart';
+import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
-    title: Container(
-      height: 40.h,
-      margin: EdgeInsets.only(left: 0.w, right: 0.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 5.w,
+    flexibleSpace: Center(
+      child: Container(
+        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        child: Text(
+          'Thành viên nhóm',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: AppFonts.Header0,
+            fontWeight: FontWeight.bold,
+            fontSize: 16.sp,
+            color: AppColors.secondaryHeader,
           ),
-          Text(
-            'Thành viên',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: AppFonts.Header0,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
-              color: AppColors.secondaryHeader,
-            ),
-          ),
-          Container(
-            width: 60.w,
-          )
-        ],
+        ),
       ),
     ),
-    centerTitle: true, // Đặt tiêu đề vào giữa
   );
 }
 
@@ -216,7 +205,7 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
 Widget member(BuildContext context, Member member, Group group) {
   return GestureDetector(
     onTap: () {
-      if (member.participant.id ==
+      if (member.user.id ==
           Global.storageService.getUserId()) {
         Navigator.pushNamed(
           context,
@@ -225,7 +214,7 @@ Widget member(BuildContext context, Member member, Group group) {
       } else {
         Navigator.pushNamed(context, "/otherProfilePage",
             arguments: {
-              "id": member.participant.id,
+              "id": member.user.id,
             });
       }
     },
@@ -243,7 +232,7 @@ Widget member(BuildContext context, Member member, Group group) {
                 child: CircleAvatar(
                   radius: 10,
                   child: null,
-                  backgroundImage: NetworkImage(member.participant.avatarUrl),
+                  backgroundImage: NetworkImage(member.user.avatarUrl),
                 ),
               ),
               Container(
@@ -254,7 +243,7 @@ Widget member(BuildContext context, Member member, Group group) {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    member.participant.fullName,
+                    member.user.fullName,
                     style: TextStyle(
                       color: AppColors.primaryText,
                       fontSize: 12.sp,
@@ -338,7 +327,7 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
                 margin: EdgeInsets.only(top: 10.h),
                 child: Center(
                   child: Text(
-                    member.participant.fullName,
+                    member.user.fullName,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 14.sp,
@@ -351,7 +340,7 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
               GestureDetector(
                 onTap: () {
                   GroupMemberController(context: context)
-                      .handleDeleteMemeber(groupId, member.participant.id);
+                      .handleDeleteMemeber(groupId, member.user.id);
                   Navigator.pop(context);
                 },
                 child: Container(
@@ -385,10 +374,10 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
                 onTap: () {
                   if (member.role == 'MEMBER') {
                     GroupMemberController(context: context).handleChangeRole(
-                        groupId, member.participant.id, 'ADMIN');
+                        groupId, member.user.id, 'ADMIN');
                   } else {
                     GroupMemberController(context: context).handleChangeRole(
-                        groupId, member.participant.id, 'MEMBER');
+                        groupId, member.user.id, 'MEMBER');
                   }
                   Navigator.pop(context);
                 },

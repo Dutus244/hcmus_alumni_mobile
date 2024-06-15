@@ -36,7 +36,7 @@ class _EditPostAdviseState extends State<EditPostAdvise> {
     return BlocBuilder<EditPostAdviseBloc, EditPostAdviseState>(
         builder: (context, state) {
           return Scaffold(
-              appBar: buildAppBar(context, post.id),
+              appBar: buildAppBar(context),
               backgroundColor: AppColors.primaryBackground,
               body: BlocProvider.of<EditPostAdviseBloc>(context).state.page == 0
                   ? writePost(context, post.id)

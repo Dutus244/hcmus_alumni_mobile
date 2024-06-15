@@ -6,13 +6,16 @@ class Notifications {
   final String content;
   final String link;
   final String createTime;
+  final bool isRead;
 
-  Notifications(this.id, this.participant, this.content, this.link, this.createTime);
+  Notifications(this.id, this.participant, this.content, this.link,
+      this.createTime, this.isRead);
 
   Notifications.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         participant = Participant.fromJson(json["user"]),
         content = json["content"],
         link = json["link"],
-        createTime = json["createTime"];
+        createTime = json["createTime"],
+        isRead = json["isRead"];
 }
