@@ -11,6 +11,28 @@ import '../../../global.dart';
 import '../../../model/interact.dart';
 import '../bloc/list_interact_post_group_blocs.dart';
 import '../bloc/list_interact_post_group_states.dart';
+import 'dart:io';
+
+AppBar buildAppBar(BuildContext context) {
+  return AppBar(
+    backgroundColor: AppColors.primaryBackground,
+    flexibleSpace: Center(
+      child: Container(
+        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        child: Text(
+          'Người đã bày tỏ cảm xúc',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: AppFonts.Header0,
+            fontWeight: FontWeight.bold,
+            fontSize: 16.sp,
+            color: AppColors.secondaryHeader,
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
 Widget listInteract(BuildContext context, ScrollController _scrollController) {
   return Column(
@@ -175,36 +197,5 @@ Widget interact(BuildContext context, Interact interact) {
         ],
       ),
     ),
-  );
-}
-
-AppBar buildAppBar(BuildContext context) {
-  return AppBar(
-    backgroundColor: AppColors.primaryBackground,
-    title: Container(
-      height: 40.h,
-      margin: EdgeInsets.only(left: 0.w, right: 10.w),
-      child: Row(
-        children: [
-          Container(
-            width: 5.w,
-          ),
-          Text(
-            'Người đã bày tỏ cảm xúc',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: AppFonts.Header0,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
-              color: AppColors.secondaryHeader,
-            ),
-          ),
-          Container(
-            width: 60.w,
-          )
-        ],
-      ),
-    ),
-    centerTitle: true, // Đặt tiêu đề vào giữa
   );
 }

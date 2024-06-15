@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hcmus_alumni_mobile/model/request_group.dart';
+import 'package:hcmus_alumni_mobile/model/group_request.dart';
 import 'package:hcmus_alumni_mobile/pages/group_member_approve/group_member_approve_controller.dart';
 
 import '../../../common/values/colors.dart';
@@ -13,37 +13,26 @@ import '../../../global.dart';
 import '../../../model/group.dart';
 import '../bloc/group_member_approve_blocs.dart';
 import '../bloc/group_member_approve_states.dart';
+import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
     backgroundColor: AppColors.primaryBackground,
-    title: Container(
-      height: 40.h,
-      margin: EdgeInsets.only(left: 0.w, right: 0.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 5.w,
+    flexibleSpace: Center(
+      child: Container(
+        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        child: Text(
+          'Phê duyệt thành viên nhóm',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: AppFonts.Header0,
+            fontWeight: FontWeight.bold,
+            fontSize: 16.sp,
+            color: AppColors.secondaryHeader,
           ),
-          Text(
-            'Phê duyệt thành viên',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: AppFonts.Header0,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
-              color: AppColors.secondaryHeader,
-            ),
-          ),
-          Container(
-            width: 60.w,
-          )
-        ],
+        ),
       ),
     ),
-    centerTitle: true, // Đặt tiêu đề vào giữa
   );
 }
 
@@ -132,10 +121,10 @@ Widget listRequest(
   );
 }
 
-Widget request(BuildContext context, RequestGroup request, String groupId) {
+Widget request(BuildContext context, GroupRequest request, String groupId) {
   return GestureDetector(
     onTap: () {
-      if (request.participant.id ==
+      if (request.user.id ==
           Global.storageService.getUserId()) {
         Navigator.pushNamed(
           context,
@@ -144,116 +133,115 @@ Widget request(BuildContext context, RequestGroup request, String groupId) {
       } else {
         Navigator.pushNamed(context, "/otherProfilePage",
             arguments: {
-              "id": request.participant.id,
+              "id": request.user.id,
             });
       }
     },
     child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
-      color: Colors.transparent,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 40.w,
-                    height: 40.h,
-                    child: CircleAvatar(
-                      radius: 10,
-                      child: null,
-                      backgroundImage:
-                          NetworkImage(request.participant.avatarUrl),
-                    ),
-                  ),
-                  Container(
-                    width: 10.w,
-                  ),
-                  Text(
-                    request.participant.fullName,
-                    style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w900,
-                      fontFamily: AppFonts.Header2,
-                    ),
-                  )
-                ],
+        margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
+        color: Colors.transparent,
+        child: Row(
+          children: [
+            Container(
+              width: 70.w,
+              height: 70.h,
+              child: CircleAvatar(
+                radius: 40,
+                child: null,
+                backgroundImage:
+                NetworkImage(request.user.avatarUrl),
               ),
-            ],
-          ),
-          Container(
-            height: 10.h,
-          ),
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  GroupMemberApproveController(context: context).handleApprovedRequest(groupId, request.participant.id);
-                },
-                child: Container(
-                  width: 160.w,
-                  height: 30.h,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryElement,
-                    borderRadius: BorderRadius.circular(15.w),
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Phê duyệt',
-                      style: TextStyle(
-                          fontFamily: AppFonts.Header1,
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryBackground),
-                    ),
+            ),
+            Container(
+              width: 10.w,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 10.w),
+                  width: 250.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        request.user.fullName,
+                        style: TextStyle(
+                          color: AppColors.primaryText,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w900,
+                          fontFamily: AppFonts.Header2,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  GroupMemberApproveController(context: context).handleDeneidRequest(groupId, request.participant.id);
-                },
-                child: Container(
-                  width: 160.w,
-                  height: 30.h,
-                  margin: EdgeInsets.only(left: 10.w),
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 230, 230, 230),
-                    borderRadius: BorderRadius.circular(15.w),
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Từ chối',
-                      style: TextStyle(
-                          fontFamily: AppFonts.Header1,
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.bold,
-                          color:
-                          AppColors.primaryText),
-                    ),
-                  ),
+                Container(
+                  height: 10.h,
                 ),
-              ),
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10.h),
-            height: 1.h,
-            color: AppColors.primarySecondaryElement,
-          )
-        ],
-      ),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        GroupMemberApproveController(context: context).handleApprovedRequest(groupId, request.user.id);
+                      },
+                      child: Container(
+                        width: 120.w,
+                        height: 30.h,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryElement,
+                          borderRadius: BorderRadius.circular(5.w),
+                          border: Border.all(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Phê duyệt',
+                            style: TextStyle(
+                                fontFamily: AppFonts.Header1,
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primaryBackground),
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        GroupMemberApproveController(context: context).handleDeneidRequest(groupId, request.user.id);
+                      },
+                      child: Container(
+                        width: 120.w,
+                        height: 30.h,
+                        margin: EdgeInsets.only(left: 10.w),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 230, 230, 230),
+                          borderRadius: BorderRadius.circular(5.w),
+                          border: Border.all(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Từ chối',
+                            style: TextStyle(
+                                fontFamily: AppFonts.Header1,
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                AppColors.primaryText),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )
+          ],
+        )
     ),
   );
 }

@@ -1,4 +1,4 @@
-import 'package:hcmus_alumni_mobile/model/request_group.dart';
+import 'package:hcmus_alumni_mobile/model/group_request.dart';
 
 import 'group_member_approve_states.dart';
 
@@ -13,7 +13,7 @@ class StatusEvent extends GroupMemberApproveEvent {
 }
 
 class RequestsEvent extends GroupMemberApproveEvent {
-  final List<RequestGroup> requests;
+  final List<GroupRequest> requests;
 
   const RequestsEvent(this.requests);
 }

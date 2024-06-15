@@ -1,9 +1,6 @@
 import 'package:hcmus_alumni_mobile/model/faculty.dart';
 import 'package:hcmus_alumni_mobile/model/status.dart';
-import 'package:hcmus_alumni_mobile/model/tags.dart';
-import 'package:hcmus_alumni_mobile/model/tags_response.dart';
-
-import 'creator.dart';
+import 'package:hcmus_alumni_mobile/model/user.dart';
 
 class HallOfFame {
   final String id;
@@ -17,7 +14,7 @@ class HallOfFame {
   final String publishedAt;
   final Faculty faculty;
   final Status status;
-  final Creator creator;
+  final User creator;
   final String userId;
 
   HallOfFame(
@@ -33,7 +30,7 @@ class HallOfFame {
     this.faculty,
     this.status,
     this.creator,
-      this.userId,
+    this.userId,
   );
 
   HallOfFame.fromJson(Map<String, dynamic> json)
@@ -48,6 +45,6 @@ class HallOfFame {
         publishedAt = json["publishedAt"],
         faculty = Faculty.fromJson(json["faculty"]),
         status = Status.fromJson(json["status"]),
-        creator = Creator.fromJson(json["creator"]),
-  userId = json["userId"] ?? "";
+        creator = User.fromJson(json["creator"]),
+        userId = json["userId"] ?? "";
 }

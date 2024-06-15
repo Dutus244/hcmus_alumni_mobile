@@ -1,15 +1,15 @@
-import 'package:hcmus_alumni_mobile/model/participant.dart';
+import 'package:hcmus_alumni_mobile/model/user.dart';
 
 class Member {
-  final Participant participant;
+  final User user;
   final String role;
 
   Member(
-    this.participant,
+    this.user,
     this.role,
   );
 
   Member.fromJson(Map<String, dynamic> json)
-      : participant = Participant.fromJson(json["user"]),
+      : user = User.fromJson(json["user"]),
         role = json["role"];
 }

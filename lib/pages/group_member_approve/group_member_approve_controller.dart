@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hcmus_alumni_mobile/model/request_group.dart';
-import 'package:hcmus_alumni_mobile/model/request_group_response.dart';
+import 'package:hcmus_alumni_mobile/model/group_request.dart';
+import 'package:hcmus_alumni_mobile/model/group_request_response.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import 'bloc/group_member_approve_blocs.dart';
@@ -49,7 +49,7 @@ class GroupMemberApproveController {
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
-        var requestResponse = RequestGroupResponse.fromJson(jsonMap);
+        var requestResponse = GroupRequestResponse.fromJson(jsonMap);
         if (requestResponse.requests.isEmpty) {
           if (page == 0) {
             context
@@ -70,9 +70,9 @@ class GroupMemberApproveController {
               .read<GroupMemberApproveBloc>()
               .add(RequestsEvent(requestResponse.requests));
         } else {
-          List<RequestGroup> currentList =
+          List<GroupRequest> currentList =
               BlocProvider.of<GroupMemberApproveBloc>(context).state.requests;
-          List<RequestGroup> updatedNewsList = List.of(currentList)
+          List<GroupRequest> updatedNewsList = List.of(currentList)
             ..addAll(requestResponse.requests);
           context
               .read<GroupMemberApproveBloc>()

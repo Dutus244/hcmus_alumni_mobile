@@ -63,4 +63,6 @@ class AppRoutes {
   static const OPTION_PAGE = "/optionPage";
   static const CHANGE_PASSWORD = "/changePassword";
   static const TERM_OF_SERVICE = "/termOfService";
+
+  static const FRIEND_LIST = "/friendList";
 }

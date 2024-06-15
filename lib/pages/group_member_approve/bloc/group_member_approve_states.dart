@@ -1,10 +1,10 @@
-import 'package:hcmus_alumni_mobile/model/request_group.dart';
+import 'package:hcmus_alumni_mobile/model/group_request.dart';
 
 enum Status { loading, success }
 
 class GroupMemberApproveState {
   final Status status;
-  final List<RequestGroup> requests;
+  final List<GroupRequest> requests;
   final int indexRequest;
   final bool hasReachedMaxRequest;
 
@@ -17,7 +17,7 @@ class GroupMemberApproveState {
 
   GroupMemberApproveState copyWith(
       {Status? status,
-      List<RequestGroup>? requests,
+      List<GroupRequest>? requests,
       int? indexRequest,
       bool? hasReachedMaxRequest}) {
     return GroupMemberApproveState(

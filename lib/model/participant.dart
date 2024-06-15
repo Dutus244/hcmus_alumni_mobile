@@ -1,12 +1,10 @@
-class Participant {
-  final String id;
-  final String fullName;
-  final String avatarUrl;
+import 'package:hcmus_alumni_mobile/model/user.dart';
 
-  Participant(this.id, this.fullName, this.avatarUrl);
+class Participant {
+  final User user;
+
+  Participant(this.user);
 
   Participant.fromJson(Map<String, dynamic> json)
-      : id = json["id"],
-        fullName = json["fullName"],
-        avatarUrl = json["avatarUrl"];
+      : user = User.fromJson(json);
 }

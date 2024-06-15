@@ -1,12 +1,12 @@
-import 'package:hcmus_alumni_mobile/model/participant.dart';
+import 'package:hcmus_alumni_mobile/model/user.dart';
 
 class Voter {
-  final Participant participant;
+  final User user;
 
   Voter(
-    this.participant,
+    this.user,
   );
 
   Voter.fromJson(Map<String, dynamic> json)
-      : participant = Participant.fromJson(json["user"]);
+      : user = User.fromJson(json["user"]);
 }

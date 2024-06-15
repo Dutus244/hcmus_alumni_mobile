@@ -50,7 +50,7 @@ AppBar buildAppBar(BuildContext context) {
                 Container(
                   width: 30.w,
                 ),
-              if (Global.storageService.permissionGroupCreate())
+              if (Global.storageService.permissionMessageCreate())
                 Container(
                   width: 30.w,
                 )
