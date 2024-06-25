@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in_controller.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/widgets/sign_in_widget.dart';
 
@@ -40,16 +41,16 @@ class _SignInState extends State<SignIn> {
         final shouldExit = await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Thoát ứng dụng'),
-            content: Text('Bạn có muốn thoát ứng dụng?'),
+            title: Text(translate('exit_application')),
+            content: Text(translate('exit_application_question')),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: Text('Huỷ'),
+                child: Text(translate('cancel')),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: Text('Thoát'),
+                child: Text(translate('exit')),
               ),
             ],
           ),
@@ -65,10 +66,10 @@ class _SignInState extends State<SignIn> {
       },
       child: BlocBuilder<SignInBloc, SignInState>(builder: (context, state) {
         return Container(
-          color: AppColors.primaryBackground,
+          color: AppColors.background,
           child: SafeArea(
               child: Scaffold(
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: signIn(context),
           )),
         );

@@ -17,7 +17,7 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
@@ -43,7 +43,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
       height: 40.h,
       margin: EdgeInsets.only(bottom: 10.h, top: 0.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -69,13 +69,13 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
+                  color: AppColors.secondaryElementText,
                 ),
                 counterText: '',
               ),
               style: TextStyle(
                 fontFamily: AppFonts.Header3,
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
               ),
@@ -253,7 +253,7 @@ Widget group(BuildContext context, Group group) {
                           Text(
                             group.name,
                             style: TextStyle(
-                              color: AppColors.primaryText,
+                              color: AppColors.textBlack,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w900,
                               fontFamily: AppFonts.Header2,
@@ -264,7 +264,7 @@ Widget group(BuildContext context, Group group) {
                             child: Text(
                               '$typeGroup - ${handleParticipantCount(group.participantCount)} thành viên',
                               style: TextStyle(
-                                color: AppColors.primarySecondaryText,
+                                color: AppColors.textGrey,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header2,
@@ -279,7 +279,7 @@ Widget group(BuildContext context, Group group) {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                color: AppColors.primarySecondaryText,
+                                color: AppColors.textGrey,
                                 fontSize: 11.sp,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header2,
@@ -305,7 +305,7 @@ Widget group(BuildContext context, Group group) {
                                     fontFamily: AppFonts.Header2,
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.bold,
-                                    color: AppColors.primaryText,
+                                    color: AppColors.textBlack,
                                   ),
                                 ),
                               ),
@@ -321,7 +321,7 @@ Widget group(BuildContext context, Group group) {
                                 width: 280.w,
                                 height: 25.h,
                                 decoration: BoxDecoration(
-                                  color: AppColors.primaryElement,
+                                  color: AppColors.element,
                                   borderRadius: BorderRadius.circular(5.w),
                                   border: Border.all(
                                     color: Colors.transparent,
@@ -334,7 +334,7 @@ Widget group(BuildContext context, Group group) {
                                       fontFamily: AppFonts.Header2,
                                       fontSize: 12.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.primaryBackground,
+                                      color: AppColors.background,
                                     ),
                                   ),
                                 ),
@@ -346,7 +346,7 @@ Widget group(BuildContext context, Group group) {
                               width: 280.w,
                               height: 25.h,
                               decoration: BoxDecoration(
-                                color: AppColors.primarySecondaryElement,
+                                color: AppColors.elementLight,
                                 borderRadius: BorderRadius.circular(5.w),
                                 border: Border.all(
                                   color: Colors.transparent,
@@ -359,7 +359,7 @@ Widget group(BuildContext context, Group group) {
                                     fontFamily: AppFonts.Header2,
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.bold,
-                                    color: AppColors.primaryElement,
+                                    color: AppColors.element,
                                   ),
                                 ),
                               ),
@@ -376,7 +376,7 @@ Widget group(BuildContext context, Group group) {
         Container(
           margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
           height: 2.h,
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ],
     ),

@@ -15,7 +15,7 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
@@ -57,7 +57,7 @@ Widget listInteract(BuildContext context, ScrollController _scrollController) {
                     Container(
                       margin: EdgeInsets.only(top: 0.h, bottom: 5.h),
                       height: 1.h,
-                      color: AppColors.primarySecondaryElement,
+                      color: AppColors.elementLight,
                     ),
                     loadingWidget(),
                   ],
@@ -75,7 +75,7 @@ Widget listInteract(BuildContext context, ScrollController _scrollController) {
                           Container(
                             margin: EdgeInsets.only(top: 0.h, bottom: 5.h),
                             height: 1.h,
-                            color: AppColors.primarySecondaryElement,
+                            color: AppColors.elementLight,
                           ),
                           Center(
                               child: Container(
@@ -116,7 +116,7 @@ Widget listInteract(BuildContext context, ScrollController _scrollController) {
                         Container(
                           margin: EdgeInsets.only(top: 0.h, bottom: 5.h),
                           height: 1.h,
-                          color: AppColors.primarySecondaryElement,
+                          color: AppColors.elementLight,
                         ),
                         interact(
                             context,
@@ -181,7 +181,7 @@ Widget interact(BuildContext context, Interact interact) {
               Text(
                 interact.creator.fullName,
                 style: TextStyle(
-                  color: AppColors.primaryText,
+                  color: AppColors.textBlack,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w900,
                   fontFamily: AppFonts.Header2,

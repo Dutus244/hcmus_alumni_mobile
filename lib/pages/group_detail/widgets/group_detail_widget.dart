@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:popover/popover.dart';
 import '../../../common/function/handle_datetime.dart';
 import '../../../common/function/handle_participant_count.dart';
 import '../../../common/function/handle_percentage_vote.dart';
+import '../../../common/values/assets.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../../../common/widgets/flutter_toast.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../model/group.dart';
@@ -22,7 +23,7 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
@@ -66,7 +67,7 @@ Widget informationGroup(BuildContext context, Group group) {
       Container(
         margin: EdgeInsets.only(top: 0.h),
         decoration: BoxDecoration(
-          color: AppColors.primaryText.withOpacity(0.8),
+          color: AppColors.textBlack.withOpacity(0.8),
         ),
         height: 20.h,
         width: 400.w,
@@ -95,7 +96,7 @@ Widget informationGroup(BuildContext context, Group group) {
         },
         child: Container(
           margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
-          color: AppColors.primaryBackground,
+          color: AppColors.background,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -121,14 +122,14 @@ Widget informationGroup(BuildContext context, Group group) {
                         "assets/icons/earth.svg",
                         width: 11.w,
                         height: 11.h,
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                       ),
                     if (group.privacy == 'PRIVATE')
                       SvgPicture.asset(
                         "assets/icons/lock.svg",
                         width: 11.w,
                         height: 11.h,
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                       ),
                     Container(
                       width: 5.w,
@@ -137,7 +138,7 @@ Widget informationGroup(BuildContext context, Group group) {
                       typeGroup + ' - ',
                       maxLines: 2,
                       style: TextStyle(
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
                         fontFamily: AppFonts.Header3,
@@ -147,7 +148,7 @@ Widget informationGroup(BuildContext context, Group group) {
                       '${handleParticipantCount(group.participantCount)} ',
                       maxLines: 2,
                       style: TextStyle(
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
                         fontFamily: AppFonts.Header3,
@@ -157,7 +158,7 @@ Widget informationGroup(BuildContext context, Group group) {
                       'thành viên',
                       maxLines: 2,
                       style: TextStyle(
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
                         fontFamily: AppFonts.Header3,
@@ -257,7 +258,7 @@ Widget joinGroup(BuildContext context, Group group) {
             fontFamily: AppFonts.Header2,
             fontSize: 14.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.primaryText,
+            color: AppColors.textBlack,
           ),
         ),
       ),
@@ -265,7 +266,7 @@ Widget joinGroup(BuildContext context, Group group) {
       margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
       height: 30.h,
       decoration: BoxDecoration(
-        color: AppColors.primaryElement,
+        color: AppColors.element,
         borderRadius: BorderRadius.circular(5.w),
         border: Border.all(
           color: Colors.transparent,
@@ -278,7 +279,7 @@ Widget joinGroup(BuildContext context, Group group) {
             fontFamily: AppFonts.Header2,
             fontSize: 14.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.primaryBackground,
+            color: AppColors.background,
           ),
         ),
       ),
@@ -295,7 +296,7 @@ Widget space() {
       Container(
         margin: EdgeInsets.only(bottom: 10.h),
         height: 5.h,
-        color: AppColors.primarySecondaryElement,
+        color: AppColors.elementLight,
       )
     ],
   );
@@ -326,7 +327,7 @@ Widget joinedGroup(BuildContext context, Group group) {
       width: 160.w,
       height: 30.h,
       decoration: BoxDecoration(
-        color: (group.userRole == 'MEMBER') ? Color.fromARGB(255, 230, 230, 230) : AppColors.primaryElement,
+        color: (group.userRole == 'MEMBER') ? Color.fromARGB(255, 230, 230, 230) : AppColors.element,
         borderRadius: BorderRadius.circular(5.w),
         border: Border.all(
           color: Colors.transparent,
@@ -343,7 +344,7 @@ Widget joinedGroup(BuildContext context, Group group) {
                     "assets/icons/tick.svg",
                     width: 14.w,
                     height: 14.h,
-                    color: AppColors.primaryText,
+                    color: AppColors.textBlack,
                   ),
                   Container(
                     width: 5.w,
@@ -354,7 +355,7 @@ Widget joinedGroup(BuildContext context, Group group) {
                       fontFamily: AppFonts.Header2,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ),
                   Container(
@@ -364,7 +365,7 @@ Widget joinedGroup(BuildContext context, Group group) {
                     "assets/icons/dropdown.svg",
                     width: 14.w,
                     height: 14.h,
-                    color: AppColors.primaryText,
+                    color: AppColors.textBlack,
                   ),
                 ],
               ),
@@ -375,7 +376,7 @@ Widget joinedGroup(BuildContext context, Group group) {
                     "assets/icons/star_circle.svg",
                     width: 14.w,
                     height: 14.h,
-                    color: AppColors.primaryBackground,
+                    color: AppColors.background,
                   ),
                   Container(
                     width: 5.w,
@@ -386,7 +387,7 @@ Widget joinedGroup(BuildContext context, Group group) {
                       fontFamily: AppFonts.Header2,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primaryBackground,
+                      color: AppColors.background,
                     ),
                   ),
                 ],
@@ -415,7 +416,7 @@ Widget exitGroup(BuildContext context, Group group) {
               "assets/icons/exit.svg",
               width: 14.w,
               height: 14.h,
-              color: AppColors.primaryText,
+              color: AppColors.textBlack,
             ),
             Container(
               width: 10.w,
@@ -426,7 +427,7 @@ Widget exitGroup(BuildContext context, Group group) {
                 fontFamily: AppFonts.Header2,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
               ),
             ),
           ],
@@ -475,7 +476,7 @@ Widget groupPrivateNotJoined(
                     fontFamily: AppFonts.Header3,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.normal,
-                    color: AppColors.primaryText,
+                    color: AppColors.textBlack,
                   ),
                 ),
               ),
@@ -487,7 +488,7 @@ Widget groupPrivateNotJoined(
                       "assets/icons/lock.svg",
                       width: 11.w,
                       height: 13.h,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 10.w),
@@ -509,7 +510,7 @@ Widget groupPrivateNotJoined(
                             child: Text(
                               'Chỉ những thành viên mới nhìn thấy mọi người trong nhóm và những gì họ đăng',
                               style: TextStyle(
-                                color: AppColors.primarySecondaryText,
+                                color: AppColors.textGrey,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header3,
@@ -530,7 +531,7 @@ Widget groupPrivateNotJoined(
                       "assets/icons/clock.svg",
                       width: 11.w,
                       height: 13.h,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 10.w),
@@ -550,9 +551,9 @@ Widget groupPrivateNotJoined(
                           Container(
                             width: 300.w,
                             child: Text(
-                              'Ngày tạo nhóm ${timeCreateGroup('2024-04-10 20:29:15')}',
+                              'Ngày tạo nhóm ${handleDateTime2('2024-04-10 20:29:15')}',
                               style: TextStyle(
-                                color: AppColors.primarySecondaryText,
+                                color: AppColors.textGrey,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header3,
@@ -711,7 +712,7 @@ Widget postOption(BuildContext context, Post post, String groupId) {
                         "assets/icons/edit.svg",
                         width: 14.w,
                         height: 14.h,
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                       ),
                       Container(
                         width: 10.w,
@@ -722,7 +723,7 @@ Widget postOption(BuildContext context, Post post, String groupId) {
                           fontFamily: AppFonts.Header2,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                         ),
                       ),
                     ],
@@ -746,7 +747,7 @@ Widget postOption(BuildContext context, Post post, String groupId) {
                         "assets/icons/trash.svg",
                         width: 14.w,
                         height: 14.h,
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                       ),
                       Container(
                         width: 10.w,
@@ -757,7 +758,7 @@ Widget postOption(BuildContext context, Post post, String groupId) {
                           fontFamily: AppFonts.Header2,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                         ),
                       ),
                     ],
@@ -813,19 +814,19 @@ Widget post(BuildContext context, Post post, Group group) {
                         fontFamily: AppFonts.Header2,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                       ),
                     ),
                     Row(
                       children: [
                         Text(
-                          timePost(post.publishedAt),
+                          handleTimeDifference2(post.publishedAt),
                           maxLines: 1,
                           style: TextStyle(
                             fontFamily: AppFonts.Header3,
                             fontSize: 10.sp,
                             fontWeight: FontWeight.normal,
-                            color: AppColors.primarySecondaryText,
+                            color: AppColors.textGrey,
                           ),
                         ),
                       ],
@@ -861,7 +862,7 @@ Widget post(BuildContext context, Post post, Group group) {
               fontFamily: AppFonts.Header2,
               fontSize: 12.sp,
               fontWeight: FontWeight.bold,
-              color: AppColors.primaryText,
+              color: AppColors.textBlack,
             ),
           ),
         ),
@@ -870,24 +871,21 @@ Widget post(BuildContext context, Post post, Group group) {
           child: Row(
             children: [
               SvgPicture.asset(
-                "assets/icons/tag.svg",
+                AppAssets.tagIconS,
                 width: 12.w,
                 height: 12.h,
-                color: AppColors.primarySecondaryText,
+                color: AppColors.textGrey,
               ),
-              for (int i = 0; i < post.tags.length; i += 1)
-                Container(
-                  margin: EdgeInsets.only(left: 2.w),
-                  child: Text(
-                    post.tags[i].name,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header3,
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.normal,
-                      color: Color.fromARGB(255, 5, 90, 188),
-                    ),
-                  ),
+              Container(
+                margin: EdgeInsets.only(left: 2.w),
+                width: 300.w,
+                child: Text(
+                  post.tags.map((tag) => tag.name).join(' '),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyle.xSmall().withColor(AppColors.tag),
                 ),
+              ),
             ],
           ),
         ),
@@ -903,7 +901,7 @@ Widget post(BuildContext context, Post post, Group group) {
               fontFamily: AppFonts.Header3,
               fontSize: 12.sp,
               fontWeight: FontWeight.normal,
-              color: AppColors.primaryText,
+              color: AppColors.textBlack,
             ),
           ),
         ),
@@ -955,7 +953,7 @@ Widget post(BuildContext context, Post post, Group group) {
                                 fontFamily: AppFonts.Header2,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
-                                color: AppColors.primarySecondaryText),
+                                color: AppColors.textGrey),
                           ),
                         ),
                       ],
@@ -980,7 +978,7 @@ Widget post(BuildContext context, Post post, Group group) {
                                 fontFamily: AppFonts.Header2,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
-                                color: AppColors.primaryElement),
+                                color: AppColors.element),
                           ),
                           Container(
                             width: 5.w,
@@ -1019,11 +1017,11 @@ Widget post(BuildContext context, Post post, Group group) {
                     Row(
                       children: [
                         Checkbox(
-                            checkColor: AppColors.primaryBackground,
+                            checkColor: AppColors.background,
                             fillColor: MaterialStateProperty.resolveWith<Color?>(
                                   (Set<MaterialState> states) {
                                 if (states.contains(MaterialState.selected)) {
-                                  return AppColors.primaryElement; // Selected color
+                                  return AppColors.element; // Selected color
                                 }
                                 return Colors.transparent; // Unselected color
                               },
@@ -1049,7 +1047,7 @@ Widget post(BuildContext context, Post post, Group group) {
                                 fontFamily: AppFonts.Header2,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
-                                color: AppColors.primarySecondaryText),
+                                color: AppColors.textGrey),
                           ),
                         ),
                       ],
@@ -1074,7 +1072,7 @@ Widget post(BuildContext context, Post post, Group group) {
                                 fontFamily: AppFonts.Header2,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
-                                color: AppColors.primaryElement),
+                                color: AppColors.element),
                           ),
                           Container(
                             width: 5.w,
@@ -1161,7 +1159,7 @@ Widget post(BuildContext context, Post post, Group group) {
                       "assets/icons/add.svg",
                       width: 14.w,
                       height: 14.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 5.w,
@@ -1172,7 +1170,7 @@ Widget post(BuildContext context, Post post, Group group) {
                           fontFamily: AppFonts.Header2,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.normal,
-                          color: AppColors.primarySecondaryText),
+                          color: AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -1475,7 +1473,7 @@ Widget post(BuildContext context, Post post, Group group) {
                                       fontFamily: AppFonts.Header2,
                                       fontSize: 32.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.primaryBackground,
+                                      color: AppColors.background,
                                     ),
                                   ),
                                 ),
@@ -1527,7 +1525,7 @@ Widget post(BuildContext context, Post post, Group group) {
                           fontFamily: AppFonts.Header2,
                           fontSize: 10.sp,
                           fontWeight: FontWeight.normal,
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                         ),
                       ),
                     ),
@@ -1553,7 +1551,7 @@ Widget post(BuildContext context, Post post, Group group) {
                       fontFamily: AppFonts.Header2,
                       fontSize: 10.sp,
                       fontWeight: FontWeight.normal,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ),
                 ),
@@ -1564,7 +1562,7 @@ Widget post(BuildContext context, Post post, Group group) {
         Container(
           margin: EdgeInsets.only(top: 5.h),
           height: 1.h,
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
         Container(
           width: MediaQuery.of(context).size.width,
@@ -1588,7 +1586,7 @@ Widget post(BuildContext context, Post post, Group group) {
                                 "assets/icons/like.svg",
                                 width: 20.w,
                                 height: 20.h,
-                                color: AppColors.primaryElement,
+                                color: AppColors.element,
                               ),
                               Container(
                                 padding: EdgeInsets.only(left: 5.w),
@@ -1598,7 +1596,7 @@ Widget post(BuildContext context, Post post, Group group) {
                                     fontFamily: AppFonts.Header2,
                                     fontSize: 10.sp,
                                     fontWeight: FontWeight.normal,
-                                    color: AppColors.primaryElement,
+                                    color: AppColors.element,
                                   ),
                                 ),
                               ),
@@ -1613,7 +1611,7 @@ Widget post(BuildContext context, Post post, Group group) {
                                 "assets/icons/like.svg",
                                 width: 20.w,
                                 height: 20.h,
-                                color: AppColors.primaryText,
+                                color: AppColors.textBlack,
                               ),
                               Container(
                                 padding: EdgeInsets.only(left: 5.w),
@@ -1623,7 +1621,7 @@ Widget post(BuildContext context, Post post, Group group) {
                                     fontFamily: AppFonts.Header2,
                                     fontSize: 10.sp,
                                     fontWeight: FontWeight.normal,
-                                    color: AppColors.primaryText,
+                                    color: AppColors.textBlack,
                                   ),
                                 ),
                               ),
@@ -1661,7 +1659,7 @@ Widget post(BuildContext context, Post post, Group group) {
                               fontFamily: AppFonts.Header2,
                               fontSize: 10.sp,
                               fontWeight: FontWeight.normal,
-                              color: AppColors.primaryText,
+                              color: AppColors.textBlack,
                             ),
                           ),
                         ),
@@ -1675,7 +1673,7 @@ Widget post(BuildContext context, Post post, Group group) {
         ),
         Container(
           height: 5.h,
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ],
     ),

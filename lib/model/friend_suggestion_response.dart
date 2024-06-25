@@ -7,6 +7,6 @@ class FriendSuggestionResponse {
 
   FriendSuggestionResponse.fromJson(Map<String, dynamic> json)
       : suggestions = (json["friends"] as List)
-      .map((i) => new FriendSuggestion.fromJson(i))
-      .toList();
+            .map((i) => new FriendSuggestion.fromJson(i))
+            .toList();
 }

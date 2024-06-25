@@ -39,7 +39,7 @@ class _WritePostGroupState extends State<WritePostGroup> {
         builder: (context, state) {
           return Scaffold(
               appBar: buildAppBar(context),
-              backgroundColor: AppColors.primaryBackground,
+              backgroundColor: AppColors.background,
               body: BlocProvider.of<WritePostGroupBloc>(context)
                   .state.page == 0 ? writePost(context, id) : editPicture(context)
           );

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
@@ -43,17 +44,17 @@ class EventDetailWriteChildrenCommentController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 51401) {
-          toastInfo(msg: "Không tìm thấy bài viết");
+          toastInfo(msg: translate('no_post_found'));
           return;
         }
         if (errorCode == 51402) {
-          toastInfo(msg: "Không tìm thấy bình luận cha");
+          toastInfo(msg: translate('no_father_comment_found'));
           return;
         }
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi gửi bình luận");
+      toastInfo(msg: translate('error_send_comment'));
     }
   }
 }

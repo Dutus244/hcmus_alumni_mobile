@@ -37,7 +37,7 @@ class _ApplicationPageState extends State<ApplicationPage> {
     return BlocBuilder<ApplicationPageBloc, ApplicationPageState>(
         builder: (context, state) {
       return Container(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         child: SafeArea(
           child: applicationPage(context, secondRoute),
         ),

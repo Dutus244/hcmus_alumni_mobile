@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/values/text_style.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/bloc/sign_in_blocs.dart';
 
 import '../../../common/values/colors.dart';
@@ -17,7 +19,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
           ? EdgeInsets.only(bottom: 20.h)
           : EdgeInsets.only(bottom: 10.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -47,17 +49,10 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                color: AppColors.primaryText,
-                fontFamily: AppFonts.Header3,
-                fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small(),
               autocorrect: false,
               obscureText: textType == "password" ? true : false,
               maxLength: 50,
@@ -77,14 +72,8 @@ Widget forgotPassword(BuildContext context) {
           Navigator.of(context).pushNamed("/forgotPassword");
         },
         child: Text(
-          "Quên mật khẩu?",
-          style: TextStyle(
-            fontFamily: AppFonts.Header2,
-            color: AppColors.primaryText,
-            decorationColor: AppColors.primaryText,
-            decoration: TextDecoration.underline,
-            fontSize: 10.sp,
-          ),
+          translate('forgot_password'),
+          style: AppTextStyle.xSmall().underline(),
         )),
   );
 }
@@ -100,11 +89,11 @@ Widget rememberLogin(BuildContext context, void Function(bool value)? func) {
           height: 16.w,
           margin: EdgeInsets.only(left: 0.w, right: 10.w),
           child: Checkbox(
-            checkColor: AppColors.primaryBackground,
+            checkColor: AppColors.background,
             fillColor: MaterialStateProperty.resolveWith<Color?>(
               (Set<MaterialState> states) {
                 if (states.contains(MaterialState.selected)) {
-                  return AppColors.primaryElement; // Selected color
+                  return AppColors.element; // Selected color
                 }
                 return Colors.transparent; // Unselected color
               },
@@ -115,14 +104,8 @@ Widget rememberLogin(BuildContext context, void Function(bool value)? func) {
         ),
         Container(
           child: Text(
-            "Ghi nhớ đăng nhập",
-            style: TextStyle(
-              fontFamily: AppFonts.Header2,
-              color: Colors.black,
-              decorationColor: Colors.black,
-              decoration: TextDecoration.underline,
-              fontSize: 10.sp,
-            ),
+            translate('remember_login'),
+            style: AppTextStyle.xSmall().underline(),
           ),
         )
       ],
@@ -147,8 +130,8 @@ Widget buildLogInAndRegButton(
           left: 25.w, right: 25.w, top: buttonType == "login" ? 50.h : 20.h),
       decoration: BoxDecoration(
         color: buttonType == "login"
-            ? AppColors.primaryElement
-            : AppColors.primarySecondaryElement,
+            ? AppColors.element
+            : AppColors.elementLight,
         borderRadius: BorderRadius.circular(15.w),
         border: Border.all(
           color: buttonType == "login"
@@ -159,13 +142,9 @@ Widget buildLogInAndRegButton(
       child: Center(
         child: Text(
           buttonName,
-          style: TextStyle(
-              fontFamily: AppFonts.Header1,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: buttonType == "login"
-                  ? AppColors.primaryBackground
-                  : AppColors.primaryElement),
+          style: AppTextStyle.medium().wSemiBold().withColor(buttonType == "login"
+              ? AppColors.background
+              : AppColors.element),
         ),
       ),
     ),
@@ -196,25 +175,20 @@ Widget signIn(BuildContext context) {
                   child: Container(
                     padding: EdgeInsets.only(bottom: 15.h),
                     child: Text(
-                      "ĐĂNG NHẬP",
-                      style: TextStyle(
-                        fontFamily: AppFonts.Header0,
-                        color: AppColors.primaryText,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17.sp,
-                      ),
+                      translate('signin').toUpperCase(),
+                      style: AppTextStyle.large().wSemiBold(),
                     ),
                   )),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField("Email *", "email", "email", (value) {
+              buildTextField(translate('email*'), "email", "email", (value) {
                 context.read<SignInBloc>().add(EmailEvent(value));
               }),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField("Mật khẩu *", "password", "lock",
+              buildTextField(translate('password*'), "password", "lock",
                       (value) {
                     context.read<SignInBloc>().add(PasswordEvent(value));
                   }),
@@ -238,8 +212,8 @@ Widget signIn(BuildContext context) {
             ],
           ),
         ),
-        buildLogInAndRegButton(context, "ĐĂNG NHẬP", "login"),
-        buildLogInAndRegButton(context, "ĐĂNG KÝ", "register"),
+        buildLogInAndRegButton(context, translate('signin').toUpperCase(), "login"),
+        buildLogInAndRegButton(context, translate('signup').toUpperCase(), "register"),
       ],
     ),
   );

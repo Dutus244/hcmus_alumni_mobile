@@ -44,7 +44,7 @@ class _EventDetailWriteChildrenCommentState
         EventDetailWriteChildrenCommentState>(builder: (context, state) {
       return Scaffold(
         appBar: buildAppBar(context),
-        backgroundColor: AppColors.primaryBackground,
+        backgroundColor: AppColors.background,
         body:
         eventDetailWriteChildrenComment(context, event, comment),
       );

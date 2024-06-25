@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:hcmus_alumni_mobile/model/faculty.dart';
 import 'package:hcmus_alumni_mobile/model/permissions.dart';
 import 'package:hcmus_alumni_mobile/model/picture.dart';
 import 'package:hcmus_alumni_mobile/model/picture_response.dart';

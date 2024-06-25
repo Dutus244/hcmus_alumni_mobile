@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:popover/popover.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../../common/function/handle_datetime.dart';
 import '../../../common/function/handle_percentage_vote.dart';
+import '../../../common/values/assets.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../../../common/widgets/flutter_toast.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
@@ -24,7 +26,7 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
@@ -32,7 +34,7 @@ AppBar buildAppBar(BuildContext context) {
           'Nguyễn Duy',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header3,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -107,7 +109,7 @@ Widget header(BuildContext context) {
             Text(
               'Nguyễn Duy',
               style: TextStyle(
-                fontFamily: AppFonts.Header0,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.bold,
                 fontSize: 20.sp,
                 color: AppColors.secondaryHeader,
@@ -137,9 +139,9 @@ Widget header(BuildContext context) {
                 margin: EdgeInsets.only(
                     left: 5.w, right: 5.w, top: 2.h, bottom: 2.h),
                 child: Text(
-                  'Tài khoản chưa xác thực',
+                  translate('unverified_account'),
                   style: TextStyle(
-                    fontFamily: AppFonts.Header2,
+                    fontFamily: AppFonts.Header3,
                     fontSize: 10.sp,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -157,19 +159,19 @@ Widget header(BuildContext context) {
             Text(
               '300',
               style: TextStyle(
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.bold,
                 fontSize: 14.sp,
                 color: AppColors.secondaryHeader,
               ),
             ),
             Text(
-              ' bạn bè',
+              ' ${translate('friends').toLowerCase()}',
               style: TextStyle(
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.normal,
                 fontSize: 14.sp,
-                color: AppColors.primarySecondaryText,
+                color: AppColors.textGrey,
               ),
             ),
           ],
@@ -203,18 +205,18 @@ Widget header(BuildContext context) {
                       "assets/icons/edit.svg",
                       width: 14.w,
                       height: 14.h,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                     Container(
                       width: 5.w,
                     ),
                     Text(
-                      'Chỉnh sửa trang cá nhân',
+                      translate('edit_profile'),
                       style: TextStyle(
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header3,
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                       ),
                     ),
                   ],
@@ -248,7 +250,7 @@ Widget header(BuildContext context) {
                       "assets/icons/option.svg",
                       width: 14.w,
                       height: 14.h,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ],
                 ),
@@ -260,7 +262,7 @@ Widget header(BuildContext context) {
       Container(
         margin: EdgeInsets.only(top: 10.h),
         height: 3.h,
-        color: AppColors.primarySecondaryElement,
+        color: AppColors.elementLight,
       ),
     ],
   );
@@ -274,12 +276,12 @@ Widget detail(BuildContext context) {
       Container(
         margin: EdgeInsets.only(left: 10.w, top: 10.h),
         child: Text(
-          'Chi tiết',
+          translate('detail'),
           style: TextStyle(
-            fontFamily: AppFonts.Header2,
+            fontFamily: AppFonts.Header3,
             fontSize: 16.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.primaryText,
+            color: AppColors.textBlack,
           ),
         ),
       ),
@@ -301,10 +303,10 @@ Widget detail(BuildContext context) {
               child: Text(
                 'Học tại Trường Đại học Khoa học Tự nhiên, Đại học Quốc gia TP.HCM',
                 style: TextStyle(
-                  fontFamily: AppFonts.Header2,
+                  fontFamily: AppFonts.Header3,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.normal,
-                  color: AppColors.primaryText,
+                  color: AppColors.textBlack,
                 ),
               ),
             )
@@ -329,10 +331,10 @@ Widget detail(BuildContext context) {
               child: Text(
                 'Đã làm việc tại Trường Đại học Khoa học Tự nhiên, Đại học Quốc gia TP.HCM',
                 style: TextStyle(
-                  fontFamily: AppFonts.Header2,
+                  fontFamily: AppFonts.Header3,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.normal,
-                  color: AppColors.primaryText,
+                  color: AppColors.textBlack,
                 ),
               ),
             )
@@ -363,12 +365,12 @@ Widget detail(BuildContext context) {
               Container(
                 width: 310.w,
                 child: Text(
-                  'Xem thông tin giới thiệu của bạn',
+                  translate('view_your_referral_information'),
                   style: TextStyle(
-                    fontFamily: AppFonts.Header2,
+                    fontFamily: AppFonts.Header3,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.normal,
-                    color: AppColors.primaryText,
+                    color: AppColors.textBlack,
                   ),
                 ),
               )
@@ -379,7 +381,7 @@ Widget detail(BuildContext context) {
       Container(
         margin: EdgeInsets.only(top: 10.h),
         height: 3.h,
-        color: AppColors.primarySecondaryElement,
+        color: AppColors.elementLight,
       ),
     ],
   );
@@ -393,24 +395,24 @@ Widget listFriend(BuildContext context) {
       Container(
         margin: EdgeInsets.only(left: 10.w, top: 10.h),
         child: Text(
-          'Bạn bè',
+          translate('friend'),
           style: TextStyle(
-            fontFamily: AppFonts.Header2,
+            fontFamily: AppFonts.Header3,
             fontSize: 16.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.primaryText,
+            color: AppColors.textBlack,
           ),
         ),
       ),
       Container(
         margin: EdgeInsets.only(left: 10.w, top: 2.h),
         child: Text(
-          '300 người bạn',
+          '300 ${translate('friends').toLowerCase()}',
           style: TextStyle(
             fontFamily: AppFonts.Header3,
             fontSize: 12.sp,
             fontWeight: FontWeight.normal,
-            color: AppColors.primarySecondaryText,
+            color: AppColors.textGrey,
           ),
         ),
       ),
@@ -444,10 +446,10 @@ Widget listFriend(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ),
                 )
@@ -478,10 +480,10 @@ Widget listFriend(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ),
                 )
@@ -512,10 +514,10 @@ Widget listFriend(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ),
                 )
@@ -554,10 +556,10 @@ Widget listFriend(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ),
                 )
@@ -588,10 +590,10 @@ Widget listFriend(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ),
                 )
@@ -622,10 +624,10 @@ Widget listFriend(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ),
                 )
@@ -654,9 +656,9 @@ Widget listFriend(BuildContext context) {
               margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
               child: Center(
                 child: Text(
-                  'Xem tất cả bạn bè',
+                  translate('see_all_friends'),
                   style: TextStyle(
-                    fontFamily: AppFonts.Header2,
+                    fontFamily: AppFonts.Header3,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -667,7 +669,7 @@ Widget listFriend(BuildContext context) {
       Container(
         margin: EdgeInsets.only(top: 10.h),
         height: 3.h,
-        color: AppColors.primarySecondaryElement,
+        color: AppColors.elementLight,
       ),
     ],
   );
@@ -692,8 +694,8 @@ Widget buildButtonChooseNewsOrEvent(
             margin: EdgeInsets.only(left: 10.w),
             decoration: BoxDecoration(
               color: BlocProvider.of<MyProfilePageBloc>(context).state.page == 1
-                  ? AppColors.primarySecondaryElement
-                  : AppColors.primaryElement,
+                  ? AppColors.elementLight
+                  : AppColors.element,
               borderRadius: BorderRadius.circular(15.w),
               border: Border.all(
                 color: Colors.transparent,
@@ -701,17 +703,17 @@ Widget buildButtonChooseNewsOrEvent(
             ),
             child: Center(
               child: Text(
-                'Tư vấn & cố vấn',
+                translate('advise'),
                 style: TextStyle(
-                    fontFamily: AppFonts.Header1,
+                    fontFamily: AppFonts.Header3,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color: BlocProvider.of<MyProfilePageBloc>(context)
                                 .state
                                 .page ==
                             1
-                        ? AppColors.primaryElement
-                        : AppColors.primaryBackground),
+                        ? AppColors.element
+                        : AppColors.background),
               ),
             ),
           ),
@@ -728,8 +730,8 @@ Widget buildButtonChooseNewsOrEvent(
             margin: EdgeInsets.only(right: 10.w),
             decoration: BoxDecoration(
               color: BlocProvider.of<MyProfilePageBloc>(context).state.page == 1
-                  ? AppColors.primaryElement
-                  : AppColors.primarySecondaryElement,
+                  ? AppColors.element
+                  : AppColors.elementLight,
               borderRadius: BorderRadius.circular(15.w),
               border: Border.all(
                 color: Colors.transparent,
@@ -737,17 +739,17 @@ Widget buildButtonChooseNewsOrEvent(
             ),
             child: Center(
               child: Text(
-                'Sự kiện đã tham gia',
+                translate('events_participated'),
                 style: TextStyle(
-                    fontFamily: AppFonts.Header1,
+                    fontFamily: AppFonts.Header3,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color: BlocProvider.of<MyProfilePageBloc>(context)
                                 .state
                                 .page ==
                             1
-                        ? AppColors.primaryBackground
-                        : AppColors.primaryElement),
+                        ? AppColors.background
+                        : AppColors.element),
               ),
             ),
           ),
@@ -807,12 +809,12 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có dữ liệu',
+                          translate('no_event'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header3,
                           ),
                         ),
                       )),
@@ -894,19 +896,19 @@ Widget event(BuildContext context, Event event) {
                       "assets/icons/clock.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 2.w,
                     ),
                     Text(
-                      handleDatetime(event.publishedAt),
+                      handleDateTime1(event.publishedAt),
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header3,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                       ),
                     ),
                   ],
@@ -920,7 +922,7 @@ Widget event(BuildContext context, Event event) {
                       "assets/icons/view.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 2.w,
@@ -932,7 +934,7 @@ Widget event(BuildContext context, Event event) {
                         fontFamily: AppFonts.Header3,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                       ),
                     ),
                   ],
@@ -946,7 +948,7 @@ Widget event(BuildContext context, Event event) {
                       "assets/icons/participant.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 2.w,
@@ -958,7 +960,7 @@ Widget event(BuildContext context, Event event) {
                         fontFamily: AppFonts.Header3,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                       ),
                     ),
                   ],
@@ -974,7 +976,7 @@ Widget event(BuildContext context, Event event) {
                   "assets/icons/tag.svg",
                   width: 12.w,
                   height: 12.h,
-                  color: AppColors.primarySecondaryText,
+                  color: AppColors.textGrey,
                 ),
                 for (int i = 0; i < event.tags.length; i += 1)
                   Container(
@@ -998,10 +1000,10 @@ Widget event(BuildContext context, Event event) {
               event.title,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header3,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
               ),
             ),
           ),
@@ -1020,7 +1022,7 @@ Widget event(BuildContext context, Event event) {
                     width: 5.w,
                   ),
                   Text(
-                    'Địa điểm:',
+                    '${translate('location')}:',
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: AppFonts.Header3,
@@ -1063,7 +1065,7 @@ Widget event(BuildContext context, Event event) {
                     width: 5.w,
                   ),
                   Text(
-                    'Thời gian:',
+                    '${translate('time')}:',
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: 'Roboto',
@@ -1076,7 +1078,7 @@ Widget event(BuildContext context, Event event) {
                     width: 5.w,
                   ),
                   Text(
-                    handleDatetime(event.organizationTime),
+                    handleDateTime1(event.organizationTime),
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: 'Roboto',
@@ -1113,7 +1115,7 @@ Widget event(BuildContext context, Event event) {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
                       shape: BoxShape.rectangle,
-                      color: AppColors.primaryElement,
+                      color: AppColors.element,
                     ),
                     child: Text(
                       event.faculty.name,
@@ -1134,7 +1136,7 @@ Widget event(BuildContext context, Event event) {
           ),
           Container(
             height: 1.h,
-            color: AppColors.primarySecondaryElement,
+            color: AppColors.elementLight,
           ),
           Container(
             height: 10.h,
@@ -1195,12 +1197,12 @@ Widget listPosts(BuildContext context, ScrollController _scrollController) {
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có bài viết',
+                          translate('no_posts'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header3,
                           ),
                         ),
                       )),
@@ -1289,18 +1291,18 @@ Widget postOption(BuildContext context, Post post) {
                           "assets/icons/edit.svg",
                           width: 14.w,
                           height: 14.h,
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                         ),
                         Container(
                           width: 10.w,
                         ),
                         Text(
-                          'Chỉnh sửa bài viết',
+                          translate('edit_post'),
                           style: TextStyle(
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header3,
                             fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primaryText,
+                            color: AppColors.textBlack,
                           ),
                         ),
                       ],
@@ -1325,18 +1327,18 @@ Widget postOption(BuildContext context, Post post) {
                         "assets/icons/trash.svg",
                         width: 14.w,
                         height: 14.h,
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                       ),
                       Container(
                         width: 10.w,
                       ),
                       Text(
-                        'Xoá bài viết',
+                        translate('delete_post'),
                         style: TextStyle(
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header3,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                         ),
                       ),
                     ],
@@ -1390,22 +1392,22 @@ Widget post(BuildContext context, Post post) {
                       post.creator.fullName,
                       maxLines: 1,
                       style: TextStyle(
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header3,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                       ),
                     ),
                     Row(
                       children: [
                         Text(
-                          timePost(post.publishedAt),
+                          handleTimeDifference2(post.publishedAt),
                           maxLines: 1,
                           style: TextStyle(
                             fontFamily: AppFonts.Header3,
                             fontSize: 10.sp,
                             fontWeight: FontWeight.normal,
-                            color: AppColors.primarySecondaryText,
+                            color: AppColors.textGrey,
                           ),
                         ),
                       ],
@@ -1439,10 +1441,10 @@ Widget post(BuildContext context, Post post) {
             post.title,
             textAlign: TextAlign.left,
             style: TextStyle(
-              fontFamily: AppFonts.Header2,
+              fontFamily: AppFonts.Header3,
               fontSize: 12.sp,
               fontWeight: FontWeight.bold,
-              color: AppColors.primaryText,
+              color: AppColors.textBlack,
             ),
           ),
         ),
@@ -1451,24 +1453,21 @@ Widget post(BuildContext context, Post post) {
           child: Row(
             children: [
               SvgPicture.asset(
-                "assets/icons/tag.svg",
+                AppAssets.tagIconS,
                 width: 12.w,
                 height: 12.h,
-                color: AppColors.primarySecondaryText,
+                color: AppColors.textGrey,
               ),
-              for (int i = 0; i < post.tags.length; i += 1)
-                Container(
-                  margin: EdgeInsets.only(left: 2.w),
-                  child: Text(
-                    post.tags[i].name,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header3,
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.normal,
-                      color: Color.fromARGB(255, 5, 90, 188),
-                    ),
-                  ),
+              Container(
+                margin: EdgeInsets.only(left: 2.w),
+                width: 300.w,
+                child: Text(
+                  post.tags.map((tag) => tag.name).join(' '),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyle.xSmall().withColor(AppColors.tag),
                 ),
+              ),
             ],
           ),
         ),
@@ -1478,13 +1477,13 @@ Widget post(BuildContext context, Post post) {
           child: ExpandableText(
             post.content,
             maxLines: 4,
-            expandText: 'Xem thêm',
-            collapseText: 'Thu gọn',
+            expandText: translate('see_more'),
+            collapseText: translate('collapse'),
             style: TextStyle(
               fontFamily: AppFonts.Header3,
               fontSize: 12.sp,
               fontWeight: FontWeight.normal,
-              color: AppColors.primaryText,
+              color: AppColors.textBlack,
             ),
           ),
         ),
@@ -1536,10 +1535,10 @@ Widget post(BuildContext context, Post post) {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header3,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
-                                color: AppColors.primarySecondaryText),
+                                color: AppColors.textGrey),
                           ),
                         ),
                       ],
@@ -1560,10 +1559,10 @@ Widget post(BuildContext context, Post post) {
                           Text(
                             '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
                             style: TextStyle(
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header3,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
-                                color: AppColors.primaryElement),
+                                color: AppColors.element),
                           ),
                           Container(
                             width: 5.w,
@@ -1603,13 +1602,13 @@ Widget post(BuildContext context, Post post) {
                       children: [
                         if (Global.storageService.permissionCounselVote())
                           Checkbox(
-                            checkColor: AppColors.primaryBackground,
+                            checkColor: AppColors.background,
                             fillColor:
                                 MaterialStateProperty.resolveWith<Color?>(
                               (Set<MaterialState> states) {
                                 if (states.contains(MaterialState.selected)) {
                                   return AppColors
-                                      .primaryElement; // Selected color
+                                      .element; // Selected color
                                 }
                                 return Colors.transparent; // Unselected color
                               },
@@ -1634,10 +1633,10 @@ Widget post(BuildContext context, Post post) {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header3,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
-                                color: AppColors.primarySecondaryText),
+                                color: AppColors.textGrey),
                           ),
                         ),
                       ],
@@ -1658,10 +1657,10 @@ Widget post(BuildContext context, Post post) {
                           Text(
                             '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
                             style: TextStyle(
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header3,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
-                                color: AppColors.primaryElement),
+                                color: AppColors.element),
                           ),
                           Container(
                             width: 5.w,
@@ -1682,7 +1681,7 @@ Widget post(BuildContext context, Post post) {
           GestureDetector(
             onTap: () {
               if (post.votes.length >= 10) {
-                toastInfo(msg: "Số lượng lựa chọn không được vượt quá 10");
+                toastInfo(msg: translate('option_above_10'));
                 return;
               }
               TextEditingController textController = TextEditingController();
@@ -1690,14 +1689,14 @@ Widget post(BuildContext context, Post post) {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Thêm lựa chọn'),
+                  title: Text(translate('add_option')),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       TextField(
                         controller: textController,
                         decoration: InputDecoration(
-                          hintText: 'Thêm lựa chọn mới',
+                          hintText: translate('add_option'),
                         ),
                       ),
                     ],
@@ -1705,14 +1704,14 @@ Widget post(BuildContext context, Post post) {
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: Text('Huỷ'),
+                      child: Text(translate('cancel')),
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, {
                         'confirmed': true,
                         'vote': textController.text,
                       }),
-                      child: Text('Thêm'),
+                      child: Text(translate('add')),
                     ),
                   ],
                 ),
@@ -1744,18 +1743,18 @@ Widget post(BuildContext context, Post post) {
                       "assets/icons/add.svg",
                       width: 14.w,
                       height: 14.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 5.w,
                     ),
                     Text(
-                      'Thêm lựa chọn',
+                      translate('add_option'),
                       style: TextStyle(
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header3,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.normal,
-                          color: AppColors.primarySecondaryText),
+                          color: AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -2050,10 +2049,10 @@ Widget post(BuildContext context, Post post) {
                                   child: Text(
                                     '+1',
                                     style: TextStyle(
-                                      fontFamily: AppFonts.Header2,
+                                      fontFamily: AppFonts.Header3,
                                       fontSize: 32.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.primaryBackground,
+                                      color: AppColors.background,
                                     ),
                                   ),
                                 ),
@@ -2101,10 +2100,10 @@ Widget post(BuildContext context, Post post) {
                       child: Text(
                         post.reactionCount.toString(),
                         style: TextStyle(
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header3,
                           fontSize: 10.sp,
                           fontWeight: FontWeight.normal,
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                         ),
                       ),
                     ),
@@ -2124,12 +2123,12 @@ Widget post(BuildContext context, Post post) {
                 child: Container(
                   padding: EdgeInsets.only(right: 10.w),
                   child: Text(
-                    '${post.childrenCommentNumber} bình luận',
+                    '${post.childrenCommentNumber} ${translate('comments').toLowerCase()}',
                     style: TextStyle(
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                       fontSize: 10.sp,
                       fontWeight: FontWeight.normal,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ),
                 ),
@@ -2144,7 +2143,7 @@ Widget post(BuildContext context, Post post) {
               Container(
                 margin: EdgeInsets.only(top: 5.h),
                 height: 1.h,
-                color: AppColors.primarySecondaryElement,
+                color: AppColors.elementLight,
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
@@ -2169,17 +2168,17 @@ Widget post(BuildContext context, Post post) {
                                         "assets/icons/like.svg",
                                         width: 20.w,
                                         height: 20.h,
-                                        color: AppColors.primaryElement,
+                                        color: AppColors.element,
                                       ),
                                       Container(
                                         padding: EdgeInsets.only(left: 5.w),
                                         child: Text(
-                                          'Thích',
+                                          translate('like'),
                                           style: TextStyle(
-                                            fontFamily: AppFonts.Header2,
+                                            fontFamily: AppFonts.Header3,
                                             fontSize: 10.sp,
                                             fontWeight: FontWeight.normal,
-                                            color: AppColors.primaryElement,
+                                            color: AppColors.element,
                                           ),
                                         ),
                                       ),
@@ -2194,17 +2193,17 @@ Widget post(BuildContext context, Post post) {
                                         "assets/icons/like.svg",
                                         width: 20.w,
                                         height: 20.h,
-                                        color: AppColors.primaryText,
+                                        color: AppColors.textBlack,
                                       ),
                                       Container(
                                         padding: EdgeInsets.only(left: 5.w),
                                         child: Text(
-                                          'Thích',
+                                          translate('like'),
                                           style: TextStyle(
-                                            fontFamily: AppFonts.Header2,
+                                            fontFamily: AppFonts.Header3,
                                             fontSize: 10.sp,
                                             fontWeight: FontWeight.normal,
-                                            color: AppColors.primaryText,
+                                            color: AppColors.textBlack,
                                           ),
                                         ),
                                       ),
@@ -2241,12 +2240,12 @@ Widget post(BuildContext context, Post post) {
                                 Container(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: Text(
-                                    'Bình luận',
+                                    translate('comment'),
                                     style: TextStyle(
-                                      fontFamily: AppFonts.Header2,
+                                      fontFamily: AppFonts.Header3,
                                       fontSize: 10.sp,
                                       fontWeight: FontWeight.normal,
-                                      color: AppColors.primaryText,
+                                      color: AppColors.textBlack,
                                     ),
                                   ),
                                 ),
@@ -2263,7 +2262,7 @@ Widget post(BuildContext context, Post post) {
         Container(
           margin: EdgeInsets.only(top: 5.h),
           height: 5.h,
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ],
     ),

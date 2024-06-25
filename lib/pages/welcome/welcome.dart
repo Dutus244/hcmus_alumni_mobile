@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/values/assets.dart';
+import 'package:hcmus_alumni_mobile/common/values/text_style.dart';
 
 import '../../common/values/colors.dart';
 import '../../common/values/fonts.dart';
@@ -30,16 +33,16 @@ class _WelcomeState extends State<Welcome> {
         final shouldExit = await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Thoát ứng dụng'),
-            content: Text('Bạn có muốn thoát ứng dụng?'),
+            title: Text(translate('exit_application')),
+            content: Text(translate('exit_application_question')),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: Text('Huỷ'),
+                child: Text(translate('cancel')),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: Text('Thoát'),
+                child: Text(translate('exit')),
               ),
             ],
           ),
@@ -54,7 +57,7 @@ class _WelcomeState extends State<Welcome> {
         return shouldExit ?? false;
       },
       child: Container(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         child: Scaffold(body: BlocBuilder<WelcomeBloc, WelcomeState>(
           builder: (context, state) {
             return Container(
@@ -73,35 +76,35 @@ class _WelcomeState extends State<Welcome> {
                       _page(
                           1,
                           context,
-                          "Tiếp tục",
-                          "Chào mừng trở lại!",
-                          "Khám phá các tính năng và cơ hội mới với cộng đồng cựu sinh viên.",
-                          "assets/images/welcome1.png"),
+                          translate('continue'),
+                          translate('welcome_title_1'),
+                          translate('welcome_sub_title_1'),
+                          AppAssets.welcomeImage1),
                       _page(
                           2,
                           context,
-                          "Tiếp tục",
-                          "Khám phá ứng dụng mới",
-                          "Tìm hiểu cách ứng dụng có thể giúp bạn duy trì kết nối và phát triển sau đại học.",
-                          "assets/images/welcome2.png"),
+                          translate('continue'),
+                          translate('welcome_title_2'),
+                          translate('welcome_sub_title_2'),
+                          AppAssets.welcomeImage2),
                       _page(
                           3,
                           context,
-                          "Bắt đầu",
-                          "Bắt đầu hành trình của bạn",
-                          "Đăng nhập hoặc đăng ký để trải nghiệm các tính năng đầy đủ của ứng dụng.",
-                          "assets/images/welcome3.png"),
+                          translate('start'),
+                          translate('welcome_title_3'),
+                          translate('welcome_sub_title_3'),
+                          AppAssets.welcomeImage3),
                     ],
                   ),
                   Positioned(
-                      bottom: 100.h,
+                      bottom: 60.h,
                       child: DotsIndicator(
                         position: state.page,
                         dotsCount: 3,
                         mainAxisAlignment: MainAxisAlignment.center,
                         decorator: DotsDecorator(
                             color: AppColors.primaryThirdElementText,
-                            activeColor: AppColors.primaryElement,
+                            activeColor: AppColors.element,
                             size: const Size.square(8.0),
                             activeSize: const Size(18.0, 8.0),
                             activeShape: RoundedRectangleBorder(
@@ -132,24 +135,16 @@ class _WelcomeState extends State<Welcome> {
         Container(
           child: Text(
             "${title}",
-            style: TextStyle(
-                fontFamily: AppFonts.Header0,
-                color: AppColors.primaryText,
-                fontSize: 24.sp,
-                fontWeight: FontWeight.bold),
+            style: AppTextStyle.xxLarge().wSemiBold(),
           ),
         ),
         Container(
           width: 375.w,
-          padding: EdgeInsets.only(left: 30.w, right: 30.w),
+          padding: EdgeInsets.only(left: 30.w, right: 30.w, top: 3.h),
           child: Text(
             "${subTitle}",
             textAlign: TextAlign.center,
-            style: TextStyle(
-                fontFamily: AppFonts.Header2,
-                color: AppColors.primaryText,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.normal),
+            style: AppTextStyle.base(),
           ),
         ),
         GestureDetector(
@@ -171,17 +166,15 @@ class _WelcomeState extends State<Welcome> {
             width: 325.w,
             height: 50.h,
             decoration: BoxDecoration(
-              color: AppColors.primaryElement,
+              color: AppColors.element,
               borderRadius: BorderRadius.all(Radius.circular(15.w)),
             ),
             child: Center(
               child: Text(
                 "${buttonName}",
-                style: TextStyle(
-                    fontFamily: AppFonts.Header1,
-                    color: Colors.white,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold),
+                style: AppTextStyle.medium()
+                    .wSemiBold()
+                    .withColor(AppColors.background),
               ),
             ),
           ),

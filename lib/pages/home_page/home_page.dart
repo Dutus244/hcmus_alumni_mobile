@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
             BlocBuilder<HomePageBloc, HomePageState>(builder: (context, state) {
           return Scaffold(
             appBar: buildAppBar(context, 'Trang chủ'),
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: homePage(context),
           );
         }));

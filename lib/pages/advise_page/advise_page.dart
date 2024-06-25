@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/advise_page/widgets/advise_page_widget.dart';
 
 import '../../common/values/colors.dart';
-import '../../common/widgets/app_bar.dart';
 import 'advise_page_controller.dart';
 import 'bloc/advise_page_blocs.dart';
 import 'bloc/advise_page_states.dart';
@@ -54,16 +54,16 @@ class _AdvisePageState extends State<AdvisePage> {
         final shouldExit = await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Thoát ứng dụng'),
-            content: Text('Bạn có muốn thoát ứng dụng?'),
+            title: Text(translate('exit_application')),
+            content: Text(translate('exit_application_question')),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: Text('Huỷ'),
+                child: Text(translate('cancel')),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: Text('Thoát'),
+                child: Text(translate('exit')),
               ),
             ],
           ),
@@ -80,8 +80,8 @@ class _AdvisePageState extends State<AdvisePage> {
       child: BlocBuilder<AdvisePageBloc, AdvisePageState>(
           builder: (context, state) {
         return Scaffold(
-          appBar: buildAppBar(context, 'Tư vấn & Cố vấn'),
-          backgroundColor: AppColors.primaryBackground,
+          appBar: buildAppBar(context),
+          backgroundColor: AppColors.background,
           body: listPost(context, _scrollController),
         );
       }),

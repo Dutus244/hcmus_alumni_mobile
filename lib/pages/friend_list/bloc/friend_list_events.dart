@@ -1,5 +1,4 @@
 import 'package:hcmus_alumni_mobile/model/friend.dart';
-import 'package:hcmus_alumni_mobile/model/group.dart';
 
 import 'friend_list_states.dart';
 
@@ -32,15 +31,15 @@ class FriendsEvent extends FriendListEvent {
 }
 
 class IndexFriendEvent extends FriendListEvent {
-  final int indexGroup;
+  final int indexFriend;
 
-  const IndexFriendEvent(this.indexGroup);
+  const IndexFriendEvent(this.indexFriend);
 }
 
 class HasReachedMaxFriendEvent extends FriendListEvent {
-  final bool hasReachedMaxGroup;
+  final bool hasReachedMaxFriend;
 
-  const HasReachedMaxFriendEvent(this.hasReachedMaxGroup);
+  const HasReachedMaxFriendEvent(this.hasReachedMaxFriend);
 }
 
 class ClearResultEvent extends FriendListEvent {}

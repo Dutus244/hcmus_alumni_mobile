@@ -14,6 +14,12 @@ import 'package:hcmus_alumni_mobile/pages/application_page/bloc/application_page
 import 'package:hcmus_alumni_mobile/pages/change_password/bloc/change_password_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/change_password_forgot/bloc/change_password_forgot_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/change_password_forgot/change_password_forgot.dart';
+import 'package:hcmus_alumni_mobile/pages/chat_create/bloc/chat_create_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/chat_create/chat_create.dart';
+import 'package:hcmus_alumni_mobile/pages/chat_detail/bloc/chat_detail_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/chat_detail/chat_detail.dart';
+import 'package:hcmus_alumni_mobile/pages/chat_page/bloc/chat_page_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/chat_page/chat_page.dart';
 import 'package:hcmus_alumni_mobile/pages/edit_post_advise/bloc/edit_post_advise_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/email_verification/bloc/email_verification_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/email_verification/email_verification.dart';
@@ -77,6 +83,7 @@ import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_b
 import 'package:hcmus_alumni_mobile/pages/news_event_page/news_event_page.dart';
 import 'package:hcmus_alumni_mobile/pages/notification_page/bloc/notification_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/notification_page/notification_page.dart';
+import 'package:hcmus_alumni_mobile/pages/option_page/bloc/option_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/option_page/option_page.dart';
 import 'package:hcmus_alumni_mobile/pages/other_profile_detail/other_profile_detail.dart';
 import 'package:hcmus_alumni_mobile/pages/other_profile_page/bloc/other_profile_page_blocs.dart';
@@ -425,21 +432,40 @@ class AppPages {
           page: const OtherProfileDetail()),
       PageEntity(
           route: AppRoutes.OPTION_PAGE,
-          page: const OptionPage()),
+          page: const OptionPage(),
+          bloc: BlocProvider(
+            create: (_) => OptionPageBloc(),
+          )),
       PageEntity(
           route: AppRoutes.CHANGE_PASSWORD,
           page: const ChangePassword(),
           bloc: BlocProvider(
             create: (_) => ChangePasswordBloc(),
           )),
-      PageEntity(
-          route: AppRoutes.TERM_OF_SERVICE,
-          page: const TermOfService()),
+      PageEntity(route: AppRoutes.TERM_OF_SERVICE, page: const TermOfService()),
       PageEntity(
           route: AppRoutes.FRIEND_LIST,
           page: const FriendList(),
           bloc: BlocProvider(
             create: (_) => FriendListBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.CHAT_PAGE,
+          page: const ChatPage(),
+          bloc: BlocProvider(
+            create: (_) => ChatPageBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.CHAT_DETAIL,
+          page: const ChatDetail(),
+          bloc: BlocProvider(
+            create: (_) => ChatDetailBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.CHAT_CREATE,
+          page: const ChatCreate(),
+          bloc: BlocProvider(
+            create: (_) => ChatCreateBloc(),
           )),
     ];
   }

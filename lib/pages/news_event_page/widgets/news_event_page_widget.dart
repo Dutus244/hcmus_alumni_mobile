@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/model/event.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_events.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_states.dart';
-import 'package:hcmus_alumni_mobile/pages/news_event_page/news_event_page_controller.dart';
 
+import '../../../common/values/assets.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../model/news.dart';
 
@@ -34,8 +36,8 @@ Widget buildButtonChooseNewsOrEvent(
             margin: EdgeInsets.only(left: 10.w),
             decoration: BoxDecoration(
               color: BlocProvider.of<NewsEventPageBloc>(context).state.page == 1
-                  ? AppColors.primarySecondaryElement
-                  : AppColors.primaryElement,
+                  ? AppColors.elementLight
+                  : AppColors.element,
               borderRadius: BorderRadius.circular(15.w),
               border: Border.all(
                 color: Colors.transparent,
@@ -43,17 +45,17 @@ Widget buildButtonChooseNewsOrEvent(
             ),
             child: Center(
               child: Text(
-                'Tin tức',
+                translate('news'),
                 style: TextStyle(
-                    fontFamily: AppFonts.Header1,
+                    fontFamily: AppFonts.Header3,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color: BlocProvider.of<NewsEventPageBloc>(context)
                                 .state
                                 .page ==
                             1
-                        ? AppColors.primaryElement
-                        : AppColors.primaryBackground),
+                        ? AppColors.element
+                        : AppColors.background),
               ),
             ),
           ),
@@ -70,8 +72,8 @@ Widget buildButtonChooseNewsOrEvent(
             margin: EdgeInsets.only(right: 10.w),
             decoration: BoxDecoration(
               color: BlocProvider.of<NewsEventPageBloc>(context).state.page == 1
-                  ? AppColors.primaryElement
-                  : AppColors.primarySecondaryElement,
+                  ? AppColors.element
+                  : AppColors.elementLight,
               borderRadius: BorderRadius.circular(15.w),
               border: Border.all(
                 color: Colors.transparent,
@@ -79,17 +81,17 @@ Widget buildButtonChooseNewsOrEvent(
             ),
             child: Center(
               child: Text(
-                'Sự kiện',
+                translate('event'),
                 style: TextStyle(
-                    fontFamily: AppFonts.Header1,
+                    fontFamily: AppFonts.Header3,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color: BlocProvider.of<NewsEventPageBloc>(context)
                                 .state
                                 .page ==
                             1
-                        ? AppColors.primaryBackground
-                        : AppColors.primaryElement),
+                        ? AppColors.background
+                        : AppColors.element),
               ),
             ),
           ),
@@ -134,12 +136,12 @@ Widget listNews(BuildContext context, ScrollController _scrollController) {
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có dữ liệu',
+                          translate('no_news'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header3,
                           ),
                         ),
                       )),
@@ -216,19 +218,19 @@ Widget news(BuildContext context, News news) {
                       "assets/icons/clock.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 2.w,
                     ),
                     Text(
-                      handleDatetime(news.publishedAt),
+                      handleDateTime1(news.publishedAt),
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header3,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                       ),
                     ),
                   ],
@@ -242,7 +244,7 @@ Widget news(BuildContext context, News news) {
                       "assets/icons/view.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 2.w,
@@ -254,7 +256,7 @@ Widget news(BuildContext context, News news) {
                         fontFamily: AppFonts.Header3,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                       ),
                     ),
                   ],
@@ -267,24 +269,21 @@ Widget news(BuildContext context, News news) {
             child: Row(
               children: [
                 SvgPicture.asset(
-                  "assets/icons/tag.svg",
+                  AppAssets.tagIconS,
                   width: 12.w,
                   height: 12.h,
-                  color: AppColors.primarySecondaryText,
+                  color: AppColors.textGrey,
                 ),
-                for (int i = 0; i < news.tags.length; i += 1)
-                  Container(
-                    margin: EdgeInsets.only(left: 2.w),
-                    child: Text(
-                      news.tags[i].name,
-                      style: TextStyle(
-                        fontFamily: AppFonts.Header3,
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.normal,
-                        color: Color.fromARGB(255, 5, 90, 188),
-                      ),
-                    ),
+                Container(
+                  margin: EdgeInsets.only(left: 2.w),
+                  width: 300.w,
+                  child: Text(
+                    news.tags.map((tag) => tag.name).join(' '),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyle.xSmall().withColor(AppColors.tag),
                   ),
+                ),
               ],
             ),
           ),
@@ -294,10 +293,10 @@ Widget news(BuildContext context, News news) {
               news.title,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header3,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
               ),
             ),
           ),
@@ -312,7 +311,7 @@ Widget news(BuildContext context, News news) {
                 fontFamily: AppFonts.Header3,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.normal,
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
               ),
             ),
           ),
@@ -342,13 +341,13 @@ Widget news(BuildContext context, News news) {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
                       shape: BoxShape.rectangle,
-                      color: AppColors.primaryElement,
+                      color: AppColors.element,
                     ),
                     child: Text(
                       news.faculty.name,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 11.sp,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header3,
                       ),
@@ -363,7 +362,7 @@ Widget news(BuildContext context, News news) {
           ),
           Container(
             height: 1.h,
-            color: AppColors.primarySecondaryElement,
+            color: AppColors.elementLight,
           ),
           Container(
             height: 10.h,
@@ -410,12 +409,12 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có dữ liệu',
+                          translate('no_event'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header3,
                           ),
                         ),
                       )),
@@ -492,19 +491,19 @@ Widget event(BuildContext context, Event event) {
                       "assets/icons/clock.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 2.w,
                     ),
                     Text(
-                      handleDatetime(event.publishedAt),
+                      handleDateTime1(event.publishedAt),
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header3,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                       ),
                     ),
                   ],
@@ -518,7 +517,7 @@ Widget event(BuildContext context, Event event) {
                       "assets/icons/view.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 2.w,
@@ -530,7 +529,7 @@ Widget event(BuildContext context, Event event) {
                         fontFamily: AppFonts.Header3,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                       ),
                     ),
                   ],
@@ -544,7 +543,7 @@ Widget event(BuildContext context, Event event) {
                       "assets/icons/participant.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 2.w,
@@ -556,7 +555,7 @@ Widget event(BuildContext context, Event event) {
                         fontFamily: AppFonts.Header3,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                       ),
                     ),
                   ],
@@ -569,24 +568,21 @@ Widget event(BuildContext context, Event event) {
             child: Row(
               children: [
                 SvgPicture.asset(
-                  "assets/icons/tag.svg",
+                  AppAssets.tagIconS,
                   width: 12.w,
                   height: 12.h,
-                  color: AppColors.primarySecondaryText,
+                  color: AppColors.textGrey,
                 ),
-                for (int i = 0; i < event.tags.length; i += 1)
-                  Container(
-                    margin: EdgeInsets.only(left: 2.w),
-                    child: Text(
-                      event.tags[i].name,
-                      style: TextStyle(
-                        fontFamily: AppFonts.Header3,
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.normal,
-                        color: Color.fromARGB(255, 5, 90, 188),
-                      ),
-                    ),
+                Container(
+                  margin: EdgeInsets.only(left: 2.w),
+                  width: 300.w,
+                  child: Text(
+                    event.tags.map((tag) => tag.name).join(' '),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyle.xSmall().withColor(AppColors.tag),
                   ),
+                ),
               ],
             ),
           ),
@@ -596,10 +592,10 @@ Widget event(BuildContext context, Event event) {
               event.title,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header3,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
               ),
             ),
           ),
@@ -618,7 +614,7 @@ Widget event(BuildContext context, Event event) {
                     width: 5.w,
                   ),
                   Text(
-                    'Địa điểm:',
+                    '${translate('location')}:',
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: AppFonts.Header3,
@@ -661,7 +657,7 @@ Widget event(BuildContext context, Event event) {
                     width: 5.w,
                   ),
                   Text(
-                    'Thời gian:',
+                    '${translate('time')}:',
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: 'Roboto',
@@ -674,7 +670,7 @@ Widget event(BuildContext context, Event event) {
                     width: 5.w,
                   ),
                   Text(
-                    handleDatetime(event.organizationTime),
+                    handleDateTime1(event.organizationTime),
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: 'Roboto',
@@ -711,13 +707,13 @@ Widget event(BuildContext context, Event event) {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
                       shape: BoxShape.rectangle,
-                      color: AppColors.primaryElement,
+                      color: AppColors.element,
                     ),
                     child: Text(
                       event.faculty.name,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 11.sp,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header3,
                       ),
@@ -732,7 +728,7 @@ Widget event(BuildContext context, Event event) {
           ),
           Container(
             height: 1.h,
-            color: AppColors.primarySecondaryElement,
+            color: AppColors.elementLight,
           ),
           Container(
             height: 10.h,

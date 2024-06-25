@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_verification/bloc/alumni_verification_blocs.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -16,7 +17,7 @@ class AlumniVerificationController {
 
   const AlumniVerificationController({required this.context});
 
-  Future<void> hanldeAlumniVerification(String fullName, File? avatar) async {
+  Future<void> handleAlumniVerification(String fullName, File? avatar) async {
     final state = context.read<AlumniVerificationBloc>().state;
     String socialMediaLink = state.socialMediaLink;
     String studentId = state.studentId;
@@ -63,21 +64,21 @@ class AlumniVerificationController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 20400) {
-          toastInfo(msg: "Người dùng không tồn tại");
+          toastInfo(msg: translate('user_not_exist'));
           return;
         }
         if (errorCode == 20401) {
-          toastInfo(msg: "Dữ liệu không hợp lệ");
+          toastInfo(msg: translate('invalid_data'));
           return;
         }
         if (errorCode == 20402) {
-          toastInfo(msg: "Lỗi lưu ảnh");
+          toastInfo(msg: translate('error_save_image'));
           return;
         }
       }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: "Có lỗi xảy ra khi gửi xác thực cựu sinh viên");
+      toastInfo(msg: translate('error_verify_alumni'));
       return;
     }
   }

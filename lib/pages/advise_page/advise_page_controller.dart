@@ -4,13 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/post.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/post_response.dart';
-import '../../model/voter.dart';
-import '../../model/voter_response.dart';
 import 'bloc/advise_page_blocs.dart';
 import 'package:http/http.dart' as http;
 
@@ -83,12 +82,12 @@ class AdvisePageController {
         }
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xảy ra khi lấy bài viết");
+        toastInfo(msg: translate('error_get_posts'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xảy ra khi lấy bài viết");
+      toastInfo(msg: translate('error_get_posts'));
       return;
     }
   }
@@ -122,7 +121,7 @@ class AdvisePageController {
             return;
           } else {
             // Handle other status codes if needed
-            toastInfo(msg: "Có lỗi xảy ra khi huỷ thích bài viết");
+            toastInfo(msg: translate('error_unlike_post'));
             return;
           }
         } else {
@@ -134,7 +133,7 @@ class AdvisePageController {
             return;
           } else {
             // Handle other status codes if needed
-            toastInfo(msg: "Có lỗi xảy ra khi thích bài viết");
+            toastInfo(msg: translate('error_like_post'));
             return;
           }
         }
@@ -143,24 +142,24 @@ class AdvisePageController {
   }
 
   Future<bool> handleDeletePost(String id) async {
-    final shouldDelte = await showDialog(
+    final shouldDelete = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Xoá bài viết'),
-        content: Text('Bạn có muốn xoá bài viết này?'),
+        title: Text(translate('delete_post')),
+        content: Text(translate('delete_post_question')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Huỷ'),
+            child: Text(translate('cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text('Xoá'),
+            child: Text(translate('delete')),
           ),
         ],
       ),
     );
-    if (shouldDelte != null && shouldDelte) {
+    if (shouldDelete != null && shouldDelete) {
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/counsel/$id';
 
@@ -175,20 +174,20 @@ class AdvisePageController {
 
         var response = await http.delete(url, headers: headers);
         if (response.statusCode == 200) {
-          AdvisePageController(context: context).handleLoadPostData(0);
+          handleLoadPostData(0);
           return true;
         } else {
           // Handle other status codes if needed
-          toastInfo(msg: "Có lỗi xảy ra khi xoá bài viết");
+          toastInfo(msg: translate('error_delete_post'));
           return false;
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: "Có lỗi xảy ra khi xoá bài viết");
+        toastInfo(msg: translate('error_delete_post'));
         return false;
       }
     }
-    return shouldDelte ?? false;
+    return shouldDelete ?? false;
   }
 
   Future<void> handleVote(String id, int newVoteId) async {
@@ -207,15 +206,15 @@ class AdvisePageController {
 
       var response = await http.post(url, headers: headers);
       if (response.statusCode == 201) {
-        AdvisePageController(context: context).handleLoadPostData(0);
+        handleLoadPostData(0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+        toastInfo(msg: translate('error_choose_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+      toastInfo(msg: translate('error_choose_option'));
       return;
     }
   }
@@ -236,15 +235,15 @@ class AdvisePageController {
 
       var response = await http.delete(url, headers: headers);
       if (response.statusCode == 200) {
-        AdvisePageController(context: context).handleLoadPostData(0);
+        handleLoadPostData(0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xảy ra khi huỷ lựa chọn");
+        toastInfo(msg: translate('error_not_choose_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xảy ra khi huỷ lựa chọn");
+      toastInfo(msg: translate('error_not_choose_option'));
       return;
     }
   }
@@ -260,22 +259,24 @@ class AdvisePageController {
       'Content-Type': 'application/json', // Specify content type as JSON
     };
 
-    Map<String, dynamic> data = {'updatedVoteId': newVoteId}; // Define your JSON data
+    Map<String, dynamic> data = {
+      'updatedVoteId': newVoteId
+    }; // Define your JSON data
     var body = json.encode(data); // Encode the data to JSON
     try {
       var url = Uri.parse('$apiUrl$endpoint');
 
       var response = await http.put(url, headers: headers, body: body);
       if (response.statusCode == 200) {
-        AdvisePageController(context: context).handleLoadPostData(0);
+        handleLoadPostData(0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+        toastInfo(msg: translate('error_change_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+      toastInfo(msg: translate('error_change_option'));
       return;
     }
   }
@@ -297,17 +298,18 @@ class AdvisePageController {
     try {
       var url = Uri.parse('$apiUrl$endpoint');
 
-      var response = await http.post(url, headers: headers, body: json.encode(map));
+      var response =
+          await http.post(url, headers: headers, body: json.encode(map));
       if (response.statusCode == 201) {
-        AdvisePageController(context: context).handleLoadPostData(0);
+        handleLoadPostData(0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xảy ra khi thêm lựa chọn");
+        toastInfo(msg: translate('error_add_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xảy ra khi thêm lựa chọn");
+      toastInfo(msg: translate('error_add_option'));
       return;
     }
   }

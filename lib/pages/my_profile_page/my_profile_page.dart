@@ -55,7 +55,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
         builder: (context, state) {
           return Scaffold(
             appBar: buildAppBar(context),
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body:  BlocProvider.of<MyProfilePageBloc>(context).state.page == 0
                 ? listPosts(context, _scrollController)
                 : listEvent(context, _scrollController),

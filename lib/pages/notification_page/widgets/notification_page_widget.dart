@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/model/notification.dart';
 
 import '../../../common/values/colors.dart';
@@ -39,12 +41,12 @@ Widget listNotificaitons(BuildContext context, ScrollController _scrollControlle
                           child: Container(
                             margin: EdgeInsets.only(top: 20.h),
                             child: Text(
-                              'Không có dữ liệu',
+                              translate('no_notification'),
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 11.sp,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header3,
                               ),
                             ),
                           )),
@@ -100,18 +102,18 @@ Widget notification(BuildContext context, Notifications notifications) {
           });
     },
     child: Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
-        color: notifications.isRead ? Colors.transparent : AppColors.primarySecondaryElement,
+        padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
+        color: notifications.isRead ? Colors.transparent : AppColors.elementLight,
         child: Row(
           children: [
             Container(
-              width: 70.w,
-              height: 70.h,
+              width: 50.w,
+              height: 50.h,
               child: CircleAvatar(
                 radius: 40,
                 child: null,
                 backgroundImage:
-                NetworkImage(''),
+                NetworkImage(notifications.creator.avatarUrl),
               ),
             ),
             Container(
@@ -123,32 +125,32 @@ Widget notification(BuildContext context, Notifications notifications) {
               children: [
                 Container(
                   margin: EdgeInsets.only(right: 10.w),
-                  width: 250.w,
+                  width: 270.w,
                   child: Text(
                     notifications.content,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.normal,
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                     ),
                   ),
                 ),
                 Container(
-                  height: 5.h,
+                  height: 3.h,
                 ),
                 Container(
                   margin: EdgeInsets.only(right: 10.w),
-                  width: 250.w,
+                  width: 270.w,
                   child: Text(
-                    notifications.createTime,
+                    handleDateTime1(notifications.createTime),
                     style: TextStyle(
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                       fontSize: 10.sp,
                       fontWeight: FontWeight.normal,
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                     ),
                   ),
                 ),

@@ -4,8 +4,8 @@ class FriendRequest {
   final User user;
 
   FriendRequest(
-      this.user,
-      );
+    this.user,
+  );
 
   FriendRequest.fromJson(Map<String, dynamic> json)
       : user = User.fromJson(json["user"]);

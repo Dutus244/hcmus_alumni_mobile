@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail_edit_comment/bloc/news_detail_edit_comment_blocs.dart';
 
@@ -16,15 +17,15 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Tin tức',
+          translate('news'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header3,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -45,7 +46,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
       height: 350.h,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         border: Border.all(color: Colors.transparent),
       ),
       child: Row(
@@ -73,12 +74,12 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
+                  color: AppColors.secondaryElementText,
                 ),
                 counterText: '',
               ),
               style: TextStyle(
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
                 fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
@@ -100,22 +101,22 @@ Widget header(News news) {
         child: Text(
           news.title,
           style: TextStyle(
-            fontFamily: AppFonts.Header1,
+            fontFamily: AppFonts.Header3,
             fontSize: 14.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.primaryText,
+            color: AppColors.textBlack,
           ),
         ),
       ),
       Container(
         margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
         child: Text(
-          'Chỉnh sửa bình luận',
+          translate('edit_comment'),
           style: TextStyle(
-            fontFamily: AppFonts.Header2,
+            fontFamily: AppFonts.Header3,
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.primaryText,
+            color: AppColors.textBlack,
           ),
         ),
       ),
@@ -142,10 +143,10 @@ Widget header(News news) {
               Global.storageService.getUserFullName(),
               maxLines: 1,
               style: TextStyle(
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header3,
               ),
             ),
           ],
@@ -171,11 +172,11 @@ Widget buttonEdit(BuildContext context, News news, Comment Comment) {
       height: 30.h,
       decoration: BoxDecoration(
         color: comment != ""
-            ? AppColors.primaryElement
-            : AppColors.primaryBackground,
+            ? AppColors.element
+            : AppColors.background,
         borderRadius: BorderRadius.circular(10.w),
         border: Border.all(
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ),
       child: Center(
@@ -185,13 +186,13 @@ Widget buttonEdit(BuildContext context, News news, Comment Comment) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Lưu',
+                  translate('save'),
                   style: TextStyle(
-                      fontFamily: AppFonts.Header1,
+                      fontFamily: AppFonts.Header3,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
                       color: comment != ""
-                          ? AppColors.primaryBackground
+                          ? AppColors.background
                           : Colors.black.withOpacity(0.3)),
                 ),
                 Container(
@@ -202,7 +203,7 @@ Widget buttonEdit(BuildContext context, News news, Comment Comment) {
                   width: 15.w,
                   height: 15.h,
                   color: comment != ""
-                      ? AppColors.primaryBackground
+                      ? AppColors.background
                       : Colors.black.withOpacity(0.5),
                 ),
               ],
@@ -222,7 +223,7 @@ Widget newsDetailEditComment(BuildContext context, News news, Comment comment) {
           scrollDirection: Axis.vertical,
           children: [
             header(news),
-            buildTextField(context, 'Bình luận của bạn', 'comment', '',
+            buildTextField(context, translate('your_comment'), 'comment', '',
                     (value) {
                   context
                       .read<NewsDetailEditCommentBloc>()

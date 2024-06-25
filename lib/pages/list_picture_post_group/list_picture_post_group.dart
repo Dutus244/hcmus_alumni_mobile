@@ -26,7 +26,7 @@ class _ListPicturePostGroupState extends State<ListPicturePostGroup> {
 
     return Scaffold(
       appBar: buildAppBar(context),
-      backgroundColor: AppColors.primaryText,
+      backgroundColor: AppColors.textBlack,
       body: listPicture(post.pictures),
     );
   }

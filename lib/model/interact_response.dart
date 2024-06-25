@@ -6,5 +6,7 @@ class InteractResponse {
   InteractResponse(this.interacts);
 
   InteractResponse.fromJson(Map<String, dynamic> json)
-      : interacts= (json["users"] as List).map((i) => new Interact.fromJson(i)).toList();
+      : interacts = (json["users"] as List)
+            .map((i) => new Interact.fromJson(i))
+            .toList();
 }

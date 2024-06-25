@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/values/assets.dart';
 import 'package:hcmus_alumni_mobile/pages/advise_page/advise_page.dart';
 import 'package:hcmus_alumni_mobile/pages/application_page/bloc/application_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/group_page/group_page.dart';
@@ -31,100 +33,101 @@ Widget buildPage(int index, int secondIndex) {
 
 var bottomTabs = [
   BottomNavigationBarItem(
-      label: "Trang chủ",
+      label: translate('home'),
       icon: SizedBox(
         width: 20.w,
         height: 20.h,
-        child: Image.asset("assets/icons/home1.png"),
+        child: Image.asset(AppAssets.homeIcon1),
       ),
       activeIcon: SizedBox(
         width: 20.w,
         height: 20.h,
         child: Image.asset(
-          "assets/icons/home2.png",
-          color: AppColors.primaryElement,
+          AppAssets.homeIcon2,
+          color: AppColors.element,
         ),
       )),
   BottomNavigationBarItem(
-      label: "Tin tức/Sự kiện/Gương thành công",
+      label: translate('news_event'),
       icon: SizedBox(
         width: 20.w,
         height: 20.h,
-        child: Image.asset("assets/icons/news1.png"),
+        child: Image.asset(AppAssets.newsIcon1),
       ),
       activeIcon: SizedBox(
         width: 20.w,
         height: 20.h,
         child: Image.asset(
-          "assets/icons/news2.png",
-          color: AppColors.primaryElement,
+          AppAssets.newsIcon2,
+          color: AppColors.element,
         ),
       )),
   BottomNavigationBarItem(
-      label: "Tư vấn/Cố vấn",
+      label: translate('advise'),
       icon: SizedBox(
         width: 20.w,
         height: 20.h,
-        child: Image.asset("assets/icons/question1.png"),
+        child: Image.asset(AppAssets.adviseIcon1),
       ),
       activeIcon: SizedBox(
         width: 20.w,
         height: 20.h,
         child: Image.asset(
-          "assets/icons/question2.png",
-          color: AppColors.primaryElement,
+          AppAssets.adviseIcon2,
+          color: AppColors.element,
         ),
       )),
   BottomNavigationBarItem(
-      label: "Nhóm",
+      label: translate('group'),
       icon: SizedBox(
         width: 20.w,
         height: 20.h,
-        child: Image.asset("assets/icons/group1.png"),
+        child: Image.asset(AppAssets.groupIcon1),
       ),
       activeIcon: SizedBox(
         width: 20.w,
         height: 20.h,
         child: Image.asset(
-          "assets/icons/group2.png",
-          color: AppColors.primaryElement,
+          AppAssets.groupIcon2,
+          color: AppColors.element,
         ),
       )),
   BottomNavigationBarItem(
-      label: "Bạn bè",
+      label: translate('friend'),
       icon: SizedBox(
         width: 20.w,
         height: 20.h,
-        child: Image.asset("assets/icons/friend1.png"),
+        child: Image.asset(AppAssets.friendIcon1),
       ),
       activeIcon: SizedBox(
         width: 20.w,
         height: 20.h,
         child: Image.asset(
-          "assets/icons/friend2.png",
-          color: AppColors.primaryElement,
+          AppAssets.friendIcon2,
+          color: AppColors.element,
         ),
       )),
   BottomNavigationBarItem(
-      label: "Thông báo",
+      label: translate('notification'),
       icon: SizedBox(
         width: 20.w,
         height: 20.h,
-        child: Image.asset("assets/icons/notification1.png"),
+        child: Image.asset(AppAssets.notificationIcon1),
       ),
       activeIcon: SizedBox(
         width: 20.w,
         height: 20.h,
         child: Image.asset(
-          "assets/icons/notification2.png",
-          color: AppColors.primaryElement,
+          AppAssets.notificationIcon2,
+          color: AppColors.element,
         ),
       )),
 ];
 
 Widget applicationPage(BuildContext context, int secondRoute) {
   return Scaffold(
-    body: buildPage(BlocProvider.of<ApplicationPageBloc>(context).state.index, secondRoute),
+    body: buildPage(
+        BlocProvider.of<ApplicationPageBloc>(context).state.index, secondRoute),
     bottomNavigationBar: Container(
       width: 375.w,
       height: 58.h,
@@ -133,7 +136,7 @@ Widget applicationPage(BuildContext context, int secondRoute) {
             topLeft: Radius.circular(20.h),
             topRight: Radius.circular(20.h),
           ),
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.1),
@@ -152,8 +155,8 @@ Widget applicationPage(BuildContext context, int secondRoute) {
               .read<ApplicationPageBloc>()
               .add(TriggerApplicationPageEvent(value));
         },
-        selectedItemColor: AppColors.primaryElement,
-        unselectedItemColor: AppColors.primaryText,
+        selectedItemColor: AppColors.element,
+        unselectedItemColor: AppColors.textBlack,
         items: bottomTabs,
       ),
     ),

@@ -45,7 +45,7 @@ class _EventDetailEditCommentState extends State<EventDetailEditComment> {
         EventDetailEditCommentState>(builder: (context, state) {
       return Scaffold(
         appBar: buildAppBar(context),
-        backgroundColor: AppColors.primaryBackground,
+        backgroundColor: AppColors.background,
         body:
         eventDetailEditComment(context, event, comment),
       );

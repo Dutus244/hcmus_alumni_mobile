@@ -39,7 +39,7 @@ class _MyProfileAddAchievementState extends State<MyProfileAddAchievement> {
         builder: (context, state) {
           return Scaffold(
               appBar: buildAppBar(context),
-              backgroundColor: AppColors.primaryBackground,
+              backgroundColor: AppColors.background,
               body: myProfileAddJob(context));
         });
   }

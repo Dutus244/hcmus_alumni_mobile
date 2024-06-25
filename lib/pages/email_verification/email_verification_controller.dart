@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/email_verification/bloc/email_verification_blocs.dart';
 
 import '../../common/values/constants.dart';
@@ -23,7 +24,7 @@ class EmailVerificationController {
   Future<void> handleResendCode() async {
     final email = Global.storageService.getUserEmail();
     if (isResending) {
-      toastInfo(msg: "Vui lòng đợi $remainingTime giây để gửi lại mã");
+      toastInfo(msg: "${translate('please_wait')} $remainingTime ${translate('seconds_resend_code').toLowerCase()}");
       return;
     }
 
@@ -37,17 +38,17 @@ class EmailVerificationController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 10300) {
-          toastInfo(msg: "Email đã tồn tại");
+          toastInfo(msg: translate('email_already_exist'));
           return;
         }
         if (errorCode == 10302) {
-          toastInfo(msg: "Gửi mã xác thực thất bại");
+          toastInfo(msg: translate('error_send_code'));
           return;
         }
       }
       startResendCooldown();
     } catch (error) {
-      toastInfo(msg: "Có lỗi xảy ra khi gửi mã xác thực");
+      toastInfo(msg: translate('error_send_code'));
     }
   }
 
@@ -70,7 +71,7 @@ class EmailVerificationController {
       final state = context.read<EmailVerificationBloc>().state;
       String code = state.code;
       if (code.isEmpty) {
-        toastInfo(msg: "Bạn phải điền mã xác thực");
+        toastInfo(msg: translate('must_fill_authentication_code'));
         return;
       }
       var url =
@@ -104,62 +105,60 @@ class EmailVerificationController {
                   Map<String, dynamic> jsonMap = json.decode(response.body);
                   String jwtToken = jsonMap['jwt'];
                   Global.storageService.setString(
-                      AppConstants.STORAGE_USER_AUTH_TOKEN, jwtToken);
-                  Global.storageService
-                      .setBool(AppConstants.STORAGE_USER_IS_LOGGED_IN, true);
+                      AppConstants.USER_AUTH_TOKEN, jwtToken);
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       "/alumniInformation", (route) => false);
                 } else {
                   Map<String, dynamic> jsonMap = json.decode(response.body);
                   int errorCode = jsonMap['error']['code'];
                   if (errorCode == 10100) {
-                    toastInfo(msg: "Email hoặc mật khẩu không hợp lệ");
+                    toastInfo(msg: translate('email_password_invalid'));
                     return;
                   }
                   if (errorCode == 10101) {
-                    toastInfo(msg: "Email hoặc mật khẩu không hợp lệ");
+                    toastInfo(msg: translate('email_password_invalid'));
                     return;
                   }
                   if (errorCode == 10102) {
-                    toastInfo(msg: "Lỗi đăng nhập");
+                    toastInfo(msg: translate('error_sigin'));
                     return;
                   }
                 }
               } catch (error) {
-                toastInfo(msg: "Có lỗi xảy ra");
+                toastInfo(msg: translate('error_login'));
               }
             } else {
               Map<String, dynamic> jsonMap = json.decode(response.body);
               int errorCode = jsonMap['error']['code'];
               if (errorCode == 10200) {
-                toastInfo(msg: "Email hoặc mật khẩu không hợp lệ");
+                toastInfo(msg: translate('email_password_invalid'));
                 return;
               }
               if (errorCode == 10201) {
-                toastInfo(msg: "10201");
+                toastInfo(msg: translate('email_password_invalid'));
                 return;
               }
             }
           } catch (error) {
-            toastInfo(msg: "Có lỗi xảy ra");
+            toastInfo(msg: translate('error_register'));
           }
         } else {
           Map<String, dynamic> jsonMap = json.decode(response.body);
           int errorCode = jsonMap['error']['code'];
           if (errorCode == 10402) {
-            toastInfo(msg: "Mã xác thực không hợp lệ hoặc đã hết hạn");
+            toastInfo(msg: translate('authentication_code_invalid_expired'));
             return;
           }
           if (errorCode == 10403) {
-            toastInfo(msg: "Xác minh mã xác thực thất bại");
+            toastInfo(msg: translate('error_verify_authentication_code'));
             return;
           }
         }
       } catch (error) {
-        toastInfo(msg: "Có lỗi xảy ra khi xác minh mã xác thực");
+        toastInfo(msg: translate('error_verify_authentication_code'));
       }
     } catch (e) {
-      toastInfo(msg: "Có lỗi xảy ra khi xác minh mã xác thực");
+      toastInfo(msg: translate('error_verify_authentication_code'));
     }
   }
 }

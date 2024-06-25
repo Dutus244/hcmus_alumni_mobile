@@ -19,7 +19,7 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
@@ -264,7 +264,7 @@ Widget voter(BuildContext context, Voter voter) {
               Text(
                 voter.user.fullName,
                 style: TextStyle(
-                  color: AppColors.primaryText,
+                  color: AppColors.textBlack,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w900,
                   fontFamily: AppFonts.Header2,

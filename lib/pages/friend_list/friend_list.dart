@@ -19,7 +19,6 @@ class FriendList extends StatefulWidget {
 }
 
 class _FriendListState extends State<FriendList> {
-  late PageController pageController; // Không khởi tạo ở đây
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
 
@@ -52,7 +51,7 @@ class _FriendListState extends State<FriendList> {
     return BlocBuilder<FriendListBloc, FriendListState>(builder: (context, state) {
       return Scaffold(
         appBar: buildAppBar(context),
-        backgroundColor: AppColors.primaryBackground,
+        backgroundColor: AppColors.background,
         body: listFriend(context, _scrollController),
       );
     });

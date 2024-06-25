@@ -52,7 +52,7 @@ class _GroupSearchState extends State<GroupSearch> {
     return BlocBuilder<GroupSearchBloc, GroupSearchState>(builder: (context, state) {
       return Scaffold(
         appBar: buildAppBar(context),
-        backgroundColor: AppColors.primaryBackground,
+        backgroundColor: AppColors.background,
         body: listGroup(context, _scrollController),
       );
     });

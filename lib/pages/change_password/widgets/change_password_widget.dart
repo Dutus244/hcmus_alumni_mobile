@@ -2,29 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/values/assets.dart';
 import 'package:hcmus_alumni_mobile/pages/change_password/change_password_controller.dart';
 
 import '../../../common/values/colors.dart';
-import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../bloc/change_password_blocs.dart';
 import '../bloc/change_password_events.dart';
 import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Đổi mật khẩu',
+          translate('change_password'),
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: AppFonts.Header0,
-            fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
-            color: AppColors.secondaryHeader,
-          ),
+          style: AppTextStyle.medium().wSemiBold(),
         ),
       ),
     ),
@@ -38,7 +35,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
       height: 40.h,
       margin: EdgeInsets.only(bottom: 20.h, left: 10.w, right: 10.w),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -48,7 +45,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
             width: 16.w,
             height: 16.w,
             margin: EdgeInsets.only(left: 17.w),
-            child: Image.asset("assets/icons/$iconName.png"),
+            child: Image.asset(iconName),
           ),
           Container(
             width: 270.w,
@@ -68,17 +65,10 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                fontFamily: AppFonts.Header3,
-                color: AppColors.primaryText,
-                fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small(),
               autocorrect: false,
               obscureText: textType == "email" ? false : true,
               maxLength: 30,
@@ -98,7 +88,7 @@ Widget changePassword(BuildContext context) {
           scrollDirection: Axis.vertical,
           children: [
             Container(height: 10.h,),
-            buildTextField("Mật khẩu mới *", "password", "lock", (value) {
+            buildTextField(translate('new_password*'), "password", AppAssets.lockIconP, (value) {
               context
                   .read<ChangePasswordBloc>()
                   .add(PasswordEvent(value));
@@ -106,7 +96,7 @@ Widget changePassword(BuildContext context) {
             SizedBox(
               height: 5.h,
             ),
-            buildTextField("Nhập lại mật khẩu mới *", "password", "lock",
+            buildTextField(translate('re_new_password*'), "password", AppAssets.lockIconP,
                     (value) {
                   context
                       .read<ChangePasswordBloc>()
@@ -125,7 +115,7 @@ Widget buttonChange(BuildContext context) {
   return GestureDetector(
     onTap: () {
       if (password != "" && rePassword != "") {
-        ChangePasswordController(context: context).hanldeChangePassword();
+        ChangePasswordController(context: context).handleChangePassword();
       }
     },
     child: Container(
@@ -133,11 +123,11 @@ Widget buttonChange(BuildContext context) {
       height: 30.h,
       decoration: BoxDecoration(
         color: (password != "" && rePassword != "")
-            ? AppColors.primaryElement
-            : AppColors.primaryBackground,
+            ? AppColors.element
+            : AppColors.background,
         borderRadius: BorderRadius.circular(10.w),
         border: Border.all(
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ),
       child: Center(
@@ -147,24 +137,20 @@ Widget buttonChange(BuildContext context) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Lưu',
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header1,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: (password != "" && rePassword != "")
-                          ? AppColors.primaryBackground
-                          : Colors.black.withOpacity(0.3)),
+                  translate('save'),
+                  style: AppTextStyle.base().wSemiBold().withColor((password != "" && rePassword != "")
+                      ? AppColors.background
+                      : Colors.black.withOpacity(0.3)),
                 ),
                 Container(
                   width: 6.w,
                 ),
                 SvgPicture.asset(
-                  "assets/icons/send.svg",
+                  AppAssets.sendIconS,
                   width: 15.w,
                   height: 15.h,
                   color: (password != "" && rePassword != "")
-                      ? AppColors.primaryBackground
+                      ? AppColors.background
                       : Colors.black.withOpacity(0.5),
                 ),
               ],

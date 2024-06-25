@@ -6,5 +6,7 @@ class ParticipantResponse {
   ParticipantResponse(this.participants);
 
   ParticipantResponse.fromJson(Map<String, dynamic> json)
-      : participants = (json["participants"] as List).map((i) => new Participant.fromJson(i)).toList();
+      : participants = (json["participants"] as List)
+            .map((i) => new Participant.fromJson(i))
+            .toList();
 }

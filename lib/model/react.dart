@@ -3,9 +3,9 @@ class React {
   final String name;
 
   React(
-      this.id,
-      this.name,
-      );
+    this.id,
+    this.name,
+  );
 
   React.fromJson(Map<String, dynamic> json)
       : id = json["id"],

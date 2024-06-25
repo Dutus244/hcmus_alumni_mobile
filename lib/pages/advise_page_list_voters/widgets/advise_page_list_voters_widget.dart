@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../../common/function/handle_percentage_vote.dart';
 import '../../../common/values/colors.dart';
-import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
 import '../../../model/post.dart';
@@ -18,26 +18,24 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
-        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        margin: Platform.isAndroid
+            ? EdgeInsets.only(top: 20.h)
+            : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Lượt bình chọn',
+          translate('voter_list'),
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: AppFonts.Header0,
-            fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
-            color: AppColors.secondaryHeader,
-          ),
+          style: AppTextStyle.medium().wSemiBold(),
         ),
       ),
     ),
   );
 }
 
-Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _scrollController) {
+Widget listVoters(BuildContext context, Vote vote, Post post,
+    ScrollController _scrollController) {
   return Container(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -45,10 +43,15 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
         Expanded(
           child: ListView.builder(
             controller: _scrollController,
-            itemCount:
-            BlocProvider.of<AdvisePageListVotersBloc>(context).state.voters.length + 1,
+            itemCount: BlocProvider.of<AdvisePageListVotersBloc>(context)
+                    .state
+                    .voters
+                    .length +
+                1,
             itemBuilder: (BuildContext context, int index) {
-              switch (BlocProvider.of<AdvisePageListVotersBloc>(context).state.statusVoter) {
+              switch (BlocProvider.of<AdvisePageListVotersBloc>(context)
+                  .state
+                  .statusVoter) {
                 case Status.loading:
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,26 +65,17 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                             maxLines: 2,
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.Header2,
-                            ),
+                            style: AppTextStyle.medium().wSemiBold(),
                           ),
                         ),
                       ),
                       Center(
                         child: Container(
-                          margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
+                          margin: EdgeInsets.only(
+                              left: 10.w, right: 10.w, top: 5.h),
                           child: Text(
-                            '${calculatePercentages(vote.voteCount, post.totalVote)}% - ${vote.voteCount} lượt bình chọn',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.Header2,
-                            ),
+                            '${calculatePercentages(vote.voteCount, post.totalVote)}% - ${vote.voteCount} ${translate('votes').toLowerCase()}',
+                            style: AppTextStyle.small().wSemiBold(),
                           ),
                         ),
                       ),
@@ -105,42 +99,26 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                               maxLines: 2,
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: AppFonts.Header2,
-                              ),
+                              style: AppTextStyle.medium().wSemiBold(),
                             ),
                           ),
                         ),
                         Center(
                           child: Container(
-                            margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
+                            margin: EdgeInsets.only(
+                                left: 10.w, right: 10.w, top: 5.h),
                             child: Text(
-                              '${calculatePercentages(vote.voteCount, post.totalVote)}% - ${vote.voteCount} lượt bình chọn',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: AppFonts.Header2,
-                              ),
+                              '${calculatePercentages(vote.voteCount, post.totalVote)}% - ${vote.voteCount} ${translate('votes').toLowerCase()}',
+                              style: AppTextStyle.small().wSemiBold(),
                             ),
                           ),
                         ),
                         Center(
                             child: Container(
-                              margin: EdgeInsets.only(top: 20.h),
-                              child: Text(
-                                'Không có ai chọn lựa chọn này',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 11.sp,
-                                  fontWeight: FontWeight.normal,
-                                  fontFamily: AppFonts.Header2,
-                                ),
-                              ),
-                            )),
+                          margin: EdgeInsets.only(top: 20.h),
+                          child: Text(translate('no_votes'),
+                              style: AppTextStyle.small()),
+                        )),
                       ],
                     );
                   }
@@ -171,26 +149,17 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                                 maxLines: 2,
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: AppFonts.Header2,
-                                ),
+                                style: AppTextStyle.medium().wSemiBold(),
                               ),
                             ),
                           ),
                           Center(
                             child: Container(
-                              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
+                              margin: EdgeInsets.only(
+                                  left: 10.w, right: 10.w, top: 5.h),
                               child: Text(
-                                '${calculatePercentages(vote.voteCount, post.totalVote)}% - ${vote.voteCount} lượt bình chọn',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: AppFonts.Header2,
-                                ),
+                                '${calculatePercentages(vote.voteCount, post.totalVote)}% - ${vote.voteCount} ${translate('votes').toLowerCase()}',
+                                style: AppTextStyle.small().wSemiBold(),
                               ),
                             ),
                           ),
@@ -227,17 +196,15 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
 Widget voter(BuildContext context, Voter voter) {
   return GestureDetector(
     onTap: () {
-      if (voter.user.id ==
-          Global.storageService.getUserId()) {
+      if (voter.user.id == Global.storageService.getUserId()) {
         Navigator.pushNamed(
           context,
           "/myProfilePage",
         );
       } else {
-        Navigator.pushNamed(context, "/otherProfilePage",
-            arguments: {
-              "id": voter.user.id,
-            });
+        Navigator.pushNamed(context, "/otherProfilePage", arguments: {
+          "id": voter.user.id,
+        });
       }
     },
     child: Container(
@@ -262,12 +229,7 @@ Widget voter(BuildContext context, Voter voter) {
               ),
               Text(
                 voter.user.fullName,
-                style: TextStyle(
-                  color: AppColors.primaryText,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w900,
-                  fontFamily: AppFonts.Header2,
-                ),
+                style: AppTextStyle.small().wSemiBold(),
               )
             ],
           ),

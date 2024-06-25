@@ -33,7 +33,7 @@ class _GroupInfoState extends State<GroupInfo> {
         builder: (context, state) {
           return Scaffold(
             appBar: buildAppBar(context, group),
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: infoGroup(context, group),
           );}
     );

@@ -45,7 +45,7 @@ class _NewsDetailEditCommentState extends State<NewsDetailEditComment> {
         NewsDetailEditCommentState>(builder: (context, state) {
       return Scaffold(
         appBar: buildAppBar(context),
-        backgroundColor: AppColors.primaryBackground,
+        backgroundColor: AppColors.background,
         body: newsDetailEditComment(context, news, comment),
       );
     });

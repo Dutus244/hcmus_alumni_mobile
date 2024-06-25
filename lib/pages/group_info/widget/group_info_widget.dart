@@ -15,7 +15,7 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context, Group group  ) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
@@ -67,7 +67,7 @@ Widget infoGroup(BuildContext context, Group group) {
                   fontFamily: AppFonts.Header3,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.normal,
-                  color: AppColors.primaryText,
+                  color: AppColors.textBlack,
                 ),
               ),
             ),
@@ -80,7 +80,7 @@ Widget infoGroup(BuildContext context, Group group) {
                       "assets/icons/lock.svg",
                       width: 11.w,
                       height: 13.h,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 10.w),
@@ -102,7 +102,7 @@ Widget infoGroup(BuildContext context, Group group) {
                             child: Text(
                               'Chỉ những thành viên mới nhìn thấy mọi người trong nhóm và những gì họ đăng',
                               style: TextStyle(
-                                color: AppColors.primarySecondaryText,
+                                color: AppColors.textGrey,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header3,
@@ -124,7 +124,7 @@ Widget infoGroup(BuildContext context, Group group) {
                       "assets/icons/earth.svg",
                       width: 11.w,
                       height: 13.h,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 10.w),
@@ -146,7 +146,7 @@ Widget infoGroup(BuildContext context, Group group) {
                             child: Text(
                               'Bất kỳ ai cũng có thể nhìn thấy mọi người trong nhóm và những gì họ đăng',
                               style: TextStyle(
-                                color: AppColors.primarySecondaryText,
+                                color: AppColors.textGrey,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header3,
@@ -167,7 +167,7 @@ Widget infoGroup(BuildContext context, Group group) {
                     "assets/icons/clock.svg",
                     width: 11.w,
                     height: 13.h,
-                    color: AppColors.primaryText,
+                    color: AppColors.textBlack,
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 10.w),
@@ -187,9 +187,9 @@ Widget infoGroup(BuildContext context, Group group) {
                         Container(
                           width: 300.w,
                           child: Text(
-                            'Ngày tạo nhóm ${timeCreateGroup(group.createAt)}',
+                            'Ngày tạo nhóm ${handleDateTime2(group.createAt)}',
                             style: TextStyle(
-                              color: AppColors.primarySecondaryText,
+                              color: AppColors.textGrey,
                               fontSize: 14.sp,
                               fontWeight: FontWeight.normal,
                               fontFamily: AppFonts.Header3,
@@ -206,7 +206,7 @@ Widget infoGroup(BuildContext context, Group group) {
               margin: EdgeInsets.only(
                   left: 10.w, right: 10.w, top: 10.h, bottom: 5.h),
               height: 1.h,
-              color: AppColors.primarySecondaryElement,
+              color: AppColors.elementLight,
             ),
             if (group.isJoined || group.privacy == 'PUBLIC')
               Column(
@@ -246,8 +246,8 @@ Widget infoGroup(BuildContext context, Group group) {
                               "Xem tất cả",
                               style: TextStyle(
                                 fontFamily: AppFonts.Header1,
-                                color: AppColors.primaryElement,
-                                decorationColor: AppColors.primaryText,
+                                color: AppColors.element,
+                                decorationColor: AppColors.textBlack,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 12.sp,
                               ),

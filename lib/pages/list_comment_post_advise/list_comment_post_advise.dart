@@ -63,10 +63,8 @@ class _ListCommentPostAdviseState extends State<ListCommentPostAdvise> {
         builder: (context, state) {
           return Scaffold(
             appBar: buildAppBar(context),
-            backgroundColor: AppColors.primaryBackground,
-            body: listComment(context, _scrollController, id, (value) {
-              context.read<ListCommentPostAdviseBloc>().add(ContentEvent(value));
-            }),
+            backgroundColor: AppColors.background,
+            body: listComment(context, _scrollController, id),
           );
         });
   }

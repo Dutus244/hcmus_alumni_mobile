@@ -8,7 +8,7 @@ import '../values/fonts.dart';
 
 AppBar buildAppBar(BuildContext context, String title) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     title: Container(
       height: 40.h,
       margin: EdgeInsets.only(left: 0.w, right: 0.w),
@@ -47,40 +47,38 @@ AppBar buildAppBar(BuildContext context, String title) {
             width: 60.w,
             child: Row(
               children: [
-                Global.storageService.permissionMessageCreate() ? Row(
+                Row(
                   children: [
                     GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, "/chatPage");
+                      },
                       child: Container(
                         width: 20.w,
                         height: 20.h,
                         decoration: const BoxDecoration(
                             image: DecorationImage(
-                                image: AssetImage("assets/icons/chat.png"))),
+                                image:
+                                AssetImage("assets/icons/chat.png"))),
                       ),
                     ),
                     SizedBox(width: 10.w),
                   ],
-                ) : Container(
-                  width: 30.w,
                 ),
                 Container(
                   width: 20.w,
                   height: 20.w,
                   margin: EdgeInsets.only(),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                          "/myProfilePage"
-                      );
-                    },
-                    child: CircleAvatar(
-                      radius: 10,
-                      child: null,
-                      backgroundImage:
-                      NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                    )
-                  ),
+                      onTap: () {
+                        Navigator.pushNamed(context, "/myProfilePage");
+                      },
+                      child: CircleAvatar(
+                        radius: 10,
+                        child: null,
+                        backgroundImage: NetworkImage(
+                            'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      )),
                 ),
               ],
             ),

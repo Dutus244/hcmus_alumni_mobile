@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
@@ -39,11 +40,11 @@ class EventDetailEditCommentController {
         Navigator.pop(context);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa bình luận");
+        toastInfo(msg: translate('error_edit_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa bình luận");
+      toastInfo(msg: translate('error_edit_comment'));
     }
   }
 }

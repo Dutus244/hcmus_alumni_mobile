@@ -29,7 +29,7 @@ Widget listEvent(BuildContext context, List<Event> eventList) {
                   fontFamily: AppFonts.Header1,
                   fontWeight: FontWeight.bold,
                   fontSize: 14.sp,
-                  color: AppColors.primaryHeader,
+                  color: AppColors.header,
                 ),
               ),
             ),
@@ -47,8 +47,8 @@ Widget listEvent(BuildContext context, List<Event> eventList) {
                     "Xem tất cả",
                     style: TextStyle(
                       fontFamily: AppFonts.Header1,
-                      color: AppColors.primaryElement,
-                      decorationColor: AppColors.primaryText,
+                      color: AppColors.element,
+                      decorationColor: AppColors.textBlack,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -125,7 +125,7 @@ Widget event(BuildContext context, Event event) {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.w),
               shape: BoxShape.rectangle,
-              color: AppColors.primaryElement,
+              color: AppColors.element,
             ),
             child: Text(
               event.faculty.name,
@@ -206,7 +206,7 @@ Widget event(BuildContext context, Event event) {
                   width: 5.w,
                 ),
                 Text(
-                  handleDatetime(event.organizationTime),
+                  handleDateTime1(event.organizationTime),
                   maxLines: 1,
                   style: TextStyle(
                     color: Colors.white,
@@ -229,10 +229,10 @@ Widget listNews(BuildContext context, List<News> newsList) {
     margin: EdgeInsets.only(top: 5.h, left: 5.w, right: 5.w),
     padding: EdgeInsets.only(top: 10.h, left: 5.w, right: 5.w),
     decoration: BoxDecoration(
-      color: AppColors.primaryBackground,
+      color: AppColors.background,
       borderRadius: BorderRadius.circular(15.w),
       border: Border.all(
-        color: AppColors.primarySecondaryElement,
+        color: AppColors.elementLight,
       ),
     ),
     child: Column(
@@ -267,8 +267,8 @@ Widget listNews(BuildContext context, List<News> newsList) {
                   "Xem tất cả",
                   style: TextStyle(
                     fontFamily: AppFonts.Header1,
-                    color: AppColors.primaryElement,
-                    decorationColor: AppColors.primaryText,
+                    color: AppColors.element,
+                    decorationColor: AppColors.textBlack,
                     fontWeight: FontWeight.bold,
                     fontSize: 12.sp,
                   ),
@@ -336,7 +336,7 @@ Widget news(BuildContext context, News news) {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.w),
                     shape: BoxShape.rectangle,
-                    color: AppColors.primaryElement,
+                    color: AppColors.element,
                   ),
                   child: Text(
                     news.faculty.name,
@@ -371,9 +371,9 @@ Widget news(BuildContext context, News news) {
           Align(
             alignment: Alignment.topLeft, // Align to top left
             child: Text(
-              handleDatetime(news.publishedAt),
+              handleDateTime1(news.publishedAt),
               style: TextStyle(
-                color: AppColors.primarySecondaryText,
+                color: AppColors.textGrey,
                 fontSize: 10.sp,
                 fontWeight: FontWeight.normal,
                 fontFamily: AppFonts.Header3,
@@ -423,8 +423,8 @@ Widget listHof(BuildContext context, List<HallOfFame> hallOfFameList) {
                     "Xem tất cả",
                     style: TextStyle(
                       fontFamily: AppFonts.Header1,
-                      color: AppColors.primaryElement,
-                      decorationColor: AppColors.primaryText,
+                      color: AppColors.element,
+                      decorationColor: AppColors.textBlack,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -493,7 +493,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.w),
                     shape: BoxShape.rectangle,
-                    color: AppColors.primaryElement,
+                    color: AppColors.element,
                   ),
                   child: Text(
                     hallOfFame.faculty.name,
@@ -587,7 +587,7 @@ Widget advise(BuildContext context) {
                   borderRadius: BorderRadius.circular(10.h),
                   // Adjust as desired
                   image: DecorationImage(
-                    image: AssetImage('assets/images/test1.png'),
+                    image: AssetImage('assets/images/home_page/advise.jpg'),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -625,7 +625,7 @@ Widget advise(BuildContext context) {
                   height: 30.h,
                   margin: EdgeInsets.only(top: 45.h, left: 20.w, right: 45.w),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryElement,
+                    color: AppColors.element,
                     borderRadius: BorderRadius.circular(15.w),
                     border: Border.all(
                       color: Colors.transparent,
@@ -638,7 +638,7 @@ Widget advise(BuildContext context) {
                           fontFamily: AppFonts.Header2,
                           fontSize: 10.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primaryBackground),
+                          color: AppColors.background),
                     ),
                   ),
                 ),

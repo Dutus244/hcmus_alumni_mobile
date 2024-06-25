@@ -17,4 +17,3 @@ toastInfo(
       textColor: textColor,
       fontSize: 16.sp);
 }
-

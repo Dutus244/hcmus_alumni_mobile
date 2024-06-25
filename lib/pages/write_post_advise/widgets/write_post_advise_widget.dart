@@ -6,33 +6,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/write_post_advise/bloc/write_post_advise_blocs.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../../../common/widgets/flutter_toast.dart';
 import '../../../global.dart';
 import '../bloc/write_post_advise_events.dart';
 import '../write_post_advise_controller.dart';
-import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Tạo bài viết',
+          translate('create_post'),
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: AppFonts.Header0,
-            fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
-            color: AppColors.secondaryHeader,
-          ),
+          style: AppTextStyle.medium().wSemiBold(),
         ),
       ),
     ),
@@ -53,11 +49,11 @@ Widget buttonSend(BuildContext context) {
       height: 30.h,
       decoration: BoxDecoration(
         color: (title != "" && content != "")
-            ? AppColors.primaryElement
-            : AppColors.primaryBackground,
+            ? AppColors.element
+            : AppColors.background,
         borderRadius: BorderRadius.circular(10.w),
         border: Border.all(
-          color: Colors.grey,
+          color: AppColors.backgroundGrey,
         ),
       ),
       child: Center(
@@ -67,14 +63,11 @@ Widget buttonSend(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Đăng',
-              style: TextStyle(
-                  fontFamily: AppFonts.Header1,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: (title != "" && content != "")
-                      ? AppColors.primaryBackground
-                      : Colors.black.withOpacity(0.3)),
+              translate('post'),
+              style: AppTextStyle.base().wSemiBold().withColor(
+                  (title != "" && content != "")
+                      ? AppColors.background
+                      : AppColors.textBlack.withOpacity(0.3)),
             ),
             Container(
               width: 6.w,
@@ -84,7 +77,7 @@ Widget buttonSend(BuildContext context) {
               width: 15.w,
               height: 15.h,
               color: (title != "" && content != "")
-                  ? AppColors.primaryBackground
+                  ? AppColors.background
                   : Colors.black.withOpacity(0.5),
             ),
           ],
@@ -103,10 +96,10 @@ Widget buttonFinishEditPicture(BuildContext context) {
       margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
       height: 30.h,
       decoration: BoxDecoration(
-        color: AppColors.primaryElement,
+        color: AppColors.element,
         borderRadius: BorderRadius.circular(10.w),
         border: Border.all(
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ),
       child: Center(
@@ -116,12 +109,8 @@ Widget buttonFinishEditPicture(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Xong',
-              style: TextStyle(
-                  fontFamily: AppFonts.Header1,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryBackground),
+              translate('save'),
+              style: AppTextStyle.base().wSemiBold(),
             ),
             Container(
               width: 6.w,
@@ -130,7 +119,7 @@ Widget buttonFinishEditPicture(BuildContext context) {
               "assets/icons/send.svg",
               width: 15.w,
               height: 15.h,
-              color: AppColors.primaryBackground,
+              color: AppColors.background,
             ),
           ],
         ),
@@ -148,7 +137,7 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
       width: 320.w,
       margin: EdgeInsets.only(left: 10.w, right: 10.w),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         border: Border.all(color: Colors.transparent),
       ),
       child: Row(
@@ -174,17 +163,12 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small()
+                    .wSemiBold()
+                    .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                color: AppColors.primaryText,
-                fontFamily: AppFonts.Header2,
-                fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small().wSemiBold(),
               autocorrect: false,
             ),
           )
@@ -201,7 +185,7 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
       width: 320.w,
       margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 10.w, bottom: 2.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         border: Border.all(color: Colors.transparent),
       ),
       child: Row(
@@ -227,17 +211,11 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small()
+                    .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                color: AppColors.primaryText,
-                fontFamily: AppFonts.Header3,
-                fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small(),
               autocorrect: false,
             ),
           )
@@ -287,7 +265,7 @@ Widget buildTextFieldVote(BuildContext context, int index, String hintText,
                     maxLines: null,
                     // Cho phép đa dòng
                     decoration: InputDecoration(
-                      hintText: 'Lựa chọn ${index + 1}',
+                      hintText: '${translate('option_vote')} ${index + 1}',
                       contentPadding: EdgeInsets.zero,
                       border: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.transparent)),
@@ -297,17 +275,11 @@ Widget buildTextFieldVote(BuildContext context, int index, String hintText,
                           borderSide: BorderSide(color: Colors.transparent)),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.transparent)),
-                      hintStyle: TextStyle(
-                        color: AppColors.primarySecondaryElementText,
-                      ),
+                      hintStyle: AppTextStyle.small()
+                          .withColor(AppColors.secondaryElementText),
                       counterText: '',
                     ),
-                    style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header2,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
-                    ),
+                    style: AppTextStyle.small(),
                     autocorrect: false,
                   ),
                 ),
@@ -340,11 +312,11 @@ Widget writePost(BuildContext context) {
           children: [
             header(),
             buildTextFieldTag(context),
-            buildTextFieldTitle(context, 'Tiêu đề của bài viết', 'comment', '',
+            buildTextFieldTitle(context, translate('title_post'), 'comment', '',
                 (value) {
               context.read<WritePostAdviseBloc>().add(TitleEvent(value));
             }),
-            buildTextFieldContent(context, 'Suy nghĩ của bạn', 'comment', '',
+            buildTextFieldContent(context, translate('content_post'), 'comment', '',
                 (value) {
               context.read<WritePostAdviseBloc>().add(ContentEvent(value));
             }),
@@ -405,7 +377,7 @@ Widget editPicture(BuildContext context) {
                             left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.grey,
+                          color: AppColors.backgroundGrey,
                         ),
                         child: SvgPicture.asset(
                           "assets/icons/close.svg",
@@ -436,7 +408,7 @@ Widget chooseEditPicture(
 
       final pickedFiles = await ImagePicker().pickMultiImage();
       if (pickedFiles.length + currentList.length > 5) {
-        toastInfo(msg: "Chỉ được chọn tối đa 5 tấm ảnh");
+        toastInfo(msg: translate('picture_above_5'));
         return;
       }
       currentList.addAll(pickedFiles.map((pickedFile) =>
@@ -451,8 +423,8 @@ Widget chooseEditPicture(
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(15.w),
-        color: AppColors.primaryBackground,
-        border: Border.all(color: AppColors.primaryElement),
+        color: AppColors.background,
+        border: Border.all(color: AppColors.element),
       ),
       child: Center(
         child: Container(
@@ -464,18 +436,15 @@ Widget chooseEditPicture(
                 "assets/icons/picture.svg",
                 width: 12.w,
                 height: 12.h,
-                color: AppColors.primaryElement,
+                color: AppColors.element,
               ),
               Container(
                 width: 5.w,
               ),
               Text(
-                'Thêm ảnh',
-                style: TextStyle(
-                    fontFamily: AppFonts.Header1,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryElement),
+                translate('add_picture'),
+                style: AppTextStyle.small().wSemiBold().withColor(
+                    AppColors.element),
               ),
             ],
           ),
@@ -510,7 +479,7 @@ Widget choosePicture(
             0) {
           final pickedFiles = await ImagePicker().pickMultiImage();
           if (pickedFiles.length > 5) {
-            toastInfo(msg: "Chỉ được chọn tối đa 5 tấm ảnh");
+            toastInfo(msg: translate('picture_above_5'));
             return;
           }
           func!(
@@ -547,15 +516,11 @@ Widget choosePicture(
                         "assets/icons/picture.svg",
                         width: 12.w,
                         height: 12.h,
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                       ),
                       Text(
-                        'Chọn ảnh',
-                        style: TextStyle(
-                            fontFamily: AppFonts.Header1,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primaryText),
+                        translate('choose_picture'),
+                        style: AppTextStyle.small().wSemiBold(),
                       ),
                     ],
                   ),
@@ -597,7 +562,7 @@ Widget choosePicture(
                             left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.grey,
+                          color: AppColors.backgroundGrey,
                         ),
                         child: SvgPicture.asset(
                           "assets/icons/close.svg",
@@ -647,7 +612,7 @@ Widget choosePicture(
                                 left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.grey,
+                              color: AppColors.backgroundGrey,
                             ),
                             child: SvgPicture.asset(
                               "assets/icons/close.svg",
@@ -689,7 +654,7 @@ Widget choosePicture(
                                 left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.grey,
+                              color: AppColors.backgroundGrey,
                             ),
                             child: SvgPicture.asset(
                               "assets/icons/close.svg",
@@ -741,7 +706,7 @@ Widget choosePicture(
                                 left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.grey,
+                              color: AppColors.backgroundGrey,
                             ),
                             child: SvgPicture.asset(
                               "assets/icons/close.svg",
@@ -790,7 +755,7 @@ Widget choosePicture(
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
                                     "assets/icons/close.svg",
@@ -835,7 +800,7 @@ Widget choosePicture(
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
                                     "assets/icons/close.svg",
@@ -896,7 +861,7 @@ Widget choosePicture(
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
                                     "assets/icons/close.svg",
@@ -941,7 +906,7 @@ Widget choosePicture(
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
                                     "assets/icons/close.svg",
@@ -993,7 +958,7 @@ Widget choosePicture(
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
                                     "assets/icons/close.svg",
@@ -1038,7 +1003,7 @@ Widget choosePicture(
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
                                     "assets/icons/close.svg",
@@ -1099,7 +1064,7 @@ Widget choosePicture(
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
                                     "assets/icons/close.svg",
@@ -1144,7 +1109,7 @@ Widget choosePicture(
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
                                     "assets/icons/close.svg",
@@ -1196,7 +1161,7 @@ Widget choosePicture(
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
                                     "assets/icons/close.svg",
@@ -1242,7 +1207,7 @@ Widget choosePicture(
                                     fontFamily: AppFonts.Header2,
                                     fontSize: 32.sp,
                                     fontWeight: FontWeight.bold,
-                                    color: AppColors.primaryBackground,
+                                    color: AppColors.background,
                                   ),
                                 ),
                               ),
@@ -1264,7 +1229,7 @@ Widget choosePicture(
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
                                     "assets/icons/close.svg",
@@ -1321,15 +1286,11 @@ Widget chooseVote(BuildContext context) {
                       "assets/icons/vote.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                     Text(
-                      'Tạo bình chọn',
-                      style: TextStyle(
-                          fontFamily: AppFonts.Header1,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryText),
+                      translate('create_vote'),
+                      style: AppTextStyle.small().wSemiBold(),
                     ),
                   ],
                 ),
@@ -1351,7 +1312,7 @@ Widget chooseVote(BuildContext context) {
                     .votes
                     .length >=
                 10) {
-              toastInfo(msg: "Số lượng lựa chọn không được vượt quá 10");
+              toastInfo(msg: translate('option_above_10'));
               return;
             }
             List<String> currentList = List<String>.from(
@@ -1379,18 +1340,14 @@ Widget chooseVote(BuildContext context) {
                     "assets/icons/add.svg",
                     width: 14.w,
                     height: 14.h,
-                    color: AppColors.primarySecondaryText,
+                    color: AppColors.textGrey,
                   ),
                   Container(
                     width: 5.w,
                   ),
                   Text(
-                    'Thêm lựa chọn',
-                    style: TextStyle(
-                        fontFamily: AppFonts.Header2,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.normal,
-                        color: AppColors.primarySecondaryText),
+                    translate('add_option'),
+                    style: AppTextStyle.small().withColor(AppColors.textGrey),
                   ),
                 ],
               ),
@@ -1423,11 +1380,11 @@ Widget allowAddOptions(BuildContext context, void Function(bool value)? func) {
           height: 16.w,
           margin: EdgeInsets.only(left: 0.w, right: 10.w),
           child: Checkbox(
-            checkColor: AppColors.primaryBackground,
+            checkColor: AppColors.background,
             fillColor: MaterialStateProperty.resolveWith<Color?>(
               (Set<MaterialState> states) {
                 if (states.contains(MaterialState.selected)) {
-                  return AppColors.primaryElement; // Selected color
+                  return AppColors.element; // Selected color
                 }
                 return Colors.transparent; // Unselected color
               },
@@ -1440,13 +1397,8 @@ Widget allowAddOptions(BuildContext context, void Function(bool value)? func) {
         ),
         Container(
           child: Text(
-            "Cho phép mọi người thêm lựa chọn",
-            style: TextStyle(
-              fontFamily: AppFonts.Header2,
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 12.sp,
-            ),
+            translate('allow_people_add_option'),
+            style: AppTextStyle.small().wSemiBold(),
           ),
         )
       ],
@@ -1467,11 +1419,11 @@ Widget allowMultipleVotes(
           height: 16.w,
           margin: EdgeInsets.only(left: 0.w, right: 10.w),
           child: Checkbox(
-            checkColor: AppColors.primaryBackground,
+            checkColor: AppColors.background,
             fillColor: MaterialStateProperty.resolveWith<Color?>(
               (Set<MaterialState> states) {
                 if (states.contains(MaterialState.selected)) {
-                  return AppColors.primaryElement; // Selected color
+                  return AppColors.element; // Selected color
                 }
                 return Colors.transparent; // Unselected color
               },
@@ -1484,13 +1436,8 @@ Widget allowMultipleVotes(
         ),
         Container(
           child: Text(
-            "Cho phép mọi người chọn nhiều lựa chọn",
-            style: TextStyle(
-              fontFamily: AppFonts.Header2,
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 12.sp,
-            ),
+            translate('allow_people_choose_multiple'),
+            style: AppTextStyle.small().wSemiBold(),
           ),
         )
       ],
@@ -1525,12 +1472,7 @@ Widget header() {
             Text(
               Global.storageService.getUserFullName(),
               maxLines: 1,
-              style: TextStyle(
-                color: AppColors.primaryText,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
-                fontFamily: AppFonts.Header2,
-              ),
+              style: AppTextStyle.small().wSemiBold(),
             ),
           ],
         ),
@@ -1600,11 +1542,11 @@ Widget buildTextFieldTag(BuildContext context) {
                       borderRadius: BorderRadius.circular(10.w),
                     ),
                     helperStyle: const TextStyle(
-                      color: AppColors.primarySecondaryElement,
+                      color: AppColors.elementLight,
                     ),
                     hintText: inputFieldValues.tags.isNotEmpty
                         ? ''
-                        : "Nhập #hashtag...",
+                        : "${translate('enter_#hashtag')}...",
                     errorText: inputFieldValues.error,
                     prefixIconConstraints:
                         BoxConstraints(maxWidth: 300.w * 0.8),
@@ -1628,7 +1570,7 @@ Widget buildTextFieldTag(BuildContext context) {
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(20.0),
                                         ),
-                                        color: AppColors.primaryElement,
+                                        color: AppColors.element,
                                       ),
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 5.0),
@@ -1642,11 +1584,7 @@ Widget buildTextFieldTag(BuildContext context) {
                                           InkWell(
                                             child: Text(
                                               '#$tag',
-                                              style: TextStyle(
-                                                  fontSize: 11.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: AppFonts.Header2,
-                                                  color: Colors.white),
+                                              style: AppTextStyle.small().wSemiBold().withColor(AppColors.background),
                                             ),
                                             onTap: () {
                                               //print("$tag selected");
@@ -1686,7 +1624,7 @@ Widget buildTextFieldTag(BuildContext context) {
                             .tags
                             .length >=
                         5) {
-                      toastInfo(msg: "Số lượng thẻ không được vượt quá 5");
+                      toastInfo(msg: translate('tag_above_5'));
                       return;
                     }
                     if (!BlocProvider.of<WritePostAdviseBloc>(context)
@@ -1697,7 +1635,7 @@ Widget buildTextFieldTag(BuildContext context) {
                       addTag(context, value);
                     } else {
                       // Optionally, show a message to the user about the duplicate tag
-                      toastInfo(msg: "Bạn đã nhập tag này rồi");
+                      toastInfo(msg: translate('duplicate_tag'));
                     }
                   },
                 ),

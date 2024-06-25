@@ -35,10 +35,10 @@ class _ChangePasswordForgotState extends State<ChangePasswordForgot> {
       child: BlocBuilder<ChangePasswordForgotBloc, ChangePasswordForgotState>(
           builder: (context, state) {
         return Container(
-          color: AppColors.primaryBackground,
+          color: AppColors.background,
           child: SafeArea(
               child: Scaffold(
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: changePassword(context),
           )),
         );

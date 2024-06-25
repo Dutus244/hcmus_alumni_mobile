@@ -17,7 +17,7 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
@@ -219,7 +219,7 @@ Widget member(BuildContext context, Member member, Group group) {
       }
     },
     child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
+      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
       color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -245,7 +245,7 @@ Widget member(BuildContext context, Member member, Group group) {
                   Text(
                     member.user.fullName,
                     style: TextStyle(
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w900,
                       fontFamily: AppFonts.Header2,
@@ -260,7 +260,7 @@ Widget member(BuildContext context, Member member, Group group) {
                           "assets/icons/star_circle.svg",
                           width: 12.w,
                           height: 12.h,
-                          color: AppColors.primarySecondaryText,
+                          color: AppColors.textGrey,
                         ),
                         Container(
                           width: 2.w,
@@ -268,7 +268,7 @@ Widget member(BuildContext context, Member member, Group group) {
                         Text(
                           'Quản trị viên',
                           style: TextStyle(
-                            color: AppColors.primarySecondaryText,
+                            color: AppColors.textGrey,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w900,
                             fontFamily: AppFonts.Header2,
@@ -280,7 +280,7 @@ Widget member(BuildContext context, Member member, Group group) {
                     Text(
                       'Thành viên',
                       style: TextStyle(
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppFonts.Header2,
@@ -352,7 +352,7 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
                         "assets/icons/delete_user.svg",
                         width: 14.w,
                         height: 14.h,
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                       ),
                       Container(
                         width: 10.w,
@@ -363,7 +363,7 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
                           fontFamily: AppFonts.Header2,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                         ),
                       ),
                     ],
@@ -390,7 +390,7 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
                         "assets/icons/star_circle.svg",
                         width: 14.w,
                         height: 14.h,
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                       ),
                       Container(
                         width: 10.w,
@@ -403,7 +403,7 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
                           fontFamily: AppFonts.Header2,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                         ),
                       ),
                     ],

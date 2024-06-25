@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:multi_dropdown/models/value_item.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/post.dart';
@@ -39,7 +39,6 @@ class EditPostGroupController {
     List<File> pictures = state.pictures;
     List<String> deletePictures = state.deletePictures;
 
-
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/posts/$id';
 
@@ -64,8 +63,7 @@ class EditPostGroupController {
 
       var response = await http.put(url, headers: headers, body: body);
       if (response.statusCode == 200) {
-        var endpoint =
-            '/groups/posts/$id/images';
+        var endpoint = '/groups/posts/$id/images';
 
         var headers = <String, String>{
           'Authorization': 'Bearer $token',
@@ -93,27 +91,25 @@ class EditPostGroupController {
           // Send the request
           var response = await request.send();
           if (response.statusCode == 200) {
-            context
-                .read<EditPostGroupBloc>()
-                .add(EditPostGroupResetEvent());
+            context.read<EditPostGroupBloc>().add(EditPostGroupResetEvent());
             Navigator.pop(context);
           } else {
-            toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài viết nhóm");
+            toastInfo(msg: translate('error_edit_post'));
             return;
           }
         } catch (e) {
           // Exception occurred
-          toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài viết nhóm");
+          toastInfo(msg: translate('error_edit_post'));
           return;
         }
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài viết nhóm");
+        toastInfo(msg: translate('error_edit_post'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xảy ra khi chỉnh sửa bài viết nhóm");
+      toastInfo(msg: translate('error_edit_post'));
       return;
     }
   }

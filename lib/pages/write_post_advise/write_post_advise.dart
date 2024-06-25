@@ -31,7 +31,7 @@ class _WritePostAdviseState extends State<WritePostAdvise> {
         builder: (context, state) {
           return Scaffold(
               appBar: buildAppBar(context),
-              backgroundColor: AppColors.primaryBackground,
+              backgroundColor: AppColors.background,
               body: BlocProvider.of<WritePostAdviseBloc>(context)
                   .state.page == 0 ? writePost(context) : editPicture(context)
           );

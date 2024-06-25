@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/values/assets.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../../../global.dart';
 import '../../../model/event.dart';
 import '../bloc/event_detail_write_comment_blocs.dart';
@@ -15,19 +18,14 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Sự kiện',
+          translate('event'),
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: AppFonts.Header0,
-            fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
-            color: AppColors.secondaryHeader,
-          ),
+          style: AppTextStyle.medium().wSemiBold(),
         ),
       ),
     ),
@@ -41,7 +39,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
       height: 400.h,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         border: Border.all(color: Colors.transparent),
       ),
       child: Row(
@@ -65,17 +63,10 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                color: AppColors.primaryText,
-                fontFamily: AppFonts.Header3,
-                fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small(),
               autocorrect: false,
             ),
           )
@@ -92,24 +83,14 @@ Widget header(Event event) {
         margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
         child: Text(
           event.title,
-          style: TextStyle(
-            fontFamily: AppFonts.Header1,
-            fontSize: 14.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryText,
-          ),
+          style: AppTextStyle.base().wSemiBold(),
         ),
       ),
       Container(
         margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
         child: Text(
-          'Gửi bình luận',
-          style: TextStyle(
-            fontFamily: AppFonts.Header2,
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryText,
-          ),
+          translate('write_comment'),
+          style: AppTextStyle.xLarge().wSemiBold(),
         ),
       ),
       Container(
@@ -133,12 +114,7 @@ Widget header(Event event) {
             Text(
               Global.storageService.getUserFullName(),
               maxLines: 1,
-              style: TextStyle(
-                color: AppColors.primaryText,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
-                fontFamily: AppFonts.Header2,
-              ),
+              style: AppTextStyle.small().wSemiBold(),
             ),
           ],
         ),
@@ -162,11 +138,11 @@ Widget buttonSend(BuildContext context, Event event) {
       height: 30.h,
       decoration: BoxDecoration(
         color: comment != ""
-            ? AppColors.primaryElement
-            : AppColors.primaryBackground,
+            ? AppColors.element
+            : AppColors.background,
         borderRadius: BorderRadius.circular(10.w),
         border: Border.all(
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ),
       child: Center(
@@ -176,25 +152,21 @@ Widget buttonSend(BuildContext context, Event event) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Gửi',
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header1,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: comment != ""
-                          ? AppColors.primaryBackground
-                          : Colors.black.withOpacity(0.3)),
+                  translate('send'),
+                  style: AppTextStyle.base().wSemiBold().withColor(comment != ""
+                      ? AppColors.background
+                      : AppColors.textBlack.withOpacity(0.3)),
                 ),
                 Container(
                   width: 6.w,
                 ),
                 SvgPicture.asset(
-                  "assets/icons/send.svg",
+                  AppAssets.sendIconS,
                   width: 15.w,
                   height: 15.h,
                   color: comment != ""
-                      ? AppColors.primaryBackground
-                      : Colors.black.withOpacity(0.5),
+                      ? AppColors.background
+                      : AppColors.textBlack.withOpacity(0.5),
                 ),
               ],
             ),
@@ -231,7 +203,7 @@ Widget navigation(BuildContext context, Event event, int route, int profile) {
                   "assets/icons/back.svg",
                   width: 25.w,
                   height: 25.h,
-                  color: Colors.black.withOpacity(0.5),
+                  color: AppColors.textBlack.withOpacity(0.5),
                 ),
               ),
               GestureDetector(
@@ -246,8 +218,8 @@ Widget navigation(BuildContext context, Event event, int route, int profile) {
                   height: 30.h,
                   decoration: BoxDecoration(
                     color: comment != ""
-                        ? AppColors.primaryElement
-                        : AppColors.primaryBackground,
+                        ? AppColors.element
+                        : AppColors.background,
                     borderRadius: BorderRadius.circular(15.w),
                     border: Border.all(
                       color: Colors.transparent,
@@ -259,25 +231,25 @@ Widget navigation(BuildContext context, Event event, int route, int profile) {
                     child: Row(
                       children: [
                         Text(
-                          'Gửi',
+                          translate('send'),
                           style: TextStyle(
                               fontFamily: AppFonts.Header2,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.bold,
                               color: comment != ""
-                                  ? AppColors.primaryBackground
-                                  : Colors.black.withOpacity(0.3)),
+                                  ? AppColors.background
+                                  : AppColors.textBlack.withOpacity(0.3)),
                         ),
                         Container(
                           width: 6.w,
                         ),
                         SvgPicture.asset(
-                          "assets/icons/send.svg",
+                          AppAssets.sendIconS,
                           width: 15.w,
                           height: 15.h,
                           color: comment != ""
-                              ? AppColors.primaryBackground
-                              : Colors.black.withOpacity(0.5),
+                              ? AppColors.background
+                              : AppColors.textBlack.withOpacity(0.5),
                         ),
                       ],
                     ),
@@ -302,7 +274,7 @@ Widget eventDetailWriteComment(BuildContext context, Event event) {
           scrollDirection: Axis.vertical,
           children: [
             header(event),
-            buildTextField('Bình luận của bạn', 'comment', '',
+            buildTextField(translate('your_comment'), 'comment', '',
                     (value) {
                   context
                       .read<EventDetailWriteCommentBloc>()

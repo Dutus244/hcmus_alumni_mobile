@@ -56,6 +56,24 @@ class FriendPageController {
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
+        jsonMap = {
+          "friends": [
+            {
+              "user": {
+                "id": "1",
+                "fullName": "Cao Nguyên",
+                "avatarUrl": "https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea"
+              }
+            },
+            {
+              "user": {
+                "id": "1",
+                "fullName": "Cao Nguyên",
+                "avatarUrl": "https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea"
+              }
+            },
+          ]
+        };
         var suggestionResponse = FriendSuggestionResponse.fromJson(jsonMap);
 
         if (suggestionResponse.suggestions.isEmpty) {
@@ -115,6 +133,24 @@ class FriendPageController {
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
+        jsonMap = {
+          "requests": [
+            {
+              "user": {
+                "id": "1",
+                "fullName": "Cao Nguyên",
+                "avatarUrl": "https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea"
+              }
+            },
+            {
+              "user": {
+                "id": "1",
+                "fullName": "Cao Nguyên",
+                "avatarUrl": "https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea"
+              }
+            },
+          ]
+        };
         var requestResponse = FriendRequestResponse.fromJson(jsonMap);
 
         if (requestResponse.requests.isEmpty) {

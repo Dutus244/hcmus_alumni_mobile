@@ -23,12 +23,14 @@ class AppRoutes {
   static const NEWS_DETAIL = "/newsDetail";
   static const NEWS_DETAIL_WRITE_COMMENT = "/newsDetailWriteComment";
   static const NEWS_DETAIL_EDIT_COMMENT = "/newsDetailEditComment";
-  static const NEWS_DETAIL_WRITE_CHILDREN_COMMENT = "/newsDetailWriteChildrenComment";
+  static const NEWS_DETAIL_WRITE_CHILDREN_COMMENT =
+      "/newsDetailWriteChildrenComment";
 
   static const EVENT_DETAIL = "/eventDetail";
   static const EVENT_DETAIL_WRITE_COMMENT = "/eventDetailWriteComment";
   static const EVENT_DETAIL_EDIT_COMMENT = "/eventDetailEditComment";
-  static const EVENT_DETAIL_WRITE_CHILDREN_COMMENT = "/eventDetailWriteChildrenComment";
+  static const EVENT_DETAIL_WRITE_CHILDREN_COMMENT =
+      "/eventDetailWriteChildrenComment";
 
   static const HOF_DETAIL = "/hofDetail";
 
@@ -65,4 +67,8 @@ class AppRoutes {
   static const TERM_OF_SERVICE = "/termOfService";
 
   static const FRIEND_LIST = "/friendList";
+
+  static const CHAT_PAGE = "/chatPage";
+  static const CHAT_DETAIL = "/chatDetail";
+  static const CHAT_CREATE = "/chatCreate";
 }

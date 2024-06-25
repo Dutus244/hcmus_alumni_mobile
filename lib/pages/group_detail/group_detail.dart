@@ -57,14 +57,14 @@ class _GroupDetailState extends State<GroupDetail> {
           if (state.group != null && state.group!.privacy == "PRIVATE" && !state.group!.isJoined) {
             return Scaffold(
               appBar: buildAppBar(context),
-              backgroundColor: AppColors.primaryBackground,
+              backgroundColor: AppColors.background,
               body: groupPrivateNotJoined(context, state.group),
             );
           }
           else {
             return Scaffold(
                 appBar: buildAppBar(context),
-                backgroundColor: AppColors.primaryBackground,
+                backgroundColor: AppColors.background,
                 body: group(context, _scrollController, state.group)
             );
           }

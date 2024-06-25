@@ -15,7 +15,7 @@ class _OtherProfileDetailState extends State<OtherProfileDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context),
-      backgroundColor: AppColors.primaryBackground,
+      backgroundColor: AppColors.background,
       body:  otherProfileDetail(context),
     );
   }

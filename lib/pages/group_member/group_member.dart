@@ -61,7 +61,7 @@ class _GroupMemberState extends State<GroupMember> {
         builder: (context, state) {
           return Scaffold(
             appBar: buildAppBar(context),
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: listMember(context, _scrollController, group),
           );
         });

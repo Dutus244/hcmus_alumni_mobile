@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hcmus_alumni_mobile/common/values/assets.dart';
 import 'package:hcmus_alumni_mobile/common/values/constants.dart';
 
 import '../../common/values/colors.dart';
@@ -22,12 +23,13 @@ class _SplashState extends State<Splash> {
     Timer(Duration(seconds: 2), () {
       if (Global.storageService.getDeviceFirstOpen()) {
         Global.storageService
-            .setBool(AppConstants.STORAGE_DEVICE_OPEN_FIRST_TIME, false);
+            .setBool(AppConstants.DEVICE_OPEN_FIRST_TIME, false);
+        Locale currentLocale = Localizations.localeOf(context);
+        Global.storageService
+            .setString(AppConstants.DEVICE_LANGUAGE, currentLocale.toString());
         Navigator.of(context)
             .pushNamedAndRemoveUntil("/welcome", (route) => false);
       } else {
-        Global.storageService
-            .setBool(AppConstants.STORAGE_USER_IS_LOGGED_IN, false);
         Navigator.of(context)
             .pushNamedAndRemoveUntil("/signIn", (route) => false);
       }
@@ -37,7 +39,7 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.primaryBackground,
+      color: AppColors.background,
       child: Scaffold(
         body: Row(
           children: [
@@ -46,7 +48,7 @@ class _SplashState extends State<Splash> {
                 width: 345.w,
                 height: 345.w,
                 child: Image.asset(
-                  "assets/images/logos/logo.png",
+                  AppAssets.logoImage,
                   fit: BoxFit.cover,
                 ),
               ),

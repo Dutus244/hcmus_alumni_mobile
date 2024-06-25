@@ -1,5 +1,6 @@
-
 import 'package:hcmus_alumni_mobile/model/permissions.dart';
+import 'package:hcmus_alumni_mobile/model/tags.dart';
+import 'package:hcmus_alumni_mobile/model/tags_response.dart';
 import 'package:hcmus_alumni_mobile/model/user.dart';
 import 'status.dart';
 
@@ -19,6 +20,7 @@ class Group {
   final Permissions permissions;
   final String? userRole;
   final bool isRequestPending;
+  final List<Tags> tags;
 
   Group(
       this.id,
@@ -35,7 +37,8 @@ class Group {
       this.createAt,
       this.permissions,
       this.userRole,
-      this.isRequestPending);
+      this.isRequestPending,
+      this.tags);
 
   Group.fromJson(Map<String, dynamic> json)
       : id = json["id"],
@@ -52,5 +55,6 @@ class Group {
         createAt = json["createAt"],
         permissions = Permissions.fromJson(json["permissions"]),
         userRole = json["userRole"],
-        isRequestPending = json["isRequestPending"];
+        isRequestPending = json["isRequestPending"],
+        tags = TagsResponse.fromJson(json).tags;
 }

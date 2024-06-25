@@ -4,8 +4,8 @@ class FriendSuggestion {
   final User user;
 
   FriendSuggestion(
-      this.user,
-      );
+    this.user,
+  );
 
   FriendSuggestion.fromJson(Map<String, dynamic> json)
       : user = User.fromJson(json["user"]);
