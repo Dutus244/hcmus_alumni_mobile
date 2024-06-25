@@ -17,7 +17,7 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
@@ -138,13 +138,13 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
       }
     },
     child: Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
+        margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 15.h),
         color: Colors.transparent,
         child: Row(
           children: [
             Container(
-              width: 70.w,
-              height: 70.h,
+              width: 60.w,
+              height: 60.h,
               child: CircleAvatar(
                 radius: 40,
                 child: null,
@@ -153,7 +153,7 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
               ),
             ),
             Container(
-              width: 10.w,
+              width: 15.w,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,14 +161,14 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
               children: [
                 Container(
                   margin: EdgeInsets.only(right: 10.w),
-                  width: 250.w,
+                  width: 255.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         request.user.fullName,
                         style: TextStyle(
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header2,
@@ -180,63 +180,67 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
                 Container(
                   height: 10.h,
                 ),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        GroupMemberApproveController(context: context).handleApprovedRequest(groupId, request.user.id);
-                      },
-                      child: Container(
-                        width: 120.w,
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryElement,
-                          borderRadius: BorderRadius.circular(5.w),
-                          border: Border.all(
-                            color: Colors.transparent,
+                Container(
+                  width: 255.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          GroupMemberApproveController(context: context).handleApprovedRequest(groupId, request.user.id);
+                        },
+                        child: Container(
+                          width: 120.w,
+                          height: 30.h,
+                          decoration: BoxDecoration(
+                            color: AppColors.element,
+                            borderRadius: BorderRadius.circular(5.w),
+                            border: Border.all(
+                              color: Colors.transparent,
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Phê duyệt',
-                            style: TextStyle(
-                                fontFamily: AppFonts.Header1,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryBackground),
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        GroupMemberApproveController(context: context).handleDeneidRequest(groupId, request.user.id);
-                      },
-                      child: Container(
-                        width: 120.w,
-                        height: 30.h,
-                        margin: EdgeInsets.only(left: 10.w),
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 230, 230, 230),
-                          borderRadius: BorderRadius.circular(5.w),
-                          border: Border.all(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Từ chối',
-                            style: TextStyle(
-                                fontFamily: AppFonts.Header1,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.bold,
-                                color:
-                                AppColors.primaryText),
+                          child: Center(
+                            child: Text(
+                              'Phê duyệt',
+                              style: TextStyle(
+                                  fontFamily: AppFonts.Header1,
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.background),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      GestureDetector(
+                        onTap: () {
+                          GroupMemberApproveController(context: context).handleDeneidRequest(groupId, request.user.id);
+                        },
+                        child: Container(
+                          width: 120.w,
+                          height: 30.h,
+                          margin: EdgeInsets.only(left: 10.w),
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            borderRadius: BorderRadius.circular(5.w),
+                            border: Border.all(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Từ chối',
+                              style: TextStyle(
+                                  fontFamily: AppFonts.Header1,
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                  AppColors.textBlack),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             )

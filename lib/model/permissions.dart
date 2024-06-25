@@ -3,9 +3,9 @@ class Permissions {
   final bool delete;
 
   Permissions(
-      this.edit,
-      this.delete,
-      );
+    this.edit,
+    this.delete,
+  );
 
   Permissions.fromJson(Map<String, dynamic> json)
       : edit = json["edit"],

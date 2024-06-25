@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/values/text_style.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
@@ -15,7 +17,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
       height: 40.h,
       margin: EdgeInsets.only(bottom: 20.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -45,17 +47,10 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                fontFamily: AppFonts.Header3,
-                color: AppColors.primaryText,
-                fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small(),
               autocorrect: false,
               obscureText: textType == "email" ? false : true,
               maxLength: 50,
@@ -82,8 +77,8 @@ Widget buildLogInAndRegButton(
           left: 25.w, right: 25.w, top: buttonType == "register" ? 30.h : 20.h),
       decoration: BoxDecoration(
         color: buttonType == "register"
-            ? AppColors.primaryElement
-            : AppColors.primarySecondaryElement,
+            ? AppColors.element
+            : AppColors.elementLight,
         borderRadius: BorderRadius.circular(15.w),
         border: Border.all(
           color: buttonType == "register"
@@ -94,13 +89,9 @@ Widget buildLogInAndRegButton(
       child: Center(
         child: Text(
           buttonName,
-          style: TextStyle(
-              fontFamily: AppFonts.Header1,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: buttonType == "register"
-                  ? AppColors.primaryBackground
-                  : AppColors.primaryElement),
+          style: AppTextStyle.medium().wSemiBold().withColor(buttonType == "register"
+              ? AppColors.background
+              : AppColors.element),
         ),
       ),
     ),
@@ -131,25 +122,20 @@ Widget register(BuildContext context) {
                   child: Container(
                     padding: EdgeInsets.only(bottom: 15.h),
                     child: Text(
-                      "ĐĂNG KÝ",
-                      style: TextStyle(
-                        fontFamily: AppFonts.Header0,
-                        color: AppColors.primaryText,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17.sp,
-                      ),
+                      translate('signup').toUpperCase(),
+                      style: AppTextStyle.large().wSemiBold(),
                     ),
                   )),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField("Email *", "email", "email", (value) {
+              buildTextField(translate('email*'), "email", "email", (value) {
                 context.read<RegisterBloc>().add(EmailEvent(value));
               }),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField("Mật khẩu *", "password", "lock",
+              buildTextField(translate('password*'), "password", "lock",
                       (value) {
                     context
                         .read<RegisterBloc>()
@@ -159,7 +145,7 @@ Widget register(BuildContext context) {
                 height: 5.h,
               ),
               buildTextField(
-                  "Nhập lại mật khẩu *", "rePassword", "lock",
+                  translate('re_password*'), "rePassword", "lock",
                       (value) {
                     context
                         .read<RegisterBloc>()
@@ -168,8 +154,8 @@ Widget register(BuildContext context) {
             ],
           ),
         ),
-        buildLogInAndRegButton(context, "ĐĂNG KÝ", "register"),
-        buildLogInAndRegButton(context, "ĐĂNG NHẬP", "login"),
+        buildLogInAndRegButton(context, translate('signup').toUpperCase(), "register"),
+        buildLogInAndRegButton(context, translate('signin').toUpperCase(), "login"),
       ],
     ),
   );

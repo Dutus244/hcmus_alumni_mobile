@@ -39,7 +39,7 @@ class _MyProfileAddEducationState extends State<MyProfileAddEducation> {
         builder: (context, state) {
           return Scaffold(
               appBar: buildAppBar(context),
-              backgroundColor: AppColors.primaryBackground,
+              backgroundColor: AppColors.background,
               body: myProfileAddEducation(context));
         });
   }

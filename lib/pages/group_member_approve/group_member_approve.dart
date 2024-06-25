@@ -55,7 +55,7 @@ class _GroupMemberApproveState extends State<GroupMemberApprove> {
         builder: (context, state) {
           return Scaffold(
               appBar: buildAppBar(context),
-              backgroundColor: AppColors.primaryBackground,
+              backgroundColor: AppColors.background,
               body: listRequest(context, _scrollController, group.id));
         });
   }

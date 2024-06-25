@@ -29,8 +29,8 @@ class _FriendPageState extends State<FriendPage> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
-    // FriendPageController(context: context).handleLoadSuggestionData(0);
-    // FriendPageController(context: context).handleLoadRequestData(0);
+    FriendPageController(context: context).handleLoadSuggestionData(0);
+    FriendPageController(context: context).handleLoadRequestData(0);
     context.read<FriendPageBloc>().add(NameEvent(''));
     context.read<FriendPageBloc>().add(NameSearchEvent(''));
   }
@@ -86,7 +86,7 @@ class _FriendPageState extends State<FriendPage> {
             return Container(
               child: Scaffold(
                 appBar: buildAppBar(context, 'Bạn bè'),
-                backgroundColor: AppColors.primaryBackground,
+                backgroundColor: AppColors.background,
                 body: BlocProvider.of<FriendPageBloc>(context).state.page == 0
                     ? listSuggestion(context, _scrollController)
                     : listRequest(context, _scrollController),

@@ -32,12 +32,12 @@ class FriendListBloc extends Bloc<FriendListEvent, FriendListState> {
   }
 
   void _indexFriendEvent(IndexFriendEvent event, Emitter<FriendListState> emit) {
-    emit(state.copyWith(indexFriend: event.indexGroup));
+    emit(state.copyWith(indexFriend: event.indexFriend));
   }
 
   void _hasReachedMaxFriendEvent(
       HasReachedMaxFriendEvent event, Emitter<FriendListState> emit) {
-    emit(state.copyWith(hasReachedMaxFriend: event.hasReachedMaxGroup));
+    emit(state.copyWith(hasReachedMaxFriend: event.hasReachedMaxFriend));
   }
 
   void _friendSearchResetEvent(

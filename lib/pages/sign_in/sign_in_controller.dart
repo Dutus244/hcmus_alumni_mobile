@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
+import '../../common/function/handle_save_permission.dart';
+import '../../common/services/socket_service.dart';
 import '../../common/values/constants.dart';
-import '../../common/values/permissions.dart';
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'bloc/sign_in_blocs.dart';
@@ -15,87 +17,21 @@ class SignInController {
 
   const SignInController({required this.context});
 
-  bool hasPermission(List<String> permissions, String permissionToCheck) {
-    return permissions.contains(permissionToCheck);
-  }
-
-  Future<void> handleSavePermission(List<String> permissions) async {
-    if (hasPermission(permissions, Permissions.NEWS_COMMENT_CREATE)) {
-      Global.storageService.setBool(Permissions.NEWS_COMMENT_CREATE, true);
-    } else {
-      Global.storageService.setBool(Permissions.NEWS_COMMENT_CREATE, false);
-    }
-
-    if (hasPermission(permissions, Permissions.EVENT_COMMENT_CREATE)) {
-      Global.storageService.setBool(Permissions.EVENT_COMMENT_CREATE, true);
-    } else {
-      Global.storageService.setBool(Permissions.EVENT_COMMENT_CREATE, false);
-    }
-
-    if (hasPermission(permissions, Permissions.EVENT_PARTICIPANT_CREATE)) {
-      Global.storageService.setBool(Permissions.EVENT_PARTICIPANT_CREATE, true);
-    } else {
-      Global.storageService.setBool(Permissions.EVENT_PARTICIPANT_CREATE, false);
-    }
-
-    if (hasPermission(permissions, Permissions.COUNSEL_CREATE)) {
-      Global.storageService.setBool(Permissions.COUNSEL_CREATE, true);
-    } else {
-      Global.storageService.setBool(Permissions.COUNSEL_CREATE, false);
-    }
-
-    if (hasPermission(permissions, Permissions.COUNSEL_REACTION_CREATE)) {
-      Global.storageService.setBool(Permissions.COUNSEL_REACTION_CREATE, true);
-    } else {
-      Global.storageService.setBool(Permissions.COUNSEL_REACTION_CREATE, false);
-    }
-
-    if (hasPermission(permissions, Permissions.COUNSEL_COMMENT_CREATE)) {
-      Global.storageService.setBool(Permissions.COUNSEL_COMMENT_CREATE, true);
-    } else {
-      Global.storageService.setBool(Permissions.COUNSEL_COMMENT_CREATE, false);
-    }
-
-    if (hasPermission(permissions, Permissions.COUNSEL_VOTE)) {
-      Global.storageService.setBool(Permissions.COUNSEL_VOTE, true);
-    } else {
-      Global.storageService.setBool(Permissions.COUNSEL_VOTE, false);
-    }
-
-    if (hasPermission(permissions, Permissions.GROUP_CREATE)) {
-      Global.storageService.setBool(Permissions.GROUP_CREATE, true);
-    } else {
-      Global.storageService.setBool(Permissions.GROUP_CREATE, false);
-    }
-
-    if (hasPermission(permissions, Permissions.PROFILE_EDIT)) {
-      Global.storageService.setBool(Permissions.PROFILE_EDIT, true);
-    } else {
-      Global.storageService.setBool(Permissions.PROFILE_EDIT, false);
-    }
-
-    if (hasPermission(permissions, Permissions.MESSAGE_CREATE)) {
-      Global.storageService.setBool(Permissions.MESSAGE_CREATE, true);
-    } else {
-      Global.storageService.setBool(Permissions.MESSAGE_CREATE, false);
-    }
-  }
-
   Future<void> handleSignIn() async {
     final state = context.read<SignInBloc>().state;
     String email = state.email;
     String password = state.password;
     bool rememberLogin = state.rememberLogin;
     if (email.isEmpty) {
-      toastInfo(msg: "Bạn phải điền email");
+      toastInfo(msg: translate('must_fill_email'));
       return;
     }
     if (!isValidEmail(email)) {
-      toastInfo(msg: "Email không hợp lệ");
+      toastInfo(msg: translate('invalid_email'));
       return;
     }
     if (password.isEmpty) {
-      toastInfo(msg: "Bạn phải điền mật khẩu");
+      toastInfo(msg: translate('must_fill_password'));
       return;
     }
 
@@ -111,41 +47,43 @@ class SignInController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         String jwtToken = jsonMap['jwt'];
         Global.storageService
-            .setString(AppConstants.STORAGE_USER_AUTH_TOKEN, jwtToken);
-        Global.storageService
-            .setBool(AppConstants.STORAGE_USER_IS_LOGGED_IN, true);
+            .setString(AppConstants.USER_AUTH_TOKEN, jwtToken);
         if (rememberLogin) {
           Global.storageService
-              .setBool(AppConstants.STORAGE_USER_REMEMBER_LOGIN, true);
+              .setBool(AppConstants.USER_REMEMBER_LOGIN, true);
           Global.storageService
-              .setString(AppConstants.STORAGE_USER_EMAIL, email);
+              .setString(AppConstants.USER_EMAIL, email);
           Global.storageService
-              .setString(AppConstants.STORAGE_USER_PASSWORD, password);
+              .setString(AppConstants.USER_PASSWORD, password);
         }
+        Global.storageService.setString(AppConstants.USER_ID, '0ac25d55-1ee6-4794-8d46-58f82cde644c');
 
         List<String> permissions = List<String>.from(jsonMap['permissions']);
         handleSavePermission(permissions);
-        toastInfo(msg: "Đăng nhập thành công");
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil("/applicationPage", (route) => false, arguments: {"route": 0});
+        toastInfo(msg: translate('sign_in_success'));
+        socketService.connect(Global.storageService.getUserId());
+
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            "/applicationPage", (route) => false,
+            arguments: {"route": 0});
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 10100) {
-          toastInfo(msg: "Email hoặc mật khẩu không hợp lệ");
+          toastInfo(msg: translate('email_password_invalid'));
           return;
         }
         if (errorCode == 10101) {
-          toastInfo(msg: "Email hoặc mật khẩu không hợp lệ");
+          toastInfo(msg: translate('email_password_invalid'));
           return;
         }
         if (errorCode == 10102) {
-          toastInfo(msg: "Lỗi đăng nhập");
+          toastInfo(msg: translate('error_login'));
           return;
         }
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xảy ra khi đăng nhập");
+      toastInfo(msg: translate('error_login'));
     }
   }
 
@@ -162,19 +100,21 @@ class SignInController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         String jwtToken = jsonMap['jwt'];
         Global.storageService
-            .setString(AppConstants.STORAGE_USER_AUTH_TOKEN, jwtToken);
-        Global.storageService
-            .setBool(AppConstants.STORAGE_USER_IS_LOGGED_IN, true);
+            .setString(AppConstants.USER_AUTH_TOKEN, jwtToken);
+        Global.storageService.setString(AppConstants.USER_ID, '0ac25d55-1ee6-4794-8d46-58f82cde644c');
         List<String> permissions = List<String>.from(jsonMap['permissions']);
         handleSavePermission(permissions);
-        toastInfo(msg: "Đăng nhập thành công");
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil("/applicationPage", (route) => false, arguments: {"route": 0});
+        toastInfo(msg: translate('sign_in_success'));
+        socketService.connect(Global.storageService.getUserId());
+
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            "/applicationPage", (route) => false,
+            arguments: {"route": 0});
       } else {
-        toastInfo(msg: "Email hoặc mật khẩu bị sai");
+        toastInfo(msg: translate('email_password_invalid'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xảy ra khi đăng nhập");
+      toastInfo(msg: translate('error_login'));
     }
   }
 

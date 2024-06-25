@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/values/assets.dart';
+import 'package:hcmus_alumni_mobile/common/values/text_style.dart';
 
 import '../../../common/function/handle_participant_count.dart';
 import '../../../common/values/colors.dart';
@@ -18,19 +21,14 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Bạn bè',
+          translate('friend'),
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: AppFonts.Header0,
-            fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
-            color: AppColors.secondaryHeader,
-          ),
+          style: AppTextStyle.medium().wSemiBold(),
         ),
       ),
     ),
@@ -44,7 +42,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
       height: 40.h,
       margin: EdgeInsets.only(bottom: 10.h, top: 0.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -69,17 +67,10 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                fontFamily: AppFonts.Header3,
-                color: AppColors.primaryText,
-                fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small(),
               autocorrect: false,
               obscureText: false,
               maxLength: 50,
@@ -93,7 +84,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
               width: 16.w,
               height: 16.w,
               margin: EdgeInsets.only(right: 10.w),
-              child: Image.asset("assets/icons/$iconName.png"),
+              child: Image.asset(iconName),
             ),
           ),
         ],
@@ -118,19 +109,14 @@ Widget listFriend(BuildContext context, ScrollController _scrollController) {
                   children: [
                     Center(
                         child: buildTextField(
-                            context, 'Tìm kiếm bạn bè', 'search', 'search', (value) {
+                            context, translate('search_friend'), 'search', AppAssets.searchIconP, (value) {
                       context.read<FriendListBloc>().add(NameEvent(value));
                     })),
                     Container(
                       margin: EdgeInsets.only(left: 10.w),
                       child: Text(
-                        '300 bạn bè',
-                        style: TextStyle(
-                          fontFamily: AppFonts.Header0,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.sp,
-                          color: AppColors.secondaryHeader,
-                        ),
+                        '300 ${translate('friends').toLowerCase()}',
+                        style: AppTextStyle.xLarge().wSemiBold(),
                       ),
                     ),
                     loadingWidget(),
@@ -147,32 +133,22 @@ Widget listFriend(BuildContext context, ScrollController _scrollController) {
                     children: [
                       Center(
                           child: buildTextField(
-                              context, 'Tìm nhóm', 'search', 'search', (value) {
+                              context, translate('search_friend'), 'search', AppAssets.searchIconP, (value) {
                         context.read<FriendListBloc>().add(NameEvent(value));
                       })),
                       Container(
                         margin: EdgeInsets.only(left: 10.w),
                         child: Text(
-                          '300 bạn bè',
-                          style: TextStyle(
-                            fontFamily: AppFonts.Header0,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18.sp,
-                            color: AppColors.secondaryHeader,
-                          ),
+                          '300 ${translate('friends').toLowerCase()}',
+                          style: AppTextStyle.xLarge().wSemiBold(),
                         ),
                       ),
                       Center(
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có dữ liệu',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
-                          ),
+                          translate('no_friends'),
+                          style: AppTextStyle.small(),
                         ),
                       )),
                     ],
@@ -199,20 +175,15 @@ Widget listFriend(BuildContext context, ScrollController _scrollController) {
                       children: [
                         Center(
                             child: buildTextField(
-                                context, 'Tìm nhóm', 'search', 'search',
+                                context, translate('search_friend'), 'search', AppAssets.searchIconP,
                                 (value) {
                           context.read<FriendListBloc>().add(NameEvent(value));
                         })),
                         Container(
                           margin: EdgeInsets.only(left: 10.w),
                           child: Text(
-                            '300 bạn bè',
-                            style: TextStyle(
-                              fontFamily: AppFonts.Header0,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.sp,
-                              color: AppColors.secondaryHeader,
-                            ),
+                            '300 ${translate('friends').toLowerCase()}',
+                            style: AppTextStyle.xLarge().wSemiBold(),
                           ),
                         ),
                         Container(
@@ -250,7 +221,7 @@ Widget friend(BuildContext context, Friend friend) {
           });
     },
     child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
+      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
       color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -275,12 +246,7 @@ Widget friend(BuildContext context, Friend friend) {
                 children: [
                   Text(
                     friend.user.fullName,
-                    style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w900,
-                      fontFamily: AppFonts.Header2,
-                    ),
+                    style: AppTextStyle.small().wSemiBold(),
                   ),
                 ],
               ),
@@ -299,7 +265,7 @@ Widget friend(BuildContext context, Friend friend) {
               height: 17.h,
               decoration: const BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/icons/3dot.png"))),
+                      image: AssetImage(AppAssets.thereDotIconP))),
             ),
           ),
         ],
@@ -321,22 +287,17 @@ Widget friendOption(BuildContext context, Friend friend) {
         child: Row(
           children: [
             SvgPicture.asset(
-              "assets/icons/delete_friend.svg",
+              AppAssets.deleteFriendIconS,
               width: 14.w,
               height: 14.h,
-              color: AppColors.primaryText,
+              color: AppColors.textBlack,
             ),
             Container(
               width: 10.w,
             ),
             Text(
-              'Huỷ kết bạn',
-              style: TextStyle(
-                fontFamily: AppFonts.Header2,
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryText,
-              ),
+              translate('unfriend'),
+              style: AppTextStyle.medium().wSemiBold(),
             ),
           ],
         ),

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
@@ -79,10 +80,10 @@ class MyProfilePageController {
         }
         context.read<MyProfilePageBloc>().add(StatusEventEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sự kiện đã tham gia");
+        toastInfo(msg: translate('error_get_events_participated'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sự kiện đã tham gia");
+      toastInfo(msg: translate('error_get_events_participated'));
     }
   }
 
@@ -146,11 +147,11 @@ class MyProfilePageController {
         }
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh bài viết của tôi");
+        toastInfo(msg: translate('error_get_posts'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh bài viết của tôi");
+      toastInfo(msg: translate('error_get_posts'));
     }
   }
 
@@ -183,7 +184,7 @@ class MyProfilePageController {
             return;
           } else {
             // Handle other status codes if needed
-            toastInfo(msg: "Có lỗi xả ra khi huỷ thích bài viết");
+            toastInfo(msg: translate('error_unlike_post'));
           }
         } else {
           var response = await http.post(url, headers: headers, body: body);
@@ -194,7 +195,7 @@ class MyProfilePageController {
             return;
           } else {
             // Handle other status codes if needed
-            toastInfo(msg: "Có lỗi xả ra khi thích bài viết");
+            toastInfo(msg: translate('error_like_post'));
           }
         }
       }
@@ -205,16 +206,16 @@ class MyProfilePageController {
     final shouldDelte = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Xoá bài viết'),
-        content: Text('Bạn có muốn xoá bài viết này?'),
+        title: Text(translate('delete_post')),
+        content: Text(translate('delete_post_question')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Huỷ'),
+            child: Text(translate('cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text('Xoá'),
+            child: Text(translate('delete')),
           ),
         ],
       ),
@@ -238,11 +239,11 @@ class MyProfilePageController {
           return true;
         } else {
           // Handle other status codes if needed
-          toastInfo(msg: "Có lỗi xả ra khi xoá bài viết");
+          toastInfo(msg: translate('error_delete_post'));
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: "Có lỗi xả ra khi xoá bài viết");
+        toastInfo(msg: translate('error_delete_post'));
       }
     }
     return shouldDelte ?? false;
@@ -267,11 +268,11 @@ class MyProfilePageController {
         MyProfilePageController(context: context).handleLoadPostData(0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi chọn lựa chọn");
+        toastInfo(msg: translate('error_choose_option'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi chọn lựa chọn");
+      toastInfo(msg: translate('error_choose_option'));
     }
   }
 
@@ -294,11 +295,11 @@ class MyProfilePageController {
         MyProfilePageController(context: context).handleLoadPostData(0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi huỷ lựa chọn");
+        toastInfo(msg: translate('error_not_choose_option'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi huỷ lựa chọn");
+      toastInfo(msg: translate('error_not_choose_option'));
     }
   }
 
@@ -323,11 +324,11 @@ class MyProfilePageController {
         MyProfilePageController(context: context).handleLoadPostData(0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi cập nhật lựa chọn");
+        toastInfo(msg: translate('error_change_option'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi cập nhật lựa chọn");
+      toastInfo(msg: translate('error_change_option'));
     }
   }
 
@@ -356,12 +357,12 @@ class MyProfilePageController {
         MyProfilePageController(context: context).handleLoadPostData(0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xảy ra khi thêm lựa chọn");
+        toastInfo(msg: translate('error_add_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xảy ra khi thêm lựa chọn");
+      toastInfo(msg: translate('error_add_option'));
       return;
     }
   }

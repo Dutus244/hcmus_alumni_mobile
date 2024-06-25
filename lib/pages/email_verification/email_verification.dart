@@ -34,10 +34,10 @@ class _EmailVerificationState extends State<EmailVerification> {
       child: BlocBuilder<EmailVerificationBloc, EmailVerificationState>(
           builder: (context, state) {
         return Container(
-          color: AppColors.primaryBackground,
+          color: AppColors.background,
           child: SafeArea(
               child: Scaffold(
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: emailVerification(context),
           )),
         );

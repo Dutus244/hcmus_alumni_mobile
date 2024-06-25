@@ -49,7 +49,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
         builder: (context, state) {
           return Scaffold(
             appBar: buildAppBar(context),
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body:  listEvent(context, _scrollController),
           );
         });

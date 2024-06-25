@@ -38,7 +38,7 @@ class _MyProfileAddJobState extends State<MyProfileAddJob> {
         builder: (context, state) {
           return Scaffold(
               appBar: buildAppBar(context),
-              backgroundColor: AppColors.primaryBackground,
+              backgroundColor: AppColors.background,
               body: myProfileAddJob(context));
         });
   }

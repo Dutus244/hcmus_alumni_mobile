@@ -67,7 +67,7 @@ class _GroupDetailListVotersState extends State<GroupDetailListVoters> {
         builder: (context, state) {
           return Scaffold(
             appBar: buildAppBar(context),
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: listVoters(context, vote, post, _scrollController),
           );
         });

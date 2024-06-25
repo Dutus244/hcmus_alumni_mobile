@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/values/assets.dart';
 
 import '../../../common/values/colors.dart';
-import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../bloc/change_password_forgot_blocs.dart';
 import '../bloc/change_password_forgot_events.dart';
 import '../change_password_forgot_controller.dart';
@@ -15,7 +17,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
       height: 40.h,
       margin: EdgeInsets.only(bottom: 20.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -25,7 +27,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
             width: 16.w,
             height: 16.w,
             margin: EdgeInsets.only(left: 17.w),
-            child: Image.asset("assets/icons/$iconName.png"),
+            child: Image.asset(iconName),
           ),
           Container(
             width: 270.w,
@@ -45,17 +47,11 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small()
+                    .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                fontFamily: AppFonts.Header3,
-                color: AppColors.primaryText,
-                fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small(),
               autocorrect: false,
               obscureText: textType == "email" ? false : true,
               maxLength: 30,
@@ -82,8 +78,8 @@ Widget buildLogInAndRegButton(
           left: 25.w, right: 25.w, top: buttonType == "change" ? 30.h : 20.h),
       decoration: BoxDecoration(
         color: buttonType == "change"
-            ? AppColors.primaryElement
-            : AppColors.primarySecondaryElement,
+            ? AppColors.element
+            : AppColors.elementLight,
         borderRadius: BorderRadius.circular(15.w),
         border: Border.all(
           color: buttonType == "change"
@@ -94,13 +90,10 @@ Widget buildLogInAndRegButton(
       child: Center(
         child: Text(
           buttonName,
-          style: TextStyle(
-              fontFamily: AppFonts.Header1,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: buttonType == "change"
-                  ? AppColors.primaryBackground
-                  : AppColors.primaryElement),
+          style: AppTextStyle.medium().wSemiBold().withColor(
+              buttonType == "change"
+                  ? AppColors.background
+                  : AppColors.element),
         ),
       ),
     ),
@@ -122,7 +115,7 @@ Widget changePassword(BuildContext context) {
                   width: 230.w,
                   height: 230.w,
                   child: Image.asset(
-                    "assets/images/logos/logo.png",
+                    AppAssets.logoImage,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -131,19 +124,14 @@ Widget changePassword(BuildContext context) {
                   child: Container(
                 padding: EdgeInsets.only(bottom: 15.h),
                 child: Text(
-                  "THAY ĐỔI MẬT KHẨU",
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header0,
-                    color: AppColors.primaryText,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17.sp,
-                  ),
+                  translate('change_password').toUpperCase(),
+                  style: AppTextStyle.medium().wSemiBold(),
                 ),
               )),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField("Mật khẩu mới *", "password", "lock", (value) {
+              buildTextField(translate('new_password*'), "password", AppAssets.lockIconP, (value) {
                 context
                     .read<ChangePasswordForgotBloc>()
                     .add(PasswordEvent(value));
@@ -151,7 +139,7 @@ Widget changePassword(BuildContext context) {
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField("Nhập lại mật khẩu mới *", "password", "lock",
+              buildTextField(translate('re_new_password*'), "password", AppAssets.lockIconP,
                   (value) {
                 context
                     .read<ChangePasswordForgotBloc>()
@@ -160,8 +148,8 @@ Widget changePassword(BuildContext context) {
             ],
           ),
         ),
-        buildLogInAndRegButton(context, "THAY ĐỔI", "change"),
-        buildLogInAndRegButton(context, "THOÁT", "back"),
+        buildLogInAndRegButton(context, translate('change').toUpperCase(), "change"),
+        buildLogInAndRegButton(context, translate('exit').toUpperCase(), "back"),
       ],
     ),
   );

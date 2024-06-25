@@ -19,7 +19,7 @@ import '../bloc/list_comment_post_group_states.dart';
 import '../list_comment_post_group_controller.dart';
 
 Widget listComment(BuildContext context, ScrollController _scrollController,
-    String id, void Function(String value)? func) {
+    String id) {
   String content =
       BlocProvider.of<ListCommentPostGroupBloc>(context).state.content;
   Comment? comment =
@@ -47,7 +47,7 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
                     Container(
                       margin: EdgeInsets.only(top: 0.h, bottom: 5.h),
                       height: 1.h,
-                      color: AppColors.primarySecondaryElement,
+                      color: AppColors.elementLight,
                     ),
                     loadingWidget(),
                   ],
@@ -63,7 +63,7 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
                       Container(
                         margin: EdgeInsets.only(top: 0.h, bottom: 5.h),
                         height: 1.h,
-                        color: AppColors.primarySecondaryElement,
+                        color: AppColors.elementLight,
                       ),
                       Center(
                           child: Container(
@@ -102,7 +102,7 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
                         Container(
                           margin: EdgeInsets.only(top: 0.h, bottom: 5.h),
                           height: 1.h,
-                          color: AppColors.primarySecondaryElement,
+                          color: AppColors.elementLight,
                         ),
                         buildCommentWidget(
                             context,
@@ -127,7 +127,9 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
           },
         ),
       ),
-      navigation(context, content, comment, id, func)
+      navigation(context, content, comment, id, (value) {
+        context.read<ListCommentPostGroupBloc>().add(ContentEvent(value));
+      })
     ],
   );
 }
@@ -184,7 +186,7 @@ Widget buildCommentWidget(
                         comment.creator.fullName,
                         maxLines: 1,
                         style: TextStyle(
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header2,
@@ -193,10 +195,10 @@ Widget buildCommentWidget(
                     ),
                     Container(
                       child: Text(
-                        handleDatetime(comment.updateAt),
+                        handleDateTime1(comment.updateAt),
                         maxLines: 1,
                         style: TextStyle(
-                          color: AppColors.primarySecondaryText,
+                          color: AppColors.textGrey,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.normal,
                           fontFamily: AppFonts.Header3,
@@ -218,7 +220,7 @@ Widget buildCommentWidget(
           child: Text(
             comment.content,
             style: TextStyle(
-              color: AppColors.primaryText,
+              color: AppColors.textBlack,
               fontSize: 12.sp,
               fontWeight: FontWeight.normal,
               fontFamily: AppFonts.Header3,
@@ -373,7 +375,7 @@ Widget buildCommentWidget(
 Widget buildTextFieldContent1(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
   return Container(
-      width: 300.w,
+      width: 290.w,
       margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 5.w, bottom: 2.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.w),
@@ -404,12 +406,12 @@ Widget buildTextFieldContent1(BuildContext context, String hintText,
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
+                  color: AppColors.secondaryElementText,
                 ),
                 counterText: '',
               ),
               style: TextStyle(
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
                 fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
@@ -429,7 +431,7 @@ Widget buildTextFieldContent2(BuildContext context, String hintText,
           .content);
 
   return Container(
-      width: 300.w,
+      width: 290.w,
       margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 5.w, bottom: 2.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.w),
@@ -463,12 +465,12 @@ Widget buildTextFieldContent2(BuildContext context, String hintText,
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
+                  color: AppColors.secondaryElementText,
                 ),
                 counterText: '',
               ),
               style: TextStyle(
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
                 fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
@@ -505,10 +507,10 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                   },
                   child: SvgPicture.asset(
                     "assets/icons/send.svg",
-                    width: 15.w,
-                    height: 15.h,
+                    width: 20.w,
+                    height: 20.h,
                     color: content != ""
-                        ? AppColors.primaryElement
+                        ? AppColors.element
                         : Colors.black.withOpacity(0.5),
                   ),
                 ),
@@ -570,7 +572,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                           fontFamily: AppFonts.Header2,
                           fontWeight: FontWeight.bold,
                           fontSize: 12.sp,
-                          color: AppColors.primarySecondaryText,
+                          color: AppColors.textGrey,
                         ),
                       ),
                     ),
@@ -598,10 +600,10 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                       },
                       child: SvgPicture.asset(
                         "assets/icons/send.svg",
-                        width: 15.w,
-                        height: 15.h,
+                        width: 20.w,
+                        height: 20.h,
                         color: content != ""
-                            ? AppColors.primaryElement
+                            ? AppColors.element
                             : Colors.black.withOpacity(0.5),
                       ),
                     ),
@@ -653,7 +655,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                           fontFamily: AppFonts.Header2,
                           fontWeight: FontWeight.bold,
                           fontSize: 12.sp,
-                          color: AppColors.primarySecondaryText,
+                          color: AppColors.textGrey,
                         ),
                       ),
                     ),
@@ -701,10 +703,10 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                       },
                       child: SvgPicture.asset(
                         "assets/icons/send.svg",
-                        width: 15.w,
-                        height: 15.h,
+                        width: 20.w,
+                        height: 20.h,
                         color: content != ""
-                            ? AppColors.primaryElement
+                            ? AppColors.element
                             : Colors.black.withOpacity(0.5),
                       ),
                     ),
@@ -720,7 +722,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     title: Container(
       height: 40.h,
       margin: EdgeInsets.only(left: 0.w, right: 10.w),

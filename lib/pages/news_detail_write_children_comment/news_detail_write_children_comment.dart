@@ -44,7 +44,7 @@ class _NewsDetailWriteChildrenCommentState
         NewsDetailWriteChildrenCommentState>(builder: (context, state) {
       return Scaffold(
         appBar: buildAppBar(context),
-        backgroundColor: AppColors.primaryBackground,
+        backgroundColor: AppColors.background,
         body: newsDetailWriteChildrenComment(context, news, comment),
       );
     });

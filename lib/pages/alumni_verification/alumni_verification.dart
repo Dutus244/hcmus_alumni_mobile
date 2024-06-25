@@ -43,10 +43,10 @@ class _AlumniVerificationState extends State<AlumniVerification> {
       child: BlocBuilder<AlumniVerificationBloc, AlumniVerificationState>(
           builder: (context, state) {
         return Container(
-          color: AppColors.primaryBackground,
+          color: AppColors.background,
           child: SafeArea(
               child: Scaffold(
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: alumniVerification(context, fullName, avatar),
           )),
         );

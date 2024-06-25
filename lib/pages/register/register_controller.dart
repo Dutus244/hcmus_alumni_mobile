@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../common/values/constants.dart';
 import '../../common/widgets/flutter_toast.dart';
@@ -22,23 +23,23 @@ class RegisterController {
       String password = state.password;
       String rePassword = state.rePassword;
       if (email.isEmpty) {
-        toastInfo(msg: "Bạn phải điền email");
+        toastInfo(msg: translate('must_fill_email'));
         return;
       }
       if (!isValidEmail(email)) {
-        toastInfo(msg: "Email không hợp lệ");
+        toastInfo(msg: translate('invalid_email'));
         return;
       }
       if (password.isEmpty) {
-        toastInfo(msg: "Bạn phải điền mật khẩu");
+        toastInfo(msg: translate('must_fill_password'));
         return;
       }
       if (rePassword.isEmpty) {
-        toastInfo(msg: "Bạn phải điền nhập lại mật khẩu");
+        toastInfo(msg: translate('must_fill_re_password'));
         return;
       }
       if (rePassword != password) {
-        toastInfo(msg: "Mật khẩu không khớp");
+        toastInfo(msg: translate('2_password_not_match'));
         return;
       }
       var url = Uri.parse('${dotenv.env['API_URL']}/auth/send-authorize-code');
@@ -48,28 +49,28 @@ class RegisterController {
       try {
         var response = await http.post(url, body: map);
         if (response.statusCode == 200) {
-          Global.storageService.setString(AppConstants.STORAGE_USER_EMAIL, email);
+          Global.storageService.setString(AppConstants.USER_EMAIL, email);
           Global.storageService
-              .setString(AppConstants.STORAGE_USER_PASSWORD, password);
+              .setString(AppConstants.USER_PASSWORD, password);
           Navigator.of(context).pushNamed("/emailVerification");
         }
         else {
           Map<String, dynamic> jsonMap = json.decode(response.body);
           int errorCode = jsonMap['error']['code'];
           if (errorCode == 10300) {
-            toastInfo(msg: "Email đã tồn tại");
+            toastInfo(msg: translate('email_already_exist'));
             return;
           }
           if (errorCode == 10302) {
-            toastInfo(msg: "Gửi mã xác thực thất bại");
+            toastInfo(msg: translate('error_send_code'));
             return;
           }
         }
       } catch (error) {
-        toastInfo(msg: "Có lỗi xảy ra khi gửi mã xác thực");
+        toastInfo(msg: translate('error_send_code'));
       }
     } catch (e) {
-      toastInfo(msg: "Có lỗi xảy ra khi gửi mã xác thực");
+      toastInfo(msg: translate('error_send_code'));
     }
   }
 

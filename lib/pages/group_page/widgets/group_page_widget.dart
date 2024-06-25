@@ -19,7 +19,7 @@ import '../bloc/group_page_states.dart';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     title: Container(
       height: 40.h,
       margin: EdgeInsets.only(left: 0.w, right: 0.w),
@@ -33,7 +33,7 @@ AppBar buildAppBar(BuildContext context) {
                 onTap: () {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                     "/applicationPage",
-                        (route) => false,
+                    (route) => false,
                     arguments: {"route": 0},
                   );
                 },
@@ -50,10 +50,9 @@ AppBar buildAppBar(BuildContext context) {
                 Container(
                   width: 30.w,
                 ),
-              if (Global.storageService.permissionMessageCreate())
-                Container(
-                  width: 30.w,
-                )
+              Container(
+                width: 30.w,
+              )
             ],
           ),
           Text(
@@ -67,8 +66,9 @@ AppBar buildAppBar(BuildContext context) {
             ),
           ),
           Container(
-            width: (Global.storageService.permissionGroupCreate() ? 30.w : 0.w) +
-  (Global.storageService.permissionMessageCreate() ? 30.w : 0.w + 60.w),
+            width:
+                (Global.storageService.permissionGroupCreate() ? 30.w : 0.w) +
+                    90.w,
             child: Row(
               children: [
                 if (Global.storageService.permissionGroupCreate())
@@ -80,8 +80,10 @@ AppBar buildAppBar(BuildContext context) {
                             context,
                             "/groupCreate",
                           );
-                          GroupPageController(context: context).handleLoadGroupDiscoverData(0);
-                          GroupPageController(context: context).handleLoadGroupJoinedData(0);
+                          GroupPageController(context: context)
+                              .handleLoadGroupDiscoverData(0);
+                          GroupPageController(context: context)
+                              .handleLoadGroupJoinedData(0);
                         },
                         child: Container(
                           width: 20.w,
@@ -100,8 +102,10 @@ AppBar buildAppBar(BuildContext context) {
                       context,
                       "/groupSearch",
                     );
-                    GroupPageController(context: context).handleLoadGroupDiscoverData(0);
-                    GroupPageController(context: context).handleLoadGroupJoinedData(0);
+                    GroupPageController(context: context)
+                        .handleLoadGroupDiscoverData(0);
+                    GroupPageController(context: context)
+                        .handleLoadGroupJoinedData(0);
                   },
                   child: Container(
                     width: 20.w,
@@ -112,39 +116,39 @@ AppBar buildAppBar(BuildContext context) {
                   ),
                 ),
                 SizedBox(width: 10.w),
-                if (Global.storageService.permissionMessageCreate())
-                  Row(
-                    children: [
-                      GestureDetector(
-                        child: Container(
-                          width: 20.w,
-                          height: 20.h,
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("assets/icons/chat.png"))),
-                        ),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, "/chatPage");
+                      },
+                      child: Container(
+                        width: 20.w,
+                        height: 20.h,
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage("assets/icons/chat.png"))),
                       ),
-                      SizedBox(width: 10.w),
-                    ],
-                  ),
+                    ),
+                    SizedBox(width: 10.w),
+                  ],
+                ),
                 Container(
                   width: 20.w,
                   height: 20.w,
                   margin: EdgeInsets.only(),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        "/myProfilePage",
-                      );
-                    },
-                    child: CircleAvatar(
-                      radius: 10,
-                      child: null,
-                      backgroundImage:
-                      AssetImage("assets/images/test1.png"),
-                    )
-                  ),
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          "/myProfilePage",
+                        );
+                      },
+                      child: CircleAvatar(
+                        radius: 10,
+                        child: null,
+                        backgroundImage: AssetImage("assets/images/test1.png"),
+                      )),
                 ),
                 SizedBox(width: 10.w),
               ],
@@ -174,12 +178,9 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             height: 30.h,
             margin: EdgeInsets.only(left: 10.w),
             decoration: BoxDecoration(
-              color: BlocProvider
-                  .of<GroupPageBloc>(context)
-                  .state
-                  .page == 1
-                  ? AppColors.primarySecondaryElement
-                  : AppColors.primaryElement,
+              color: BlocProvider.of<GroupPageBloc>(context).state.page == 1
+                  ? AppColors.elementLight
+                  : AppColors.element,
               borderRadius: BorderRadius.circular(15.w),
               border: Border.all(
                 color: Colors.transparent,
@@ -193,12 +194,9 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color:
-                    BlocProvider
-                        .of<GroupPageBloc>(context)
-                        .state
-                        .page == 1
-                        ? AppColors.primaryElement
-                        : AppColors.primaryBackground),
+                        BlocProvider.of<GroupPageBloc>(context).state.page == 1
+                            ? AppColors.element
+                            : AppColors.background),
               ),
             ),
           ),
@@ -214,12 +212,9 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             height: 30.h,
             margin: EdgeInsets.only(right: 10.w),
             decoration: BoxDecoration(
-              color: BlocProvider
-                  .of<GroupPageBloc>(context)
-                  .state
-                  .page == 1
-                  ? AppColors.primaryElement
-                  : AppColors.primarySecondaryElement,
+              color: BlocProvider.of<GroupPageBloc>(context).state.page == 1
+                  ? AppColors.element
+                  : AppColors.elementLight,
               borderRadius: BorderRadius.circular(15.w),
               border: Border.all(
                 color: Colors.transparent,
@@ -233,12 +228,9 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color:
-                    BlocProvider
-                        .of<GroupPageBloc>(context)
-                        .state
-                        .page == 1
-                        ? AppColors.primaryBackground
-                        : AppColors.primaryElement),
+                        BlocProvider.of<GroupPageBloc>(context).state.page == 1
+                            ? AppColors.background
+                            : AppColors.element),
               ),
             ),
           ),
@@ -248,24 +240,23 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
   );
 }
 
-Widget listGroupDiscover(BuildContext context,
-    ScrollController _scrollController) {
+Widget listGroupDiscover(
+    BuildContext context, ScrollController _scrollController) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       Expanded(
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: (BlocProvider
-              .of<GroupPageBloc>(context)
-              .state
-              .groupDiscovers
-              .length +
-              1) ~/
-              2 + 1,
+          itemCount: (BlocProvider.of<GroupPageBloc>(context)
+                          .state
+                          .groupDiscovers
+                          .length +
+                      1) ~/
+                  2 +
+              1,
           itemBuilder: (BuildContext context, int index) {
-            switch (BlocProvider
-                .of<GroupPageBloc>(context)
+            switch (BlocProvider.of<GroupPageBloc>(context)
                 .state
                 .statusGroupDiscover) {
               case Status.loading:
@@ -281,8 +272,7 @@ Widget listGroupDiscover(BuildContext context,
                   ],
                 );
               case Status.success:
-                if (BlocProvider
-                    .of<GroupPageBloc>(context)
+                if (BlocProvider.of<GroupPageBloc>(context)
                     .state
                     .groupDiscovers
                     .isEmpty) {
@@ -293,28 +283,27 @@ Widget listGroupDiscover(BuildContext context,
                       }),
                       Center(
                           child: Container(
-                            margin: EdgeInsets.only(top: 20.h),
-                            child: Text(
-                              'Không có dữ liệu',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
-                              ),
-                            ),
-                          )),
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text(
+                          'Không có dữ liệu',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header2,
+                          ),
+                        ),
+                      )),
                     ],
                   );
                 }
                 if (index >=
-                    BlocProvider
-                        .of<GroupPageBloc>(context)
-                        .state
-                        .groupDiscovers
-                        .length / 2) {
-                  if (BlocProvider
-                      .of<GroupPageBloc>(context)
+                    BlocProvider.of<GroupPageBloc>(context)
+                            .state
+                            .groupDiscovers
+                            .length /
+                        2) {
+                  if (BlocProvider.of<GroupPageBloc>(context)
                       .state
                       .hasReachedMaxGroupDiscover) {
                     return SizedBox();
@@ -341,23 +330,20 @@ Widget listGroupDiscover(BuildContext context,
                             children: [
                               groupDiscover(
                                   context,
-                                  (BlocProvider
-                                      .of<GroupPageBloc>(context)
+                                  (BlocProvider.of<GroupPageBloc>(context)
                                       .state
                                       .groupDiscovers[firstIndex])),
                               Container(
                                 width: 10.w,
                               ),
                               if (secondIndex <
-                                  BlocProvider
-                                      .of<GroupPageBloc>(context)
+                                  BlocProvider.of<GroupPageBloc>(context)
                                       .state
                                       .groupDiscovers
                                       .length)
                                 groupDiscover(
                                     context,
-                                    BlocProvider
-                                        .of<GroupPageBloc>(context)
+                                    BlocProvider.of<GroupPageBloc>(context)
                                         .state
                                         .groupDiscovers[secondIndex]),
                             ],
@@ -368,28 +354,25 @@ Widget listGroupDiscover(BuildContext context,
                   } else {
                     return Container(
                       margin:
-                      EdgeInsets.only(right: 10.w, left: 10.w, bottom: 5.h),
+                          EdgeInsets.only(right: 10.w, left: 10.w, bottom: 5.h),
                       child: Row(
                         children: [
                           groupDiscover(
                               context,
-                              (BlocProvider
-                                  .of<GroupPageBloc>(context)
+                              (BlocProvider.of<GroupPageBloc>(context)
                                   .state
                                   .groupDiscovers[firstIndex])),
                           Container(
                             width: 10.w,
                           ),
                           if (secondIndex <
-                              BlocProvider
-                                  .of<GroupPageBloc>(context)
+                              BlocProvider.of<GroupPageBloc>(context)
                                   .state
                                   .groupDiscovers
                                   .length)
                             groupDiscover(
                                 context,
-                                BlocProvider
-                                    .of<GroupPageBloc>(context)
+                                BlocProvider.of<GroupPageBloc>(context)
                                     .state
                                     .groupDiscovers[secondIndex]),
                         ],
@@ -424,10 +407,10 @@ Widget groupDiscover(BuildContext context, Group group) {
       width: 165.w,
       height: 235.h,
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(10.w),
         border: Border.all(
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ),
       child: Stack(
@@ -464,57 +447,85 @@ Widget groupDiscover(BuildContext context, Group group) {
               Container(
                 margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
                 child: Text(
-                  typeGroup + ' - ${handleParticipantCount(group.participantCount)} thành viên',
+                  typeGroup +
+                      ' - ${handleParticipantCount(group.participantCount)} thành viên',
                   maxLines: 2,
                   style: TextStyle(
-                    color: AppColors.primaryText,
+                    color: AppColors.textBlack,
                     fontSize: 11.sp,
                     fontWeight: FontWeight.normal,
                     fontFamily: AppFonts.Header3,
                   ),
                 ),
               ),
-              if (group.privacy == 'PUBLIC')
-                Container(
-                margin: EdgeInsets.only(left: 10.w, top: 2.h, right: 10.w),
-                height: 35.h,
+              Container(
+                margin: EdgeInsets.only(top: 3.h, left: 10.w, right: 10.w),
                 child: Row(
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 5.h),
-                        width: 40.w,
-                        child: Stack(
-                          children: [
-                            for (var i = 0; i < 2; i += 1)
-                              Positioned(
-                                left: (0 + i * 16).w,
-                                child: CircleAvatar(
-                                  radius: 12,
-                                  child: null,
-                                  backgroundImage:
-                                  AssetImage("assets/images/test1.png"),
-                                ),
-                              )
-                          ],
-                        )
+                    SvgPicture.asset(
+                      "assets/icons/tag.svg",
+                      width: 12.w,
+                      height: 12.h,
+                      color: AppColors.textGrey,
                     ),
                     Container(
-                      width: 90.w,
+                      margin: EdgeInsets.only(left: 2.w),
+                      width: 125.w,
                       child: Text(
-                        'Trần Phúc và 27 người bạn là thành viên',
-                        maxLines: 2,
+                        group.tags.map((tag) => tag.name).join(' '),
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: AppColors.primarySecondaryText,
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.normal,
                           fontFamily: AppFonts.Header3,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.normal,
+                          color: Color.fromARGB(255, 5, 90, 188),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
+              if (group.privacy == 'PUBLIC')
+                Container(
+                  margin: EdgeInsets.only(left: 10.w, top: 2.h, right: 10.w),
+                  height: 35.h,
+                  child: Row(
+                    children: [
+                      Container(
+                          margin: EdgeInsets.only(top: 5.h),
+                          width: 40.w,
+                          child: Stack(
+                            children: [
+                              for (var i = 0; i < 2; i += 1)
+                                Positioned(
+                                  left: (0 + i * 16).w,
+                                  child: CircleAvatar(
+                                    radius: 12,
+                                    child: null,
+                                    backgroundImage:
+                                        AssetImage("assets/images/test1.png"),
+                                  ),
+                                )
+                            ],
+                          )),
+                      Container(
+                        width: 90.w,
+                        child: Text(
+                          'Trần Phúc và 27 người bạn là thành viên',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: AppColors.textGrey,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header3,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
             ],
           ),
           Positioned(
@@ -523,51 +534,54 @@ Widget groupDiscover(BuildContext context, Group group) {
             right: 10.w,
             child: GestureDetector(
               onTap: () {
-                GroupPageController(context: context).handleRequestJoinGroup(group);
+                GroupPageController(context: context)
+                    .handleRequestJoinGroup(group);
               },
-              child: group.isRequestPending ? Container(
-                width: 145.w,
-                height: 30.h,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 230, 230, 230),
-                  borderRadius: BorderRadius.circular(5.w),
-                  border: Border.all(
-                    color: Colors.transparent,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Đang chờ duyệt',
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header2,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
+              child: group.isRequestPending
+                  ? Container(
+                      width: 145.w,
+                      height: 30.h,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        borderRadius: BorderRadius.circular(5.w),
+                        border: Border.all(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Đang chờ duyệt',
+                          style: TextStyle(
+                            fontFamily: AppFonts.Header2,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textBlack,
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      width: 145.w,
+                      height: 30.h,
+                      decoration: BoxDecoration(
+                        color: AppColors.element,
+                        borderRadius: BorderRadius.circular(5.w),
+                        border: Border.all(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Tham gia',
+                          style: TextStyle(
+                            fontFamily: AppFonts.Header2,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.background,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ) : Container(
-                width: 145.w,
-                height: 30.h,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryElement,
-                  borderRadius: BorderRadius.circular(5.w),
-                  border: Border.all(
-                    color: Colors.transparent,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Tham gia',
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header2,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryBackground,
-                    ),
-                  ),
-                ),
-              ),
             ),
           ),
         ],
@@ -602,8 +616,10 @@ Widget infoGroup(BuildContext context, Group group) {
                       "id": group.id,
                     },
                   );
-                  GroupPageController(context: context).handleLoadGroupDiscoverData(0);
-                  GroupPageController(context: context).handleLoadGroupJoinedData(0);
+                  GroupPageController(context: context)
+                      .handleLoadGroupDiscoverData(0);
+                  GroupPageController(context: context)
+                      .handleLoadGroupJoinedData(0);
                 },
                 child: Container(
                   margin: EdgeInsets.only(top: 15.h),
@@ -633,10 +649,11 @@ Widget infoGroup(BuildContext context, Group group) {
               Container(
                 margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
                 child: Text(
-                  typeGroup + ' - ${handleParticipantCount(group.participantCount)} thành viên',
+                  typeGroup +
+                      ' - ${handleParticipantCount(group.participantCount)} thành viên',
                   maxLines: 2,
                   style: TextStyle(
-                    color: AppColors.primaryText,
+                    color: AppColors.textBlack,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.normal,
                     fontFamily: AppFonts.Header3,
@@ -644,9 +661,35 @@ Widget infoGroup(BuildContext context, Group group) {
                 ),
               ),
               Container(
+                margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/tag.svg",
+                      width: 12.w,
+                      height: 12.h,
+                      color: AppColors.textGrey,
+                    ),
+                    for (int i = 0; i < group.tags.length; i += 1)
+                      Container(
+                        margin: EdgeInsets.only(left: 2.w),
+                        child: Text(
+                          group.tags[i].name,
+                          style: TextStyle(
+                            fontFamily: AppFonts.Header3,
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.normal,
+                            color: Color.fromARGB(255, 5, 90, 188),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              Container(
                 margin: EdgeInsets.only(top: 15.h),
                 height: 1.h,
-                color: AppColors.primarySecondaryText.withOpacity(0.2),
+                color: AppColors.textGrey.withOpacity(0.2),
               ),
               Container(
                 margin: EdgeInsets.only(left: 10.w, top: 5.h),
@@ -662,10 +705,7 @@ Widget infoGroup(BuildContext context, Group group) {
               ),
               Container(
                 padding: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                width: MediaQuery.of(context).size.width,
                 child: ExpandableText(
                   group.description,
                   maxLines: 3,
@@ -675,59 +715,58 @@ Widget infoGroup(BuildContext context, Group group) {
                     fontFamily: AppFonts.Header3,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.normal,
-                    color: AppColors.primaryText,
+                    color: AppColors.textBlack,
                   ),
                 ),
               ),
               if (group.privacy == 'PUBLIC')
                 Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 10.w, top: 5.h),
-                    child: Text(
-                      'Thành viên',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: AppFonts.Header2,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(left: 10.w, top: 5.h),
+                      child: Text(
+                        'Thành viên',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: AppFonts.Header2,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10.w, top: 5.h),
-                    height: 25.h,
-                    child: Stack(
-                      children: [
-                        for (var i = 0; i < 10; i += 1)
-                          Positioned(
-                            left: (0 + i * 16).w,
-                            child: CircleAvatar(
-                              radius: 12,
-                              child: null,
-                              backgroundImage:
-                              AssetImage("assets/images/test1.png"),
-                            ),
-                          )
-                      ],
-                    )
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                    child: Text(
-                      'Nguyễn Đinh Quang Khánh. Minh Phúc và 9 người bạn khác đã tham gia',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: AppFonts.Header3,
+                    Container(
+                        margin: EdgeInsets.only(left: 10.w, top: 5.h),
+                        height: 25.h,
+                        child: Stack(
+                          children: [
+                            for (var i = 0; i < 10; i += 1)
+                              Positioned(
+                                left: (0 + i * 16).w,
+                                child: CircleAvatar(
+                                  radius: 12,
+                                  child: null,
+                                  backgroundImage:
+                                      AssetImage("assets/images/test1.png"),
+                                ),
+                              )
+                          ],
+                        )),
+                    Container(
+                      margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                      child: Text(
+                        'Nguyễn Đinh Quang Khánh. Minh Phúc và 9 người bạn khác đã tham gia',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: AppFonts.Header3,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
               Container(
                 margin: EdgeInsets.only(left: 10.w, top: 5.h),
                 child: Text(
@@ -748,17 +787,20 @@ Widget infoGroup(BuildContext context, Group group) {
                       "assets/icons/user.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                     Container(
                       width: 5.w,
                     ),
-                    Text('Tổng số ${handleParticipantCount(group.participantCount)} thành viên', style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.normal,
-                      fontFamily: AppFonts.Header2,
-                    ),)
+                    Text(
+                      'Tổng số ${handleParticipantCount(group.participantCount)} thành viên',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: AppFonts.Header2,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -770,17 +812,20 @@ Widget infoGroup(BuildContext context, Group group) {
                       "assets/icons/group.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                     Container(
                       width: 5.w,
                     ),
-                    Text('Tạo khoảng ${timeDifference(group.createAt)}', style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.normal,
-                      fontFamily: AppFonts.Header2,
-                    ),)
+                    Text(
+                      'Tạo khoảng ${handleTimeDifference1(group.createAt)}',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: AppFonts.Header2,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -796,54 +841,59 @@ Widget infoGroup(BuildContext context, Group group) {
           right: 0.w,
           child: Container(
             height: 60.h,
-            color: AppColors.primaryBackground,
+            color: AppColors.background,
             child: GestureDetector(
               onTap: () {
-                GroupPageController(context: context).handleRequestJoinGroup(group);
+                GroupPageController(context: context)
+                    .handleRequestJoinGroup(group);
               },
-              child: group.isRequestPending ? Container(
-                margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 20.h),
-                height: 30.h,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 230, 230, 230),
-                  borderRadius: BorderRadius.circular(5.w),
-                  border: Border.all(
-                    color: Colors.transparent,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Đang chờ duyệt',
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header2,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
+              child: group.isRequestPending
+                  ? Container(
+                      margin: EdgeInsets.only(
+                          left: 10.w, right: 10.w, bottom: 20.h),
+                      height: 30.h,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 230, 230, 230),
+                        borderRadius: BorderRadius.circular(5.w),
+                        border: Border.all(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Đang chờ duyệt',
+                          style: TextStyle(
+                            fontFamily: AppFonts.Header2,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textBlack,
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      margin: EdgeInsets.only(
+                          left: 10.w, right: 10.w, bottom: 20.h),
+                      height: 30.h,
+                      decoration: BoxDecoration(
+                        color: AppColors.element,
+                        borderRadius: BorderRadius.circular(5.w),
+                        border: Border.all(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Tham gia nhóm',
+                          style: TextStyle(
+                            fontFamily: AppFonts.Header2,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.background,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ) : Container(
-                margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 20.h),
-                height: 30.h,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryElement,
-                  borderRadius: BorderRadius.circular(5.w),
-                  border: Border.all(
-                    color: Colors.transparent,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Tham gia nhóm',
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header2,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryBackground,
-                    ),
-                  ),
-                ),
-              ),
             ),
           ),
         ),
@@ -852,24 +902,23 @@ Widget infoGroup(BuildContext context, Group group) {
   );
 }
 
-Widget listGroupJoined(BuildContext context,
-    ScrollController _scrollController) {
+Widget listGroupJoined(
+    BuildContext context, ScrollController _scrollController) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       Expanded(
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: (BlocProvider
-              .of<GroupPageBloc>(context)
-              .state
-              .groupJoineds
-              .length +
-              1) ~/
-              2 + 1,
+          itemCount: (BlocProvider.of<GroupPageBloc>(context)
+                          .state
+                          .groupJoineds
+                          .length +
+                      1) ~/
+                  2 +
+              1,
           itemBuilder: (BuildContext context, int index) {
-            switch (BlocProvider
-                .of<GroupPageBloc>(context)
+            switch (BlocProvider.of<GroupPageBloc>(context)
                 .state
                 .statusGroupJoined) {
               case Status.loading:
@@ -885,8 +934,7 @@ Widget listGroupJoined(BuildContext context,
                   ],
                 );
               case Status.success:
-                if (BlocProvider
-                    .of<GroupPageBloc>(context)
+                if (BlocProvider.of<GroupPageBloc>(context)
                     .state
                     .groupJoineds
                     .isEmpty) {
@@ -897,28 +945,27 @@ Widget listGroupJoined(BuildContext context,
                       }),
                       Center(
                           child: Container(
-                            margin: EdgeInsets.only(top: 20.h),
-                            child: Text(
-                              'Không có dữ liệu',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
-                              ),
-                            ),
-                          )),
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text(
+                          'Không có dữ liệu',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header2,
+                          ),
+                        ),
+                      )),
                     ],
                   );
                 }
                 if (index >=
-                    BlocProvider
-                        .of<GroupPageBloc>(context)
-                        .state
-                        .groupJoineds
-                        .length / 2) {
-                  if (BlocProvider
-                      .of<GroupPageBloc>(context)
+                    BlocProvider.of<GroupPageBloc>(context)
+                            .state
+                            .groupJoineds
+                            .length /
+                        2) {
+                  if (BlocProvider.of<GroupPageBloc>(context)
                       .state
                       .hasReachedMaxGroupJoined) {
                     return SizedBox();
@@ -945,23 +992,20 @@ Widget listGroupJoined(BuildContext context,
                             children: [
                               groupJoined(
                                   context,
-                                  (BlocProvider
-                                      .of<GroupPageBloc>(context)
+                                  (BlocProvider.of<GroupPageBloc>(context)
                                       .state
                                       .groupJoineds[firstIndex])),
                               Container(
                                 width: 10.w,
                               ),
                               if (secondIndex <
-                                  BlocProvider
-                                      .of<GroupPageBloc>(context)
+                                  BlocProvider.of<GroupPageBloc>(context)
                                       .state
                                       .groupJoineds
                                       .length)
                                 groupJoined(
                                     context,
-                                    BlocProvider
-                                        .of<GroupPageBloc>(context)
+                                    BlocProvider.of<GroupPageBloc>(context)
                                         .state
                                         .groupJoineds[secondIndex]),
                             ],
@@ -972,28 +1016,25 @@ Widget listGroupJoined(BuildContext context,
                   } else {
                     return Container(
                       margin:
-                      EdgeInsets.only(right: 10.w, left: 10.w, bottom: 5.h),
+                          EdgeInsets.only(right: 10.w, left: 10.w, bottom: 5.h),
                       child: Row(
                         children: [
                           groupJoined(
                               context,
-                              (BlocProvider
-                                  .of<GroupPageBloc>(context)
+                              (BlocProvider.of<GroupPageBloc>(context)
                                   .state
                                   .groupJoineds[firstIndex])),
                           Container(
                             width: 10.w,
                           ),
                           if (secondIndex <
-                              BlocProvider
-                                  .of<GroupPageBloc>(context)
+                              BlocProvider.of<GroupPageBloc>(context)
                                   .state
                                   .groupJoineds
                                   .length)
                             groupJoined(
                                 context,
-                                BlocProvider
-                                    .of<GroupPageBloc>(context)
+                                BlocProvider.of<GroupPageBloc>(context)
                                     .state
                                     .groupJoineds[secondIndex]),
                         ],
@@ -1033,10 +1074,10 @@ Widget groupJoined(BuildContext context, Group group) {
       width: 165.w,
       height: 205.h,
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(10.w),
         border: Border.all(
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ),
       child: Stack(
@@ -1073,14 +1114,43 @@ Widget groupJoined(BuildContext context, Group group) {
               Container(
                 margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
                 child: Text(
-                  typeGroup + ' - ${handleParticipantCount(group.participantCount)} thành viên',
+                  typeGroup +
+                      ' - ${handleParticipantCount(group.participantCount)} thành viên',
                   maxLines: 2,
                   style: TextStyle(
-                    color: AppColors.primaryText,
+                    color: AppColors.textBlack,
                     fontSize: 11.sp,
                     fontWeight: FontWeight.normal,
                     fontFamily: AppFonts.Header3,
                   ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 3.h, left: 10.w, right: 10.w),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/tag.svg",
+                      width: 12.w,
+                      height: 12.h,
+                      color: AppColors.textGrey,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 2.w),
+                      width: 125.w,
+                      child: Text(
+                        group.tags.map((tag) => tag.name).join(' '),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header3,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.normal,
+                          color: Color.fromARGB(255, 5, 90, 188),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               if (group.privacy == 'PUBLIC')
@@ -1101,12 +1171,11 @@ Widget groupJoined(BuildContext context, Group group) {
                                     radius: 12,
                                     child: null,
                                     backgroundImage:
-                                    AssetImage("assets/images/test1.png"),
+                                        AssetImage("assets/images/test1.png"),
                                   ),
                                 )
                             ],
-                          )
-                      ),
+                          )),
                       Container(
                         width: 90.w,
                         child: Text(
@@ -1114,7 +1183,7 @@ Widget groupJoined(BuildContext context, Group group) {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            color: AppColors.primarySecondaryText,
+                            color: AppColors.textGrey,
                             fontSize: 11.sp,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header3,

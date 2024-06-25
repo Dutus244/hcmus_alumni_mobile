@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/write_post_advise/bloc/write_post_advise_events.dart';
 
 import '../../common/widgets/flutter_toast.dart';
@@ -40,16 +41,16 @@ class WritePostAdviseController {
       final shouldPost = await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Đăng bài viết'),
-          content: Text('Bài viết có bình chọn không thể sửa đổi sau khi đăng?'),
+          title: Text(translate('post_article')),
+          content: Text(translate('post_article_vote_question')),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: Text('Huỷ'),
+              child: Text(translate('cancel')),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: Text('Đăng'),
+              child: Text(translate('post')),
             ),
           ],
         ),
@@ -206,13 +207,13 @@ class WritePostAdviseController {
             } else {}
           } catch (e) {
             // Exception occurred
-            print('Exception occurred: $e');
+            toastInfo(msg: translate('error_post_article'));
           }
         } else {
-          // Handle other status codes if needed
+          toastInfo(msg: translate('error_post_article'));
         }
       } catch (error) {
-        // Handle errors
+        toastInfo(msg: translate('error_post_article'));
       }
     }
   }

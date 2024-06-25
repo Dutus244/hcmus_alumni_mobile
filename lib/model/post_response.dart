@@ -6,5 +6,6 @@ class PostResponse {
   PostResponse(this.posts);
 
   PostResponse.fromJson(Map<String, dynamic> json)
-      : posts = (json["posts"] as List).map((i) => new Post.fromJson(i)).toList();
+      : posts =
+            (json["posts"] as List).map((i) => new Post.fromJson(i)).toList();
 }

@@ -1,5 +1,4 @@
 import 'package:hcmus_alumni_mobile/model/friend.dart';
-import 'package:hcmus_alumni_mobile/model/group.dart';
 
 enum Status { loading, success }
 

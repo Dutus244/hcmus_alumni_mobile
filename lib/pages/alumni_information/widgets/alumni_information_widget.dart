@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/values/assets.dart';
+import 'package:hcmus_alumni_mobile/common/values/text_style.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_information/bloc/alumni_information_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_information/bloc/alumni_information_events.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -8,7 +11,6 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 import '../../../common/values/colors.dart';
-import '../../../common/values/fonts.dart';
 import '../alumni_information_controller.dart';
 
 Widget buildTextField(String hintText, String textType, String iconName,
@@ -18,7 +20,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
       height: 40.h,
       margin: EdgeInsets.only(bottom: 20.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -28,7 +30,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
             width: 16.w,
             height: 16.w,
             margin: EdgeInsets.only(left: 17.w),
-            child: Image.asset("assets/icons/$iconName.png"),
+            child: Image.asset(iconName),
           ),
           Container(
             width: 270.w,
@@ -48,17 +50,10 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                fontFamily: AppFonts.Header3,
-                color: AppColors.primaryText,
-                fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small(),
               autocorrect: false,
               maxLength: textType == 'studentId' ? 8 : 100,
             ),
@@ -71,7 +66,7 @@ Widget buildLogInAndRegButton(
     BuildContext context, String buttonName, String buttonType) {
   return GestureDetector(
     onTap: () {
-      AlumniInformationController(context: context).hanldeAlumniInformation();
+      AlumniInformationController(context: context).handleAlumniInformation();
     },
     child: Container(
       width: 325.w,
@@ -80,8 +75,8 @@ Widget buildLogInAndRegButton(
           left: 25.w, right: 25.w, top: buttonType == "verify" ? 20.h : 20.h),
       decoration: BoxDecoration(
         color: buttonType == "verify"
-            ? AppColors.primaryElement
-            : AppColors.primarySecondaryElement,
+            ? AppColors.element
+            : AppColors.elementLight,
         borderRadius: BorderRadius.circular(15.w),
         border: Border.all(
           color: buttonType == "verify"
@@ -92,13 +87,9 @@ Widget buildLogInAndRegButton(
       child: Center(
         child: Text(
           buttonName,
-          style: TextStyle(
-              fontFamily: AppFonts.Header1,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: buttonType == "verify"
-                  ? AppColors.primaryBackground
-                  : AppColors.primaryElement),
+          style: AppTextStyle.medium().wSemiBold().withColor(buttonType == "verify"
+              ? AppColors.background
+              : AppColors.element),
         ),
       ),
     ),
@@ -118,7 +109,7 @@ Widget chooseAvatar(BuildContext context, void Function(File value)? func) {
                 null
             ? FileImage(
                 BlocProvider.of<AlumniInformationBloc>(context).state.avatar!)
-            : AssetImage("assets/images/none_avatar.png")
+            : AssetImage(AppAssets.noneAvatarImage)
                 as ImageProvider, // Explicitly cast to ImageProvider
       ),
     ),
@@ -150,14 +141,14 @@ Future<void> _cropImage(
     cropStyle: CropStyle.circle,
     uiSettings: [
       AndroidUiSettings(
-        toolbarTitle: 'Cropper',
+        toolbarTitle: translate('cropper'),
         toolbarColor: Colors.deepOrange,
         toolbarWidgetColor: Colors.white,
         initAspectRatio: CropAspectRatioPreset.original,
         lockAspectRatio: false,
       ),
       IOSUiSettings(
-        title: 'Cropper',
+        title: translate('cropper'),
       ),
       WebUiSettings(
         context: context,
@@ -182,14 +173,14 @@ void _showPickOptionsDialog(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            title: Text("Chọn từ thư viện"),
+            title: Text(translate('choose_from_library')),
             onTap: () {
               _loadPicker(context, ImageSource.gallery,
                   func); // Pass context to _loadPicker
             },
           ),
           ListTile(
-            title: Text("Chụp ảnh"),
+            title: Text(translate('take_photo')),
             onTap: () {
               _loadPicker(context, ImageSource.camera,
                   func); // Pass context to _loadPicker
@@ -216,7 +207,7 @@ Widget alumniInformation(BuildContext context) {
                   width: 230.w,
                   height: 230.w,
                   child: Image.asset(
-                    "assets/images/logos/logo.png",
+                    AppAssets.logoImage,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -225,28 +216,15 @@ Widget alumniInformation(BuildContext context) {
                   child: Container(
                 padding: EdgeInsets.only(bottom: 5.h),
                 child: Text(
-                  "BẮT ĐẦU",
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: AppColors.primaryText,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17.sp,
-                  ),
+                  translate('start').toUpperCase(),
+                  style: AppTextStyle.medium().wSemiBold(),
                 ),
               )),
               Center(
                   child: Container(
                 padding: EdgeInsets.only(bottom: 10.h),
-                child: Text(
-                  "Hãy thiết lập hồ sơ của bạn. Những thông tin này sẽ giúp chúng tôi xét duyệt tài khoản của bạn.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: AppColors.primaryText,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 12.sp,
-                  ),
-                ),
+                child: Text(translate('alumni_information_verify_title'),
+                    textAlign: TextAlign.center, style: AppTextStyle.small()),
               )),
               SizedBox(
                 height: 5.h,
@@ -257,13 +235,15 @@ Widget alumniInformation(BuildContext context) {
               SizedBox(
                 height: 25.h,
               ),
-              buildTextField("Họ và tên *", "fullName", "user", (value) {
+              buildTextField(translate('full_name*'), "fullName", AppAssets.userIconP,
+                  (value) {
                 context.read<AlumniInformationBloc>().add(FullNameEvent(value));
               }),
             ],
           ),
         ),
-        buildLogInAndRegButton(context, "TIẾP TỤC", "verify"),
+        buildLogInAndRegButton(
+            context, translate('continue').toUpperCase(), "verify"),
       ],
     ),
   );

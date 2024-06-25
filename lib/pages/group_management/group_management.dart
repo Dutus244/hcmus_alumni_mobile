@@ -32,7 +32,7 @@ class _GroupManagementState extends State<GroupManagement> {
         builder: (context, state) {
           return Scaffold(
             appBar: buildAppBar(context),
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: groupManagement(context, state.group),
           );
         });

@@ -63,7 +63,7 @@ class _ListInteractPostGroupState extends State<ListInteractPostGroup> {
         builder: (context, state) {
           return Scaffold(
             appBar: buildAppBar(context),
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: listInteract(context, _scrollController),
           );
         });

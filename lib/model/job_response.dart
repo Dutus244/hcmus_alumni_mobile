@@ -6,7 +6,5 @@ class JobResponse {
   JobResponse(this.jobs);
 
   JobResponse.fromJson(Map<String, dynamic> json)
-      : jobs = (json["jobs"] as List)
-      .map((i) => new Job.fromJson(i))
-      .toList();
+      : jobs = (json["jobs"] as List).map((i) => new Job.fromJson(i)).toList();
 }

@@ -28,7 +28,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         builder: (context, state) {
       return Scaffold(
           appBar: buildAppBar(context),
-          backgroundColor: AppColors.primaryBackground,
+          backgroundColor: AppColors.background,
           body: changePassword(context));
     });
   }

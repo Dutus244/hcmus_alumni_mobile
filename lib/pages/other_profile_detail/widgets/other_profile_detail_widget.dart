@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
@@ -12,15 +13,15 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Thông tin cá nhân',
+          translate('personal_information'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header3,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -89,9 +90,9 @@ Widget profile(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Thông tin cơ bản',
+              translate('basic_information'),
               style: TextStyle(
-                fontFamily: AppFonts.Header0,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 color: AppColors.secondaryHeader,
@@ -123,8 +124,8 @@ Widget profile(BuildContext context) {
                   child: Text(
                     name,
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header2,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -133,12 +134,12 @@ Widget profile(BuildContext context) {
                 Container(
                   width: 100.w,
                   child: Text(
-                    'Họ tên',
+                    translate('full_name'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header0,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -172,8 +173,8 @@ Widget profile(BuildContext context) {
                   child: Text(
                     faculty,
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header2,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -182,12 +183,12 @@ Widget profile(BuildContext context) {
                 Container(
                   width: 100.w,
                   child: Text(
-                    'Khoa',
+                    translate('faculty'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header0,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -227,8 +228,8 @@ Widget profile(BuildContext context) {
                   child: Text(
                     sex,
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header2,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -237,12 +238,12 @@ Widget profile(BuildContext context) {
                 Container(
                   width: 100.w,
                   child: Text(
-                    'Giới tính',
+                    translate('sex'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header0,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -276,10 +277,10 @@ Widget profile(BuildContext context) {
                     birthday !=
                         ""
                         ? birthday
-                        : 'Chọn ngày sinh',
+                        : '',
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header2,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -288,12 +289,12 @@ Widget profile(BuildContext context) {
                 Container(
                   width: 100.w,
                   child: Text(
-                    'Ngày sinh',
+                    translate('birthday'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header0,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -325,8 +326,8 @@ Widget profile(BuildContext context) {
                   child: Text(
                     'dutus24',
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header2,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -335,12 +336,12 @@ Widget profile(BuildContext context) {
                 Container(
                   width: 100.w,
                   child: Text(
-                    'Mạng xã hội',
+                    translate('social_network'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header0,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -372,8 +373,8 @@ Widget profile(BuildContext context) {
                   child: Text(
                     '20127013',
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header2,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -382,12 +383,12 @@ Widget profile(BuildContext context) {
                 Container(
                   width: 100.w,
                   child: Text(
-                    'Mã số sinh viên',
+                    translate('student_id'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header0,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -419,8 +420,8 @@ Widget profile(BuildContext context) {
                   child: Text(
                     '20CLC11',
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header2,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -429,12 +430,12 @@ Widget profile(BuildContext context) {
                 Container(
                   width: 100.w,
                   child: Text(
-                    'Lớp',
+                    translate('class'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header0,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -466,8 +467,8 @@ Widget profile(BuildContext context) {
                   child: Text(
                     '2020',
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header2,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -476,12 +477,12 @@ Widget profile(BuildContext context) {
                 Container(
                   width: 100.w,
                   child: Text(
-                    'Năm nhập học nghiệp',
+                    translate('year_admission'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header0,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -513,8 +514,8 @@ Widget profile(BuildContext context) {
                   child: Text(
                     '2024',
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header2,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -523,12 +524,12 @@ Widget profile(BuildContext context) {
                 Container(
                   width: 100.w,
                   child: Text(
-                    'Năm tốt nghiệp',
+                    translate('graduation_year'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header0,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -550,9 +551,9 @@ Widget contact(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Thông tin liên hệ',
+              translate('contact_info'),
               style: TextStyle(
-                fontFamily: AppFonts.Header0,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 color: AppColors.secondaryHeader,
@@ -585,8 +586,8 @@ Widget contact(BuildContext context) {
                   child: Text(
                     'test@gmail.com',
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header2,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -595,12 +596,12 @@ Widget contact(BuildContext context) {
                 Container(
                   width: 100.w,
                   child: Text(
-                    'Email',
+                    translate('email'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header0,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -632,8 +633,8 @@ Widget contact(BuildContext context) {
                   child: Text(
                     '0123456789',
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header2,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -642,12 +643,12 @@ Widget contact(BuildContext context) {
                 Container(
                   width: 100.w,
                   child: Text(
-                    'Số điện thoại',
+                    translate('phone'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header0,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -669,9 +670,9 @@ Widget aboutMe(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Tiểu sử',
+              translate('about_me'),
               style: TextStyle(
-                fontFamily: AppFonts.Header0,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 color: AppColors.secondaryHeader,
@@ -685,8 +686,8 @@ Widget aboutMe(BuildContext context) {
         child: Text(
           'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
           style: TextStyle(
-            color: AppColors.primaryText,
-            fontFamily: AppFonts.Header2,
+            color: AppColors.textBlack,
+            fontFamily: AppFonts.Header3,
             fontWeight: FontWeight.normal,
             fontSize: 12.sp,
           ),
@@ -709,9 +710,9 @@ Widget jobs(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Công việc',
+              translate('job'),
               style: TextStyle(
-                fontFamily: AppFonts.Header0,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 color: AppColors.secondaryHeader,
@@ -732,9 +733,9 @@ Widget jobs(BuildContext context) {
           child: Container(
             margin: EdgeInsets.only(top: 5.h),
             child: Text(
-              'Không có công việc nào để hiển thị',
+              translate('no_job'),
               style: TextStyle(
-                fontFamily: AppFonts.Header0,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
                 color: AppColors.secondaryHeader,
@@ -774,8 +775,8 @@ Widget job(BuildContext context, Job job) {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header1,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -786,10 +787,10 @@ Widget job(BuildContext context, Job job) {
                   child: Text(
                     job.position,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 11.sp,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ),
                 ),
@@ -801,7 +802,7 @@ Widget job(BuildContext context, Job job) {
                       fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -827,9 +828,9 @@ Widget educations(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Học vấn',
+              translate('education'),
               style: TextStyle(
-                fontFamily: AppFonts.Header0,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 color: AppColors.secondaryHeader,
@@ -854,9 +855,9 @@ Widget educations(BuildContext context) {
           child: Container(
             margin: EdgeInsets.only(top: 5.h),
             child: Text(
-              'Không có dữ liệu nào để hiển thị',
+              translate('no_education'),
               style: TextStyle(
-                fontFamily: AppFonts.Header0,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
                 color: AppColors.secondaryHeader,
@@ -896,8 +897,8 @@ Widget education(BuildContext context, Education education) {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header1,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -908,10 +909,10 @@ Widget education(BuildContext context, Education education) {
                   child: Text(
                     education.degree,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 11.sp,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ),
                 ),
@@ -923,7 +924,7 @@ Widget education(BuildContext context, Education education) {
                       fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),
@@ -949,9 +950,9 @@ Widget achievements(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Thành tựu nổi bật',
+              translate('achievement'),
               style: TextStyle(
-                fontFamily: AppFonts.Header0,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 color: AppColors.secondaryHeader,
@@ -975,9 +976,9 @@ Widget achievements(BuildContext context) {
           child: Container(
             margin: EdgeInsets.only(top: 5.h),
             child: Text(
-              'Không có thành tựu nào để hiển thị',
+              translate('no_achievement'),
               style: TextStyle(
-                fontFamily: AppFonts.Header0,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
                 color: AppColors.secondaryHeader,
@@ -1017,8 +1018,8 @@ Widget achievement(BuildContext context, Achievement achievement) {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: AppColors.primaryText,
-                      fontFamily: AppFonts.Header1,
+                      color: AppColors.textBlack,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -1029,10 +1030,10 @@ Widget achievement(BuildContext context, Achievement achievement) {
                   child: Text(
                     achievement.type,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 11.sp,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                   ),
                 ),
@@ -1044,7 +1045,7 @@ Widget achievement(BuildContext context, Achievement achievement) {
                       fontFamily: AppFonts.Header3,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
-                      color: AppColors.primarySecondaryElementText,
+                      color: AppColors.secondaryElementText,
                     ),
                   ),
                 ),

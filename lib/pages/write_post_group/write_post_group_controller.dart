@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'bloc/write_post_group_blocs.dart';
 import 'bloc/write_post_group_events.dart';
@@ -37,22 +39,20 @@ class WritePostGroupController {
     if (vote.length > 0) {
       final shouldPost = await showDialog(
         context: context,
-        builder: (context) =>
-            AlertDialog(
-              title: Text('Đăng bài viết'),
-              content: Text(
-                  'Bài viết có bình chọn không thể sửa đổi sau khi đăng?'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: Text('Huỷ'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  child: Text('Đăng'),
-                ),
-              ],
+        builder: (context) => AlertDialog(
+          title: Text(translate('post_article')),
+          content: Text(translate('post_article_vote_question')),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(translate('cancel')),
             ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(translate('post')),
+            ),
+          ],
+        ),
       );
       if (shouldPost != null && shouldPost) {
         var apiUrl = dotenv.env['API_URL'];
@@ -62,7 +62,8 @@ class WritePostGroupController {
 
         var headers = <String, String>{
           'Authorization': 'Bearer $token',
-          "Content-Type": "application/json" // Include bearer token in the headers
+          "Content-Type": "application/json"
+          // Include bearer token in the headers
         };
 
         Map data = {
@@ -94,7 +95,7 @@ class WritePostGroupController {
             };
 
             var request =
-            http.MultipartRequest('PUT', Uri.parse('$apiUrl$endpoint'));
+                http.MultipartRequest('PUT', Uri.parse('$apiUrl$endpoint'));
             request.headers.addAll(headers);
 
             for (var i = 0; i < pictures.length; i++) {
@@ -128,8 +129,7 @@ class WritePostGroupController {
           // Handle errors
         }
       }
-    }
-    else {
+    } else {
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/groups/$groupId/posts';
 
@@ -137,7 +137,8 @@ class WritePostGroupController {
 
       var headers = <String, String>{
         'Authorization': 'Bearer $token',
-        "Content-Type": "application/json" // Include bearer token in the headers
+        "Content-Type": "application/json"
+        // Include bearer token in the headers
       };
 
       Map data = {
@@ -166,7 +167,7 @@ class WritePostGroupController {
           };
 
           var request =
-          http.MultipartRequest('PUT', Uri.parse('$apiUrl$endpoint'));
+              http.MultipartRequest('PUT', Uri.parse('$apiUrl$endpoint'));
           request.headers.addAll(headers);
 
           for (var i = 0; i < pictures.length; i++) {
@@ -191,14 +192,15 @@ class WritePostGroupController {
             } else {}
           } catch (e) {
             // Exception occurred
-            print('Exception occurred: $e');
+            toastInfo(msg: translate('error_post_article'));
           }
         } else {
           // Handle other status codes if needed
+          toastInfo(msg: translate('error_post_article'));
         }
       } catch (error) {
         // Handle errors
-        print('Exception occurred: $error');
+        toastInfo(msg: translate('error_post_article'));
       }
     }
   }

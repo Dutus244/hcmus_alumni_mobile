@@ -16,7 +16,7 @@ class _ChangePasswordState extends State<TermOfService> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: buildAppBar(context),
-        backgroundColor: AppColors.primaryBackground,
+        backgroundColor: AppColors.background,
         body: Container());
   }
 }

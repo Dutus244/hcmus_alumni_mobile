@@ -16,7 +16,7 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
@@ -94,13 +94,13 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
                     "assets/icons/clock.svg",
                     width: 12.w,
                     height: 12.h,
-                    color: AppColors.primarySecondaryText,
+                    color: AppColors.textGrey,
                   ),
                   Container(
                     width: 5.w,
                   ),
                   Text(
-                    handleDatetime(hallOfFame.publishedAt),
+                    handleDateTime1(hallOfFame.publishedAt),
                     style: TextStyle(
                       fontFamily: AppFonts.Header3,
                       color: Colors.black,
@@ -119,7 +119,7 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
                     "assets/icons/view.svg",
                     width: 12.w,
                     height: 12.h,
-                    color: AppColors.primarySecondaryText,
+                    color: AppColors.textGrey,
                   ),
                   Container(
                     width: 5.w,

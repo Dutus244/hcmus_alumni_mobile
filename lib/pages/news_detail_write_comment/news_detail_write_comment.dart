@@ -34,7 +34,7 @@ class _NewsDetailWriteCommentState extends State<NewsDetailWriteComment> {
         NewsDetailWriteCommentState>(builder: (context, state) {
       return Scaffold(
         appBar: buildAppBar(context),
-        backgroundColor: AppColors.primaryBackground,
+        backgroundColor: AppColors.background,
         body: newsDetailWriteComment(context, news),
       );
     });

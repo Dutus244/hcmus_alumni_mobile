@@ -1,25 +1,102 @@
-import 'dart:async';
-
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_percentage_vote.dart';
+import 'package:hcmus_alumni_mobile/common/values/assets.dart';
 import 'package:hcmus_alumni_mobile/common/values/colors.dart';
 import 'package:hcmus_alumni_mobile/model/post.dart';
-import 'package:hcmus_alumni_mobile/model/vote.dart';
 import 'package:hcmus_alumni_mobile/pages/advise_page/advise_page_controller.dart';
-import 'package:popover/popover.dart';
 
 import '../../../common/function/handle_datetime.dart';
-import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../../../common/widgets/flutter_toast.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
-import '../../../model/voter.dart';
 import '../bloc/advise_page_blocs.dart';
 import '../bloc/advise_page_states.dart';
+
+AppBar buildAppBar(BuildContext context) {
+  return AppBar(
+    backgroundColor: AppColors.background,
+    title: Container(
+      height: 40.h,
+      margin: EdgeInsets.only(left: 0.w, right: 0.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                "/applicationPage",
+                (route) => false,
+                arguments: {"route": 0},
+              );
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 0.w),
+              child: SizedBox(
+                width: 60.w,
+                height: 120.h,
+                child: Image.asset(AppAssets.logoImage),
+              ),
+            ),
+          ),
+          Text(
+            translate('advise'),
+            textAlign: TextAlign.center,
+            style: AppTextStyle.medium().wSemiBold(),
+          ),
+          Container(
+            width: 60.w,
+            child: Row(
+              children: [
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, "/chatPage");
+                      },
+                      child: Container(
+                        width: 20.w,
+                        height: 20.h,
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(AppAssets.chatIconP))),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                  ],
+                ),
+                Container(
+                  width: 20.w,
+                  height: 20.w,
+                  margin: EdgeInsets.only(),
+                  child: GestureDetector(
+                      onTap: () async {
+                        await Navigator.pushNamed(context, "/myProfilePage");
+                        AdvisePageController(context: context)
+                            .handleLoadPostData(0);
+                      },
+                      child: CircleAvatar(
+                        radius: 10,
+                        child: null,
+                        backgroundImage: NetworkImage(
+                            'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                      )),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    ),
+    centerTitle: true, // Đặt tiêu đề vào giữa
+  );
+}
 
 Widget buildCreatePostButton(BuildContext context) {
   return GestureDetector(
@@ -47,17 +124,11 @@ Widget buildCreatePostButton(BuildContext context) {
               ),
               child: Align(
                 alignment: Alignment.centerLeft,
-                // Căn giữa theo chiều dọc
                 child: Container(
                   padding: EdgeInsets.only(left: 10.w),
                   child: Text(
-                    'Bạn đang muốn được tư vấn điều gì?',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: AppFonts.Header2,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 12.sp,
-                    ),
+                    translate('what_advise_do_you_want'),
+                    style: AppTextStyle.small(),
                   ),
                 ),
               ),
@@ -69,7 +140,7 @@ Widget buildCreatePostButton(BuildContext context) {
               width: 40.w,
               padding: EdgeInsets.only(left: 10.w),
               child: Image.asset(
-                'assets/icons/image.png',
+                AppAssets.imageIconP,
               ),
             ),
           )
@@ -111,13 +182,8 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có bài viết',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
-                          ),
+                          translate('no_posts'),
+                          style: AppTextStyle.small(),
                         ),
                       )),
                     ],
@@ -177,43 +243,39 @@ Widget postOption(BuildContext context, Post post) {
             children: [
               if (post.votes.length == 0)
                 GestureDetector(
-                onTap: () async {
-                  await Navigator.pushNamed(
-                    context,
-                    "/editPostAdvise",
-                    arguments: {
-                      "post": post,
-                    },
-                  );
-                  AdvisePageController(context: context).handleLoadPostData(0);
-                },
-                child: Container(
-                  margin: EdgeInsets.only(left: 10.w, top: 10.h),
-                  color: Colors.transparent,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/edit.svg",
-                        width: 14.w,
-                        height: 14.h,
-                        color: AppColors.primaryText,
-                      ),
-                      Container(
-                        width: 10.w,
-                      ),
-                      Text(
-                        'Chỉnh sửa bài viết',
-                        style: TextStyle(
-                          fontFamily: AppFonts.Header2,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryText,
+                  onTap: () async {
+                    await Navigator.pushNamed(
+                      context,
+                      "/editPostAdvise",
+                      arguments: {
+                        "post": post,
+                      },
+                    );
+                    AdvisePageController(context: context)
+                        .handleLoadPostData(0);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: 10.w, top: 10.h),
+                    color: Colors.transparent,
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          AppAssets.editIconS,
+                          width: 14.w,
+                          height: 14.h,
+                          color: AppColors.textBlack,
                         ),
-                      ),
-                    ],
+                        Container(
+                          width: 10.w,
+                        ),
+                        Text(
+                          translate('edit_post'),
+                          style: AppTextStyle.medium().wMedium(),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
               GestureDetector(
                 onTap: () async {
                   bool shouldDelete =
@@ -229,22 +291,17 @@ Widget postOption(BuildContext context, Post post) {
                   child: Row(
                     children: [
                       SvgPicture.asset(
-                        "assets/icons/trash.svg",
+                        AppAssets.trashIconS,
                         width: 14.w,
                         height: 14.h,
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                       ),
                       Container(
                         width: 10.w,
                       ),
                       Text(
-                        'Xoá bài viết',
-                        style: TextStyle(
-                          fontFamily: AppFonts.Header2,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryText,
-                        ),
+                        translate('delete_post'),
+                        style: AppTextStyle.medium().wMedium(),
                       ),
                     ],
                   ),
@@ -276,20 +333,17 @@ Widget post(BuildContext context, Post post) {
                 margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 child: GestureDetector(
                     onTap: () {
-                      if (post.creator.id == Global.storageService.getUserId()) {
+                      if (post.creator.id ==
+                          Global.storageService.getUserId()) {
                         Navigator.pushNamed(
                           context,
                           "/myProfilePage",
                         );
-                      }
-                      else {
-                        Navigator.pushNamed(
-                          context,
-                          "/otherProfilePage",
-                          arguments: {
-                            "id": post.creator.id,
-                          }
-                        );
+                      } else {
+                        Navigator.pushNamed(context, "/otherProfilePage",
+                            arguments: {
+                              "id": post.creator.id,
+                            });
                       }
                     },
                     child: CircleAvatar(
@@ -309,24 +363,15 @@ Widget post(BuildContext context, Post post) {
                     Text(
                       post.creator.fullName,
                       maxLines: 1,
-                      style: TextStyle(
-                        fontFamily: AppFonts.Header2,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryText,
-                      ),
+                      style: AppTextStyle.small().wSemiBold(),
                     ),
                     Row(
                       children: [
                         Text(
-                          timePost(post.publishedAt),
+                          handleTimeDifference2(post.publishedAt),
                           maxLines: 1,
-                          style: TextStyle(
-                            fontFamily: AppFonts.Header3,
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.normal,
-                            color: AppColors.primarySecondaryText,
-                          ),
+                          style: AppTextStyle.xSmall()
+                              .withColor(AppColors.textGrey),
                         ),
                       ],
                     )
@@ -347,7 +392,7 @@ Widget post(BuildContext context, Post post) {
                     height: 17.h,
                     decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage("assets/icons/3dot.png"))),
+                            image: AssetImage(AppAssets.thereDotIconP))),
                   ),
                 ),
             ],
@@ -358,12 +403,7 @@ Widget post(BuildContext context, Post post) {
           child: Text(
             post.title,
             textAlign: TextAlign.left,
-            style: TextStyle(
-              fontFamily: AppFonts.Header2,
-              fontSize: 12.sp,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryText,
-            ),
+            style: AppTextStyle.small().wSemiBold(),
           ),
         ),
         Container(
@@ -371,24 +411,21 @@ Widget post(BuildContext context, Post post) {
           child: Row(
             children: [
               SvgPicture.asset(
-                "assets/icons/tag.svg",
+                AppAssets.tagIconS,
                 width: 12.w,
                 height: 12.h,
-                color: AppColors.primarySecondaryText,
+                color: AppColors.textGrey,
               ),
-              for (int i = 0; i < post.tags.length; i += 1)
-                Container(
-                  margin: EdgeInsets.only(left: 2.w),
-                  child: Text(
-                    post.tags[i].name,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header3,
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.normal,
-                      color: Color.fromARGB(255, 5, 90, 188),
-                    ),
-                  ),
+              Container(
+                margin: EdgeInsets.only(left: 2.w),
+                width: 300.w,
+                child: Text(
+                  post.tags.map((tag) => tag.name).join(' '),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyle.xSmall().withColor(AppColors.tag),
                 ),
+              ),
             ],
           ),
         ),
@@ -398,106 +435,97 @@ Widget post(BuildContext context, Post post) {
           child: ExpandableText(
             post.content,
             maxLines: 4,
-            expandText: 'Xem thêm',
-            collapseText: 'Thu gọn',
-            style: TextStyle(
-              fontFamily: AppFonts.Header3,
-              fontSize: 12.sp,
-              fontWeight: FontWeight.normal,
-              color: AppColors.primaryText,
-            ),
+            expandText: translate('see_more'),
+            collapseText: translate('collapse'),
+            style: AppTextStyle.small(),
           ),
         ),
         if (!post.allowMultipleVotes)
           for (int i = 0; i < post.votes.length; i += 1)
             Container(
-            width: 350.w,
-            height: 35.h,
-            margin: EdgeInsets.only(
-                top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(10.w),
-              border: Border.all(
-                color: AppColors.primaryFourthElementText,
+              width: 350.w,
+              height: 35.h,
+              margin: EdgeInsets.only(
+                  top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(10.w),
+                border: Border.all(
+                  color: AppColors.primaryFourthElementText,
+                ),
               ),
-            ),
-            child: Container(
-              margin: EdgeInsets.only(left: 10.w, right: 10.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      if (Global.storageService.permissionCounselVote())
-                        Radio(
-                        value: post.votes[i].name,
-                        groupValue: post.voteSelectedOne,
-                        onChanged: (value) {
-                          if (post.voteSelectedOne == "") {
-                            AdvisePageController(context: context)
-                                .handleVote(post.id, post.votes[i].id);
-                          } else {
-                            for (int j = 0; j < post.votes.length; j += 1) {
-                              if (post.votes[j].name == post.voteSelectedOne) {
-                                AdvisePageController(context: context)
-                                    .handleUpdateVote(post.id, post.votes[j].id, post.votes[i].id);
-                              }
-                            }
-                          }
-                        },
-                      ),
-                      Container(
-                        width: 220.w,
-                        child: Text(
-                          post.votes[i].name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontFamily: AppFonts.Header2,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.normal,
-                              color: AppColors.primarySecondaryText),
-                        ),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      Navigator.pushNamed(
-                        context,
-                        "/advisePageListVoters",
-                        arguments: {
-                          "vote": post.votes[i],
-                          "post": post,
-                        },
-                      );
-                    },
-                    child: Row(
+              child: Container(
+                margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
                       children: [
-                        Text(
-                          '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
-                          style: TextStyle(
-                              fontFamily: AppFonts.Header2,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.normal,
-                              color: AppColors.primaryElement),
-                        ),
+                        if (Global.storageService.permissionCounselVote())
+                          Radio(
+                            value: post.votes[i].name,
+                            groupValue: post.voteSelectedOne,
+                            onChanged: (value) {
+                              if (post.voteSelectedOne == "") {
+                                AdvisePageController(context: context)
+                                    .handleVote(post.id, post.votes[i].id);
+                              } else {
+                                for (int j = 0; j < post.votes.length; j += 1) {
+                                  if (post.votes[j].name ==
+                                      post.voteSelectedOne) {
+                                    AdvisePageController(context: context)
+                                        .handleUpdateVote(post.id,
+                                            post.votes[j].id, post.votes[i].id);
+                                  }
+                                }
+                              }
+                            },
+                          ),
                         Container(
-                          width: 5.w,
-                        ),
-                        SvgPicture.asset(
-                          "assets/icons/arrow_next.svg",
-                          height: 15.h,
-                          width: 15.w,
+                          width: 220.w,
+                          child: Text(
+                            post.votes[i].name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyle.small()
+                                .withColor(AppColors.textGrey),
+                          ),
                         ),
                       ],
                     ),
-                  )
-                ],
+                    GestureDetector(
+                      onTap: () async {
+                        Navigator.pushNamed(
+                          context,
+                          "/advisePageListVoters",
+                          arguments: {
+                            "vote": post.votes[i],
+                            "post": post,
+                          },
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
+                            style: AppTextStyle.small()
+                                .withColor(AppColors.element),
+                          ),
+                          Container(
+                            width: 5.w,
+                          ),
+                          SvgPicture.asset(
+                            AppAssets.arrowNextIconS,
+                            height: 15.h,
+                            width: 15.w,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
         if (post.allowMultipleVotes)
           for (int i = 0; i < post.votes.length; i += 1)
             Container(
@@ -520,38 +548,38 @@ Widget post(BuildContext context, Post post) {
                     Row(
                       children: [
                         if (Global.storageService.permissionCounselVote())
-                        Checkbox(
-                          checkColor: AppColors.primaryBackground,
-                          fillColor: MaterialStateProperty.resolveWith<Color?>(
-                                (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.selected)) {
-                                return AppColors.primaryElement; // Selected color
+                          Checkbox(
+                            checkColor: AppColors.background,
+                            fillColor:
+                                MaterialStateProperty.resolveWith<Color?>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.selected)) {
+                                  return AppColors.element; // Selected color
+                                }
+                                return Colors.transparent; // Unselected color
+                              },
+                            ),
+                            onChanged: (value) {
+                              if (value! == true) {
+                                AdvisePageController(context: context)
+                                    .handleVote(post.id, post.votes[i].id);
+                              } else {
+                                AdvisePageController(context: context)
+                                    .handleDeleteVote(
+                                        post.id, post.votes[i].id);
                               }
-                              return Colors.transparent; // Unselected color
                             },
+                            value: post.voteSelectedMultiple
+                                .contains(post.votes[i].name),
                           ),
-                          onChanged: (value) {
-                            if (value! == true) {
-                              AdvisePageController(context: context)
-                                  .handleVote(post.id, post.votes[i].id);
-                            } else {
-                              AdvisePageController(context: context)
-                                  .handleDeleteVote(post.id, post.votes[i].id);
-                            }
-                          },
-                          value: post.voteSelectedMultiple.contains(post.votes[i].name),
-                        ),
                         Container(
                           width: 220.w,
                           child: Text(
                             post.votes[i].name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontFamily: AppFonts.Header2,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.normal,
-                                color: AppColors.primarySecondaryText),
+                            style: AppTextStyle.small()
+                                .withColor(AppColors.textGrey),
                           ),
                         ),
                       ],
@@ -571,17 +599,14 @@ Widget post(BuildContext context, Post post) {
                         children: [
                           Text(
                             '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
-                            style: TextStyle(
-                                fontFamily: AppFonts.Header2,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.normal,
-                                color: AppColors.primaryElement),
+                            style: AppTextStyle.small()
+                                .withColor(AppColors.element),
                           ),
                           Container(
                             width: 5.w,
                           ),
                           SvgPicture.asset(
-                            "assets/icons/arrow_next.svg",
+                            AppAssets.arrowNextIconS,
                             height: 15.h,
                             width: 15.w,
                           ),
@@ -595,11 +620,8 @@ Widget post(BuildContext context, Post post) {
         if (post.votes.length > 0 && post.allowAddOptions)
           GestureDetector(
             onTap: () {
-              if (post
-                  .votes
-                  .length >=
-                  10) {
-                toastInfo(msg: "Số lượng lựa chọn không được vượt quá 10");
+              if (post.votes.length >= 10) {
+                toastInfo(msg: translate("option_above_10"));
                 return;
               }
               TextEditingController textController = TextEditingController();
@@ -607,14 +629,14 @@ Widget post(BuildContext context, Post post) {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Thêm lựa chọn'),
+                  title: Text(translate('add_option')),
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       TextField(
                         controller: textController,
                         decoration: InputDecoration(
-                          hintText: 'Thêm lựa chọn mới',
+                          hintText: translate('add_option'),
                         ),
                       ),
                     ],
@@ -622,14 +644,14 @@ Widget post(BuildContext context, Post post) {
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: Text('Huỷ'),
+                      child: Text(translate('cancel')),
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, {
                         'confirmed': true,
                         'vote': textController.text,
                       }),
-                      child: Text('Thêm'),
+                      child: Text(translate('add')),
                     ),
                   ],
                 ),
@@ -638,8 +660,7 @@ Widget post(BuildContext context, Post post) {
                   String vote = result['vote'];
                   AdvisePageController(context: context)
                       .handleAddVote(post.id, vote);
-                } else {
-                }
+                } else {}
               });
             },
             child: Container(
@@ -659,21 +680,17 @@ Widget post(BuildContext context, Post post) {
                 child: Row(
                   children: [
                     SvgPicture.asset(
-                      "assets/icons/add.svg",
+                      AppAssets.addIconS,
                       width: 14.w,
                       height: 14.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 5.w,
                     ),
                     Text(
-                      'Thêm lựa chọn',
-                      style: TextStyle(
-                          fontFamily: AppFonts.Header2,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.normal,
-                          color: AppColors.primarySecondaryText),
+                      translate('add_option'),
+                      style: AppTextStyle.small(),
                     ),
                   ],
                 ),
@@ -961,18 +978,15 @@ Widget post(BuildContext context, Post post) {
                                 height: 120.h,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.rectangle,
-                                  color: Color.fromARGB(255, 24, 59, 86)
-                                      .withOpacity(0.5),
+                                  color:
+                                      AppColors.blurredPicture.withOpacity(0.5),
                                 ),
                                 child: Center(
                                   child: Text(
                                     '+1',
-                                    style: TextStyle(
-                                      fontFamily: AppFonts.Header2,
-                                      fontSize: 32.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.primaryBackground,
-                                    ),
+                                    style: AppTextStyle.xLarge()
+                                        .size(32.sp)
+                                        .wSemiBold(),
                                   ),
                                 ),
                               ),
@@ -1009,7 +1023,7 @@ Widget post(BuildContext context, Post post) {
                     Container(
                       padding: EdgeInsets.only(left: 10.w),
                       child: SvgPicture.asset(
-                        "assets/icons/like_react.svg",
+                        AppAssets.likeIconS1,
                         height: 15.h,
                         width: 15.w,
                       ),
@@ -1018,12 +1032,7 @@ Widget post(BuildContext context, Post post) {
                       padding: EdgeInsets.only(left: 5.w),
                       child: Text(
                         post.reactionCount.toString(),
-                        style: TextStyle(
-                          fontFamily: AppFonts.Header2,
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.normal,
-                          color: AppColors.primaryText,
-                        ),
+                        style: AppTextStyle.xSmall(),
                       ),
                     ),
                   ],
@@ -1043,26 +1052,22 @@ Widget post(BuildContext context, Post post) {
                 child: Container(
                   padding: EdgeInsets.only(right: 10.w),
                   child: Text(
-                    '${post.childrenCommentNumber} bình luận',
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header2,
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.normal,
-                      color: AppColors.primaryText,
-                    ),
+                    '${post.childrenCommentNumber} ${translate('comments').toLowerCase()}',
+                    style: AppTextStyle.xSmall(),
                   ),
                 ),
               )
             ],
           ),
         ),
-        if (Global.storageService.permissionCounselReactionCreate() || Global.storageService.permissionCounselCommentCreate())
+        if (Global.storageService.permissionCounselReactionCreate() ||
+            Global.storageService.permissionCounselCommentCreate())
           Column(
             children: [
               Container(
                 margin: EdgeInsets.only(top: 5.h),
                 height: 1.h,
-                color: AppColors.primarySecondaryElement,
+                color: AppColors.elementLight,
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
@@ -1073,102 +1078,87 @@ Widget post(BuildContext context, Post post) {
                   children: [
                     if (Global.storageService.permissionCounselReactionCreate())
                       Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          AdvisePageController(context: context)
-                              .handleLikePost(post.id);
-                        },
-                        child: post.isReacted
-                            ? Container(
-                          margin: EdgeInsets.only(left: 40.w),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/like.svg",
-                                width: 20.w,
-                                height: 20.h,
-                                color: AppColors.primaryElement,
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: 5.w),
-                                child: Text(
-                                  'Thích',
-                                  style: TextStyle(
-                                    fontFamily: AppFonts.Header2,
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.normal,
-                                    color: AppColors.primaryElement,
+                        child: GestureDetector(
+                          onTap: () {
+                            AdvisePageController(context: context)
+                                .handleLikePost(post.id);
+                          },
+                          child: post.isReacted
+                              ? Container(
+                                  margin: EdgeInsets.only(left: 40.w),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        AppAssets.likeIconS2,
+                                        width: 20.w,
+                                        height: 20.h,
+                                        color: AppColors.element,
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.only(left: 5.w),
+                                        child: Text(
+                                          translate('like'),
+                                          style: AppTextStyle.xSmall()
+                                              .withColor(AppColors.element),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  margin: EdgeInsets.only(left: 40.w),
+                                  child: Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        AppAssets.likeIconS2,
+                                        width: 20.w,
+                                        height: 20.h,
+                                        color: AppColors.textBlack,
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.only(left: 5.w),
+                                        child: Text(translate('like'),
+                                            style: AppTextStyle.xSmall()),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                            : Container(
-                          margin: EdgeInsets.only(left: 40.w),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                "assets/icons/like.svg",
-                                width: 20.w,
-                                height: 20.h,
-                                color: AppColors.primaryText,
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: 5.w),
-                                child: Text(
-                                  'Thích',
-                                  style: TextStyle(
-                                    fontFamily: AppFonts.Header2,
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.normal,
-                                    color: AppColors.primaryText,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
                       ),
-                    ),
                     if (Global.storageService.permissionCounselCommentCreate())
                       Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            "/listCommentPostAdvise",
-                            arguments: {
-                              "id": post.id,
-                            },
-                          );
-                        },
-                        child: Container(
-                          margin: Global.storageService.permissionCounselReactionCreate() ? EdgeInsets.only(right: 40.w) : EdgeInsets.only(left: 40.w),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: 20.h,
-                                width: 20.w,
-                                child: Image.asset('assets/icons/comment.png'),
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(left: 5.w),
-                                child: Text(
-                                  'Bình luận',
-                                  style: TextStyle(
-                                    fontFamily: AppFonts.Header2,
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.normal,
-                                    color: AppColors.primaryText,
-                                  ),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              "/listCommentPostAdvise",
+                              arguments: {
+                                "id": post.id,
+                              },
+                            );
+                          },
+                          child: Container(
+                            margin: Global.storageService
+                                    .permissionCounselReactionCreate()
+                                ? EdgeInsets.only(right: 40.w)
+                                : EdgeInsets.only(left: 40.w),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 20.h,
+                                  width: 20.w,
+                                  child: Image.asset(AppAssets.commentIconP),
                                 ),
-                              ),
-                            ],
+                                Container(
+                                  padding: EdgeInsets.only(left: 5.w),
+                                  child: Text(translate('comment'),
+                                      style: AppTextStyle.xSmall()),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -1177,10 +1167,9 @@ Widget post(BuildContext context, Post post) {
         Container(
           margin: EdgeInsets.only(top: 5.h),
           height: 5.h,
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ],
     ),
   );
 }
-

@@ -74,7 +74,7 @@ class _NotificationPageState extends State<NotificationPage> {
             return Container(
               child: Scaffold(
                 appBar: buildAppBar(context, 'Thông báo'),
-                backgroundColor: AppColors.primaryBackground,
+                backgroundColor: AppColors.background,
                 body: listNotificaitons(context, _scrollController),
               ),
             );

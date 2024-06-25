@@ -5,13 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/picture.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
+import '../../../common/values/assets.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../../../common/widgets/flutter_toast.dart';
 import '../../../global.dart';
 import '../bloc/edit_post_group_blocs.dart';
@@ -21,19 +24,15 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
-        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets
+            .only(top: 40.h),
         child: Text(
-          'Chỉnh sửa bài viết',
+          translate('edit_post'),
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: AppFonts.Header0,
-            fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
-            color: AppColors.secondaryHeader,
-          ),
+          style: AppTextStyle.medium().wSemiBold(),
         ),
       ),
     ),
@@ -60,11 +59,11 @@ Widget buttonEdit(BuildContext context, String postId, String groupId) {
       height: 30.h,
       decoration: BoxDecoration(
         color: (title != "" && content != "")
-            ? AppColors.primaryElement
-            : AppColors.primaryBackground,
+            ? AppColors.element
+            : AppColors.background,
         borderRadius: BorderRadius.circular(10.w),
         border: Border.all(
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ),
       child: Center(
@@ -74,24 +73,21 @@ Widget buttonEdit(BuildContext context, String postId, String groupId) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Lưu',
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header1,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: (title != "" && content != "")
-                          ? AppColors.primaryBackground
+                  translate('save'),
+                  style: AppTextStyle.base().wSemiBold().withColor(
+                      (title != "" && content != "")
+                          ? AppColors.background
                           : Colors.black.withOpacity(0.3)),
                 ),
                 Container(
                   width: 6.w,
                 ),
                 SvgPicture.asset(
-                  "assets/icons/send.svg",
+                  AppAssets.sendIconS,
                   width: 15.w,
                   height: 15.h,
                   color: (title != "" && content != "")
-                      ? AppColors.primaryBackground
+                      ? AppColors.background
                       : Colors.black.withOpacity(0.5),
                 ),
               ],
@@ -110,10 +106,10 @@ Widget buttonFinishEditPicture(BuildContext context) {
       margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
       height: 30.h,
       decoration: BoxDecoration(
-        color: AppColors.primaryElement,
+        color: AppColors.element,
         borderRadius: BorderRadius.circular(10.w),
         border: Border.all(
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ),
       child: Center(
@@ -123,21 +119,18 @@ Widget buttonFinishEditPicture(BuildContext context) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Xong',
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header1,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryBackground),
+                  translate('save'),
+                  style: AppTextStyle.base().wSemiBold().withColor(
+                      AppColors.background),
                 ),
                 Container(
                   width: 6.w,
                 ),
                 SvgPicture.asset(
-                  "assets/icons/send.svg",
+                  AppAssets.sendIconS,
                   width: 15.w,
                   height: 15.h,
-                  color: AppColors.primaryBackground,
+                  color: AppColors.background,
                 ),
               ],
             ),
@@ -158,7 +151,7 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
       width: 320.w,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         border: Border.all(color: Colors.transparent),
       ),
       child: Row(
@@ -184,17 +177,11 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small().withColor(
+                    AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                color: AppColors.primaryText,
-                fontFamily: AppFonts.Header2,
-                fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small(),
               autocorrect: false,
             ),
           )
@@ -215,7 +202,7 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
         width: 320.w,
         margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 10.w, bottom: 2.h),
         decoration: BoxDecoration(
-          color: AppColors.primaryBackground,
+          color: AppColors.background,
           border: Border.all(color: Colors.transparent),
         ),
         child: Row(
@@ -241,17 +228,11 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
                       borderSide: BorderSide(color: Colors.transparent)),
                   focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.transparent)),
-                  hintStyle: TextStyle(
-                    color: AppColors.primarySecondaryElementText,
-                  ),
+                  hintStyle: AppTextStyle.small().withColor(
+                      AppColors.secondaryElementText),
                   counterText: '',
                 ),
-                style: TextStyle(
-                  color: AppColors.primaryText,
-                  fontFamily: AppFonts.Header3,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 12.sp,
-                ),
+                style: AppTextStyle.small(),
                 autocorrect: false,
               ),
             )
@@ -276,11 +257,12 @@ Widget writePost(BuildContext context, String id, String groupId) {
           children: [
             header(),
             buildTextFieldTag(context),
-            buildTextFieldTitle(context, 'Tiêu đề của bài viết', 'comment', '',
+            buildTextFieldTitle(context, translate('title_post'), 'comment', '',
                     (value) {
                   context.read<EditPostGroupBloc>().add(TitleEvent(value));
                 }),
-            buildTextFieldContent(context, 'Suy nghĩ của bạn', 'comment', '',
+            buildTextFieldContent(
+                context, translate('content_post'), 'comment', '',
                     (value) {
                   context.read<EditPostGroupBloc>().add(ContentEvent(value));
                 }),
@@ -313,7 +295,6 @@ Widget editPicture(BuildContext context) {
                   children: [
                     AspectRatio(
                       aspectRatio: 16 / 9,
-                      // Thay đổi tỷ lệ khung hình tùy theo yêu cầu của bạn
                       child: Container(
                         margin: EdgeInsets.only(
                             left: 10.w, top: 5.h, right: 10.w),
@@ -343,13 +324,13 @@ Widget editPicture(BuildContext context) {
                                 left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.grey,
+                              color: AppColors.backgroundGrey,
                             ),
                             child: SvgPicture.asset(
-                              "assets/icons/close.svg",
+                              AppAssets.closeIconS,
                               width: 12.w,
                               height: 12.h,
-                              color: Colors.white,
+                              color: AppColors.background,
                             ),
                           ),
                         )),
@@ -397,13 +378,13 @@ Widget editPicture(BuildContext context) {
                                 left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.grey,
+                              color: AppColors.backgroundGrey,
                             ),
                             child: SvgPicture.asset(
-                              "assets/icons/close.svg",
+                              AppAssets.closeIconS,
                               width: 12.w,
                               height: 12.h,
-                              color: Colors.white,
+                              color: AppColors.background,
                             ),
                           ),
                         )),
@@ -434,14 +415,14 @@ Widget chooseEditPicture(BuildContext context,
           .state
           .pictureNetworks
           .length > 5) {
-        toastInfo(msg: "Chỉ được chọn tối đa 5 tấm ảnh");
+        toastInfo(msg: translate('picture_above_5'));
         return;
       }
       currentList.addAll(pickedFiles.map((pickedFile) =>
           File(pickedFile.path))); // Concatenate currentList and picked files
 
       func!(currentList);
-        },
+    },
     child: Container(
       width: 340.w,
       height: 40.h,
@@ -449,8 +430,8 @@ Widget chooseEditPicture(BuildContext context,
       decoration: BoxDecoration(
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(15.w),
-        color: AppColors.primaryBackground,
-        border: Border.all(color: AppColors.primaryElement),
+        color: AppColors.background,
+        border: Border.all(color: AppColors.element),
       ),
       child: Center(
         child: Container(
@@ -459,21 +440,18 @@ Widget chooseEditPicture(BuildContext context,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SvgPicture.asset(
-                "assets/icons/picture.svg",
+                AppAssets.pictureIconS,
                 width: 12.w,
                 height: 12.h,
-                color: AppColors.primaryElement,
+                color: AppColors.element,
               ),
               Container(
                 width: 5.w,
               ),
               Text(
-                'Thêm ảnh',
-                style: TextStyle(
-                    fontFamily: AppFonts.Header1,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryElement),
+                translate('add_picture'),
+                style: AppTextStyle.small().wSemiBold().withColor(
+                    AppColors.element),
               ),
             ],
           ),
@@ -530,13 +508,13 @@ Widget choosePicture(BuildContext context,
                   .state
                   .pictureNetworks
                   .length > 5) {
-            toastInfo(msg: "Chỉ được chọn tối đa 5 tấm ảnh");
+            toastInfo(msg: translate('picture_above_5'));
             return;
           }
           func!(pickedFiles
               .map((pickedFile) => File(pickedFile.path))
               .toList());
-                } else {
+        } else {
           context.read<EditPostGroupBloc>().add(PageEvent(1));
         }
       },
@@ -559,7 +537,7 @@ Widget choosePicture(BuildContext context,
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(15.w),
-                color: AppColors.primaryElement,
+                color: AppColors.element,
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -571,18 +549,15 @@ Widget choosePicture(BuildContext context,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       SvgPicture.asset(
-                        "assets/icons/picture.svg",
+                        AppAssets.pictureIconS,
                         width: 12.w,
                         height: 12.h,
-                        color: AppColors.primaryBackground,
+                        color: AppColors.background,
                       ),
                       Text(
-                        'Chọn ảnh',
-                        style: TextStyle(
-                            fontFamily: AppFonts.Header1,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primaryBackground),
+                        translate('choose_picture'),
+                        style: AppTextStyle.small().wSemiBold().withColor(
+                            AppColors.background),
                       ),
                     ],
                   ),
@@ -664,13 +639,13 @@ Widget choosePicture(BuildContext context,
                             left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.grey,
+                          color: AppColors.backgroundGrey,
                         ),
                         child: SvgPicture.asset(
-                          "assets/icons/close.svg",
+                          AppAssets.closeIconS,
                           width: 12.w,
                           height: 12.h,
-                          color: Colors.white,
+                          color: AppColors.background,
                         ),
                       ),
                     )),
@@ -756,13 +731,13 @@ Widget choosePicture(BuildContext context,
                                 left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.grey,
+                              color: AppColors.backgroundGrey,
                             ),
                             child: SvgPicture.asset(
-                              "assets/icons/close.svg",
+                              AppAssets.closeIconS,
                               width: 12.w,
                               height: 12.h,
-                              color: Colors.white,
+                              color: AppColors.background,
                             ),
                           ),
                         )),
@@ -834,13 +809,13 @@ Widget choosePicture(BuildContext context,
                                 left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.grey,
+                              color: AppColors.backgroundGrey,
                             ),
                             child: SvgPicture.asset(
-                              "assets/icons/close.svg",
+                              AppAssets.closeIconS,
                               width: 12.w,
                               height: 12.h,
-                              color: Colors.white,
+                              color: AppColors.background,
                             ),
                           ),
                         )),
@@ -926,13 +901,13 @@ Widget choosePicture(BuildContext context,
                                 left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.grey,
+                              color: AppColors.backgroundGrey,
                             ),
                             child: SvgPicture.asset(
-                              "assets/icons/close.svg",
+                              AppAssets.closeIconS,
                               width: 12.w,
                               height: 12.h,
-                              color: Colors.white,
+                              color: AppColors.background,
                             ),
                           ),
                         )),
@@ -1008,13 +983,13 @@ Widget choosePicture(BuildContext context,
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
+                                    AppAssets.closeIconS,
                                     width: 12.w,
                                     height: 12.h,
-                                    color: Colors.white,
+                                    color: AppColors.background,
                                   ),
                                 ),
                               )),
@@ -1086,13 +1061,13 @@ Widget choosePicture(BuildContext context,
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
+                                    AppAssets.closeIconS,
                                     width: 12.w,
                                     height: 12.h,
-                                    color: Colors.white,
+                                    color: AppColors.background,
                                   ),
                                 ),
                               )),
@@ -1186,13 +1161,13 @@ Widget choosePicture(BuildContext context,
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
+                                    AppAssets.closeIconS,
                                     width: 12.w,
                                     height: 12.h,
-                                    color: Colors.white,
+                                    color: AppColors.background,
                                   ),
                                 ),
                               )),
@@ -1264,13 +1239,13 @@ Widget choosePicture(BuildContext context,
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
+                                    AppAssets.closeIconS,
                                     width: 12.w,
                                     height: 12.h,
-                                    color: Colors.white,
+                                    color: AppColors.background,
                                   ),
                                 ),
                               )),
@@ -1349,13 +1324,13 @@ Widget choosePicture(BuildContext context,
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
+                                    AppAssets.closeIconS,
                                     width: 12.w,
                                     height: 12.h,
-                                    color: Colors.white,
+                                    color: AppColors.background,
                                   ),
                                 ),
                               )),
@@ -1427,13 +1402,13 @@ Widget choosePicture(BuildContext context,
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
+                                    AppAssets.closeIconS,
                                     width: 12.w,
                                     height: 12.h,
-                                    color: Colors.white,
+                                    color: AppColors.background,
                                   ),
                                 ),
                               )),
@@ -1527,13 +1502,13 @@ Widget choosePicture(BuildContext context,
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
+                                    AppAssets.closeIconS,
                                     width: 12.w,
                                     height: 12.h,
-                                    color: Colors.white,
+                                    color: AppColors.background,
                                   ),
                                 ),
                               )),
@@ -1605,13 +1580,13 @@ Widget choosePicture(BuildContext context,
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
+                                    AppAssets.closeIconS,
                                     width: 12.w,
                                     height: 12.h,
-                                    color: Colors.white,
+                                    color: AppColors.background,
                                   ),
                                 ),
                               )),
@@ -1690,13 +1665,13 @@ Widget choosePicture(BuildContext context,
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
+                                    AppAssets.closeIconS,
                                     width: 12.w,
                                     height: 12.h,
-                                    color: Colors.white,
+                                    color: AppColors.background,
                                   ),
                                 ),
                               )),
@@ -1749,12 +1724,9 @@ Widget choosePicture(BuildContext context,
                               child: Center(
                                 child: Text(
                                   '+1',
-                                  style: TextStyle(
-                                    fontFamily: AppFonts.Header2,
-                                    fontSize: 32.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.primaryBackground,
-                                  ),
+                                  style: AppTextStyle.xLarge()
+                                      .size(32.sp)
+                                      .wSemiBold(),
                                 ),
                               ),
                             ),
@@ -1791,13 +1763,13 @@ Widget choosePicture(BuildContext context,
                                       bottom: 2.h),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: Colors.grey,
+                                    color: AppColors.backgroundGrey,
                                   ),
                                   child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
+                                    AppAssets.closeIconS,
                                     width: 12.w,
                                     height: 12.h,
-                                    color: Colors.white,
+                                    color: AppColors.background,
                                   ),
                                 ),
                               )),
@@ -1810,46 +1782,6 @@ Widget choosePicture(BuildContext context,
             ),
         ],
       ));
-}
-
-Widget chooseVote(BuildContext) {
-  return Container(
-    margin: EdgeInsets.only(left: 110.w, top: 5.h, right: 110.w, bottom: 10.h),
-    width: 140.w,
-    height: 30.h,
-    decoration: BoxDecoration(
-      shape: BoxShape.rectangle,
-      borderRadius: BorderRadius.circular(15.w),
-      color: AppColors.primaryElement,
-      border: Border.all(
-        color: Colors.transparent,
-      ),
-    ),
-    child: Center(
-      child: Container(
-        margin: EdgeInsets.only(left: 5.w, right: 5.w),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            SvgPicture.asset(
-              "assets/icons/vote.svg",
-              width: 12.w,
-              height: 12.h,
-              color: AppColors.primaryBackground,
-            ),
-            Text(
-              'Tạo bình chọn',
-              style: TextStyle(
-                  fontFamily: AppFonts.Header1,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryBackground),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
 }
 
 Widget header() {
@@ -1872,18 +1804,14 @@ Widget header() {
                   child: CircleAvatar(
                     radius: 10,
                     child: null,
-                    backgroundImage: NetworkImage(Global.storageService.getUserAvatarUrl()),
+                    backgroundImage: NetworkImage(
+                        Global.storageService.getUserAvatarUrl()),
                   )),
             ),
             Text(
               Global.storageService.getUserFullName(),
               maxLines: 1,
-              style: TextStyle(
-                color: AppColors.primaryText,
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
-                fontFamily: AppFonts.Header2,
-              ),
+              style: AppTextStyle.small().wSemiBold(),
             ),
           ],
         ),
@@ -1894,7 +1822,10 @@ Widget header() {
 
 void deleteTag(BuildContext context, String tag) {
   List<String> currentList =
-      BlocProvider.of<EditPostGroupBloc>(context).state.tags;
+      BlocProvider
+          .of<EditPostGroupBloc>(context)
+          .state
+          .tags;
   for (int i = 0; i < currentList.length; i += 1) {
     if (currentList[i] == tag) {
       currentList.removeAt(i);
@@ -1906,7 +1837,10 @@ void deleteTag(BuildContext context, String tag) {
 
 void addTag(BuildContext context, String tag) {
   List<String> currentList =
-  List.from(BlocProvider.of<EditPostGroupBloc>(context).state.tags);
+  List.from(BlocProvider
+      .of<EditPostGroupBloc>(context)
+      .state
+      .tags);
   currentList.add(tag);
   context.read<EditPostGroupBloc>().add(TagsEvent(currentList));
 }
@@ -1922,11 +1856,17 @@ Widget buildTextFieldTag(BuildContext context) {
           TextFieldTags<String>(
             textfieldTagsController: _stringTagController,
             initialTags:
-            BlocProvider.of<EditPostGroupBloc>(context).state.tags,
+            BlocProvider
+                .of<EditPostGroupBloc>(context)
+                .state
+                .tags,
             textSeparators: const [' ', ','],
             letterCase: LetterCase.normal,
             inputFieldBuilder: (context, inputFieldValues) {
-              inputFieldValues.tags = BlocProvider.of<EditPostGroupBloc>(context).state.tags;
+              inputFieldValues.tags = BlocProvider
+                  .of<EditPostGroupBloc>(context)
+                  .state
+                  .tags;
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.h),
                 child: TextField(
@@ -1937,7 +1877,8 @@ Widget buildTextFieldTag(BuildContext context) {
                   focusNode: inputFieldValues.focusNode,
                   decoration: InputDecoration(
                     isDense: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 13),
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 13, horizontal: 13),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: AppColors.primaryFourthElementText,
@@ -1953,11 +1894,11 @@ Widget buildTextFieldTag(BuildContext context) {
                       borderRadius: BorderRadius.circular(10.w),
                     ),
                     helperStyle: const TextStyle(
-                      color: AppColors.primarySecondaryElement,
+                      color: AppColors.elementLight,
                     ),
                     hintText: inputFieldValues.tags.isNotEmpty
                         ? ''
-                        : "Nhập #hashtag...",
+                        : "${translate("enter_#hashtag")}...",
                     errorText: inputFieldValues.error,
                     prefixIconConstraints:
                     BoxConstraints(maxWidth: 300.w * 0.8),
@@ -1981,7 +1922,7 @@ Widget buildTextFieldTag(BuildContext context) {
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(20.0),
                                   ),
-                                  color: AppColors.primaryElement,
+                                  color: AppColors.element,
                                 ),
                                 margin: const EdgeInsets.symmetric(
                                     horizontal: 5.0),
@@ -1994,12 +1935,11 @@ Widget buildTextFieldTag(BuildContext context) {
                                   children: [
                                     InkWell(
                                       child: Text(
-                                        '#$tag',
-                                        style: TextStyle(
-                                            fontSize: 11.sp,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: AppFonts.Header2,
-                                            color: Colors.white),
+                                          '#$tag',
+                                          style: AppTextStyle.small()
+                                              .wSemiBold()
+                                              .withColor(
+                                              AppColors.background)
                                       ),
                                       onTap: () {
                                         //print("$tag selected");
@@ -2034,15 +1974,17 @@ Widget buildTextFieldTag(BuildContext context) {
                     inputFieldValues.onTagChanged(value);
                   },
                   onSubmitted: (value) {
-                    if (BlocProvider.of<EditPostGroupBloc>(context)
+                    if (BlocProvider
+                        .of<EditPostGroupBloc>(context)
                         .state
                         .tags
                         .length >=
                         5) {
-                      toastInfo(msg: "Số lượng thẻ không được vượt quá 5");
+                      toastInfo(msg: translate('tag_above_5'));
                       return;
                     }
-                    if (!BlocProvider.of<EditPostGroupBloc>(context)
+                    if (!BlocProvider
+                        .of<EditPostGroupBloc>(context)
                         .state
                         .tags
                         .contains(value)) {
@@ -2050,7 +1992,7 @@ Widget buildTextFieldTag(BuildContext context) {
                       addTag(context, value);
                     } else {
                       // Optionally, show a message to the user about the duplicate tag
-                      toastInfo(msg: "Bạn đã nhập tag này rồi");
+                      toastInfo(msg: translate('duplicate_tag'));
                     }
                   },
                 ),

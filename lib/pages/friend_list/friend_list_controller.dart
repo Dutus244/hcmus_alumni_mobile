@@ -3,13 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hcmus_alumni_mobile/model/group.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import '../../model/friend.dart';
 import '../../model/friend_response.dart';
-import '../../model/group_response.dart';
 import 'bloc/friend_list_blocs.dart';
 import 'bloc/friend_list_events.dart';
 import 'bloc/friend_list_states.dart';
@@ -66,6 +65,24 @@ class FriendListController {
       if (response.statusCode == 200) {
         // Convert the JSON string to a Map
         var jsonMap = json.decode(responseBody);
+        jsonMap = {
+          "friends": [
+            {
+              "user": {
+                "id": "1",
+                "fullName": "Cao Nguyên",
+                "avatarUrl": "https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea"
+              }
+            },
+            {
+              "user": {
+                "id": "1",
+                "fullName": "Cao Nguyên",
+                "avatarUrl": "https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea"
+              }
+            },
+          ]
+        };
         // Pass the Map to the fromJson method
         var friendResponse = FriendResponse.fromJson(jsonMap);
         if (friendResponse.friends.isEmpty) {
@@ -99,11 +116,11 @@ class FriendListController {
         }
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bạn bè");
+        toastInfo(msg: translate('error_get_friend'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bạn bè");
+      toastInfo(msg: translate('error_get_friend'));
     }
   }
 

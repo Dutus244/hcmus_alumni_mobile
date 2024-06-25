@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/values/text_style.dart';
 
+import '../../../common/values/assets.dart';
 import '../../../common/values/colors.dart';
-import '../../../common/values/fonts.dart';
 import '../alumni_verification_controller.dart';
 import '../bloc/alumni_verification_blocs.dart';
 import '../bloc/alumni_verification_events.dart';
@@ -17,7 +19,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
       height: 40.h,
       margin: EdgeInsets.only(bottom: 20.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -27,7 +29,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
             width: 16.w,
             height: 16.w,
             margin: EdgeInsets.only(left: 17.w),
-            child: Image.asset("assets/icons/$iconName.png"),
+            child: Image.asset(iconName),
           ),
           Container(
             width: 270.w,
@@ -47,17 +49,10 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                fontFamily: AppFonts.Header3,
-                color: AppColors.primaryText,
-                fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small(),
               autocorrect: false,
               maxLength: textType == 'studentId' ? 8 : 100,
             ),
@@ -73,7 +68,7 @@ Widget buildTextFieldStartYear(String hintText, String textType,
       height: 40.h,
       margin: EdgeInsets.only(bottom: 20.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -83,7 +78,7 @@ Widget buildTextFieldStartYear(String hintText, String textType,
             width: 16.w,
             height: 16.w,
             margin: EdgeInsets.only(left: 17.w),
-            child: Image.asset("assets/icons/$iconName.png"),
+            child: Image.asset(iconName),
           ),
           Container(
             width: 270.w,
@@ -103,17 +98,10 @@ Widget buildTextFieldStartYear(String hintText, String textType,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                fontFamily: AppFonts.Header3,
-                color: AppColors.primaryText,
-                fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small(),
               autocorrect: false,
               maxLength: 30,
             ),
@@ -128,7 +116,7 @@ Widget buildLogInAndRegButton(
     onTap: () {
       if (buttonType == "verify") {
         AlumniVerificationController(context: context)
-            .hanldeAlumniVerification(fullName, avatar);
+            .handleAlumniVerification(fullName, avatar);
       } else {
         Navigator.of(context)
             .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
@@ -141,8 +129,8 @@ Widget buildLogInAndRegButton(
           left: 25.w, right: 25.w, top: buttonType == "verify" ? 20.h : 20.h),
       decoration: BoxDecoration(
         color: buttonType == "verify"
-            ? AppColors.primaryElement
-            : AppColors.primarySecondaryElement,
+            ? AppColors.element
+            : AppColors.elementLight,
         borderRadius: BorderRadius.circular(15.w),
         border: Border.all(
           color: buttonType == "verify"
@@ -153,13 +141,9 @@ Widget buildLogInAndRegButton(
       child: Center(
         child: Text(
           buttonName,
-          style: TextStyle(
-              fontFamily: AppFonts.Header1,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: buttonType == "verify"
-                  ? AppColors.primaryBackground
-                  : AppColors.primaryElement),
+          style: AppTextStyle.medium().wSemiBold().withColor(buttonType == "verify"
+              ? AppColors.background
+              : AppColors.element)
         ),
       ),
     ),
@@ -181,7 +165,7 @@ Widget alumniVerification(BuildContext context, String fullName, File? avatar) {
                   width: 230.w,
                   height: 230.w,
                   child: Image.asset(
-                    "assets/images/logos/logo.png",
+                    AppAssets.logoImage,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -190,33 +174,22 @@ Widget alumniVerification(BuildContext context, String fullName, File? avatar) {
                   child: Container(
                 padding: EdgeInsets.only(bottom: 5.h),
                 child: Text(
-                  "BẮT ĐẦU",
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header0,
-                    color: AppColors.primaryText,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17.sp,
-                  ),
+                  translate('start').toUpperCase(),
+                  style: AppTextStyle.medium().wSemiBold(),
                 ),
               )),
               Center(
                   child: Container(
                 padding: EdgeInsets.only(bottom: 10.h),
                 child: Text(
-                  "Hãy thiết lập hồ sơ của bạn. Những thông tin này sẽ giúp chúng tôi xét duyệt tài khoản của bạn.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header3,
-                    color: AppColors.primaryText,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 12.sp,
-                  ),
+                  translate('alumni_information_verify_title'),
+                  textAlign: TextAlign.center, style: AppTextStyle.small(),
                 ),
               )),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField("Mã số sinh viên", "studentId", "user", (value) {
+              buildTextField(translate('student_id'), "studentId", AppAssets.userIconP, (value) {
                 context
                     .read<AlumniVerificationBloc>()
                     .add(StudentIdEvent(value));
@@ -224,7 +197,7 @@ Widget alumniVerification(BuildContext context, String fullName, File? avatar) {
               SizedBox(
                 height: 5.h,
               ),
-              buildTextFieldStartYear("Năm nhập học", "startYear", "user",
+              buildTextFieldStartYear(translate('year_admission'), "startYear", AppAssets.userIconP,
                   (value) {
                 context
                     .read<AlumniVerificationBloc>()
@@ -234,7 +207,7 @@ Widget alumniVerification(BuildContext context, String fullName, File? avatar) {
                 height: 5.h,
               ),
               buildTextField(
-                  "Trang cá nhân Facebook/ Linkedin", "socialMediaLink", "user",
+                  translate('social_link'), "socialMediaLink", AppAssets.userIconP,
                   (value) {
                 context
                     .read<AlumniVerificationBloc>()
@@ -243,8 +216,8 @@ Widget alumniVerification(BuildContext context, String fullName, File? avatar) {
             ],
           ),
         ),
-        buildLogInAndRegButton(context, "XÁC THỰC", "verify", fullName, avatar),
-        buildLogInAndRegButton(context, "BỎ QUA", "skip", fullName, avatar),
+        buildLogInAndRegButton(context, translate("verify").toUpperCase(), "verify", fullName, avatar),
+        buildLogInAndRegButton(context, translate("skip").toUpperCase(), "skip", fullName, avatar),
       ],
     ),
   );

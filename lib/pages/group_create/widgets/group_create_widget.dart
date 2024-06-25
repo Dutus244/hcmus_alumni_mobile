@@ -19,7 +19,7 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
@@ -51,11 +51,11 @@ Widget buttonCreate(BuildContext context) {
       height: 30.h,
       decoration: BoxDecoration(
         color: (name != "")
-            ? AppColors.primaryElement
-            : AppColors.primaryBackground,
+            ? AppColors.element
+            : AppColors.background,
         borderRadius: BorderRadius.circular(10.w),
         border: Border.all(
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ),
       child: Center(
@@ -71,7 +71,7 @@ Widget buttonCreate(BuildContext context) {
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
                   color: (name != "")
-                      ? AppColors.primaryBackground
+                      ? AppColors.background
                       : Colors.black.withOpacity(0.3)),
             ),
             Container(
@@ -82,7 +82,7 @@ Widget buttonCreate(BuildContext context) {
               width: 15.w,
               height: 15.h,
               color: (name != "")
-                  ? AppColors.primaryBackground
+                  ? AppColors.background
                   : Colors.black.withOpacity(0.5),
             ),
           ],
@@ -98,7 +98,7 @@ Widget buildTextFieldName(String hintText, String textType, String iconName,
       width: 320.w,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         border: Border.all(color: Colors.transparent),
       ),
       child: Row(
@@ -122,12 +122,12 @@ Widget buildTextFieldName(String hintText, String textType, String iconName,
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
+                  color: AppColors.secondaryElementText,
                 ),
                 counterText: '',
               ),
               style: TextStyle(
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
                 fontFamily: AppFonts.Header2,
                 fontWeight: FontWeight.bold,
                 fontSize: 12.sp,
@@ -145,7 +145,7 @@ Widget buildTextFieldDescription(String hintText, String textType,
       width: 320.w,
       margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 10.w, bottom: 2.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         border: Border.all(color: Colors.transparent),
       ),
       child: Row(
@@ -169,12 +169,12 @@ Widget buildTextFieldDescription(String hintText, String textType,
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
+                  color: AppColors.secondaryElementText,
                 ),
                 counterText: '',
               ),
               style: TextStyle(
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
                 fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
@@ -218,7 +218,7 @@ Widget choosePrivacy(BuildContext context) {
                       "assets/icons/earth.svg",
                       width: 11.w,
                       height: 13.h,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 15.w),
@@ -240,7 +240,7 @@ Widget choosePrivacy(BuildContext context) {
                             child: Text(
                               'Bất kỳ ai cũng có thể nhìn thấy mọi người trong nhóm và những gì họ đăng',
                               style: TextStyle(
-                                color: AppColors.primarySecondaryText,
+                                color: AppColors.textGrey,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header3,
@@ -275,7 +275,7 @@ Widget choosePrivacy(BuildContext context) {
                       "assets/icons/lock.svg",
                       width: 11.w,
                       height: 13.h,
-                      color: AppColors.primaryText,
+                      color: AppColors.textBlack,
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 15.w),
@@ -297,7 +297,7 @@ Widget choosePrivacy(BuildContext context) {
                             child: Text(
                               'Chỉ thành viên mới nhìn thấy mọi người trong nhóm và những gì họ đăng',
                               style: TextStyle(
-                                color: AppColors.primarySecondaryText,
+                                color: AppColors.textGrey,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header3,
@@ -362,7 +362,7 @@ Widget buildTextFieldPrivacy(BuildContext context) {
                   ? 'Công khai'
                   : 'Riêng tư',
               style: TextStyle(
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
                 fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
@@ -372,7 +372,7 @@ Widget buildTextFieldPrivacy(BuildContext context) {
               "assets/icons/dropdown.svg",
               width: 12.w,
               height: 12.h,
-              color: AppColors.primaryText,
+              color: AppColors.textBlack,
             ),
           ],
         ),
@@ -442,7 +442,7 @@ Widget buildTextFieldTag(BuildContext context) {
                       borderRadius: BorderRadius.circular(10.w),
                     ),
                     helperStyle: const TextStyle(
-                      color: AppColors.primarySecondaryElement,
+                      color: AppColors.elementLight,
                     ),
                     hintText: inputFieldValues.tags.isNotEmpty
                         ? ''
@@ -470,7 +470,7 @@ Widget buildTextFieldTag(BuildContext context) {
                                   borderRadius: BorderRadius.all(
                                     Radius.circular(20.0),
                                   ),
-                                  color: AppColors.primaryElement,
+                                  color: AppColors.element,
                                 ),
                                 margin: const EdgeInsets.symmetric(
                                     horizontal: 5.0),
@@ -578,7 +578,7 @@ Widget header() {
               Global.storageService.getUserFullName(),
               maxLines: 1,
               style: TextStyle(
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
                 fontFamily: AppFonts.Header2,
@@ -649,7 +649,7 @@ Widget choosePicture(
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(15.w),
-                color: AppColors.primaryElement,
+                color: AppColors.element,
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -664,7 +664,7 @@ Widget choosePicture(
                         "assets/icons/picture.svg",
                         width: 12.w,
                         height: 12.h,
-                        color: AppColors.primaryBackground,
+                        color: AppColors.background,
                       ),
                       Text(
                         'Chọn ảnh bìa',
@@ -672,7 +672,7 @@ Widget choosePicture(
                             fontFamily: AppFonts.Header1,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primaryBackground),
+                            color: AppColors.background),
                       ),
                     ],
                   ),

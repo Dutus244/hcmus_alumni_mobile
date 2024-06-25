@@ -5,6 +5,7 @@ import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:flutter_holo_date_picker/widget/date_picker_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
@@ -14,15 +15,15 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Thành tựu nổi bật',
+          translate('achievement'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header3,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -42,10 +43,10 @@ Widget myProfileAddJob(BuildContext context) {
             child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            buildTextFieldName(context, 'Tên thành tựu', '', '', (value) {
+            buildTextFieldName(context, translate('achievement_name'), '', '', (value) {
               context.read<MyProfileAddAchievementBloc>().add(NameEvent(value));
             }),
-            buildTextFieldType(context, 'Loại thành tựu', '', '', (value) {
+            buildTextFieldType(context, translate('type_achievement'), '', '', (value) {
               context.read<MyProfileAddAchievementBloc>().add(TypeEvent(value));
             }),
             buildTextFieldTime(context),
@@ -64,7 +65,7 @@ Widget buildTextFieldName(BuildContext context, String hintText,
       width: 320.w,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -103,13 +104,13 @@ Widget buildTextFieldName(BuildContext context, String hintText,
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
+                  color: AppColors.secondaryElementText,
                 ),
                 counterText: '',
               ),
               style: TextStyle(
-                color: AppColors.primaryText,
-                fontFamily: AppFonts.Header2,
+                color: AppColors.textBlack,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.bold,
                 fontSize: 12.sp,
               ),
@@ -129,7 +130,7 @@ Widget buildTextFieldType(BuildContext context, String hintText,
       width: 320.w,
       margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -168,13 +169,13 @@ Widget buildTextFieldType(BuildContext context, String hintText,
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
+                  color: AppColors.secondaryElementText,
                 ),
                 counterText: '',
               ),
               style: TextStyle(
-                color: AppColors.primaryText,
-                fontFamily: AppFonts.Header2,
+                color: AppColors.textBlack,
+                fontFamily: AppFonts.Header3,
                 fontWeight: FontWeight.bold,
                 fontSize: 12.sp,
               ),
@@ -200,7 +201,7 @@ Widget buildTextFieldTime(
         height: 40.h,
         margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
         decoration: BoxDecoration(
-          color: AppColors.primaryBackground,
+          color: AppColors.background,
           borderRadius: BorderRadius.all(Radius.circular(15.w)),
           border: Border.all(color: AppColors.primaryFourthElementText),
         ),
@@ -221,13 +222,13 @@ Widget buildTextFieldTime(
               child: Text(
                 BlocProvider.of<MyProfileAddAchievementBloc>(context).state.time ==
                         ''
-                    ? 'Chọn thời gian'
+                    ? translate('choose_time')
                     : BlocProvider.of<MyProfileAddAchievementBloc>(context)
                         .state
                         .time,
                 style: TextStyle(
-                  color: AppColors.primaryText,
-                  fontFamily: AppFonts.Header2,
+                  color: AppColors.textBlack,
+                  fontFamily: AppFonts.Header3,
                   fontWeight: FontWeight.bold,
                   fontSize: 12.sp,
                 ),
@@ -276,12 +277,12 @@ Widget chooseTime(BuildContext context) {
                 margin: EdgeInsets.only(top: 10.h),
                 child: Center(
                   child: Text(
-                    'Chọn thời gian',
+                    translate('choose_time'),
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header3,
                     ),
                   ),
                 ),
@@ -307,7 +308,7 @@ Widget chooseTime(BuildContext context) {
                   margin: EdgeInsets.only(left: 10.w, right: 10.w),
                   height: 30.h,
                   decoration: BoxDecoration(
-                    color: AppColors.primaryElement,
+                    color: AppColors.element,
                     borderRadius: BorderRadius.circular(5.w),
                     border: Border.all(
                       color: Colors.transparent,
@@ -318,12 +319,12 @@ Widget chooseTime(BuildContext context) {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Đặt',
+                          translate('choose'),
                           style: TextStyle(
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header3,
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primaryBackground,
+                            color: AppColors.background,
                           ),
                         ),
                       ],
@@ -352,11 +353,11 @@ Widget buttonAdd(BuildContext context) {
       height: 30.h,
       decoration: BoxDecoration(
         color: (compayName != "")
-            ? AppColors.primaryElement
-            : AppColors.primaryBackground,
+            ? AppColors.element
+            : AppColors.background,
         borderRadius: BorderRadius.circular(10.w),
         border: Border.all(
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
       ),
       child: Center(
@@ -366,13 +367,13 @@ Widget buttonAdd(BuildContext context) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Lưu',
+                  translate('save'),
                   style: TextStyle(
-                      fontFamily: AppFonts.Header1,
+                      fontFamily: AppFonts.Header3,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
                       color: (compayName != "")
-                          ? AppColors.primaryBackground
+                          ? AppColors.background
                           : Colors.black.withOpacity(0.3)),
                 ),
                 Container(
@@ -383,7 +384,7 @@ Widget buttonAdd(BuildContext context) {
                   width: 15.w,
                   height: 15.h,
                   color: (compayName != "")
-                      ? AppColors.primaryBackground
+                      ? AppColors.background
                       : Colors.black.withOpacity(0.5),
                 ),
               ],

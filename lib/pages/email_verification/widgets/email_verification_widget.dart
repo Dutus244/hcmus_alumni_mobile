@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/values/assets.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../../../global.dart';
 import '../bloc/email_verification_blocs.dart';
 import '../bloc/email_verification_events.dart';
@@ -16,7 +19,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
       height: 40.h,
       margin: EdgeInsets.only(bottom: 20.h, top: 30.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -40,17 +43,11 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: const TextStyle(
-                  color: AppColors.primarySecondaryElementText,
-                ),
+                hintStyle: AppTextStyle.small()
+                    .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: TextStyle(
-                fontFamily: AppFonts.Header3,
-                color: AppColors.primaryText,
-                fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
-              ),
+              style: AppTextStyle.small(),
               autocorrect: false,
               obscureText: false,
               maxLength: 10,
@@ -68,17 +65,11 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     width: 16.w,
                     height: 16.w,
                     margin: EdgeInsets.only(right: 10.w),
-                    child: Image.asset("assets/icons/$iconName.png"),
+                    child: Image.asset(iconName),
                   ),
                   Text(
-                    "Gửi lại",
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      color: AppColors.primaryText,
-                      decorationColor: AppColors.primaryText,
-                      decoration: TextDecoration.underline,
-                      fontSize: 12.sp,
-                    ),
+                    translate('send_again'),
+                    style: AppTextStyle.small().underline(),
                   )
                 ],
               ),
@@ -105,8 +96,8 @@ Widget buildVerifyAndBackButton(
           left: 25.w, right: 25.w, top: buttonType == "verify" ? 50.h : 20.h),
       decoration: BoxDecoration(
         color: buttonType == "verify"
-            ? AppColors.primaryElement
-            : AppColors.primarySecondaryElement,
+            ? AppColors.element
+            : AppColors.elementLight,
         borderRadius: BorderRadius.circular(15.w),
         border: Border.all(
           color: buttonType == "verify"
@@ -117,13 +108,10 @@ Widget buildVerifyAndBackButton(
       child: Center(
         child: Text(
           buttonName,
-          style: TextStyle(
-              fontFamily: AppFonts.Header1,
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: buttonType == "verify"
-                  ? AppColors.primaryBackground
-                  : AppColors.primaryElement),
+          style: AppTextStyle.medium().wSemiBold().withColor(
+              buttonType == "verify"
+                  ? AppColors.background
+                  : AppColors.element),
         ),
       ),
     ),
@@ -145,7 +133,7 @@ Widget emailVerification(BuildContext context) {
                   width: 230.w,
                   height: 230.w,
                   child: Image.asset(
-                    "assets/images/logos/logo.png",
+                    AppAssets.logoImage,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -154,34 +142,23 @@ Widget emailVerification(BuildContext context) {
                   child: Container(
                 padding: EdgeInsets.only(bottom: 5.h),
                 child: Text(
-                  "XÁC THỰC NGƯỜI DÙNG",
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header0,
-                    color: AppColors.primaryText,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17.sp,
-                  ),
+                  translate('user_authentication').toUpperCase(),
+                  style: AppTextStyle.medium().wSemiBold(),
                 ),
               )),
               Center(
                   child: Container(
                 padding: EdgeInsets.only(left: 5.w, right: 5.w),
                 child: Text(
-                  "Mã xác thực đã được gửi đến ${Global.storageService.getUserEmail()}",
+                  "${translate('authentication_code_sent')} ${Global.storageService.getUserEmail()}",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header3,
-                    color: AppColors.primaryElement,
-                    fontWeight: FontWeight.normal,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 11.sp,
-                  ),
+                  style: AppTextStyle.small().italic().withColor(AppColors.element),
                 ),
               )),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField("Mã xác thực  *", "code", "send", (value) {
+              buildTextField(translate('authentication_code*'), "code", AppAssets.sendIconP, (value) {
                 context.read<EmailVerificationBloc>().add(CodeEvent(value));
               }, () {
                 EmailVerificationController(context: context)
@@ -190,8 +167,8 @@ Widget emailVerification(BuildContext context) {
             ],
           ),
         ),
-        buildVerifyAndBackButton(context, "XÁC THỰC", "verify"),
-        buildVerifyAndBackButton(context, "TRỞ VỀ", "back"),
+        buildVerifyAndBackButton(context, translate('verify').toUpperCase(), "verify"),
+        buildVerifyAndBackButton(context, translate('back').toUpperCase(), "back"),
       ],
     ),
   );

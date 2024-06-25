@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/model/friend_request.dart';
 import 'package:hcmus_alumni_mobile/model/friend_suggestion.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
-import '../../../global.dart';
 import '../bloc/friend_page_blocs.dart';
 import '../bloc/friend_page_states.dart';
 import '../bloc/friend_page_events.dart';
@@ -21,7 +21,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
       height: 40.h,
       margin: EdgeInsets.only(bottom: 10.h, top: 0.h),
       decoration: BoxDecoration(
-        color: AppColors.primaryBackground,
+        color: AppColors.background,
         borderRadius: BorderRadius.all(Radius.circular(15.w)),
         border: Border.all(color: AppColors.primaryFourthElementText),
       ),
@@ -47,13 +47,13 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
                 hintStyle: TextStyle(
-                  color: AppColors.primarySecondaryElementText,
+                  color: AppColors.secondaryElementText,
                 ),
                 counterText: '',
               ),
               style: TextStyle(
                 fontFamily: AppFonts.Header3,
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
               ),
@@ -79,9 +79,9 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
 
 Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
   return Container(
-    margin: EdgeInsets.only(top: 5.h),
+    margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
           onTap: () {
@@ -90,13 +90,12 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             }
           },
           child: Container(
-            width: 100.w,
+            width: 105.w,
             height: 35.h,
-            margin: EdgeInsets.only(left: 10.w),
             decoration: BoxDecoration(
               color: BlocProvider.of<FriendPageBloc>(context).state.page == 1
-                  ? AppColors.primarySecondaryElement
-                  : AppColors.primaryElement,
+                  ? AppColors.elementLight
+                  : AppColors.element,
               borderRadius: BorderRadius.circular(15.w),
               border: Border.all(
                 color: Colors.transparent,
@@ -106,13 +105,13 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
               child: Text(
                 'Gợi ý',
                 style: TextStyle(
-                    fontFamily: AppFonts.Header1,
+                    fontFamily: AppFonts.Header3,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color:
                         BlocProvider.of<FriendPageBloc>(context).state.page == 1
-                            ? AppColors.primaryElement
-                            : AppColors.primaryBackground),
+                            ? AppColors.element
+                            : AppColors.background),
               ),
             ),
           ),
@@ -124,13 +123,12 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             }
           },
           child: Container(
-            width: 100.w,
+            width: 105.w,
             height: 35.h,
-            margin: EdgeInsets.only(right: 10.w),
             decoration: BoxDecoration(
               color: BlocProvider.of<FriendPageBloc>(context).state.page == 1
-                  ? AppColors.primaryElement
-                  : AppColors.primarySecondaryElement,
+                  ? AppColors.element
+                  : AppColors.elementLight,
               borderRadius: BorderRadius.circular(15.w),
               border: Border.all(
                 color: Colors.transparent,
@@ -138,16 +136,16 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             ),
             child: Center(
               child: Text(
-                'Lời mời kết bạn',
+                'Lời mời',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontFamily: AppFonts.Header1,
+                    fontFamily: AppFonts.Header3,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color:
                         BlocProvider.of<FriendPageBloc>(context).state.page == 1
-                            ? AppColors.primaryBackground
-                            : AppColors.primaryElement),
+                            ? AppColors.background
+                            : AppColors.element),
               ),
             ),
           ),
@@ -160,13 +158,12 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             );
           },
           child: Container(
-            width: 100.w,
+            width: 105.w,
             height: 35.h,
-            margin: EdgeInsets.only(right: 10.w),
             decoration: BoxDecoration(
               color: BlocProvider.of<FriendPageBloc>(context).state.page == 2
-                  ? AppColors.primaryElement
-                  : AppColors.primarySecondaryElement,
+                  ? AppColors.element
+                  : AppColors.elementLight,
               borderRadius: BorderRadius.circular(15.w),
               border: Border.all(
                 color: Colors.transparent,
@@ -176,13 +173,13 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
               child: Text(
                 'Bạn bè',
                 style: TextStyle(
-                    fontFamily: AppFonts.Header1,
+                    fontFamily: AppFonts.Header3,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color:
                         BlocProvider.of<FriendPageBloc>(context).state.page == 2
-                            ? AppColors.primaryBackground
-                            : AppColors.primaryElement),
+                            ? AppColors.background
+                            : AppColors.element),
               ),
             ),
           ),
@@ -216,7 +213,7 @@ Widget listSuggestion(
                       context.read<FriendPageBloc>().add(PageEvent(1));
                     }),
                     Container(
-                      height: 10.h,
+                      height: 15.h,
                     ),
                     Center(
                         child: buildTextField(
@@ -240,7 +237,7 @@ Widget listSuggestion(
                         context.read<FriendPageBloc>().add(PageEvent(1));
                       }),
                       Container(
-                        height: 10.h,
+                        height: 15.h,
                       ),
                       Center(
                           child: buildTextField(
@@ -259,7 +256,7 @@ Widget listSuggestion(
                             color: Colors.black,
                             fontSize: 11.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header3,
                           ),
                         ),
                       )),
@@ -287,7 +284,7 @@ Widget listSuggestion(
                           context.read<FriendPageBloc>().add(PageEvent(1));
                         }),
                         Container(
-                          height: 10.h,
+                          height: 15.h,
                         ),
                         Center(
                             child: buildTextField(
@@ -329,13 +326,13 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
           });
     },
     child: Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
+        margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 15.h),
         color: Colors.transparent,
         child: Row(
           children: [
             Container(
-              width: 70.w,
-              height: 70.h,
+              width: 60.w,
+              height: 60.h,
               child: CircleAvatar(
                 radius: 40,
                 child: null,
@@ -344,7 +341,7 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
               ),
             ),
             Container(
-              width: 10.w,
+              width: 15.w,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -352,26 +349,19 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
               children: [
                 Container(
                   margin: EdgeInsets.only(right: 10.w),
-                  width: 250.w,
+                  width: 255.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         suggestion.user.fullName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
-                        ),
-                      ),
-                      Text(
-                        '6 tuần',
-                        style: TextStyle(
-                          color: AppColors.primaryText,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header3,
                         ),
                       ),
                     ],
@@ -380,63 +370,39 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
                 Container(
                   height: 10.h,
                 ),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        FriendPageController(context: context).handleSendRequest(suggestion.user.id);
-                      },
-                      child: Container(
-                        width: 120.w,
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryElement,
-                          borderRadius: BorderRadius.circular(5.w),
-                          border: Border.all(
-                            color: Colors.transparent,
+                Container(
+                  width: 255.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          FriendPageController(context: context).handleSendRequest(suggestion.user.id);
+                        },
+                        child: Container(
+                          width: 255.w,
+                          height: 30.h,
+                          decoration: BoxDecoration(
+                            color: AppColors.element,
+                            borderRadius: BorderRadius.circular(5.w),
+                            border: Border.all(
+                              color: Colors.transparent,
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Kết bạn',
-                            style: TextStyle(
-                                fontFamily: AppFonts.Header1,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryBackground),
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-
-                      },
-                      child: Container(
-                        width: 120.w,
-                        height: 30.h,
-                        margin: EdgeInsets.only(left: 10.w),
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 230, 230, 230),
-                          borderRadius: BorderRadius.circular(5.w),
-                          border: Border.all(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Huỷ',
-                            style: TextStyle(
-                                fontFamily: AppFonts.Header1,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.bold,
-                                color:
-                                AppColors.primaryText),
+                          child: Center(
+                            child: Text(
+                              'Kết bạn',
+                              style: TextStyle(
+                                  fontFamily: AppFonts.Header3,
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.background),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             )
@@ -495,7 +461,7 @@ Widget listRequest(BuildContext context, ScrollController _scrollController) {
                             color: Colors.black,
                             fontSize: 11.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header3,
                           ),
                         ),
                       )),
@@ -523,7 +489,7 @@ Widget listRequest(BuildContext context, ScrollController _scrollController) {
                           context.read<FriendPageBloc>().add(PageEvent(0));
                         }),
                         Container(
-                          height: 5.h,
+                          height: 15.h,
                         ),
                         request(
                             context,
@@ -557,13 +523,13 @@ Widget request(BuildContext context, FriendRequest request) {
           });
     },
     child: Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
+        margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 15.h),
         color: Colors.transparent,
         child: Row(
           children: [
             Container(
-              width: 70.w,
-              height: 70.h,
+              width: 60.w,
+              height: 60.h,
               child: CircleAvatar(
                 radius: 40,
                 child: null,
@@ -572,7 +538,7 @@ Widget request(BuildContext context, FriendRequest request) {
               ),
             ),
             Container(
-              width: 10.w,
+              width: 15.w,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -580,26 +546,26 @@ Widget request(BuildContext context, FriendRequest request) {
               children: [
                 Container(
                   margin: EdgeInsets.only(right: 10.w),
-                  width: 250.w,
+                  width: 255.w,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         request.user.fullName,
                         style: TextStyle(
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header3,
                         ),
                       ),
                       Text(
-                        '6 tuần',
+                        handleTimeDifference1('2024-06-20 09:02:16'),
                         style: TextStyle(
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header3,
                         ),
                       ),
                     ],
@@ -608,63 +574,67 @@ Widget request(BuildContext context, FriendRequest request) {
                 Container(
                   height: 10.h,
                 ),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        FriendPageController(context: context).handleApprovedRequest(request.user.id);
-                      },
-                      child: Container(
-                        width: 120.w,
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryElement,
-                          borderRadius: BorderRadius.circular(5.w),
-                          border: Border.all(
-                            color: Colors.transparent,
+                Container(
+                  width: 255.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          FriendPageController(context: context).handleApprovedRequest(request.user.id);
+                        },
+                        child: Container(
+                          width: 120.w,
+                          height: 30.h,
+                          decoration: BoxDecoration(
+                            color: AppColors.element,
+                            borderRadius: BorderRadius.circular(5.w),
+                            border: Border.all(
+                              color: Colors.transparent,
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Chấp nhận',
-                            style: TextStyle(
-                                fontFamily: AppFonts.Header1,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryBackground),
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        FriendPageController(context: context).handleDeneidRequest(request.user.id);
-                      },
-                      child: Container(
-                        width: 120.w,
-                        height: 30.h,
-                        margin: EdgeInsets.only(left: 10.w),
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 230, 230, 230),
-                          borderRadius: BorderRadius.circular(5.w),
-                          border: Border.all(
-                            color: Colors.transparent,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Từ chối',
-                            style: TextStyle(
-                                fontFamily: AppFonts.Header1,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.bold,
-                                color:
-                                AppColors.primaryText),
+                          child: Center(
+                            child: Text(
+                              'Chấp nhận',
+                              style: TextStyle(
+                                  fontFamily: AppFonts.Header3,
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.background),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      GestureDetector(
+                        onTap: () {
+                          FriendPageController(context: context).handleDeneidRequest(request.user.id);
+                        },
+                        child: Container(
+                          width: 120.w,
+                          height: 30.h,
+                          margin: EdgeInsets.only(left: 10.w),
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            borderRadius: BorderRadius.circular(5.w),
+                            border: Border.all(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Từ chối',
+                              style: TextStyle(
+                                  fontFamily: AppFonts.Header3,
+                                  fontSize: 11.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                  AppColors.textBlack),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             )

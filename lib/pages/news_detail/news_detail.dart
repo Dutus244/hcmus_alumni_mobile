@@ -38,7 +38,7 @@ class _NewsDetailState extends State<NewsDetail> {
         builder: (context, state) {
           return Scaffold(
             appBar: buildAppBar(context),
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: newsDetail(context),
           );
         });

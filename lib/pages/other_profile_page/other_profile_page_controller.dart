@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
@@ -53,7 +54,9 @@ class OtherProfilePageController {
                 .read<OtherProfilePageBloc>()
                 .add(EventsEvent(eventResponse.events));
           }
-          context.read<OtherProfilePageBloc>().add(HasReachedMaxEventEvent(true));
+          context
+              .read<OtherProfilePageBloc>()
+              .add(HasReachedMaxEventEvent(true));
           context
               .read<OtherProfilePageBloc>()
               .add(StatusEventEvent(Status.success));
@@ -69,17 +72,23 @@ class OtherProfilePageController {
               BlocProvider.of<OtherProfilePageBloc>(context).state.events;
           List<Event> updatedEventList = List.of(currentList)
             ..addAll(eventResponse.events);
-          context.read<OtherProfilePageBloc>().add(EventsEvent(updatedEventList));
+          context
+              .read<OtherProfilePageBloc>()
+              .add(EventsEvent(updatedEventList));
         }
         if (eventResponse.events.length < pageSize) {
-          context.read<OtherProfilePageBloc>().add(HasReachedMaxEventEvent(true));
+          context
+              .read<OtherProfilePageBloc>()
+              .add(HasReachedMaxEventEvent(true));
         }
-        context.read<OtherProfilePageBloc>().add(StatusEventEvent(Status.success));
+        context
+            .read<OtherProfilePageBloc>()
+            .add(StatusEventEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sự kiện đã tham gia");
+        toastInfo(msg: translate('error_get_event'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sự kiện đã tham gia");
+      toastInfo(msg: translate('error_get_event'));
     }
   }
 }

@@ -32,10 +32,10 @@ class _RegisterState extends State<Register> {
       child:
           BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
         return Container(
-          color: AppColors.primaryBackground,
+          color: AppColors.background,
           child: SafeArea(
               child: Scaffold(
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: register(context),
           )),
         );

@@ -30,7 +30,7 @@ class _HofDetailState extends State<HofDetail> {
     return BlocBuilder<HofDetailBloc, HofDetailState>(builder: (context, state) {
       return Scaffold(
         appBar: buildAppBar(context),
-        backgroundColor: AppColors.primaryBackground,
+        backgroundColor: AppColors.background,
         body: hofDetail(context),
       );
     });

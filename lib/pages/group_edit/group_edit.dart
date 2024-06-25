@@ -36,7 +36,7 @@ class _GroupEditState extends State<GroupEdit> {
         builder: (context, state) {
           return Scaffold(
               appBar: buildAppBar(context),
-              backgroundColor: AppColors.primaryBackground,
+              backgroundColor: AppColors.background,
               body: groupEdit(context, group));
         });
   }

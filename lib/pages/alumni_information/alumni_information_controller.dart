@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_information/bloc/alumni_information_blocs.dart';
 
 import '../../common/widgets/flutter_toast.dart';
@@ -10,18 +11,18 @@ class AlumniInformationController {
 
   const AlumniInformationController({required this.context});
 
-  Future<void> hanldeAlumniInformation() async {
+  Future<void> handleAlumniInformation() async {
     try {
       final state = context.read<AlumniInformationBloc>().state;
       String fullName = state.fullName;
       File? avatar = state.avatar;
       if (fullName.isEmpty) {
-        toastInfo(msg: "Bạn phải điền họ và tên");
+        toastInfo(msg: translate('must_fill_full_name'));
         return;
       }
       Navigator.of(context).pushNamedAndRemoveUntil(
         "/alumniVerification",
-            (route) => false,
+        (route) => false,
         arguments: {
           "fullName": fullName,
           "avatar": avatar,

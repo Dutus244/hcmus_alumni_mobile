@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/common/values/colors.dart';
 import 'package:hcmus_alumni_mobile/model/comment.dart';
@@ -21,15 +22,15 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Tin tức',
+          translate('news'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header3,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -140,7 +141,7 @@ Widget newsContent(BuildContext context, News? news) {
         Container(
           padding: EdgeInsets.only(top: 5.h, left: 10.w),
           child: Text(
-            "Khoa " + news.faculty.name,
+            "${translate('faculty_of')} " + news.faculty.name,
             style: TextStyle(
               fontFamily: AppFonts.Header3,
               color: Color.fromARGB(255, 51, 58, 73),
@@ -155,7 +156,7 @@ Widget newsContent(BuildContext context, News? news) {
           child: Text(
             news.title,
             style: TextStyle(
-              fontFamily: AppFonts.Header2,
+              fontFamily: AppFonts.Header3,
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: getTitleFontSize(
@@ -173,13 +174,13 @@ Widget newsContent(BuildContext context, News? news) {
                     "assets/icons/clock.svg",
                     width: 12.w,
                     height: 12.h,
-                    color: AppColors.primarySecondaryText,
+                    color: AppColors.textGrey,
                   ),
                   Container(
                     width: 5.w,
                   ),
                   Text(
-                    handleDatetime(news.publishedAt),
+                    handleDateTime1(news.publishedAt),
                     style: TextStyle(
                       fontFamily: AppFonts.Header3,
                       color: Colors.black,
@@ -201,7 +202,7 @@ Widget newsContent(BuildContext context, News? news) {
                     "assets/icons/view.svg",
                     width: 12.w,
                     height: 12.h,
-                    color: AppColors.primarySecondaryText,
+                    color: AppColors.textGrey,
                   ),
                   Container(
                     width: 5.w,
@@ -265,7 +266,7 @@ Widget newsContent(BuildContext context, News? news) {
                 "assets/icons/tag.svg",
                 width: 12.w,
                 height: 12.h,
-                color: AppColors.primarySecondaryText,
+                color: AppColors.textGrey,
               ),
               for (int i = 0; i < news.tags.length; i += 1)
                 Container(
@@ -329,9 +330,9 @@ Widget listComment(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Viết bình luận',
+                      translate('write_comment'),
                       style: TextStyle(
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header3,
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                         color: Colors.black.withOpacity(0.5),
@@ -350,9 +351,9 @@ Widget listComment(
         Container(
           padding: EdgeInsets.only(top: 20.h, left: 10.w, bottom: 10.h),
           child: Text(
-            "Bình luận (${news.childrenCommentNumber})",
+            "${translate('comment')} (${news.childrenCommentNumber})",
             style: TextStyle(
-              fontFamily: AppFonts.Header1,
+              fontFamily: AppFonts.Header3,
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 18.sp,
@@ -389,9 +390,9 @@ Widget listComment(
               ),
               child: Center(
                 child: Text(
-                  'Xem thêm bình luận',
+                  translate('more_comment'),
                   style: TextStyle(
-                    fontFamily: AppFonts.Header2,
+                    fontFamily: AppFonts.Header3,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 43, 107, 182),
@@ -406,7 +407,7 @@ Widget listComment(
         Container(
           margin: EdgeInsets.only(left: 10.w, right: 10.w),
           height: 2.h,
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         )
       ],
     );
@@ -466,20 +467,20 @@ Widget buildCommentWidget(
                         comment.creator.fullName,
                         maxLines: 1,
                         style: TextStyle(
-                          color: AppColors.primaryText,
+                          color: AppColors.textBlack,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header3,
                         ),
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(bottom: 0.h),
                       child: Text(
-                        handleDatetime(comment.updateAt),
+                        handleDateTime1(comment.updateAt),
                         maxLines: 1,
                         style: TextStyle(
-                          color: AppColors.primarySecondaryText,
+                          color: AppColors.textGrey,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.normal,
                           fontFamily: AppFonts.Header3,
@@ -501,7 +502,7 @@ Widget buildCommentWidget(
           child: Text(
             comment.content,
             style: TextStyle(
-              color: AppColors.primaryText,
+              color: AppColors.textBlack,
               fontSize: 12.sp,
               fontWeight: FontWeight.normal,
               fontFamily: AppFonts.Header3,
@@ -534,12 +535,12 @@ Widget buildCommentWidget(
                               width: 3.w,
                             ),
                             Text(
-                              "${comment.childrenCommentNumber.toString()} trả lời",
+                              "${comment.childrenCommentNumber.toString()} ${translate('reply').toLowerCase()}",
                               style: TextStyle(
                                 color: Colors.black.withOpacity(0.8),
                                 fontSize: 11.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: 'Roboto',
+                                fontFamily: AppFonts.Header3,
                               ),
                             )
                           ],
@@ -565,12 +566,12 @@ Widget buildCommentWidget(
                               NewsDetailController(context: context).handleGetComment(news.id, 0);
                             },
                             child: Text(
-                              'Trả lời',
+                              translate('reply'),
                               style: TextStyle(
                                 color: Colors.black.withOpacity(0.8),
                                 fontSize: 11.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: 'Roboto',
+                                fontFamily: AppFonts.Header3,
                               ),
                             ),
                           ),
@@ -595,12 +596,12 @@ Widget buildCommentWidget(
                               NewsDetailController(context: context).handleGetComment(news.id, 0);
                             },
                             child: Text(
-                              'Chỉnh sửa',
+                              translate('edit'),
                               style: TextStyle(
                                 color: Colors.black.withOpacity(0.8),
                                 fontSize: 11.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header3,
                               ),
                             ),
                           ),
@@ -618,12 +619,12 @@ Widget buildCommentWidget(
                                   .handleDeleteComment(news.id, comment.id);
                             },
                             child: Text(
-                              'Xoá',
+                              translate('delete'),
                               style: TextStyle(
                                 color: Colors.black.withOpacity(0.8),
                                 fontSize: 11.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header3,
                               ),
                             ),
                           ),
@@ -657,12 +658,12 @@ Widget buildCommentWidget(
                               NewsDetailController(context: context).handleGetComment(news.id, 0);
                             },
                             child: Text(
-                              'Chỉnh sửa',
+                              translate('edit'),
                               style: TextStyle(
                                 color: Colors.black.withOpacity(0.8),
                                 fontSize: 11.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header3,
                               ),
                             ),
                           ),
@@ -680,12 +681,12 @@ Widget buildCommentWidget(
                                   .handleDeleteComment(news.id, comment.id);
                             },
                             child: Text(
-                              'Xoá',
+                              translate('delete'),
                               style: TextStyle(
                                 color: Colors.black.withOpacity(0.8),
                                 fontSize: 11.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header3,
                               ),
                             ),
                           ),
@@ -728,9 +729,9 @@ Widget listRelatedNews(BuildContext context, List<News> newsList) {
       Container(
         padding: EdgeInsets.only(top: 5.h, left: 10.w, bottom: 10.h),
         child: Text(
-          "Bài viết liên quan",
+          translate('related_news'),
           style: TextStyle(
-            fontFamily: AppFonts.Header2,
+            fontFamily: AppFonts.Header3,
             color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 18.sp,
@@ -779,19 +780,19 @@ Widget news(BuildContext context, News news) {
                       "assets/icons/clock.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 2.w,
                     ),
                     Text(
-                      handleDatetime(news.publishedAt),
+                      handleDateTime1(news.publishedAt),
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header3,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                       ),
                     ),
                   ],
@@ -805,7 +806,7 @@ Widget news(BuildContext context, News news) {
                       "assets/icons/view.svg",
                       width: 12.w,
                       height: 12.h,
-                      color: AppColors.primarySecondaryText,
+                      color: AppColors.textGrey,
                     ),
                     Container(
                       width: 2.w,
@@ -817,7 +818,7 @@ Widget news(BuildContext context, News news) {
                         fontFamily: AppFonts.Header3,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                       ),
                     ),
                   ],
@@ -833,7 +834,7 @@ Widget news(BuildContext context, News news) {
                   "assets/icons/tag.svg",
                   width: 12.w,
                   height: 12.h,
-                  color: AppColors.primarySecondaryText,
+                  color: AppColors.textGrey,
                 ),
                 for (int i = 0; i < news.tags.length; i += 1)
                   Container(
@@ -857,10 +858,10 @@ Widget news(BuildContext context, News news) {
               news.title,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header3,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
               ),
             ),
           ),
@@ -872,10 +873,10 @@ Widget news(BuildContext context, News news) {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: 'Roboto',
+                fontFamily: AppFonts.Header3,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.normal,
-                color: AppColors.primaryText,
+                color: AppColors.textBlack,
               ),
             ),
           ),
@@ -905,7 +906,7 @@ Widget news(BuildContext context, News news) {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
                       shape: BoxShape.rectangle,
-                      color: AppColors.primaryElement,
+                      color: AppColors.element,
                     ),
                     child: Text(
                       news.faculty.name,
@@ -926,7 +927,7 @@ Widget news(BuildContext context, News news) {
           ),
           Container(
             height: 1.h,
-            color: AppColors.primarySecondaryElement,
+            color: AppColors.elementLight,
           ),
           Container(
             height: 10.h,
@@ -944,7 +945,7 @@ Widget navigation(BuildContext context, int route) {
       children: [
         Container(
           height: 1.h,
-          color: AppColors.primarySecondaryElement,
+          color: AppColors.elementLight,
         ),
         Container(
           margin: EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h),
@@ -1019,12 +1020,12 @@ class _ButtonEditTextState extends State<ButtonEditText> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Chọn cỡ chữ',
+                            translate('choose_font_size'),
                             style: TextStyle(
-                              fontFamily: 'Roboto',
+                              fontFamily: AppFonts.Header3,
                               fontSize: 16.sp,
                               fontWeight: FontWeight.normal,
-                              color: AppColors.primaryElement,
+                              color: AppColors.element,
                             ),
                           ),
                           GestureDetector(
@@ -1051,7 +1052,7 @@ class _ButtonEditTextState extends State<ButtonEditText> {
                             height: 30.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5.w),
-                              color: AppColors.primarySecondaryElement,
+                              color: AppColors.elementLight,
                               border: Border.all(
                                 color: Colors.transparent,
                               ),
@@ -1060,7 +1061,7 @@ class _ButtonEditTextState extends State<ButtonEditText> {
                               "assets/icons/aa.svg",
                               width: 10.w,
                               height: 10.h,
-                              color: AppColors.primaryElement,
+                              color: AppColors.element,
                             ),
                           ),
                           Expanded(
@@ -1078,8 +1079,8 @@ class _ButtonEditTextState extends State<ButtonEditText> {
                                 BlocProvider.of<NewsDetailBloc>(context)
                                     .add(FontSizeEvent(value));
                               },
-                              activeColor: AppColors.primaryElement,
-                              inactiveColor: AppColors.primarySecondaryElement,
+                              activeColor: AppColors.element,
+                              inactiveColor: AppColors.elementLight,
                             ),
                           ),
                           Row(
@@ -1090,7 +1091,7 @@ class _ButtonEditTextState extends State<ButtonEditText> {
                                 margin: EdgeInsets.only(right: 10.w),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5.w),
-                                  color: AppColors.primarySecondaryElement,
+                                  color: AppColors.elementLight,
                                   border: Border.all(
                                     color: Colors.transparent,
                                   ),
@@ -1099,7 +1100,7 @@ class _ButtonEditTextState extends State<ButtonEditText> {
                                   "assets/icons/aa_big.svg",
                                   width: 10.w,
                                   height: 10.h,
-                                  color: AppColors.primaryElement,
+                                  color: AppColors.element,
                                 ),
                               ),
                               GestureDetector(
@@ -1112,7 +1113,7 @@ class _ButtonEditTextState extends State<ButtonEditText> {
                                   height: 30.h,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5.w),
-                                    color: AppColors.primarySecondaryElement,
+                                    color: AppColors.elementLight,
                                     border: Border.all(
                                       color: Colors.transparent,
                                     ),
@@ -1121,7 +1122,7 @@ class _ButtonEditTextState extends State<ButtonEditText> {
                                     "assets/icons/refresh.svg",
                                     width: 10.w,
                                     height: 10.h,
-                                    color: AppColors.primaryElement,
+                                    color: AppColors.element,
                                   ),
                                 ),
                               ),
@@ -1130,113 +1131,6 @@ class _ButtonEditTextState extends State<ButtonEditText> {
                         ],
                       ),
                     ),
-                    Container(
-                      height: 5.h,
-                      margin: EdgeInsets.only(top: 5.h),
-                      color: AppColors.primarySecondaryElement,
-                    ),
-                    Container(
-                      margin:
-                          EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Chọn font chữ',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.normal,
-                              color: AppColors.primaryElement,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin:
-                          EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              BlocProvider.of<NewsDetailBloc>(context)
-                                  .add(FontFamilyEvent("Roboto"));
-                            },
-                            child: Container(
-                              width: 140.w,
-                              height: 30.h,
-                              decoration: BoxDecoration(
-                                color: BlocProvider.of<NewsDetailBloc>(context)
-                                            .state
-                                            .fontFamily !=
-                                        "Roboto"
-                                    ? AppColors.primarySecondaryElement
-                                    : AppColors.primaryElement,
-                                borderRadius: BorderRadius.circular(15.w),
-                                border: Border.all(
-                                  color: Colors.transparent,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Roboto',
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: BlocProvider.of<NewsDetailBloc>(
-                                                      context)
-                                                  .state
-                                                  .fontFamily !=
-                                              "Roboto"
-                                          ? AppColors.primaryElement
-                                          : AppColors.primaryBackground),
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              BlocProvider.of<NewsDetailBloc>(context)
-                                  .add(FontFamilyEvent("Times New Roman"));
-                            },
-                            child: Container(
-                              width: 140.w,
-                              height: 30.h,
-                              decoration: BoxDecoration(
-                                color: BlocProvider.of<NewsDetailBloc>(context)
-                                            .state
-                                            .fontFamily ==
-                                        "Roboto"
-                                    ? AppColors.primarySecondaryElement
-                                    : AppColors.primaryElement,
-                                borderRadius: BorderRadius.circular(15.w),
-                                border: Border.all(
-                                  color: Colors.transparent,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Times New Roman',
-                                  style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: BlocProvider.of<NewsDetailBloc>(
-                                                      context)
-                                                  .state
-                                                  .fontFamily ==
-                                              "Roboto"
-                                          ? AppColors.primaryElement
-                                          : AppColors.primaryBackground),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
                   ],
                 ),
               );

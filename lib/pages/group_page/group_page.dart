@@ -87,7 +87,7 @@ class _GroupPageState extends State<GroupPage> {
         return Container(
           child: Scaffold(
             appBar: buildAppBar(context),
-            backgroundColor: AppColors.primaryBackground,
+            backgroundColor: AppColors.background,
             body: BlocProvider.of<GroupPageBloc>(context).state.page == 0
                 ? listGroupDiscover(context, _scrollController)
                 : listGroupJoined(context, _scrollController),

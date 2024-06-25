@@ -13,7 +13,7 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
@@ -75,7 +75,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                     Text(
                       group.name,
                       style: TextStyle(
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppFonts.Header2,
@@ -84,7 +84,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                     Text(
                       '$typeGroup - ${handleParticipantCount(group.participantCount)} thành viên',
                       style: TextStyle(
-                        color: AppColors.primarySecondaryText,
+                        color: AppColors.textGrey,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header3,
@@ -97,7 +97,7 @@ Widget groupManagement(BuildContext context, Group? group) {
             Container(
               margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
               height: 1.h,
-              color: AppColors.primarySecondaryElement,
+              color: AppColors.elementLight,
             ),
             GestureDetector(
               onTap: () async {
@@ -126,7 +126,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                     Text(
                       'Chỉnh sửa nhóm',
                       style: TextStyle(
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppFonts.Header2,
@@ -164,7 +164,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                     Text(
                       'Phê duyệt thành viên',
                       style: TextStyle(
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppFonts.Header2,
@@ -202,7 +202,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                     Text(
                       'Quản lý thành viên',
                       style: TextStyle(
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppFonts.Header2,
@@ -233,7 +233,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                     Text(
                       'Rời nhóm',
                       style: TextStyle(
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppFonts.Header2,
@@ -264,7 +264,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                     Text(
                       'Xoá nhóm',
                       style: TextStyle(
-                        color: AppColors.primaryText,
+                        color: AppColors.textBlack,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppFonts.Header2,

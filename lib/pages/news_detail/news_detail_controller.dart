@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/comment.dart';
 import 'package:hcmus_alumni_mobile/model/comment_response.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail/bloc/news_detail_blocs.dart';
@@ -40,12 +41,12 @@ class NewsDetailController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 40300) {
-          toastInfo(msg: "Không tìm thấy bài viết");
+          toastInfo(msg: translate('no_news'));
           return;
         }
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy bài viết");
+      toastInfo(msg: translate('error_get_news'));
     }
   }
 
@@ -95,10 +96,10 @@ class NewsDetailController {
           context.read<NewsDetailBloc>().add(CommentsEvent(updatedNewsList));
         }
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
+        toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
+      toastInfo(msg: translate('error_get_comment'));
     }
   }
 
@@ -132,12 +133,12 @@ class NewsDetailController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 41100) {
-          toastInfo(msg: "Không tìm thấy bình luận cha");
+          toastInfo(msg: translate('no_father_comment_found'));
           return;
         }
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
+      toastInfo(msg: translate('error_get_comment'));
     }
   }
 
@@ -177,12 +178,12 @@ class NewsDetailController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 40800) {
-          toastInfo(msg: "Không tìm thấy bài viết gốc");
+          toastInfo(msg: translate('no_news'));
           return;
         }
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết liên quan");
+      toastInfo(msg: translate('error_get_related_news'));
     }
   }
 
@@ -190,16 +191,16 @@ class NewsDetailController {
     final shouldDelte = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Xoá bình luận'),
-        content: Text('Bạn có muốn xoá bình luận này?'),
+        title: Text(translate('delete_comment')),
+        content: Text(translate('delete_comment_question')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Huỷ'),
+            child: Text(translate('cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text('Xoá'),
+            child: Text(translate('delete')),
           ),
         ],
       ),
@@ -226,13 +227,13 @@ class NewsDetailController {
           Map<String, dynamic> jsonMap = json.decode(response.body);
           int errorCode = jsonMap['error']['code'];
           if (errorCode == 41400) {
-            toastInfo(msg: "Không tìm thấy bình luận");
+            toastInfo(msg: translate('no_comment_found'));
             return;
           }
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: "Có lỗi xả ra khi xoá bình luận");
+        toastInfo(msg: translate('error_delete_comment'));
       }
     }
     return shouldDelte ?? false;

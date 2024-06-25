@@ -28,7 +28,7 @@ class _WritePostAdviseState extends State<GroupCreate> {
         builder: (context, state) {
           return Scaffold(
               appBar: buildAppBar(context),
-              backgroundColor: AppColors.primaryBackground,
+              backgroundColor: AppColors.background,
               body: groupCreate(context));
         });
   }

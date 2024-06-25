@@ -4,7 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
+import 'package:hcmus_alumni_mobile/common/values/assets.dart';
+import 'package:hcmus_alumni_mobile/common/values/text_style.dart';
 import 'package:hcmus_alumni_mobile/model/comment.dart';
 import 'package:hcmus_alumni_mobile/model/event.dart';
 import 'package:hcmus_alumni_mobile/model/participant.dart';
@@ -12,7 +15,6 @@ import 'package:hcmus_alumni_mobile/pages/event_detail/bloc/event_detail_events.
 
 import '../../../common/function/handle_html_content.dart';
 import '../../../common/values/colors.dart';
-import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
 import '../bloc/event_detail_blocs.dart';
@@ -22,19 +24,16 @@ import 'dart:io';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
-    backgroundColor: AppColors.primaryBackground,
+    backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
-        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        margin: Platform.isAndroid
+            ? EdgeInsets.only(top: 20.h)
+            : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Sự kiện',
+          translate('event'),
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: AppFonts.Header0,
-            fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
-            color: AppColors.secondaryHeader,
-          ),
+          style: AppTextStyle.medium().wSemiBold(),
         ),
       ),
     ),
@@ -56,8 +55,8 @@ Widget buildButtonChooseInfoOrParticipant(
             margin: EdgeInsets.only(left: 10.w),
             decoration: BoxDecoration(
               color: BlocProvider.of<EventDetailBloc>(context).state.page == 1
-                  ? AppColors.primarySecondaryElement
-                  : AppColors.primaryElement,
+                  ? AppColors.elementLight
+                  : AppColors.element,
               borderRadius: BorderRadius.circular(15.w),
               border: Border.all(
                 color: Colors.transparent,
@@ -65,16 +64,11 @@ Widget buildButtonChooseInfoOrParticipant(
             ),
             child: Center(
               child: Text(
-                'Thông tin',
-                style: TextStyle(
-                    fontFamily: AppFonts.Header1,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                    color:
-                        BlocProvider.of<EventDetailBloc>(context).state.page ==
-                                1
-                            ? AppColors.primaryElement
-                            : AppColors.primaryBackground),
+                translate('information'),
+                style: AppTextStyle.small().wSemiBold().withColor(
+                    BlocProvider.of<EventDetailBloc>(context).state.page == 1
+                        ? AppColors.element
+                        : AppColors.background),
               ),
             ),
           ),
@@ -87,8 +81,8 @@ Widget buildButtonChooseInfoOrParticipant(
             margin: EdgeInsets.only(right: 10.w),
             decoration: BoxDecoration(
               color: BlocProvider.of<EventDetailBloc>(context).state.page == 1
-                  ? AppColors.primaryElement
-                  : AppColors.primarySecondaryElement,
+                  ? AppColors.element
+                  : AppColors.elementLight,
               borderRadius: BorderRadius.circular(15.w),
               border: Border.all(
                 color: Colors.transparent,
@@ -96,16 +90,11 @@ Widget buildButtonChooseInfoOrParticipant(
             ),
             child: Center(
               child: Text(
-                'Người tham gia',
-                style: TextStyle(
-                    fontFamily: AppFonts.Header1,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                    color:
-                        BlocProvider.of<EventDetailBloc>(context).state.page ==
-                                1
-                            ? AppColors.primaryBackground
-                            : AppColors.primaryElement),
+                translate('participants'),
+                style: AppTextStyle.small().wSemiBold().withColor(
+                    BlocProvider.of<EventDetailBloc>(context).state.page == 1
+                        ? AppColors.background
+                        : AppColors.element),
               ),
             ),
           ),
@@ -140,25 +129,15 @@ Widget eventContent(BuildContext context, Event event) {
       Container(
         padding: EdgeInsets.only(top: 5.h, left: 10.w),
         child: Text(
-          "Khoa " + event.faculty.name,
-          style: TextStyle(
-            fontFamily: AppFonts.Header3,
-            color: Color.fromARGB(255, 51, 58, 73),
-            fontWeight: FontWeight.w500,
-            fontSize: 12.sp,
-          ),
+          "${translate('faculty_of')} " + event.faculty.name,
+          style: AppTextStyle.small().withColor(AppColors.textGrey),
         ),
       ),
       Container(
         padding: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
         child: Text(
           event.title,
-          style: TextStyle(
-            fontFamily: AppFonts.Header2,
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 18.sp,
-          ),
+          style: AppTextStyle.large().wSemiBold(),
         ),
       ),
       Container(
@@ -168,22 +147,17 @@ Widget eventContent(BuildContext context, Event event) {
             Row(
               children: [
                 SvgPicture.asset(
-                  "assets/icons/clock.svg",
+                  AppAssets.clockIconS,
                   width: 12.w,
                   height: 12.h,
-                  color: AppColors.primarySecondaryText,
+                  color: AppColors.textGrey,
                 ),
                 Container(
                   width: 5.w,
                 ),
                 Text(
-                  handleDatetime(event.publishedAt),
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header3,
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 11.sp,
-                  ),
+                  handleDateTime1(event.publishedAt),
+                  style: AppTextStyle.small(),
                 ),
               ],
             ),
@@ -193,10 +167,10 @@ Widget eventContent(BuildContext context, Event event) {
             Row(
               children: [
                 SvgPicture.asset(
-                  "assets/icons/view.svg",
+                  AppAssets.viewIconS,
                   width: 12.w,
                   height: 12.h,
-                  color: AppColors.primarySecondaryText,
+                  color: AppColors.textGrey,
                 ),
                 Container(
                   width: 5.w,
@@ -204,12 +178,7 @@ Widget eventContent(BuildContext context, Event event) {
                 Text(
                   event.views.toString(),
                   maxLines: 2,
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header3,
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black,
-                  ),
+                  style: AppTextStyle.small(),
                 ),
               ],
             ),
@@ -221,33 +190,28 @@ Widget eventContent(BuildContext context, Event event) {
         child: Row(
           children: [
             SvgPicture.asset(
-              "assets/icons/location.svg",
+              AppAssets.locationIconS,
               width: 12.w,
               height: 12.h,
-              color: Color.fromARGB(255, 255, 95, 92),
+              color: AppColors.red,
             ),
             SizedBox(width: 5.w),
             Expanded(
               child: RichText(
                 text: TextSpan(
                   children: [
-                    TextSpan(
-                      text: 'Địa điểm: ',
-                      style: TextStyle(
-                        fontFamily: AppFonts.Header3,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.normal,
-                        color: Color.fromARGB(255, 63, 63, 70),
+                    WidgetSpan(
+                      child: Container(
+                        width: 65.w, // Đặt chiều rộng cụ thể tại đây
+                        child: Text(
+                          '${translate('location')}: ',
+                          style: AppTextStyle.small(),
+                        ),
                       ),
                     ),
                     TextSpan(
                       text: event.organizationLocation,
-                      style: TextStyle(
-                        fontFamily: AppFonts.Header3,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.normal,
-                        color: Color.fromARGB(255, 63, 63, 70),
-                      ),
+                      style: AppTextStyle.small(),
                     ),
                   ],
                 ),
@@ -261,36 +225,29 @@ Widget eventContent(BuildContext context, Event event) {
           child: Row(
             children: [
               SvgPicture.asset(
-                "assets/icons/time.svg",
+                AppAssets.timeIconS,
                 width: 12.w,
                 height: 12.h,
-                color: Color.fromARGB(255, 153, 214, 216),
+                color: AppColors.timeIcon,
               ),
               Container(
                 width: 5.w,
               ),
-              Text(
-                'Thời gian:',
-                maxLines: 1,
-                style: TextStyle(
-                  fontFamily: AppFonts.Header3,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.normal,
-                  color: Color.fromARGB(255, 63, 63, 70),
+              Container(
+                width: 60.w,
+                child: Text(
+                  '${translate('time')}:',
+                  maxLines: 1,
+                  style: AppTextStyle.small(),
                 ),
               ),
               Container(
                 width: 5.w,
               ),
               Text(
-                handleDatetime(event.organizationTime),
+                handleDateTime1(event.organizationTime),
                 maxLines: 1,
-                style: TextStyle(
-                  fontFamily: AppFonts.Header3,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.normal,
-                  color: Color.fromARGB(255, 63, 63, 70),
-                ),
+                style: AppTextStyle.small(),
               ),
             ],
           )),
@@ -299,10 +256,10 @@ Widget eventContent(BuildContext context, Event event) {
         child: Row(
           children: [
             SvgPicture.asset(
-              "assets/icons/participant.svg",
+              AppAssets.participantIconS,
               width: 50.w,
               height: 50.h,
-              color: AppColors.primarySecondaryText,
+              color: AppColors.textGrey,
             ),
             Container(
               width: 10.w,
@@ -313,21 +270,15 @@ Widget eventContent(BuildContext context, Event event) {
               children: [
                 Text(
                   event.participants.toString(),
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header2,
-                    color: AppColors.primaryElement,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14.sp,
-                  ),
+                  style: AppTextStyle.base()
+                      .wSemiBold()
+                      .withColor(AppColors.element),
                 ),
                 Text(
-                  'Người tham gia',
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header2,
-                    color: AppColors.primarySecondaryText,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 13.sp,
-                  ),
+                  translate('participants'),
+                  style: AppTextStyle.base()
+                      .wSemiBold()
+                      .withColor(AppColors.textGrey),
                 ),
               ],
             )
@@ -336,74 +287,65 @@ Widget eventContent(BuildContext context, Event event) {
       ),
       if (Global.storageService.permissionEventParticipantCreate())
         Center(
-        child: BlocProvider.of<EventDetailBloc>(context).state.isParticipated
-            ? GestureDetector(
-                onTap: () {
-                  EventDetailController(context: context)
-                      .hanldeExitEvent(event.id);
-                },
-                child: Container(
-                  width: 165.w,
-                  height: 30.h,
-                  margin: EdgeInsets.only(top: 10.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryBackground,
-                    borderRadius: BorderRadius.circular(15.w),
-                    border: Border.all(
-                      color: AppColors.primaryElement,
+          child: BlocProvider.of<EventDetailBloc>(context).state.isParticipated
+              ? GestureDetector(
+                  onTap: () {
+                    EventDetailController(context: context)
+                        .handleExitEvent(event.id);
+                  },
+                  child: Container(
+                    width: 165.w,
+                    height: 30.h,
+                    margin: EdgeInsets.only(top: 10.h),
+                    decoration: BoxDecoration(
+                      color: AppColors.background,
+                      borderRadius: BorderRadius.circular(15.w),
+                      border: Border.all(
+                        color: AppColors.element,
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        translate('cancel'),
+                        style: AppTextStyle.small()
+                            .wSemiBold()
+                            .withColor(AppColors.element),
+                      ),
                     ),
                   ),
-                  child: Center(
-                    child: Text(
-                      'Bỏ tham gia',
-                      style: TextStyle(
-                          fontFamily: AppFonts.Header2,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryElement),
+                )
+              : GestureDetector(
+                  onTap: () {
+                    EventDetailController(context: context)
+                        .handleJoinEvent(event.id);
+                  },
+                  child: Container(
+                    width: 165.w,
+                    height: 30.h,
+                    margin: EdgeInsets.only(top: 10.h),
+                    decoration: BoxDecoration(
+                      color: AppColors.element,
+                      borderRadius: BorderRadius.circular(15.w),
+                      border: Border.all(
+                        color: Colors.transparent,
+                      ),
                     ),
-                  ),
-                ),
-              )
-            : GestureDetector(
-                onTap: () {
-                  EventDetailController(context: context)
-                      .hanldeJoinEvent(event.id);
-                },
-                child: Container(
-                  width: 165.w,
-                  height: 30.h,
-                  margin: EdgeInsets.only(top: 10.h),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryElement,
-                    borderRadius: BorderRadius.circular(15.w),
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Tham gia ngay',
-                      style: TextStyle(
-                          fontFamily: AppFonts.Header2,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryBackground),
+                    child: Center(
+                      child: Text(
+                        translate('join'),
+                        style: AppTextStyle.small()
+                            .wSemiBold()
+                            .withColor(AppColors.background),
+                      ),
                     ),
                   ),
                 ),
-              ),
-      ),
+        ),
       Container(
         padding: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
         child: Text(
-          'Thông tin chi tiết',
-          style: TextStyle(
-            fontFamily: AppFonts.Header2,
-            color: AppColors.primaryText,
-            fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
-          ),
+          translate('detail'),
+          style: AppTextStyle.medium().wSemiBold(),
         ),
       ),
       Container(
@@ -425,12 +367,7 @@ Widget eventContent(BuildContext context, Event event) {
             ),
             Text(
               event.creator.fullName,
-              style: TextStyle(
-                fontFamily: AppFonts.Header3,
-                color: Color.fromARGB(255, 51, 58, 73),
-                fontWeight: FontWeight.bold,
-                fontSize: 14.sp,
-              ),
+              style: AppTextStyle.base(),
             ),
           ],
         ),
@@ -440,23 +377,17 @@ Widget eventContent(BuildContext context, Event event) {
         child: Row(
           children: [
             SvgPicture.asset(
-              "assets/icons/tag.svg",
+              AppAssets.tagIconS,
               width: 12.w,
               height: 12.h,
-              color: AppColors.primarySecondaryText,
+              color: AppColors.textGrey,
             ),
             for (int i = 0; i < event.tags.length; i += 1)
               Container(
                 margin: EdgeInsets.only(left: 5.w),
-                child: Text(
-                  event.tags[i].name,
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header3,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.normal,
-                    color: Color.fromARGB(255, 5, 90, 188),
-                  ),
-                ),
+                child: Text(event.tags[i].name,
+                    style: AppTextStyle.small()
+                        .withColor(AppColors.element)),
               ),
           ],
         ),
@@ -465,8 +396,8 @@ Widget eventContent(BuildContext context, Event event) {
   );
 }
 
-Widget detail(BuildContext context, Event? event,
-    ScrollController _scrollController) {
+Widget detail(
+    BuildContext context, Event? event, ScrollController _scrollController) {
   if (event == null) {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Expanded(
@@ -513,62 +444,53 @@ Widget listComment(
       children: [
         if (Global.storageService.permissionEventCommentCreate())
           GestureDetector(
-          onTap: () async {
-            await Navigator.pushNamed(
-              context,
-              "/eventDetailWriteComment",
-              arguments: {
-                "event": event,
-              },
-            );
-            EventDetailController(context: context).handleGetComment(event.id, 0);
-          },
-          child: Container(
-              width: 340.w,
-              height: 40.h,
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.w),
-                color: Color.fromARGB(255, 245, 245, 245),
-                border: Border.all(
-                  color: Colors.transparent,
+            onTap: () async {
+              await Navigator.pushNamed(
+                context,
+                "/eventDetailWriteComment",
+                arguments: {
+                  "event": event,
+                },
+              );
+              EventDetailController(context: context)
+                  .handleGetComment(event.id, 0);
+            },
+            child: Container(
+                width: 340.w,
+                height: 40.h,
+                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.w),
+                  color: AppColors.backgroundWhiteDark,
+                  border: Border.all(
+                    color: Colors.transparent,
+                  ),
                 ),
-              ),
-              child: Container(
-                height: 20.h,
-                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Viết bình luận',
-                      style: TextStyle(
-                        fontFamily: AppFonts.Header2,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black.withOpacity(0.5),
+                child: Container(
+                  height: 20.h,
+                  margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        translate('write_comment'),
+                        style: AppTextStyle.base().wMedium().withColor(AppColors.textBlack.withOpacity(0.5)),
                       ),
-                    ),
-                    SvgPicture.asset(
-                      "assets/icons/send.svg",
-                      width: 15.w,
-                      height: 15.h,
-                      color: Colors.black.withOpacity(0.5),
-                    ),
-                  ],
-                ),
-              )),
-        ),
+                      SvgPicture.asset(
+                        AppAssets.sendIconS,
+                        width: 15.w,
+                        height: 15.h,
+                        color: AppColors.textBlack.withOpacity(0.5),
+                      ),
+                    ],
+                  ),
+                )),
+          ),
         Container(
           padding: EdgeInsets.only(top: 20.h, left: 10.w, bottom: 10.h),
           child: Text(
-            "Bình luận (${event.childrenCommentNumber})",
-            style: TextStyle(
-              fontFamily: AppFonts.Header1,
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 18.sp,
-            ),
+            "${translate('comment')} (${event.childrenCommentNumber})",
+            style: AppTextStyle.large().wSemiBold(),
           ),
         ),
         Column(
@@ -594,20 +516,15 @@ Widget listComment(
               margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.w),
-                color: Color.fromARGB(255, 230, 240, 251),
+                color: AppColors.elementLight,
                 border: Border.all(
                   color: Colors.transparent,
                 ),
               ),
               child: Center(
                 child: Text(
-                  'Xem thêm bình luận',
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header2,
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 43, 107, 182),
-                  ),
+                  translate('more_comment'),
+                  style: AppTextStyle.base().wSemiBold().withColor(AppColors.element),
                 ),
               ),
             ),
@@ -654,7 +571,7 @@ Widget buildCommentWidget(
                       radius: 10,
                       child: null,
                       backgroundImage:
-                      NetworkImage(comment.creator.avatarUrl ?? ""),
+                          NetworkImage(comment.creator.avatarUrl ?? ""),
                     )),
               ),
               Container(
@@ -668,24 +585,14 @@ Widget buildCommentWidget(
                       child: Text(
                         comment.creator.fullName,
                         maxLines: 1,
-                        style: TextStyle(
-                          color: AppColors.primaryText,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
-                        ),
+                        style: AppTextStyle.small().wSemiBold(),
                       ),
                     ),
                     Container(
                       child: Text(
-                        handleDatetime(comment.updateAt),
+                        handleDateTime1(comment.updateAt),
                         maxLines: 1,
-                        style: TextStyle(
-                          color: AppColors.primarySecondaryText,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header3,
-                        ),
+                        style: AppTextStyle.small().withColor(AppColors.textGrey),
                       ),
                     ),
                   ],
@@ -702,12 +609,7 @@ Widget buildCommentWidget(
           width: (340 - 10 * index).w,
           child: Text(
             comment.content,
-            style: TextStyle(
-              color: AppColors.primaryText,
-              fontSize: 12.sp,
-              fontWeight: FontWeight.normal,
-              fontFamily: AppFonts.Header3,
-            ),
+            style: AppTextStyle.small(),
           ),
         ),
         if (index <= 1)
@@ -727,22 +629,17 @@ Widget buildCommentWidget(
                         child: Row(
                           children: [
                             SvgPicture.asset(
-                              "assets/icons/comment.svg",
+                              AppAssets.commentIconS,
                               width: 11.w,
                               height: 11.h,
-                              color: Colors.black.withOpacity(0.8),
+                              color: AppColors.textBlack.withOpacity(0.8),
                             ),
                             Container(
                               width: 3.w,
                             ),
                             Text(
-                              "${comment.childrenCommentNumber.toString()} trả lời",
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
-                              ),
+                              "${comment.childrenCommentNumber.toString()} ${translate('reply').toLowerCase()}",
+                              style: AppTextStyle.small().withColor(AppColors.textBlack.withOpacity(0.8)).size(11.sp),
                             )
                           ],
                         ),
@@ -764,16 +661,12 @@ Widget buildCommentWidget(
                                   "comment": comment,
                                 },
                               );
-                              EventDetailController(context: context).handleGetComment(event.id, 0);
+                              EventDetailController(context: context)
+                                  .handleGetComment(event.id, 0);
                             },
                             child: Text(
-                              'Trả lời',
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
-                              ),
+                              translate('reply'),
+                              style: AppTextStyle.small().withColor(AppColors.textBlack.withOpacity(0.8)).size(11.sp),
                             ),
                           ),
                         ],
@@ -794,16 +687,12 @@ Widget buildCommentWidget(
                                   "comment": comment,
                                 },
                               );
-                              EventDetailController(context: context).handleGetComment(event.id, 0);
+                              EventDetailController(context: context)
+                                  .handleGetComment(event.id, 0);
                             },
                             child: Text(
-                              'Chỉnh sửa',
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
-                              ),
+                              translate('edit'),
+                              style: AppTextStyle.small().withColor(AppColors.textBlack.withOpacity(0.8)).size(11.sp),
                             ),
                           ),
                         ],
@@ -816,16 +705,12 @@ Widget buildCommentWidget(
                           ),
                           GestureDetector(
                             onTap: () {
-                              EventDetailController(context: context).handleDeleteComment(event.id, comment.id);
+                              EventDetailController(context: context)
+                                  .handleDeleteComment(event.id, comment.id);
                             },
                             child: Text(
-                              'Xoá',
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
-                              ),
+                              translate('delete'),
+                              style: AppTextStyle.small().withColor(AppColors.textBlack.withOpacity(0.8)).size(11.sp),
                             ),
                           ),
                         ],
@@ -855,16 +740,12 @@ Widget buildCommentWidget(
                                   "comment": comment,
                                 },
                               );
-                              EventDetailController(context: context).handleGetComment(event.id, 0);
+                              EventDetailController(context: context)
+                                  .handleGetComment(event.id, 0);
                             },
                             child: Text(
-                              'Chỉnh sửa',
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
-                              ),
+                              translate('edit'),
+                              style: AppTextStyle.small().withColor(AppColors.textBlack.withOpacity(0.8)).size(11.sp),
                             ),
                           ),
                         ],
@@ -877,16 +758,12 @@ Widget buildCommentWidget(
                           ),
                           GestureDetector(
                             onTap: () {
-                              EventDetailController(context: context).handleDeleteComment(event.id, comment.id);
+                              EventDetailController(context: context)
+                                  .handleDeleteComment(event.id, comment.id);
                             },
                             child: Text(
-                              'Xoá',
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
-                              ),
+                              translate('delete'),
+                              style: AppTextStyle.small().withColor(AppColors.textBlack.withOpacity(0.8)).size(11.sp),
                             ),
                           ),
                         ],
@@ -903,14 +780,14 @@ Widget buildCommentWidget(
               for (int i = 0; i < comment.childrenComments.length; i += 1)
                 IntrinsicHeight(
                     child: Row(
-                      children: [
-                        Container(width: 1, color: Colors.black),
-                        // This is divider
-                        Container(
-                            child: buildCommentWidget(context, event,
-                                comment.childrenComments[i], index + 1)),
-                      ],
-                    ))
+                  children: [
+                    Container(width: 1, color: AppColors.textBlack),
+                    // This is divider
+                    Container(
+                        child: buildCommentWidget(context, event,
+                            comment.childrenComments[i], index + 1)),
+                  ],
+                ))
             ],
           ),
         ),
@@ -959,13 +836,8 @@ Widget listParticipant(
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có người tham gia',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
-                          ),
+                          translate('no_participants'),
+                          style: AppTextStyle.small(),
                         ),
                       )),
                     ],
@@ -1020,21 +892,19 @@ Widget listParticipant(
 Widget participant(BuildContext context, Participant participant) {
   return GestureDetector(
     onTap: () {
-      if (participant.user.id ==
-          Global.storageService.getUserId()) {
+      if (participant.user.id == Global.storageService.getUserId()) {
         Navigator.pushNamed(
           context,
           "/myProfilePage",
         );
       } else {
-        Navigator.pushNamed(context, "/otherProfilePage",
-            arguments: {
-              "id": participant.user.id,
-            });
+        Navigator.pushNamed(context, "/otherProfilePage", arguments: {
+          "id": participant.user.id,
+        });
       }
     },
     child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 5.h),
+      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
       color: Colors.transparent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1055,12 +925,7 @@ Widget participant(BuildContext context, Participant participant) {
               ),
               Text(
                 participant.user.fullName,
-                style: TextStyle(
-                  color: AppColors.primaryText,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w900,
-                  fontFamily: AppFonts.Header2,
-                ),
+                style: AppTextStyle.small().wSemiBold(),
               )
             ],
           ),

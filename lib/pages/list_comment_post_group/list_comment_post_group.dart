@@ -65,10 +65,8 @@ class _ListCommentPostGroupState extends State<ListCommentPostGroup> {
         builder: (context, state) {
           return Scaffold(
             appBar: buildAppBar(context),
-            backgroundColor: AppColors.primaryBackground,
-            body: listComment(context, _scrollController, id, (value) {
-              context.read<ListCommentPostGroupBloc>().add(ContentEvent(value));
-            }),
+            backgroundColor: AppColors.background,
+            body: listComment(context, _scrollController, id),
           );
         });
   }

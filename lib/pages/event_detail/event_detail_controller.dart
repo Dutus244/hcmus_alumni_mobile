@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/comment.dart';
 import 'package:hcmus_alumni_mobile/model/event.dart';
 import 'package:hcmus_alumni_mobile/pages/event_detail/bloc/event_detail_blocs.dart';
@@ -14,7 +15,6 @@ import '../../global.dart';
 import 'package:http/http.dart' as http;
 
 import '../../model/comment_response.dart';
-import '../../model/event_response.dart';
 import '../../model/participant.dart';
 import '../../model/participant_response.dart';
 import 'bloc/event_detail_states.dart';
@@ -45,13 +45,13 @@ class EventDetailController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 50200) {
-          toastInfo(msg: "Không tìm thấy sự kiện");
+          toastInfo(msg: translate('no_event_found'));
           return;
         }
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi lấy sự kiện");
+      toastInfo(msg: translate('error_get_event'));
     }
   }
 
@@ -106,10 +106,10 @@ class EventDetailController {
           context.read<EventDetailBloc>().add(HasReachedMaxCommentEvent(true));
         }
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy bình luận");
+        toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy bình luận");
+      toastInfo(msg: translate('error_get_comment'));
     }
   }
 
@@ -142,12 +142,12 @@ class EventDetailController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 51300) {
-          toastInfo(msg: "Không tìm thấy bình luận cha");
+          toastInfo(msg: translate('no_father_comment_found'));
           return;
         }
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy bình luận");
+      toastInfo(msg: translate('error_get_comment'));
     }
   }
 
@@ -190,7 +190,7 @@ class EventDetailController {
     }
   }
 
-  Future<void> hanldeJoinEvent(String id) async {
+  Future<void> handleJoinEvent(String id) async {
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/events/$id/participants';
 
@@ -216,25 +216,25 @@ class EventDetailController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 51000) {
-          toastInfo(msg: "Không tìm thấy sự kiện");
+          toastInfo(msg: translate('no_event_found'));
           return;
         }
         if (errorCode == 51001) {
-          toastInfo(msg: "Đã tham gia sự kiện");
+          toastInfo(msg: translate('participated_event'));
           return;
         }
         if (errorCode == 51002) {
-          toastInfo(msg: "Số lượng người tham gia sự kiện đã đạt mức tối đa");
+          toastInfo(msg: translate('participant_max'));
           return;
         }
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi tham gia sự kiện");
+      toastInfo(msg: translate('error_participate_event'));
     }
   }
 
-  Future<void> hanldeExitEvent(String id) async {
+  Future<void> handleExitEvent(String id) async {
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/events/$id/participants';
 
@@ -257,11 +257,11 @@ class EventDetailController {
         EventDetailController(context: context).handleGetParticipant(id, 0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi thoát sự kiện");
+        toastInfo(msg: translate('error_cancel_participate_event'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi thoát sự kiện");
+      toastInfo(msg: translate('error_cancel_participate_event'));
     }
   }
 
@@ -332,34 +332,34 @@ class EventDetailController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 50900) {
-          toastInfo(msg: "Không tìm thấy sự kiện");
+          toastInfo(msg: translate('no_event_found'));
           return;
         }
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách người tham dự");
+      toastInfo(msg: translate('error_get_participant'));
     }
   }
 
   Future<void> handleDeleteComment(String id, String commentId) async {
-    final shouldDelte = await showDialog(
+    final shouldDelete = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Xoá bình luận'),
-        content: Text('Bạn có muốn xoá bình luận này?'),
+        title: Text(translate('delete_comment')),
+        content: Text(translate('delete_comment_question')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Huỷ'),
+            child: Text(translate('cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text('Xoá'),
+            child: Text(translate('delete')),
           ),
         ],
       ),
     );
-    if (shouldDelte != null && shouldDelte) {
+    if (shouldDelete != null && shouldDelete) {
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/events/comments/$commentId';
 
@@ -382,15 +382,15 @@ class EventDetailController {
           Map<String, dynamic> jsonMap = json.decode(response.body);
           int errorCode = jsonMap['error']['code'];
           if (errorCode == 51600) {
-            toastInfo(msg: "Không tìm thấy bình luận");
+            toastInfo(msg: translate('no_comment_found'));
             return;
           }
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: "Có lỗi xả ra khi xoá bình luận");
+        toastInfo(msg: translate('error_delete_comment'));
       }
     }
-    return shouldDelte ?? false;
+    return shouldDelete ?? false;
   }
 }

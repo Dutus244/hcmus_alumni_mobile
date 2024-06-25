@@ -3,6 +3,7 @@ import 'dart:convert'; // Import the 'dart:convert' library
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/event.dart';
 import 'package:hcmus_alumni_mobile/model/news_response.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_events.dart';
@@ -73,10 +74,10 @@ class NewsEventPageController {
         }
         context.read<NewsEventPageBloc>().add(StatusNewsEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách tin tức");
+        toastInfo(msg: translate('error_get_news'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách tin tức");
+      toastInfo(msg: translate('error_get_news'));
     }
   }
 
@@ -138,10 +139,10 @@ class NewsEventPageController {
         }
         context.read<NewsEventPageBloc>().add(StatusEventEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách sự kiện");
+        toastInfo(msg: translate('error_get_event'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách sự kiện");
+      toastInfo(msg: translate('error_get_event'));
     }
   }
 }

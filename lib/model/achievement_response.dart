@@ -7,6 +7,6 @@ class AchievementResponse {
 
   AchievementResponse.fromJson(Map<String, dynamic> json)
       : achievements = (json["achievements"] as List)
-      .map((i) => new Achievement.fromJson(i))
-      .toList();
+            .map((i) => new Achievement.fromJson(i))
+            .toList();
 }

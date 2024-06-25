@@ -36,7 +36,8 @@ class User {
         sex = json["sex"] ?? "",
         dob = json["dob"] ?? "",
         socialLink = json["socialLink"] ?? "",
-        faculty = json["faculty"] != null ? Faculty.fromJson(json["faculty"]) : null,
+        faculty =
+            json["faculty"] != null ? Faculty.fromJson(json["faculty"]) : null,
         degree = json["degree"] ?? "",
         aboutMe = json["aboutMe"] ?? "",
         avatarUrl = json["avatarUrl"] ?? "",
