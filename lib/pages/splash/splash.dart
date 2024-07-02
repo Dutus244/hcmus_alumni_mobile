@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/common/values/assets.dart';
 import 'package:hcmus_alumni_mobile/common/values/constants.dart';
 
+import '../../common/services/firebase_service.dart';
 import '../../common/values/colors.dart';
 import '../../global.dart';
 
@@ -17,9 +18,19 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  NotificationServices notificationServices = NotificationServices();
+
   @override
   void initState() {
     super.initState();
+    notificationServices.requestNotificationPermisions();
+    notificationServices.foregroundMessage();
+    notificationServices.firebaseInit(context);
+    notificationServices.setupInteractMessage(context);
+    notificationServices.isRefreshToken();
+    notificationServices.getDeviceToken().then((value) {
+      print(value);
+    });
     Timer(Duration(seconds: 2), () {
       if (Global.storageService.getDeviceFirstOpen()) {
         Global.storageService

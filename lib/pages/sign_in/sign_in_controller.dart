@@ -44,14 +44,13 @@ class SignInController {
 
     try {
       var response = await http.post(url, body: map);
-      print(response.body);
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         String jwtToken = jsonMap['jwt'];
 
         var url =
             Uri.parse('${dotenv.env['API_URL']}/notification/subscription');
-        final token = await FirebaseService().getFcmToken();
+        final token = await NotificationServices().getDeviceToken();
         var headers = <String, String>{
           'Authorization': 'Bearer $jwtToken',
           'Content-Type': 'application/json',
@@ -119,7 +118,7 @@ class SignInController {
 
         var url =
             Uri.parse('${dotenv.env['API_URL']}/notification/subscription');
-        final token = await FirebaseService().getFcmToken();
+        final token = await NotificationServices().getDeviceToken();
         var headers = <String, String>{
           'Authorization': 'Bearer $jwtToken',
           'Content-Type': 'application/json',
@@ -140,7 +139,6 @@ class SignInController {
         List<String> permissions = List<String>.from(jsonMap['permissions']);
         handleSavePermission(permissions);
         toastInfo(msg: translate('sign_in_success'));
-        print(Global.storageService.getUserId());
         socketService.connect('0ac25d55-1ee6-4794-8d46-58f82cde644c');
 
         Navigator.of(context).pushNamedAndRemoveUntil(
