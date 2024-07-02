@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/group_info/group_info_controller.dart';
 
 import '../../../common/function/handle_datetime.dart';
@@ -23,7 +24,7 @@ AppBar buildAppBar(BuildContext context, Group group  ) {
           group.name,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -46,12 +47,12 @@ Widget infoGroup(BuildContext context, Group group) {
             Container(
               margin: EdgeInsets.only(left: 10.w, top: 5.h),
               child: Text(
-                'Giới thiệu',
+                translate('introduce'),
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
-                  fontFamily: AppFonts.Header2,
+                  fontFamily: AppFonts.Header,
                 ),
               ),
             ),
@@ -61,10 +62,10 @@ Widget infoGroup(BuildContext context, Group group) {
               child: ExpandableText(
                 group.description,
                 maxLines: 4,
-                expandText: 'Xem thêm',
-                collapseText: 'Thu gọn',
+                expandText: translate('see_more'),
+                collapseText: translate('collapse'),
                 style: TextStyle(
-                  fontFamily: AppFonts.Header3,
+                  fontFamily: AppFonts.Header,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.normal,
                   color: AppColors.textBlack,
@@ -89,23 +90,23 @@ Widget infoGroup(BuildContext context, Group group) {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Riêng tư',
+                            translate('private'),
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.Header2,
+                              fontFamily: AppFonts.Header,
                             ),
                           ),
                           Container(
                             width: 300.w,
                             child: Text(
-                              'Chỉ những thành viên mới nhìn thấy mọi người trong nhóm và những gì họ đăng',
+                              translate('private_description'),
                               style: TextStyle(
                                 color: AppColors.textGrey,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header3,
+                                fontFamily: AppFonts.Header,
                               ),
                             ),
                           ),
@@ -133,23 +134,23 @@ Widget infoGroup(BuildContext context, Group group) {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Công khai',
+                            translate('public'),
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.Header2,
+                              fontFamily: AppFonts.Header,
                             ),
                           ),
                           Container(
                             width: 300.w,
                             child: Text(
-                              'Bất kỳ ai cũng có thể nhìn thấy mọi người trong nhóm và những gì họ đăng',
+                              translate('public_description'),
                               style: TextStyle(
                                 color: AppColors.textGrey,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header3,
+                                fontFamily: AppFonts.Header,
                               ),
                             ),
                           ),
@@ -176,23 +177,23 @@ Widget infoGroup(BuildContext context, Group group) {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          'Lịch sử nhóm',
+                          translate('group_history'),
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                         Container(
                           width: 300.w,
                           child: Text(
-                            'Ngày tạo nhóm ${handleDateTime2(group.createAt)}',
+                            '${translate('group_creation_date')} ${handleDateTime2(group.createAt)}',
                             style: TextStyle(
                               color: AppColors.textGrey,
                               fontSize: 14.sp,
                               fontWeight: FontWeight.normal,
-                              fontFamily: AppFonts.Header3,
+                              fontFamily: AppFonts.Header,
                             ),
                           ),
                         ),
@@ -219,12 +220,12 @@ Widget infoGroup(BuildContext context, Group group) {
                       Container(
                         margin: EdgeInsets.only(left: 10.w, top: 5.h),
                         child: Text(
-                          'Thành viên',
+                          translate('members'),
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                       ),
@@ -243,9 +244,9 @@ Widget infoGroup(BuildContext context, Group group) {
                               GroupInfoController(context: context).handleGetMember(group.id, 0);
                             },
                             child: Text(
-                              "Xem tất cả",
+                              translate('see_all'),
                               style: TextStyle(
-                                fontFamily: AppFonts.Header1,
+                                fontFamily: AppFonts.Header,
                                 color: AppColors.element,
                                 decorationColor: AppColors.textBlack,
                                 fontWeight: FontWeight.bold,
@@ -301,7 +302,7 @@ Widget infoGroup(BuildContext context, Group group) {
                           color: Colors.black,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header3,
+                          fontFamily: AppFonts.Header,
                         ),
                       ),
                     ),
@@ -363,7 +364,7 @@ Widget infoGroup(BuildContext context, Group group) {
                           color: Colors.black,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header3,
+                          fontFamily: AppFonts.Header,
                         ),
                       ),
                     ),

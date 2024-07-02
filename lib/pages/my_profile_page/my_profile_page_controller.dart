@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/model/comment.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
+import '../../model/comment_response.dart';
 import '../../model/event.dart';
 import '../../model/event_response.dart';
 import '../../model/post.dart';
@@ -100,7 +102,7 @@ class MyProfilePageController {
     }
 
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/counsel';
+    var endpoint = '/counsel/users/${Global.storageService.getUserId()}';
     var pageSize = 5;
 
     var token = Global.storageService.getUserAuthToken();
@@ -364,6 +366,71 @@ class MyProfilePageController {
       // Handle errors
       toastInfo(msg: translate('error_add_option'));
       return;
+    }
+  }
+
+  Future<void> handleLoadCommentPostAdviseData(int page) async {
+    if (page == 0) {
+      context.read<MyProfilePageBloc>().add(HasReachedMaxCommentAdviseEvent(false));
+      context.read<MyProfilePageBloc>().add(IndexCommentAdviseEvent(1));
+    } else {
+      if (BlocProvider.of<MyProfilePageBloc>(context)
+          .state
+          .hasReachedMaxCommentAdvise) {
+        return;
+      }
+      context.read<MyProfilePageBloc>().add(IndexCommentAdviseEvent(
+          BlocProvider.of<MyProfilePageBloc>(context).state.indexCommentAdvise + 1));
+    }
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/counsel/users/${Global.storageService.getUserId()}/comments';
+    var pageSize = 5;
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+    };
+    try {
+      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
+      var response = await http.get(url, headers: headers);
+      var responseBody = utf8.decode(response.bodyBytes);
+      print(responseBody);
+      if (response.statusCode == 200) {
+        var jsonMap = json.decode(responseBody);
+        var commentResponse = CommentResponse.fromJson(jsonMap);
+        if (commentResponse.comments.isEmpty) {
+          if (page == 0) {
+            context
+                .read<MyProfilePageBloc>()
+                .add(CommentAdvisesEvent(commentResponse.comments));
+          }
+          context.read<MyProfilePageBloc>().add(HasReachedMaxCommentAdviseEvent(true));
+          context
+              .read<MyProfilePageBloc>()
+              .add(StatusCommentAdviseEvent(Status.success));
+          return;
+        }
+
+        if (page == 0) {
+          context
+              .read<MyProfilePageBloc>()
+              .add(CommentAdvisesEvent(commentResponse.comments));
+        } else {
+          List<Comment> currentList =
+              BlocProvider.of<MyProfilePageBloc>(context).state.commentAdvises;
+          List<Comment> updatedEventList = List.of(currentList)
+            ..addAll(commentResponse.comments);
+          context.read<MyProfilePageBloc>().add(CommentAdvisesEvent(updatedEventList));
+        }
+        if (commentResponse.comments.length < pageSize) {
+          context.read<MyProfilePageBloc>().add(HasReachedMaxCommentAdviseEvent(true));
+        }
+        context.read<MyProfilePageBloc>().add(StatusCommentAdviseEvent(Status.success));
+      } else {
+        toastInfo(msg: translate('error_get_events_participated'));
+      }
+    } catch (error) {
+      toastInfo(msg: translate('error_get_events_participated'));
     }
   }
 }

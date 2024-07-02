@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/group_request.dart';
 import 'package:hcmus_alumni_mobile/pages/group_member_approve/group_member_approve_controller.dart';
 
@@ -22,10 +23,10 @@ AppBar buildAppBar(BuildContext context) {
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Phê duyệt thành viên nhóm',
+          translate('approve_group_members'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -69,12 +70,12 @@ Widget listRequest(
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có yêu cầu phê duyệt thành viên nào',
+                          translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                       )),
@@ -171,7 +172,7 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
                           color: AppColors.textBlack,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                         ),
                       ),
                     ],
@@ -201,9 +202,9 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
                           ),
                           child: Center(
                             child: Text(
-                              'Phê duyệt',
+                              translate('approve'),
                               style: TextStyle(
-                                  fontFamily: AppFonts.Header1,
+                                  fontFamily: AppFonts.Header,
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.background),
@@ -213,7 +214,7 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
                       ),
                       GestureDetector(
                         onTap: () {
-                          GroupMemberApproveController(context: context).handleDeneidRequest(groupId, request.user.id);
+                          GroupMemberApproveController(context: context).handleDeniedRequest(groupId, request.user.id);
                         },
                         child: Container(
                           width: 120.w,
@@ -228,9 +229,9 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
                           ),
                           child: Center(
                             child: Text(
-                              'Từ chối',
+                              translate('deny'),
                               style: TextStyle(
-                                  fontFamily: AppFonts.Header1,
+                                  fontFamily: AppFonts.Header,
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
                                   color:

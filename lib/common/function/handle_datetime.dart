@@ -114,3 +114,23 @@ String handleTimeDifference2(String data) {
     return '${dateTime.day} Th${dateTime.month}, ${dateTime.year}';
   }
 }
+
+String handleTimeDifference3(String data) {
+  DateTime now = DateTime.now();
+  DateTime dateTime = DateTime.parse(data);
+  dateTime = dateTime.toLocal();
+
+  Duration diff = now.difference(dateTime);
+
+  if (diff.inSeconds < 60) {
+    return '${diff.inSeconds}s';
+  } else if (diff.inMinutes < 60) {
+    return '${diff.inMinutes}${translate('m')}';
+  } else if (diff.inHours < 24) {
+    return '${diff.inHours}${translate('h')}';
+  } else if (diff.inDays < 7) {
+    return '${diff.inDays}${translate('d')}';
+  } else {
+    return '${diff.inDays ~/ 7}w';
+  }
+}

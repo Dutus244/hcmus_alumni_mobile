@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/hall_of_fame.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/bloc/hof_page_events.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/bloc/hof_page_states.dart';
@@ -122,11 +123,11 @@ class HofPageController {
         }
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết");
+        toastInfo(msg: translate('error_get_hof'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết");
+      toastInfo(msg: translate('error_get_hof'));
     }
   }
 }

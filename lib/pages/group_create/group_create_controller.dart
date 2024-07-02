@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/group_create/bloc/group_create_blocs.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -71,11 +72,11 @@ class GroupCreateController {
           },
         );
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi tạo nhóm");
+        toastInfo(msg: translate('error_create_group'));
       }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: "Có lỗi xả ra khi tạo nhóm");
+      toastInfo(msg: translate('error_create_group'));
     }
   }
 }

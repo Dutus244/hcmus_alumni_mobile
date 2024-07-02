@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/list_react_post_advise/bloc/list_interact_post_advise_events.dart';
 
 import '../../common/widgets/flutter_toast.dart';
@@ -91,10 +92,10 @@ class ListInteractPostAdviseController {
             .read<ListInteractPostAdviseBloc>()
             .add(StatusInteractEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách tương tác");
+        toastInfo(msg: translate('error_get_interact'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách tương tác");
+      toastInfo(msg: translate('error_get_interact'));
     }
   }
 }

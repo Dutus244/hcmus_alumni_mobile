@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/permissions.dart';
 
 import '../../../common/function/handle_datetime.dart';
@@ -69,12 +70,12 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có dữ liệu',
+                          translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 11.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                       )),
@@ -143,13 +144,13 @@ Widget buildCommentWidget(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          height: 35.h,
           margin: EdgeInsets.only(top: 5.h),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 35.w,
-                height: 35.h,
+                width: index <= 0 ? 35.w : 25.w,
+                height: index <= 0 ? 35.h : 25.h,
                 margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 child: GestureDetector(
                     onTap: () {
@@ -174,127 +175,78 @@ Widget buildCommentWidget(
                       NetworkImage(comment.creator.avatarUrl ?? ""),
                     )),
               ),
-              Container(
-                width: 270.w,
-                height: 35.h,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: Text(
-                        comment.creator.fullName,
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: AppColors.textBlack,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
-                        ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundWhiteDark,
+                      borderRadius: BorderRadius.circular(10.w),
+                      border: Border.all(
+                        color: Colors.transparent,
                       ),
                     ),
-                    Container(
-                      child: Text(
-                        handleDateTime1(comment.updateAt),
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: AppColors.textGrey,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header3,
-                        ),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: (280 - (index == 2 ? 100 : 0 + index == 1 ? 55 : 0)).w,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          height: 5.h,
-        ),
-        Container(
-          padding: EdgeInsets.only(left: 10.w, right: 10.w),
-          width: (340 - 10 * index).w,
-          child: Text(
-            comment.content,
-            style: TextStyle(
-              color: AppColors.textBlack,
-              fontSize: 12.sp,
-              fontWeight: FontWeight.normal,
-              fontFamily: AppFonts.Header3,
-            ),
-          ),
-        ),
-        if (index <= 1)
-          Container(
-            margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        ListCommentPostAdviseController(context: context)
-                            .handleGetChildrenComment(comment.id);
-                      },
                       child: Container(
-                        child: Row(
+                        margin: EdgeInsets.only(
+                            left: 10.w, right: 10.w, top: 2.h, bottom: 2.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SvgPicture.asset(
-                              "assets/icons/comment.svg",
-                              width: 11.w,
-                              height: 11.h,
-                              color: Colors.black.withOpacity(0.8),
-                            ),
                             Container(
-                              width: 3.w,
-                            ),
-                            Text(
-                              "${comment.childrenCommentNumber.toString()} trả lời",
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
+                              child: Text(
+                                comment.creator.fullName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: AppColors.textBlack,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: AppFonts.Header,
+                                ),
                               ),
-                            )
+                            ),
+                            SizedBox(height: 1.h),
+                            // Khoảng cách giữa tên và nội dung
+                            Text(
+                              comment.content,
+                              style: TextStyle(
+                                color: AppColors.textBlack,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header,
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
+                  ),
+                  if (index <= 1)
                     Container(
-                      width: 50.w,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        context
-                            .read<ListCommentPostGroupBloc>()
-                            .add(ChildrenEvent(comment));
-                        context
-                            .read<ListCommentPostGroupBloc>()
-                            .add(ContentEvent(comment.content));
-                        context
-                            .read<ListCommentPostGroupBloc>()
-                            .add(ReplyEvent(1));
-                      },
-                      child: Text(
-                        'Trả lời',
-                        style: TextStyle(
-                          color: Colors.black.withOpacity(0.8),
-                          fontSize: 11.sp,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header2,
-                        ),
-                      ),
-                    ),
-                    if (comment.permissions.edit)
-                      Row(
+                      margin: EdgeInsets.only(top: 4.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: 50.w,
+                            margin: EdgeInsets.only(left: 0.w),
+                            child: Text(
+                              handleTimeDifference3(comment.createAt),
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: AppColors.textGrey,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 20.w,
                           ),
                           GestureDetector(
                             onTap: () {
@@ -306,58 +258,169 @@ Widget buildCommentWidget(
                                   .add(ContentEvent(comment.content));
                               context
                                   .read<ListCommentPostGroupBloc>()
-                                  .add(ReplyEvent(2));
+                                  .add(ReplyEvent(1));
                             },
                             child: Text(
-                              'Chỉnh sửa',
+                              translate('reply'),
                               style: TextStyle(
                                 color: Colors.black.withOpacity(0.8),
                                 fontSize: 11.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header,
                               ),
                             ),
                           ),
+                          Container(
+                            width: 20.w,
+                          ),
+                          if (comment.permissions.edit)
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    context
+                                        .read<ListCommentPostGroupBloc>()
+                                        .add(ChildrenEvent(comment));
+                                    context
+                                        .read<ListCommentPostGroupBloc>()
+                                        .add(ContentEvent(comment.content));
+                                    context
+                                        .read<ListCommentPostGroupBloc>()
+                                        .add(ReplyEvent(2));
+                                  },
+                                  child: Text(
+                                    translate('edit'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 20.w,
+                                ),
+                              ],
+                            ),
+                          if (comment.permissions.delete)
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    ListCommentPostGroupController(context: context)
+                                        .handleDeleteComment(id, comment.id);
+                                  },
+                                  child: Text(
+                                    translate('delete'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
-                    if (comment.permissions.delete)
-                      Row(
+                    ),
+                  if (index > 1 &&
+                      (comment.permissions.edit || comment.permissions.delete))
+                    Container(
+                      margin: EdgeInsets.only(top: 2.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: 50.w,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              ListCommentPostAdviseController(context: context)
-                                  .handleDeleteComment(id, comment.id);
-                            },
+                            margin: EdgeInsets.only(left: 10.w),
                             child: Text(
-                              'Xoá',
+                              handleTimeDifference3(comment.createAt),
+                              maxLines: 1,
                               style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
+                                color: AppColors.textGrey,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header,
                               ),
                             ),
                           ),
+                          Container(
+                            width: 20.w,
+                          ),
+                          if (comment.permissions.edit)
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    context
+                                        .read<ListCommentPostGroupBloc>()
+                                        .add(ChildrenEvent(comment));
+                                    context
+                                        .read<ListCommentPostGroupBloc>()
+                                        .add(ContentEvent(comment.content));
+                                    context
+                                        .read<ListCommentPostGroupBloc>()
+                                        .add(ReplyEvent(2));
+                                  },
+                                  child: Text(
+                                    translate('edit'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 20.w,
+                                ),
+                              ],
+                            ),
+                          if (comment.permissions.delete)
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    ListCommentPostGroupController(context: context)
+                                        .handleDeleteComment(id, comment.id);
+                                  },
+                                  child: Text(
+                                    translate('delete'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                         ],
                       ),
-                  ],
-                ),
-              ],
-            ),
+                    ),
+                ],
+              ),
+            ],
           ),
+        ),
+        Container(
+          height: 5.h,
+        ),
         if (comment.childrenComments.length > 0)
           Container(
-            padding: EdgeInsets.only(left: 10.w, bottom: 10.h),
+            padding: EdgeInsets.only(left: index == 1 ? 45.w : 60.w, bottom: 10.h),
             child: Column(
               children: [
                 for (int i = 0; i < comment.childrenComments.length; i += 1)
                   IntrinsicHeight(
                       child: Row(
                         children: [
-                          Container(width: 1, color: Colors.black),
+                          Container(width: 1, color: Colors.grey),
                           // This is divider
                           Container(
                               child: buildCommentWidget(context,
@@ -367,63 +430,32 @@ Widget buildCommentWidget(
               ],
             ),
           ),
+        if (comment.childrenComments.length !=
+            comment.childrenCommentNumber)
+          GestureDetector(
+            onTap: () {
+              ListCommentPostGroupController(context: context)
+                  .handleGetChildrenComment(comment);
+            },
+            child: Container(
+              margin: EdgeInsets.only(left: index == 1 ? 45.w : 55.w),
+              child: Text(
+                '${translate('see')} ${comment.childrenCommentNumber - comment.childrenComments.length} ${translate('comments').toLowerCase()}',
+                style: TextStyle(
+                  color: AppColors.textGrey,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.normal,
+                  fontFamily: AppFonts.Header,
+                ),
+              ),
+            ),
+          )
       ],
     ),
   );
 }
 
-Widget buildTextFieldContent1(BuildContext context, String hintText,
-    String textType, String iconName, void Function(String value)? func) {
-  return Container(
-      width: 290.w,
-      margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 5.w, bottom: 2.h),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.w),
-        color: Color.fromARGB(255, 245, 245, 245),
-        border: Border.all(
-          color: Colors.transparent,
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            margin: EdgeInsets.only(left: 10.w),
-            width: 260.w,
-            child: TextField(
-              onChanged: (value) => func!(value),
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              // Cho phép đa dòng
-              decoration: InputDecoration(
-                hintText: hintText,
-                contentPadding: EdgeInsets.zero,
-                border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                disabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: TextStyle(
-                  color: AppColors.secondaryElementText,
-                ),
-                counterText: '',
-              ),
-              style: TextStyle(
-                color: AppColors.textBlack,
-                fontFamily: AppFonts.Header3,
-                fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
-              ),
-              autocorrect: false,
-            ),
-          )
-        ],
-      ));
-}
-
-Widget buildTextFieldContent2(BuildContext context, String hintText,
+Widget buildTextFieldContent(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
   TextEditingController _controller = TextEditingController(
       text: BlocProvider.of<ListCommentPostGroupBloc>(context)
@@ -471,7 +503,7 @@ Widget buildTextFieldContent2(BuildContext context, String hintText,
               ),
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
               ),
@@ -494,14 +526,14 @@ Widget navigation(BuildContext context, String content, Comment? comment,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                buildTextFieldContent1(
-                    context, 'Bình luận của bạn', 'comment', '', (value) {
+                buildTextFieldContent(
+                    context, translate('your_comment'), 'comment', '', (value) {
                   context.read<ListCommentPostGroupBloc>().add(ContentEvent(value));
                 }),
                 GestureDetector(
                   onTap: () {
                     if (content != "") {
-                      ListCommentPostAdviseController(context: context)
+                      ListCommentPostGroupController(context: context)
                           .handleLoadWriteComment(id);
                     }
                   },
@@ -530,9 +562,9 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                     Container(
                       margin: EdgeInsets.only(left: 10.w, bottom: 2.h),
                       child: Text(
-                        'Đang trả lời',
+                        translate('replying_to'),
                         style: TextStyle(
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                           fontWeight: FontWeight.normal,
                           fontSize: 12.sp,
                           color: AppColors.secondaryHeader,
@@ -545,7 +577,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                     Text(
                       comment!.creator.fullName,
                       style: TextStyle(
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header,
                         fontWeight: FontWeight.bold,
                         fontSize: 12.sp,
                         color: AppColors.secondaryHeader,
@@ -562,14 +594,11 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                         context
                             .read<ListCommentPostGroupBloc>()
                             .add(ContentEvent(''));
-                        context.read<ListCommentPostGroupBloc>().add(
-                            ChildrenEvent(Comment('', User('', '', '', '', '', '', '', Faculty(0,''), '', '', '', ''), '',
-                                0, '', '', Permissions(false, false))));
                       },
                       child: Text(
-                        '- Huỷ',
+                        '- ${translate('cancel')}',
                         style: TextStyle(
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                           fontWeight: FontWeight.bold,
                           fontSize: 12.sp,
                           color: AppColors.textGrey,
@@ -581,14 +610,14 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    buildTextFieldContent2(
-                        context, 'Bình luận của bạn', 'comment', '', (value) {
+                    buildTextFieldContent(
+                        context, translate('your_comment'), 'comment', '', (value) {
                       context.read<ListCommentPostGroupBloc>().add(ContentEvent(value));
                     }),
                     GestureDetector(
                       onTap: () {
                         if (content != "") {
-                          ListCommentPostAdviseController(context: context)
+                          ListCommentPostGroupController(context: context)
                               .handleLoadWriteChildrenComment(
                               id,
                               BlocProvider.of<ListCommentPostGroupBloc>(
@@ -625,9 +654,9 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                     Container(
                       margin: EdgeInsets.only(left: 10.w, bottom: 2.h),
                       child: Text(
-                        'Chỉnh sửa bình luận',
+                        translate('edit_comment'),
                         style: TextStyle(
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                           fontWeight: FontWeight.normal,
                           fontSize: 12.sp,
                           color: AppColors.secondaryHeader,
@@ -645,14 +674,11 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                         context
                             .read<ListCommentPostGroupBloc>()
                             .add(ContentEvent(''));
-                        context.read<ListCommentPostGroupBloc>().add(
-                            ChildrenEvent(Comment('', User('', '', '', '', '', '', '', Faculty(0,''), '', '', '', ''), '',
-                                0, '', '', Permissions(false, false))));
                       },
                       child: Text(
-                        '- Huỷ',
+                        '- ${translate('cancel')}',
                         style: TextStyle(
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                           fontWeight: FontWeight.bold,
                           fontSize: 12.sp,
                           color: AppColors.textGrey,
@@ -664,8 +690,8 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    buildTextFieldContent2(
-                        context, 'Bình luận của bạn', 'comment', '', (value) {
+                    buildTextFieldContent(
+                        context, translate('your_comment'), 'comment', '', (value) {
                       context.read<ListCommentPostGroupBloc>().add(ContentEvent(value));
                     }),
                     GestureDetector(
@@ -675,7 +701,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                           1
                           ? () {
                         if (content != "") {
-                          ListCommentPostAdviseController(
+                          ListCommentPostGroupController(
                               context: context)
                               .handleLoadWriteChildrenComment(
                               id,
@@ -689,7 +715,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                       }
                           : () {
                         if (content != "") {
-                          ListCommentPostAdviseController(
+                          ListCommentPostGroupController(
                               context: context)
                               .handleEditComment(
                               id,
@@ -733,10 +759,10 @@ AppBar buildAppBar(BuildContext context) {
             width: 5.w,
           ),
           Text(
-            'Bình luận',
+            translate('comment'),
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontFamily: AppFonts.Header0,
+              fontFamily: AppFonts.Header,
               fontWeight: FontWeight.bold,
               fontSize: 16.sp,
               color: AppColors.secondaryHeader,

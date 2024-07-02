@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/list_react_post_advise/bloc/list_interact_post_advise_blocs.dart';
 
 import '../../../common/values/colors.dart';
@@ -20,10 +21,10 @@ AppBar buildAppBar(BuildContext context) {
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Người đã bày tỏ cảm xúc',
+          translate('people_who_react'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -81,12 +82,12 @@ Widget listInteract(BuildContext context, ScrollController _scrollController) {
                               child: Container(
                             margin: EdgeInsets.only(top: 20.h),
                             child: Text(
-                              'Không có dữ liệu',
+                              translate('no_data'),
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 11.sp,
+                                fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header,
                               ),
                             ),
                           )),
@@ -184,7 +185,7 @@ Widget interact(BuildContext context, Interact interact) {
                   color: AppColors.textBlack,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w900,
-                  fontFamily: AppFonts.Header2,
+                  fontFamily: AppFonts.Header,
                 ),
               ),
             ],

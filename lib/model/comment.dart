@@ -1,4 +1,5 @@
 import 'package:hcmus_alumni_mobile/model/permissions.dart';
+import 'package:hcmus_alumni_mobile/model/post_v2.dart';
 import 'package:hcmus_alumni_mobile/model/user.dart';
 
 class Comment {
@@ -10,9 +11,10 @@ class Comment {
   final String createAt;
   final String updateAt;
   final Permissions permissions;
+  final PostV2? post;
 
   Comment(this.id, this.creator, this.content, this.childrenCommentNumber,
-      this.createAt, this.updateAt, this.permissions);
+      this.createAt, this.updateAt, this.permissions, this.post);
 
   Comment.fromJson(Map<String, dynamic> json)
       : id = json["id"],
@@ -21,10 +23,12 @@ class Comment {
         childrenCommentNumber = json["childrenCommentNumber"].toInt(),
         createAt = json["createAt"],
         updateAt = json["updateAt"],
-        permissions = Permissions.fromJson(json["permissions"]);
+        permissions = Permissions.fromJson(json["permissions"]),
+        post = json["postAdvise"] != null ? PostV2.fromJson(json["postAdvise"]) : null;
 
   Future<void> fetchChildrenComments(Map<String, dynamic> json) async {
-    childrenComments =
-        (json["comments"] as List).map((i) => new Comment.fromJson(i)).toList();
+    final newComments =
+        (json["comments"] as List).map((i) => Comment.fromJson(i)).toList();
+    childrenComments.addAll(newComments);
   }
 }

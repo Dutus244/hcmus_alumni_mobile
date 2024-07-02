@@ -30,7 +30,7 @@ AppBar buildAppBar(BuildContext context) {
           translate('news'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header3,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -143,7 +143,7 @@ Widget newsContent(BuildContext context, News? news) {
           child: Text(
             "${translate('faculty_of')} " + news.faculty.name,
             style: TextStyle(
-              fontFamily: AppFonts.Header3,
+              fontFamily: AppFonts.Header,
               color: Color.fromARGB(255, 51, 58, 73),
               fontWeight: FontWeight.w500,
               fontSize: getFacultyFontSize(
@@ -156,7 +156,7 @@ Widget newsContent(BuildContext context, News? news) {
           child: Text(
             news.title,
             style: TextStyle(
-              fontFamily: AppFonts.Header3,
+              fontFamily: AppFonts.Header,
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: getTitleFontSize(
@@ -182,7 +182,7 @@ Widget newsContent(BuildContext context, News? news) {
                   Text(
                     handleDateTime1(news.publishedAt),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       color: Colors.black,
                       fontWeight: FontWeight.normal,
                       fontSize: getTimeFontSize(
@@ -211,7 +211,7 @@ Widget newsContent(BuildContext context, News? news) {
                     news.views.toString(),
                     maxLines: 2,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: getTimeFontSize(
                           BlocProvider.of<NewsDetailBloc>(context)
                               .state
@@ -249,7 +249,7 @@ Widget newsContent(BuildContext context, News? news) {
               Text(
                 news.creator.fullName,
                 style: TextStyle(
-                  fontFamily: AppFonts.Header3,
+                  fontFamily: AppFonts.Header,
                   color: Color.fromARGB(255, 51, 58, 73),
                   fontWeight: FontWeight.bold,
                   fontSize: 14.sp,
@@ -274,7 +274,7 @@ Widget newsContent(BuildContext context, News? news) {
                   child: Text(
                     news.tags[i].name,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 5, 90, 188),
@@ -332,7 +332,7 @@ Widget listComment(
                     Text(
                       translate('write_comment'),
                       style: TextStyle(
-                        fontFamily: AppFonts.Header3,
+                        fontFamily: AppFonts.Header,
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                         color: Colors.black.withOpacity(0.5),
@@ -353,7 +353,7 @@ Widget listComment(
           child: Text(
             "${translate('comment')} (${news.childrenCommentNumber})",
             style: TextStyle(
-              fontFamily: AppFonts.Header3,
+              fontFamily: AppFonts.Header,
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 18.sp,
@@ -392,7 +392,7 @@ Widget listComment(
                 child: Text(
                   translate('more_comment'),
                   style: TextStyle(
-                    fontFamily: AppFonts.Header3,
+                    fontFamily: AppFonts.Header,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 43, 107, 182),
@@ -423,16 +423,17 @@ Widget buildCommentWidget(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          height: 35.h,
           margin: EdgeInsets.only(top: 5.h),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 35.w,
-                height: 35.h,
+                width: index <= 0 ? 35.w : 25.w,
+                height: index <= 0 ? 35.h : 25.h,
                 margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 child: GestureDetector(
                     onTap: () {
+                      // Xử lý khi người dùng tap vào hình ảnh
                       if (comment.creator.id ==
                           Global.storageService.getUserId()) {
                         Navigator.pushNamed(
@@ -445,50 +446,248 @@ Widget buildCommentWidget(
                               "id": comment.creator.id,
                             });
                       }
-                      // Xử lý khi người dùng tap vào hình ảnh
                     },
                     child: CircleAvatar(
                       radius: 10,
                       child: null,
                       backgroundImage:
-                          NetworkImage(comment.creator.avatarUrl ?? ""),
+                      NetworkImage(comment.creator.avatarUrl ?? ""),
                     )),
               ),
-              Container(
-                width: 270.w,
-                height: 35.h,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 0.h),
-                      child: Text(
-                        comment.creator.fullName,
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: AppColors.textBlack,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header3,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundWhiteDark,
+                      borderRadius: BorderRadius.circular(10.w),
+                      border: Border.all(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: (280 - (index == 2 ? 100 : 0 + index == 1 ? 55 : 0)).w,
+                      ),
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            left: 10.w, right: 10.w, top: 2.h, bottom: 2.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Text(
+                                comment.creator.fullName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: AppColors.textBlack,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: AppFonts.Header,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 1.h),
+                            // Khoảng cách giữa tên và nội dung
+                            Text(
+                              comment.content,
+                              style: TextStyle(
+                                color: AppColors.textBlack,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
+                  ),
+                  if (index <= 1)
                     Container(
-                      margin: EdgeInsets.only(bottom: 0.h),
-                      child: Text(
-                        handleDateTime1(comment.updateAt),
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: AppColors.textGrey,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header3,
-                        ),
+                      margin: EdgeInsets.only(top: 4.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 0.w),
+                            child: Text(
+                              handleTimeDifference3(comment.createAt),
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: AppColors.textGrey,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 20.w,
+                          ),
+                          if (Global.storageService.permissionNewsCommentCreate())
+                            Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  await Navigator.pushNamed(
+                                    context,
+                                    "/newsDetailWriteChildrenComment",
+                                    arguments: {
+                                      "news": news,
+                                      "comment": comment,
+                                    },
+                                  );
+                                  NewsDetailController(context: context).handleGetComment(news.id, 0);
+                                },
+                                child: Text(
+                                  translate('reply'),
+                                  style: TextStyle(
+                                    color: Colors.black.withOpacity(0.8),
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: AppFonts.Header,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 20.w,
+                              ),
+                            ],
+                          ),
+                          if (comment.permissions.edit)
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    await Navigator.pushNamed(
+                                      context,
+                                      "/newsDetailEditComment",
+                                      arguments: {
+                                        "news": news,
+                                        "comment": comment,
+                                      },
+                                    );
+                                    NewsDetailController(context: context).handleGetComment(news.id, 0);
+                                  },
+                                  child: Text(
+                                    translate('edit'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 20.w,
+                                ),
+                              ],
+                            ),
+                          if (comment.permissions.delete)
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    NewsDetailController(context: context)
+                                        .handleDeleteComment(news.id, comment.id);
+                                  },
+                                  child: Text(
+                                    translate('delete'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  if (index > 1 &&
+                      (comment.permissions.edit || comment.permissions.delete))
+                    Container(
+                      margin: EdgeInsets.only(top: 2.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 10.w),
+                            child: Text(
+                              handleTimeDifference3(comment.createAt),
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: AppColors.textGrey,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 20.w,
+                          ),
+                          if (comment.permissions.edit)
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    await Navigator.pushNamed(
+                                      context,
+                                      "/newsDetailEditComment",
+                                      arguments: {
+                                        "news": news,
+                                        "comment": comment,
+                                      },
+                                    );
+                                    NewsDetailController(context: context).handleGetComment(news.id, 0);
+                                  },
+                                  child: Text(
+                                    translate('edit'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 20.w,
+                                ),
+                              ],
+                            ),
+                          if (comment.permissions.delete)
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    NewsDetailController(context: context)
+                                        .handleDeleteComment(news.id, comment.id);
+                                  },
+                                  child: Text(
+                                    translate('delete'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
+                ],
               ),
             ],
           ),
@@ -496,226 +695,45 @@ Widget buildCommentWidget(
         Container(
           height: 5.h,
         ),
-        Container(
-          padding: EdgeInsets.only(left: 10.w, right: 10.w),
-          width: (340 - 10 * index).w,
-          child: Text(
-            comment.content,
-            style: TextStyle(
-              color: AppColors.textBlack,
-              fontSize: 12.sp,
-              fontWeight: FontWeight.normal,
-              fontFamily: AppFonts.Header3,
-            ),
-          ),
-        ),
-        if (index <= 1)
-          Container(
-            margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        NewsDetailController(context: context)
-                            .handleGetChildrenComment(comment.id);
-                      },
-                      child: Container(
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icons/comment.svg",
-                              width: 11.w,
-                              height: 11.h,
-                              color: Colors.black.withOpacity(0.8),
-                            ),
-                            Container(
-                              width: 3.w,
-                            ),
-                            Text(
-                              "${comment.childrenCommentNumber.toString()} ${translate('reply').toLowerCase()}",
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header3,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    if (Global.storageService.permissionNewsCommentCreate())
-                      Row(
-                        children: [
-                          Container(
-                            width: 50.w,
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              await Navigator.pushNamed(
-                                context,
-                                "/newsDetailWriteChildrenComment",
-                                arguments: {
-                                  "news": news,
-                                  "comment": comment,
-                                },
-                              );
-                              NewsDetailController(context: context).handleGetComment(news.id, 0);
-                            },
-                            child: Text(
-                              translate('reply'),
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header3,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    if (comment.permissions.edit)
-                      Row(
-                        children: [
-                          Container(
-                            width: 50.w,
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              await Navigator.pushNamed(
-                                context,
-                                "/newsDetailEditComment",
-                                arguments: {
-                                  "news": news,
-                                  "comment": comment,
-                                },
-                              );
-                              NewsDetailController(context: context).handleGetComment(news.id, 0);
-                            },
-                            child: Text(
-                              translate('edit'),
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header3,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    if (comment.permissions.delete)
-                      Row(
-                        children: [
-                          Container(
-                            width: 50.w,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              NewsDetailController(context: context)
-                                  .handleDeleteComment(news.id, comment.id);
-                            },
-                            child: Text(
-                              translate('delete'),
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header3,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        if (index > 1)
-          Container(
-            margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
-            child: Row(
-              children: [
-                Row(
-                  children: [
-                    if (comment.permissions.edit)
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              await Navigator.pushNamed(
-                                context,
-                                "/newsDetailEditComment",
-                                arguments: {
-                                  "news": news,
-                                  "comment": comment,
-                                },
-                              );
-                              NewsDetailController(context: context).handleGetComment(news.id, 0);
-                            },
-                            child: Text(
-                              translate('edit'),
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header3,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    if (comment.permissions.delete)
-                      Row(
-                        children: [
-                          Container(
-                            width: 50.w,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              NewsDetailController(context: context)
-                                  .handleDeleteComment(news.id, comment.id);
-                            },
-                            child: Text(
-                              translate('delete'),
-                              style: TextStyle(
-                                color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header3,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-              ],
-            ),
-          ),
         if (comment.childrenComments.length > 0)
           Container(
-            padding: EdgeInsets.only(left: 10.w, bottom: 10.h),
+            padding: EdgeInsets.only(left: index == 1 ? 45.w : 60.w, bottom: 10.h),
             child: Column(
               children: [
                 for (int i = 0; i < comment.childrenComments.length; i += 1)
                   IntrinsicHeight(
                       child: Row(
-                    children: [
-                      Container(width: 1, color: Colors.black),
-                      // This is divider
-                      Container(
-                          child: buildCommentWidget(context, news,
-                              comment.childrenComments[i], index + 1)),
-                    ],
-                  ))
+                        children: [
+                          Container(width: 1, color: Colors.grey),
+                          // This is divider
+                          Container(
+                              child: buildCommentWidget(context, news,
+                                  comment.childrenComments[i], index + 1)),
+                        ],
+                      ))
               ],
             ),
           ),
+        if (comment.childrenComments.length !=
+            comment.childrenCommentNumber)
+          GestureDetector(
+            onTap: () {
+              NewsDetailController(context: context)
+                  .handleGetChildrenComment(comment);
+            },
+            child: Container(
+              margin: EdgeInsets.only(left: index == 1 ? 45.w : 55.w),
+              child: Text(
+                '${translate('see')} ${comment.childrenCommentNumber - comment.childrenComments.length} ${translate('comments').toLowerCase()}',
+                style: TextStyle(
+                  color: AppColors.textGrey,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.normal,
+                  fontFamily: AppFonts.Header,
+                ),
+              ),
+            ),
+          )
       ],
     ),
   );
@@ -731,7 +749,7 @@ Widget listRelatedNews(BuildContext context, List<News> newsList) {
         child: Text(
           translate('related_news'),
           style: TextStyle(
-            fontFamily: AppFonts.Header3,
+            fontFamily: AppFonts.Header,
             color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 18.sp,
@@ -789,7 +807,7 @@ Widget news(BuildContext context, News news) {
                       handleDateTime1(news.publishedAt),
                       maxLines: 1,
                       style: TextStyle(
-                        fontFamily: AppFonts.Header3,
+                        fontFamily: AppFonts.Header,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
@@ -815,7 +833,7 @@ Widget news(BuildContext context, News news) {
                       news.views.toString(),
                       maxLines: 1,
                       style: TextStyle(
-                        fontFamily: AppFonts.Header3,
+                        fontFamily: AppFonts.Header,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
@@ -842,7 +860,7 @@ Widget news(BuildContext context, News news) {
                     child: Text(
                       news.tags[i].name,
                       style: TextStyle(
-                        fontFamily: AppFonts.Header3,
+                        fontFamily: AppFonts.Header,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.normal,
                         color: Color.fromARGB(255, 5, 90, 188),
@@ -858,7 +876,7 @@ Widget news(BuildContext context, News news) {
               news.title,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textBlack,
@@ -873,7 +891,7 @@ Widget news(BuildContext context, News news) {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.normal,
                 color: AppColors.textBlack,
@@ -914,7 +932,7 @@ Widget news(BuildContext context, News news) {
                         color: Colors.white,
                         fontSize: 11.sp,
                         fontWeight: FontWeight.normal,
-                        fontFamily: AppFonts.Header3,
+                        fontFamily: AppFonts.Header,
                       ),
                     ),
                   ),
@@ -1022,7 +1040,7 @@ class _ButtonEditTextState extends State<ButtonEditText> {
                           Text(
                             translate('choose_font_size'),
                             style: TextStyle(
-                              fontFamily: AppFonts.Header3,
+                              fontFamily: AppFonts.Header,
                               fontSize: 16.sp,
                               fontWeight: FontWeight.normal,
                               color: AppColors.element,

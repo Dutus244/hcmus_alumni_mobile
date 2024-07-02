@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "436562093949",
+    "project_id": "alumverse-23173",
+    "storage_bucket": "alumverse-23173.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436562093949:android:a411ef450c3297a50a4e14",
+        "android_client_info": {
+          "package_name": "com.example.hcmus_alumni_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLggDtQppE4ePbYut9yxReKjVrTsA6MlI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

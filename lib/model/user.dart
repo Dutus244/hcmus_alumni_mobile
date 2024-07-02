@@ -1,13 +1,14 @@
 import 'package:hcmus_alumni_mobile/model/faculty.dart';
+import 'package:hcmus_alumni_mobile/model/sex.dart';
 
 class User {
   final String id;
   final String email;
   final String fullName;
   final String phone;
-  final String sex;
+  final Sex? sex;
   final String dob;
-  final String socialLink;
+  final String socialMediaLink;
   final Faculty? faculty;
   final String degree;
   final String aboutMe;
@@ -21,7 +22,7 @@ class User {
       this.phone,
       this.sex,
       this.dob,
-      this.socialLink,
+      this.socialMediaLink,
       this.faculty,
       this.degree,
       this.aboutMe,
@@ -33,9 +34,9 @@ class User {
         email = json["email"] ?? "",
         fullName = json["fullName"] ?? "",
         phone = json["phone"] ?? "",
-        sex = json["sex"] ?? "",
+        sex = json["sex"] != null ? Sex.fromJson(json["sex"]) : null,
         dob = json["dob"] ?? "",
-        socialLink = json["socialLink"] ?? "",
+        socialMediaLink = json["socialMediaLink"] ?? "",
         faculty =
             json["faculty"] != null ? Faculty.fromJson(json["faculty"]) : null,
         degree = json["degree"] ?? "",

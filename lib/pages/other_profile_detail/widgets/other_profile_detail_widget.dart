@@ -21,7 +21,7 @@ AppBar buildAppBar(BuildContext context) {
           translate('personal_information'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header3,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -92,7 +92,7 @@ Widget profile(BuildContext context) {
             Text(
               translate('basic_information'),
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 color: AppColors.secondaryHeader,
@@ -125,7 +125,7 @@ Widget profile(BuildContext context) {
                     name,
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -136,7 +136,7 @@ Widget profile(BuildContext context) {
                   child: Text(
                     translate('full_name'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -174,7 +174,7 @@ Widget profile(BuildContext context) {
                     faculty,
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -185,7 +185,7 @@ Widget profile(BuildContext context) {
                   child: Text(
                     translate('faculty'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -229,7 +229,7 @@ Widget profile(BuildContext context) {
                     sex,
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -240,7 +240,7 @@ Widget profile(BuildContext context) {
                   child: Text(
                     translate('sex'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -280,7 +280,7 @@ Widget profile(BuildContext context) {
                         : '',
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -291,7 +291,7 @@ Widget profile(BuildContext context) {
                   child: Text(
                     translate('birthday'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -327,7 +327,7 @@ Widget profile(BuildContext context) {
                     'dutus24',
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -338,7 +338,7 @@ Widget profile(BuildContext context) {
                   child: Text(
                     translate('social_network'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -374,7 +374,7 @@ Widget profile(BuildContext context) {
                     '20127013',
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -385,7 +385,7 @@ Widget profile(BuildContext context) {
                   child: Text(
                     translate('student_id'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -421,7 +421,7 @@ Widget profile(BuildContext context) {
                     '20CLC11',
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -432,7 +432,7 @@ Widget profile(BuildContext context) {
                   child: Text(
                     translate('class'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -468,7 +468,7 @@ Widget profile(BuildContext context) {
                     '2020',
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -479,7 +479,7 @@ Widget profile(BuildContext context) {
                   child: Text(
                     translate('year_admission'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -515,7 +515,7 @@ Widget profile(BuildContext context) {
                     '2024',
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -526,7 +526,7 @@ Widget profile(BuildContext context) {
                   child: Text(
                     translate('graduation_year'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -553,7 +553,7 @@ Widget contact(BuildContext context) {
             Text(
               translate('contact_info'),
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 color: AppColors.secondaryHeader,
@@ -587,7 +587,7 @@ Widget contact(BuildContext context) {
                     'test@gmail.com',
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -598,7 +598,7 @@ Widget contact(BuildContext context) {
                   child: Text(
                     translate('email'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -634,7 +634,7 @@ Widget contact(BuildContext context) {
                     '0123456789',
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -645,7 +645,7 @@ Widget contact(BuildContext context) {
                   child: Text(
                     translate('phone'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -672,7 +672,7 @@ Widget aboutMe(BuildContext context) {
             Text(
               translate('about_me'),
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 color: AppColors.secondaryHeader,
@@ -687,7 +687,7 @@ Widget aboutMe(BuildContext context) {
           'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
           style: TextStyle(
             color: AppColors.textBlack,
-            fontFamily: AppFonts.Header3,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.normal,
             fontSize: 12.sp,
           ),
@@ -712,7 +712,7 @@ Widget jobs(BuildContext context) {
             Text(
               translate('job'),
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 color: AppColors.secondaryHeader,
@@ -735,7 +735,7 @@ Widget jobs(BuildContext context) {
             child: Text(
               translate('no_job'),
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
                 color: AppColors.secondaryHeader,
@@ -776,7 +776,7 @@ Widget job(BuildContext context, Job job) {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -787,7 +787,7 @@ Widget job(BuildContext context, Job job) {
                   child: Text(
                     job.position,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 11.sp,
                       color: AppColors.textBlack,
@@ -799,7 +799,7 @@ Widget job(BuildContext context, Job job) {
                   child: Text(
                     '${job.startTime} - ${job.endTime}',
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -830,7 +830,7 @@ Widget educations(BuildContext context) {
             Text(
               translate('education'),
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 color: AppColors.secondaryHeader,
@@ -857,7 +857,7 @@ Widget educations(BuildContext context) {
             child: Text(
               translate('no_education'),
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
                 color: AppColors.secondaryHeader,
@@ -898,7 +898,7 @@ Widget education(BuildContext context, Education education) {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -909,7 +909,7 @@ Widget education(BuildContext context, Education education) {
                   child: Text(
                     education.degree,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 11.sp,
                       color: AppColors.textBlack,
@@ -921,7 +921,7 @@ Widget education(BuildContext context, Education education) {
                   child: Text(
                     '${education.startTime} - ${education.endTime}',
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,
@@ -952,7 +952,7 @@ Widget achievements(BuildContext context) {
             Text(
               translate('achievement'),
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.sp,
                 color: AppColors.secondaryHeader,
@@ -978,7 +978,7 @@ Widget achievements(BuildContext context) {
             child: Text(
               translate('no_achievement'),
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
                 color: AppColors.secondaryHeader,
@@ -1019,7 +1019,7 @@ Widget achievement(BuildContext context, Achievement achievement) {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
                     ),
@@ -1030,7 +1030,7 @@ Widget achievement(BuildContext context, Achievement achievement) {
                   child: Text(
                     achievement.type,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 11.sp,
                       color: AppColors.textBlack,
@@ -1042,7 +1042,7 @@ Widget achievement(BuildContext context, Achievement achievement) {
                   child: Text(
                     achievement.time,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
                       fontSize: 10.sp,
                       color: AppColors.secondaryElementText,

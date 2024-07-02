@@ -3,6 +3,7 @@ import 'dart:convert'; // Import the 'dart:convert' library
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/news_response.dart';
 
 import '../../common/widgets/flutter_toast.dart';
@@ -36,10 +37,10 @@ class HomePageController {
         var eventResponse = EventResponse.fromJson(jsonMap);
         context.read<HomePageBloc>().add(EventsEvent(eventResponse.events));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách sự kiện");
+        toastInfo(msg: translate('error_get_event'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách sự kiện");
+      toastInfo(msg: translate('error_get_event'));
     }
   }
 
@@ -61,10 +62,10 @@ class HomePageController {
         var newsResponse = NewsResponse.fromJson(jsonMap);
         context.read<HomePageBloc>().add(NewsEvent(newsResponse.news));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách tin tức");
+        toastInfo(msg: translate('error_get_news'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách tin tức");
+      toastInfo(msg: translate('error_get_news'));
     }
   }
 
@@ -89,10 +90,10 @@ class HomePageController {
             .read<HomePageBloc>()
             .add(HallOfFamesEvent(hallOfFameResponse.hallOfFames));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết");
+        toastInfo(msg: translate('error_get_hof'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết");
+      toastInfo(msg: translate('error_get_hof'));
     }
   }
 }

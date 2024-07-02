@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/group.dart';
 import 'package:hcmus_alumni_mobile/pages/group_member/group_member_controller.dart';
 
@@ -22,10 +23,10 @@ AppBar buildAppBar(BuildContext context) {
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Thành viên nhóm',
+          translate('group_member'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -74,12 +75,12 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có thành viên nào',
+                          translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                       )),
@@ -118,12 +119,12 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
                           margin: EdgeInsets.only(
                               left: 10.w, top: 10.h, bottom: 5.h),
                           child: Text(
-                            'Quản trị viên',
+                            translate('admin'),
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.Header2,
+                              fontFamily: AppFonts.Header,
                             ),
                           ),
                         ),
@@ -149,12 +150,12 @@ Widget listMember(BuildContext context, ScrollController _scrollController,
                           margin: EdgeInsets.only(
                               left: 10.w, top: 10.h, bottom: 5.h),
                           child: Text(
-                            'Thành viên',
+                            translate('member'),
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.Header2,
+                              fontFamily: AppFonts.Header,
                             ),
                           ),
                         ),
@@ -248,7 +249,7 @@ Widget member(BuildContext context, Member member, Group group) {
                       color: AppColors.textBlack,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w900,
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header,
                     ),
                   ),
                   if (member.role == 'ADMIN' || member.role == 'CREATOR')
@@ -266,24 +267,24 @@ Widget member(BuildContext context, Member member, Group group) {
                           width: 2.w,
                         ),
                         Text(
-                          'Quản trị viên',
+                          translate('admin'),
                           style: TextStyle(
                             color: AppColors.textGrey,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w900,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                       ],
                     ),
                   if (member.role == 'MEMBER')
                     Text(
-                      'Thành viên',
+                      translate('member'),
                       style: TextStyle(
                         color: AppColors.textGrey,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w900,
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header,
                       ),
                     ),
                 ],
@@ -332,7 +333,7 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
                       color: Colors.black,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header,
                     ),
                   ),
                 ),
@@ -358,9 +359,9 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
                         width: 10.w,
                       ),
                       Text(
-                        'Xoá thành viên',
+                        translate('delete_member'),
                         style: TextStyle(
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textBlack,
@@ -397,10 +398,10 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
                       ),
                       Text(
                         member.role == 'MEMBER'
-                            ? 'Mời làm quản trị viên'
-                            : 'Gỡ vai trò quản trị viên',
+                            ? translate('invite_admin')
+                            : translate('remove_admin'),
                         style: TextStyle(
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textBlack,

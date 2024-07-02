@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
@@ -25,10 +26,10 @@ AppBar buildAppBar(BuildContext context) {
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Chỉnh sửa nhóm',
+          translate('edit_group'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -66,9 +67,9 @@ Widget buttonEdit(BuildContext context, Group group) {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Lưu',
+                  translate('save'),
                   style: TextStyle(
-                      fontFamily: AppFonts.Header1,
+                      fontFamily: AppFonts.Header,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
                       color: (name != "")
@@ -139,7 +140,7 @@ Widget buildTextFieldName(BuildContext context, String hintText, String textType
               ),
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
                 fontSize: 12.sp,
               ),
@@ -195,7 +196,7 @@ Widget buildTextFieldDescription(BuildContext context, String hintText, String t
               ),
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
               ),
@@ -220,12 +221,12 @@ Widget choosePrivacy(BuildContext context) {
                 margin: EdgeInsets.only(top: 10.h),
                 child: Center(
                   child: Text(
-                    'Chọn quyền riêng tư',
+                    translate('choose_privacy'),
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header,
                     ),
                   ),
                 ),
@@ -247,23 +248,23 @@ Widget choosePrivacy(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Công khai',
+                            translate('public'),
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.Header2,
+                              fontFamily: AppFonts.Header,
                             ),
                           ),
                           Container(
                             width: 270.w,
                             child: Text(
-                              'Bất kỳ ai cũng có thể nhìn thấy mọi người trong nhóm và những gì họ đăng',
+                              translate('public_description'),
                               style: TextStyle(
                                 color: AppColors.textGrey,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header3,
+                                fontFamily: AppFonts.Header,
                               ),
                             ),
                           ),
@@ -304,23 +305,23 @@ Widget choosePrivacy(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            'Riêng tư',
+                            translate('private'),
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.Header2,
+                              fontFamily: AppFonts.Header,
                             ),
                           ),
                           Container(
                             width: 270.w,
                             child: Text(
-                              'Chỉ thành viên mới nhìn thấy mọi người trong nhóm và những gì họ đăng',
+                              translate('private_description'),
                               style: TextStyle(
                                 color: AppColors.textGrey,
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header3,
+                                fontFamily: AppFonts.Header,
                               ),
                             ),
                           ),
@@ -379,11 +380,11 @@ Widget buildTextFieldPrivacy(BuildContext context) {
           children: [
             Text(
               BlocProvider.of<GroupEditBloc>(context).state.privacy == 0
-                  ? 'Công khai'
-                  : 'Riêng tư',
+                  ? translate('public')
+                  : translate('private'),
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
               ),
@@ -432,7 +433,7 @@ Widget header() {
                 color: AppColors.textBlack,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header,
               ),
             ),
           ],
@@ -452,10 +453,10 @@ Widget groupEdit(BuildContext context, Group group) {
           scrollDirection: Axis.vertical,
           children: [
             header(),
-            buildTextFieldName(context, 'Tên nhóm của bạn', 'comment', '', (value) {
+            buildTextFieldName(context, translate('your_group_name'), 'comment', '', (value) {
               context.read<GroupEditBloc>().add(NameEvent(value));
             }),
-            buildTextFieldDescription(context, 'Mô tả về nhóm của bạn', 'comment', '',
+            buildTextFieldDescription(context, translate('description_your_group'), 'comment', '',
                     (value) {
                   context.read<GroupEditBloc>().add(DescriptionEvent(value));
                 }),
@@ -490,7 +491,7 @@ Widget choosePicture(
       onTap: () async {
         final pickedFiles = await ImagePicker().pickMultiImage();
         if (pickedFiles.length > 1) {
-          toastInfo(msg: "Chỉ được chọn tối đa 1 tấm ảnh");
+          toastInfo(msg: translate('picture_above_1'));
           return;
         }
         context.read<GroupEditBloc>().add(NetworkPictureEvent(""));
@@ -524,9 +525,9 @@ Widget choosePicture(
                         color: AppColors.background,
                       ),
                       Text(
-                        'Chọn ảnh bìa',
+                        translate('choose_cover'),
                         style: TextStyle(
-                            fontFamily: AppFonts.Header1,
+                            fontFamily: AppFonts.Header,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background),
@@ -648,7 +649,7 @@ Widget buildTextFieldTag(BuildContext context) {
                     ),
                     hintText: inputFieldValues.tags.isNotEmpty
                         ? ''
-                        : "Nhập #hashtag...",
+                        : "${translate('enter_#hashtag')}...",
                     errorText: inputFieldValues.error,
                     prefixIconConstraints:
                     BoxConstraints(maxWidth: 300.w * 0.8),
@@ -689,7 +690,7 @@ Widget buildTextFieldTag(BuildContext context) {
                                         style: TextStyle(
                                             fontSize: 11.sp,
                                             fontWeight: FontWeight.bold,
-                                            fontFamily: AppFonts.Header2,
+                                            fontFamily: AppFonts.Header,
                                             color: Colors.white),
                                       ),
                                       onTap: () {
@@ -730,7 +731,7 @@ Widget buildTextFieldTag(BuildContext context) {
                         .tags
                         .length >=
                         5) {
-                      toastInfo(msg: "Số lượng thẻ không được vượt quá 5");
+                      toastInfo(msg: translate('tag_above_5'));
                       return;
                     }
                     if (!BlocProvider.of<GroupEditBloc>(context)
@@ -741,7 +742,7 @@ Widget buildTextFieldTag(BuildContext context) {
                       addTag(context, value);
                     } else {
                       // Optionally, show a message to the user about the duplicate tag
-                      toastInfo(msg: "Bạn đã nhập tag này rồi");
+                      toastInfo(msg: translate('duplicate_tag'));
                     }
                   },
                 ),

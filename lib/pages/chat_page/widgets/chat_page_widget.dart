@@ -301,7 +301,7 @@ Widget inbox(BuildContext context, Inbox inbox) {
                     ),
                     Container(
                       child: Text(
-                        ' - ${handleDateTime3(inbox.latestMessage.createAt)}',
+                        ' ${handleDateTime3(inbox.latestMessage.createAt)}',
                         style:
                             AppTextStyle.small().withColor(AppColors.textGrey),
                       ),

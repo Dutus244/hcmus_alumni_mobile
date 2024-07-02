@@ -956,7 +956,7 @@ Widget messageOption(BuildContext context, Message message) {
             Text(
               'Trả lời',
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textBlack,

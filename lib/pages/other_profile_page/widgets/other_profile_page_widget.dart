@@ -60,7 +60,7 @@ Widget listFriend(BuildContext context) {
         child: Text(
           '300 ${translate('friends').toLowerCase()}',
           style: TextStyle(
-            fontFamily: AppFonts.Header3,
+            fontFamily: AppFonts.Header,
             fontSize: 12.sp,
             fontWeight: FontWeight.normal,
             color: AppColors.textGrey,
@@ -126,7 +126,7 @@ Widget listFriend(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textBlack,
@@ -160,7 +160,7 @@ Widget listFriend(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textBlack,
@@ -202,7 +202,7 @@ Widget listFriend(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textBlack,
@@ -236,7 +236,7 @@ Widget listFriend(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textBlack,
@@ -270,7 +270,7 @@ Widget listFriend(BuildContext context) {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textBlack,
@@ -940,7 +940,7 @@ Widget event(BuildContext context, Event event) {
                     '${translate('location')}:',
                     maxLines: 1,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 63, 63, 70),
@@ -956,7 +956,7 @@ Widget event(BuildContext context, Event event) {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontFamily: AppFonts.Header3,
+                        fontFamily: AppFonts.Header,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.normal,
                         color: Color.fromARGB(255, 63, 63, 70),
@@ -983,7 +983,7 @@ Widget event(BuildContext context, Event event) {
                     translate('time'),
                     maxLines: 1,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 63, 63, 70),
@@ -996,7 +996,7 @@ Widget event(BuildContext context, Event event) {
                     handleDateTime1(event.organizationTime),
                     maxLines: 1,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 63, 63, 70),
@@ -1038,7 +1038,7 @@ Widget event(BuildContext context, Event event) {
                         color: Colors.white,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.normal,
-                        fontFamily: AppFonts.Header3,
+                        fontFamily: AppFonts.Header,
                       ),
                     ),
                   ),

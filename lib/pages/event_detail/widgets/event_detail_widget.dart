@@ -15,6 +15,7 @@ import 'package:hcmus_alumni_mobile/pages/event_detail/bloc/event_detail_events.
 
 import '../../../common/function/handle_html_content.dart';
 import '../../../common/values/colors.dart';
+import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
 import '../bloc/event_detail_blocs.dart';
@@ -373,7 +374,7 @@ Widget eventContent(BuildContext context, Event event) {
         ),
       ),
       Container(
-        padding: EdgeInsets.only(top: 10.h, left: 10.w),
+        margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
         child: Row(
           children: [
             SvgPicture.asset(
@@ -382,13 +383,16 @@ Widget eventContent(BuildContext context, Event event) {
               height: 12.h,
               color: AppColors.textGrey,
             ),
-            for (int i = 0; i < event.tags.length; i += 1)
-              Container(
-                margin: EdgeInsets.only(left: 5.w),
-                child: Text(event.tags[i].name,
-                    style: AppTextStyle.small()
-                        .withColor(AppColors.element)),
+            Container(
+              margin: EdgeInsets.only(left: 2.w),
+              width: 300.w,
+              child: Text(
+                event.tags.map((tag) => tag.name).join(' '),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyle.xSmall().withColor(AppColors.tag),
               ),
+            ),
           ],
         ),
       ),
@@ -543,13 +547,13 @@ Widget buildCommentWidget(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Container(
-          height: 35.h,
           margin: EdgeInsets.only(top: 5.h),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 35.w,
-                height: 35.h,
+                width: index <= 0 ? 35.w : 25.w,
+                height: index <= 0 ? 35.h : 25.h,
                 margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 child: GestureDetector(
                     onTap: () {
@@ -571,32 +575,246 @@ Widget buildCommentWidget(
                       radius: 10,
                       child: null,
                       backgroundImage:
-                          NetworkImage(comment.creator.avatarUrl ?? ""),
+                      NetworkImage(comment.creator.avatarUrl ?? ""),
                     )),
               ),
-              Container(
-                width: 270.w,
-                height: 35.h,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: Text(
-                        comment.creator.fullName,
-                        maxLines: 1,
-                        style: AppTextStyle.small().wSemiBold(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundWhiteDark,
+                      borderRadius: BorderRadius.circular(10.w),
+                      border: Border.all(
+                        color: Colors.transparent,
                       ),
                     ),
-                    Container(
-                      child: Text(
-                        handleDateTime1(comment.updateAt),
-                        maxLines: 1,
-                        style: AppTextStyle.small().withColor(AppColors.textGrey),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: (280 - (index == 2 ? 100 : 0 + index == 1 ? 55 : 0)).w,
+                      ),
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            left: 10.w, right: 10.w, top: 2.h, bottom: 2.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: Text(
+                                comment.creator.fullName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: AppColors.textBlack,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: AppFonts.Header,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 1.h),
+                            // Khoảng cách giữa tên và nội dung
+                            Text(
+                              comment.content,
+                              style: TextStyle(
+                                color: AppColors.textBlack,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  if (index <= 1)
+                    Container(
+                      margin: EdgeInsets.only(top: 4.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 0.w),
+                            child: Text(
+                              handleTimeDifference3(comment.createAt),
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: AppColors.textGrey,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 20.w,
+                          ),
+                          if (Global.storageService.permissionNewsCommentCreate())
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    await Navigator.pushNamed(
+                                      context,
+                                      "/eventDetailWriteChildrenComment",
+                                      arguments: {
+                                        "event": event,
+                                        "comment": comment,
+                                      },
+                                    );
+                                    EventDetailController(context: context)
+                                        .handleGetComment(event.id, 0);
+                                  },
+                                  child: Text(
+                                    translate('reply'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 20.w,
+                                ),
+                              ],
+                            ),
+                          if (comment.permissions.edit)
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    await Navigator.pushNamed(
+                                      context,
+                                      "/eventDetailEditComment",
+                                      arguments: {
+                                        "event": event,
+                                        "comment": comment,
+                                      },
+                                    );
+                                    EventDetailController(context: context)
+                                        .handleGetComment(event.id, 0);
+                                  },
+                                  child: Text(
+                                    translate('edit'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 20.w,
+                                ),
+                              ],
+                            ),
+                          if (comment.permissions.delete)
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    EventDetailController(context: context)
+                                        .handleDeleteComment(event.id, comment.id);
+                                  },
+                                  child: Text(
+                                    translate('delete'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
+                  if (index > 1 &&
+                      (comment.permissions.edit || comment.permissions.delete))
+                    Container(
+                      margin: EdgeInsets.only(top: 2.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(left: 10.w),
+                            child: Text(
+                              handleTimeDifference3(comment.createAt),
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: AppColors.textGrey,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.normal,
+                                fontFamily: AppFonts.Header,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 20.w,
+                          ),
+                          if (comment.permissions.edit)
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    await Navigator.pushNamed(
+                                      context,
+                                      "/eventDetailEditComment",
+                                      arguments: {
+                                        "event": event,
+                                        "comment": comment,
+                                      },
+                                    );
+                                    EventDetailController(context: context)
+                                        .handleGetComment(event.id, 0);
+                                  },
+                                  child: Text(
+                                    translate('edit'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 20.w,
+                                ),
+                              ],
+                            ),
+                          if (comment.permissions.delete)
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    EventDetailController(context: context)
+                                        .handleDeleteComment(event.id, comment.id);
+                                  },
+                                  child: Text(
+                                    translate('delete'),
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.8),
+                                      fontSize: 11.sp,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
+                    ),
+                ],
               ),
             ],
           ),
@@ -604,193 +822,45 @@ Widget buildCommentWidget(
         Container(
           height: 5.h,
         ),
-        Container(
-          padding: EdgeInsets.only(left: 10.w, right: 10.w),
-          width: (340 - 10 * index).w,
-          child: Text(
-            comment.content,
-            style: AppTextStyle.small(),
-          ),
-        ),
-        if (index <= 1)
+        if (comment.childrenComments.length > 0)
           Container(
-            margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            padding: EdgeInsets.only(left: index == 1 ? 45.w : 60.w, bottom: 10.h),
+            child: Column(
               children: [
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        EventDetailController(context: context)
-                            .handleGetChildrenComment(comment.id);
-                      },
-                      child: Container(
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              AppAssets.commentIconS,
-                              width: 11.w,
-                              height: 11.h,
-                              color: AppColors.textBlack.withOpacity(0.8),
-                            ),
-                            Container(
-                              width: 3.w,
-                            ),
-                            Text(
-                              "${comment.childrenCommentNumber.toString()} ${translate('reply').toLowerCase()}",
-                              style: AppTextStyle.small().withColor(AppColors.textBlack.withOpacity(0.8)).size(11.sp),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    if (Global.storageService.permissionEventCommentCreate())
-                      Row(
+                for (int i = 0; i < comment.childrenComments.length; i += 1)
+                  IntrinsicHeight(
+                      child: Row(
                         children: [
+                          Container(width: 1, color: Colors.grey),
+                          // This is divider
                           Container(
-                            width: 50.w,
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              await Navigator.pushNamed(
-                                context,
-                                "/eventDetailWriteChildrenComment",
-                                arguments: {
-                                  "event": event,
-                                  "comment": comment,
-                                },
-                              );
-                              EventDetailController(context: context)
-                                  .handleGetComment(event.id, 0);
-                            },
-                            child: Text(
-                              translate('reply'),
-                              style: AppTextStyle.small().withColor(AppColors.textBlack.withOpacity(0.8)).size(11.sp),
-                            ),
-                          ),
+                              child: buildCommentWidget(context, event,
+                                  comment.childrenComments[i], index + 1)),
                         ],
-                      ),
-                    if (comment.permissions.edit)
-                      Row(
-                        children: [
-                          Container(
-                            width: 50.w,
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              await Navigator.pushNamed(
-                                context,
-                                "/eventDetailEditComment",
-                                arguments: {
-                                  "event": event,
-                                  "comment": comment,
-                                },
-                              );
-                              EventDetailController(context: context)
-                                  .handleGetComment(event.id, 0);
-                            },
-                            child: Text(
-                              translate('edit'),
-                              style: AppTextStyle.small().withColor(AppColors.textBlack.withOpacity(0.8)).size(11.sp),
-                            ),
-                          ),
-                        ],
-                      ),
-                    if (comment.permissions.delete)
-                      Row(
-                        children: [
-                          Container(
-                            width: 50.w,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              EventDetailController(context: context)
-                                  .handleDeleteComment(event.id, comment.id);
-                            },
-                            child: Text(
-                              translate('delete'),
-                              style: AppTextStyle.small().withColor(AppColors.textBlack.withOpacity(0.8)).size(11.sp),
-                            ),
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
+                      ))
               ],
             ),
           ),
-        if (index > 1)
-          Container(
-            margin: EdgeInsets.only(left: 10.w, right: 20.w, top: 10.h),
-            child: Row(
-              children: [
-                Row(
-                  children: [
-                    if (comment.permissions.edit)
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              await Navigator.pushNamed(
-                                context,
-                                "/eventDetailEditComment",
-                                arguments: {
-                                  "event": event,
-                                  "comment": comment,
-                                },
-                              );
-                              EventDetailController(context: context)
-                                  .handleGetComment(event.id, 0);
-                            },
-                            child: Text(
-                              translate('edit'),
-                              style: AppTextStyle.small().withColor(AppColors.textBlack.withOpacity(0.8)).size(11.sp),
-                            ),
-                          ),
-                        ],
-                      ),
-                    if (comment.permissions.delete)
-                      Row(
-                        children: [
-                          Container(
-                            width: 50.w,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              EventDetailController(context: context)
-                                  .handleDeleteComment(event.id, comment.id);
-                            },
-                            child: Text(
-                              translate('delete'),
-                              style: AppTextStyle.small().withColor(AppColors.textBlack.withOpacity(0.8)).size(11.sp),
-                            ),
-                          ),
-                        ],
-                      ),
-                  ],
+        if (comment.childrenComments.length !=
+            comment.childrenCommentNumber)
+          GestureDetector(
+            onTap: () {
+              EventDetailController(context: context)
+                  .handleGetChildrenComment(comment);
+            },
+            child: Container(
+              margin: EdgeInsets.only(left: index == 1 ? 45.w : 55.w),
+              child: Text(
+                '${translate('see')} ${comment.childrenCommentNumber - comment.childrenComments.length} ${translate('comments').toLowerCase()}',
+                style: TextStyle(
+                  color: AppColors.textGrey,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.normal,
+                  fontFamily: AppFonts.Header,
                 ),
-              ],
+              ),
             ),
-          ),
-        Container(
-          padding: EdgeInsets.only(left: 10.w),
-          child: Column(
-            children: [
-              for (int i = 0; i < comment.childrenComments.length; i += 1)
-                IntrinsicHeight(
-                    child: Row(
-                  children: [
-                    Container(width: 1, color: AppColors.textBlack),
-                    // This is divider
-                    Container(
-                        child: buildCommentWidget(context, event,
-                            comment.childrenComments[i], index + 1)),
-                  ],
-                ))
-            ],
-          ),
-        ),
+          )
       ],
     ),
   );

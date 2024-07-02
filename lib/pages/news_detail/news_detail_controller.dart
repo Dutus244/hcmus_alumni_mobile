@@ -103,17 +103,19 @@ class NewsDetailController {
     }
   }
 
-  Future<void> handleGetChildrenComment(String commentId) async {
+  Future<void> handleGetChildrenComment(Comment comment) async {
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/news/comments/$commentId/children';
+    var endpoint = '/news/comments/${comment.id}/children';
     var pageSize = 10;
     var token = Global.storageService.getUserAuthToken();
     var headers = <String, String>{
       'Authorization': 'Bearer $token', // Include bearer token in the headers
     };
 
+    var page = (comment.childrenComments.length / pageSize).toInt();
+
     try {
-      var url = Uri.parse('$apiUrl$endpoint?page=0&pageSize=$pageSize');
+      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
 
@@ -122,7 +124,7 @@ class NewsDetailController {
         List<Comment> currentList =
             BlocProvider.of<NewsDetailBloc>(context).state.comments;
 
-        Comment? parentComment = findParentComment(currentList, commentId);
+        Comment? parentComment = findParentComment(currentList, comment.id);
 
         if (parentComment != null) {
           await parentComment.fetchChildrenComments(jsonMap);

@@ -113,17 +113,19 @@ class EventDetailController {
     }
   }
 
-  Future<void> handleGetChildrenComment(String commentId) async {
+  Future<void> handleGetChildrenComment(Comment comment) async {
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/events/comments/${commentId}/children';
+    var endpoint = '/events/comments/${comment.id}/children';
     var pageSize = 10;
     var token = Global.storageService.getUserAuthToken();
     var headers = <String, String>{
       'Authorization': 'Bearer $token', // Include bearer token in the headers
     };
 
+    var page = (comment.childrenComments.length / pageSize).toInt();
+
     try {
-      var url = Uri.parse('$apiUrl$endpoint?page=0&pageSize=$pageSize');
+      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
@@ -131,7 +133,7 @@ class EventDetailController {
         List<Comment> currentList =
             BlocProvider.of<EventDetailBloc>(context).state.comments;
 
-        Comment? parentComment = findParentComment(currentList, commentId);
+        Comment? parentComment = findParentComment(currentList, comment.id);
 
         if (parentComment != null) {
           await parentComment.fetchChildrenComments(jsonMap);

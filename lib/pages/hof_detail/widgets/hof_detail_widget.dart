@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_html_content.dart';
 import 'package:hcmus_alumni_mobile/model/hall_of_fame.dart';
@@ -21,10 +22,10 @@ AppBar buildAppBar(BuildContext context) {
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Gương thành công',
+          translate('hall_of_fame'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -63,9 +64,9 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
         Container(
           padding: EdgeInsets.only(top: 5.h, left: 10.w),
           child: Text(
-            "Khoa " + hallOfFame.faculty.name,
+            "${translate('faculty_of')} " + hallOfFame.faculty.name,
             style: TextStyle(
-              fontFamily: AppFonts.Header3,
+              fontFamily: AppFonts.Header,
               color: Color.fromARGB(255, 51, 58, 73),
               fontWeight: FontWeight.w500,
               fontSize: 12.sp,
@@ -77,7 +78,7 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
           child: Text(
             hallOfFame.title,
             style: TextStyle(
-              fontFamily: AppFonts.Header2,
+              fontFamily: AppFonts.Header,
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 18.sp,
@@ -102,7 +103,7 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
                   Text(
                     handleDateTime1(hallOfFame.publishedAt),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       color: Colors.black,
                       fontWeight: FontWeight.normal,
                       fontSize: 11.sp,
@@ -128,7 +129,7 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
                     hallOfFame.views.toString(),
                     maxLines: 2,
                     style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 11.sp,
                       fontWeight: FontWeight.normal,
                       color: Colors.black,
@@ -159,7 +160,7 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
               Text(
                 hallOfFame.creator.fullName,
                 style: TextStyle(
-                  fontFamily: AppFonts.Header3,
+                  fontFamily: AppFonts.Header,
                   color: Color.fromARGB(255, 51, 58, 73),
                   fontWeight: FontWeight.bold,
                   fontSize: 14.sp,

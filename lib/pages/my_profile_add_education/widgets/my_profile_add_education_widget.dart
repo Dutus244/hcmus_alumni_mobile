@@ -23,7 +23,7 @@ AppBar buildAppBar(BuildContext context) {
           translate('education'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -115,7 +115,7 @@ Widget buildTextFieldSchoolName(BuildContext context, String hintText,
               ),
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
                 fontSize: 12.sp,
               ),
@@ -180,7 +180,7 @@ Widget buildTextFieldDegree(BuildContext context, String hintText,
               ),
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
                 fontSize: 12.sp,
               ),
@@ -233,7 +233,7 @@ Widget buildTextFieldStartTime(
                         .startTime,
                 style: TextStyle(
                   color: AppColors.textBlack,
-                  fontFamily: AppFonts.Header3,
+                  fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
                   fontSize: 12.sp,
                 ),
@@ -287,7 +287,7 @@ Widget chooseStartTime(BuildContext context) {
                       color: Colors.black,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                     ),
                   ),
                 ),
@@ -326,7 +326,7 @@ Widget chooseStartTime(BuildContext context) {
                         Text(
                           translate('choose'),
                           style: TextStyle(
-                            fontFamily: AppFonts.Header3,
+                            fontFamily: AppFonts.Header,
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background,
@@ -374,7 +374,7 @@ Widget isWorking(BuildContext context, void Function(bool value)? func) {
           child: Text(
             translate('still_studying_here'),
             style: TextStyle(
-              fontFamily: AppFonts.Header3,
+              fontFamily: AppFonts.Header,
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 12.sp,
@@ -428,7 +428,7 @@ Widget buildTextFieldEndTime(
                     .endTime,
                 style: TextStyle(
                   color: AppColors.textBlack,
-                  fontFamily: AppFonts.Header3,
+                  fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
                   fontSize: 12.sp,
                 ),
@@ -467,7 +467,7 @@ Widget chooseEndTime(BuildContext context) {
                       color: Colors.black,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                     ),
                   ),
                 ),
@@ -506,7 +506,7 @@ Widget chooseEndTime(BuildContext context) {
                         Text(
                           translate('choose'),
                           style: TextStyle(
-                            fontFamily: AppFonts.Header3,
+                            fontFamily: AppFonts.Header,
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background,
@@ -554,7 +554,7 @@ Widget buttonAdd(BuildContext context) {
                 Text(
                   translate('save'),
                   style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
                       color: (compayName != "")

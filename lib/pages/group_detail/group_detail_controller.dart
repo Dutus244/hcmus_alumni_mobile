@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
@@ -39,10 +40,10 @@ class GroupDetailController {
         }
         context.read< GroupDetailBloc>().add(GroupEvent(group));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy thông tin nhóm");
+        toastInfo(msg: translate('error_get_info_group'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy thông tin nhóm");
+      toastInfo(msg: translate('error_get_info_group'));
     }
   }
 
@@ -106,11 +107,11 @@ class GroupDetailController {
         }
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết nhóm");
+        toastInfo(msg: translate('error_get_posts'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bài viết nhóm");
+      toastInfo(msg: translate('error_get_posts'));
     }
   }
 
@@ -133,33 +134,33 @@ class GroupDetailController {
         GroupDetailController(context: context).handleGetGroup(id);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi tham gia nhóm");
+        toastInfo(msg: translate('error_join_group'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi tham gia nhóm");
+      toastInfo(msg: translate('error_join_group'));
     }
   }
 
   Future<bool> handleDeletePost(String id, String groupId) async {
-    final shouldDelte = await showDialog(
+    final shouldDelete = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Xoá bài viết'),
-        content: Text('Bạn có muốn xoá bài viết này?'),
+        title: Text(translate('delete_post')),
+        content: Text(translate('delete_post_question')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Huỷ'),
+            child: Text(translate('cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text('Xoá'),
+            child: Text(translate('delete')),
           ),
         ],
       ),
     );
-    if (shouldDelte != null && shouldDelte) {
+    if (shouldDelete != null && shouldDelete) {
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/groups/posts/$id';
 
@@ -178,14 +179,14 @@ class GroupDetailController {
           return true;
         } else {
           // Handle other status codes if needed
-          toastInfo(msg: "Có lỗi xả ra khi xoá bài viết nhóm");
+          toastInfo(msg: translate('error_delete_post'));
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: "Có lỗi xả ra khi xoá bài viết nhóm");
+        toastInfo(msg: translate('error_delete_post'));
       }
     }
-    return shouldDelte ?? false;
+    return shouldDelete ?? false;
   }
 
   Future<void> handleLikePost(String id) async {
@@ -217,7 +218,7 @@ class GroupDetailController {
             return;
           } else {
             // Handle other status codes if needed
-            toastInfo(msg: "Có lỗi xả ra khi huỷ thích bài viết nhóm");
+            toastInfo(msg: translate('error_unlike_post'));
           }
         } else {
           var response = await http.post(url, headers: headers, body: body);
@@ -228,7 +229,7 @@ class GroupDetailController {
             return;
           } else {
             // Handle other status codes if needed
-            toastInfo(msg: "Có lỗi xả ra khi thích bài viết nhóm");
+            toastInfo(msg: translate('error_like_post'));
           }
         }
       }
@@ -236,7 +237,7 @@ class GroupDetailController {
   }
 
   Future<void> handleExitGroup(String id) async {
-    String userId = '30ff6fa7-035f-42e4-aa13-55c1c94ded1e';
+    String userId = Global.storageService.getUserId();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$id/members/$userId';
 
@@ -255,11 +256,11 @@ class GroupDetailController {
         Navigator.pop(context);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi thoát nhóm");
+        toastInfo(msg: translate('error_exit_group'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi thoát nhóm");
+      toastInfo(msg: translate('error_exit_group'));
     }
   }
 
@@ -282,12 +283,12 @@ class GroupDetailController {
         GroupDetailController(context: context).handleLoadPostData(groupId, 0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+        toastInfo(msg: translate('error_choose_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+      toastInfo(msg: translate('error_choose_option'));
       return;
     }
   }
@@ -311,12 +312,12 @@ class GroupDetailController {
         GroupDetailController(context: context).handleLoadPostData(groupId, 0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xảy ra khi huỷ lựa chọn");
+        toastInfo(msg: translate('error_not_choose_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xảy ra khi huỷ lựa chọn");
+      toastInfo(msg: translate('error_not_choose_option'));
       return;
     }
   }
@@ -342,12 +343,12 @@ class GroupDetailController {
         GroupDetailController(context: context).handleLoadPostData(groupId, 0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+        toastInfo(msg: translate('error_choose_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xảy ra khi chọn lựa chọn");
+      toastInfo(msg: translate('error_choose_option'));
       return;
     }
   }
@@ -377,12 +378,12 @@ class GroupDetailController {
         GroupDetailController(context: context).handleLoadPostData(groupId, 0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xảy ra khi thêm lựa chọn");
+        toastInfo(msg: translate('error_add_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xảy ra khi thêm lựa chọn");
+      toastInfo(msg: translate('error_add_option'));
       return;
     }
   }

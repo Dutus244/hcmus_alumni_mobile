@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/picture.dart';
 
 import '../../../common/values/colors.dart';
@@ -13,12 +13,14 @@ AppBar buildAppBar(BuildContext context) {
     backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
-        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        margin: Platform.isAndroid
+            ? EdgeInsets.only(top: 20.h)
+            : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Hình ảnh',
+          translate('picture'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,

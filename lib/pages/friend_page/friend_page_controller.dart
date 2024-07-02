@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/friend_request.dart';
 import 'package:hcmus_alumni_mobile/model/friend_request_response.dart';
 import 'package:hcmus_alumni_mobile/model/friend_suggestion.dart';
@@ -101,10 +102,10 @@ class FriendPageController {
         }
         context.read<FriendPageBloc>().add(StatusSuggestionEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách gợi ý bạn bè");
+        toastInfo(msg: translate('error_get_user'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách gợi ý bạn bè");
+      toastInfo(msg: translate('error_get_user'));
     }
   }
 
@@ -178,10 +179,10 @@ class FriendPageController {
         }
         context.read<FriendPageBloc>().add(StatusRequestEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách lời mời kết bạn");
+        toastInfo(msg: translate('error_get_request'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách lời mời kết bạn");
+      toastInfo(msg: translate('error_get_request'));
     }
   }
 

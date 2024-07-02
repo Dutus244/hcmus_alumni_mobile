@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/group.dart';
 
 import '../../common/widgets/flutter_toast.dart';
@@ -97,11 +98,11 @@ class GroupSearchController {
         }
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách nhóm");
+        toastInfo(msg: translate('error_get_group'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách nhóm");
+      toastInfo(msg: translate('error_get_group'));
     }
   }
 
@@ -137,11 +138,11 @@ class GroupSearchController {
         }
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi tham gia nhóm");
+        toastInfo(msg: translate('error_join_group'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi tham gia nhóm");
+      toastInfo(msg: translate('error_join_group'));
     }
   }
 }
