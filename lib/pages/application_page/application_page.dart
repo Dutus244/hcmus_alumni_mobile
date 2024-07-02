@@ -17,31 +17,32 @@ class ApplicationPage extends StatefulWidget {
 
 class _ApplicationPageState extends State<ApplicationPage> {
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final args =
+      ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+      if (args != null) {
+        final route = args["route"] ?? 0;
+        context.read<ApplicationPageBloc>().add(TriggerApplicationPageEvent(route));
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Map<String, dynamic>? args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    var route = 0;
-    var secondRoute = 0;
-    if (args != null) {
-      if (args["route"] != null) {
-        route = args["route"];
-      }
-      if (args["secondRoute"] != null) {
-        secondRoute = args["secondRoute"];
-      }
-      context
-          .read<ApplicationPageBloc>()
-          .add(TriggerApplicationPageEvent(route));
-    }
+    final args =
+    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    final secondRoute = args?["secondRoute"] ?? 0;
 
     return BlocBuilder<ApplicationPageBloc, ApplicationPageState>(
         builder: (context, state) {
-      return Container(
-        color: AppColors.background,
-        child: SafeArea(
-          child: applicationPage(context, secondRoute),
-        ),
-      );
-    });
+          return Container(
+            color: AppColors.background,
+            child: SafeArea(
+              child: applicationPage(context, secondRoute),
+            ),
+          );
+        });
   }
 }

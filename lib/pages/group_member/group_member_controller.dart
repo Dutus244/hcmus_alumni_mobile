@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/member_response.dart';
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
@@ -73,10 +74,10 @@ class GroupMemberController {
         }
         context.read<GroupMemberBloc>().add(StatusEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy thành viên nhóm");
+        toastInfo(msg: translate('error_get_member'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy thành viên nhóm");
+      toastInfo(msg: translate('error_get_member'));
     }
   }
 
@@ -99,10 +100,10 @@ class GroupMemberController {
         creatorList = memberResponse.members;
       }
       else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy người tạo nhóm");
+        toastInfo(msg: translate('error_get_member'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy người tạo nhóm");
+      toastInfo(msg: translate('error_get_member'));
     }
     return creatorList;
   }
@@ -162,10 +163,10 @@ class GroupMemberController {
         }
         context.read<GroupMemberBloc>().add(StatusEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy quản trị viên nhóm");
+        toastInfo(msg: translate('error_get_member'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy quản trị viên nhóm");
+      toastInfo(msg: translate('error_get_member'));
     }
   }
 
@@ -188,11 +189,11 @@ class GroupMemberController {
         GroupMemberController(context: context).handleGetAdmin(groupId, 0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi xoá thành viên nhóm");
+        toastInfo(msg: translate('error_delete_member'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi xoá thành viên nhóm");
+      toastInfo(msg: translate('error_delete_member'));
     }
   }
 
@@ -218,11 +219,11 @@ class GroupMemberController {
         GroupMemberController(context: context).handleGetAdmin(groupId, 0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi thay đổi vai trò thành viên nhóm");
+        toastInfo(msg: translate('error_change_role'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi thay đổi vai trò thành viên nhóm");
+      toastInfo(msg: translate('error_change_role'));
     }
   }
 }

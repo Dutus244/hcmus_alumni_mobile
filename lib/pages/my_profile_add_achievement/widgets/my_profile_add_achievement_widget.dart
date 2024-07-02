@@ -23,7 +23,7 @@ AppBar buildAppBar(BuildContext context) {
           translate('achievement'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header3,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -110,7 +110,7 @@ Widget buildTextFieldName(BuildContext context, String hintText,
               ),
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
                 fontSize: 12.sp,
               ),
@@ -175,7 +175,7 @@ Widget buildTextFieldType(BuildContext context, String hintText,
               ),
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
                 fontSize: 12.sp,
               ),
@@ -228,7 +228,7 @@ Widget buildTextFieldTime(
                         .time,
                 style: TextStyle(
                   color: AppColors.textBlack,
-                  fontFamily: AppFonts.Header3,
+                  fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
                   fontSize: 12.sp,
                 ),
@@ -282,7 +282,7 @@ Widget chooseTime(BuildContext context) {
                       color: Colors.black,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                     ),
                   ),
                 ),
@@ -321,7 +321,7 @@ Widget chooseTime(BuildContext context) {
                         Text(
                           translate('choose'),
                           style: TextStyle(
-                            fontFamily: AppFonts.Header3,
+                            fontFamily: AppFonts.Header,
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background,
@@ -369,7 +369,7 @@ Widget buttonAdd(BuildContext context) {
                 Text(
                   translate('save'),
                   style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
                       color: (compayName != "")

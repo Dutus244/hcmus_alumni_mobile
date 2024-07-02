@@ -532,7 +532,7 @@ Widget choosePicture(BuildContext context,
                   .length ==
               0)
             Container(
-              width: 140.w,
+              width: 160.w,
               height: 30.h,
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,

@@ -133,9 +133,6 @@ Widget buttonFinishEditPicture(BuildContext context) {
 
 Widget buildTextFieldTitle(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<WritePostGroupBloc>(context).state.title);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
@@ -148,11 +145,8 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
           Container(
             width: 300.w,
             child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
-              },
+              onChanged: (value) => func!(value),
               keyboardType: TextInputType.multiline,
-              controller: _controller,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -181,8 +175,6 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
 
 Widget buildTextFieldContent(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<WritePostGroupBloc>(context).state.content);
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 10.w, bottom: 2.h),
@@ -195,10 +187,7 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
           Container(
             width: 300.w,
             child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
-              },
-              controller: _controller,
+              onChanged: (value) => func!(value),
               keyboardType: TextInputType.multiline,
               maxLines: null,
               // Cho phép đa dòng
@@ -227,9 +216,6 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
 
 Widget buildTextFieldVote(BuildContext context, int index, String hintText,
     String textType, String iconName, void Function(List<String> value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<WritePostGroupBloc>(context).state.votes[index]);
-
   return Container(
     margin: EdgeInsets.only(right: 10.w),
     child: Row(
@@ -254,16 +240,15 @@ Widget buildTextFieldVote(BuildContext context, int index, String hintText,
                   margin: EdgeInsets.only(left: 10.w),
                   width: 290.w,
                   child: TextField(
-                    onTapOutside: (PointerDownEvent event) {
+                    onChanged: (value) {
                       List<String> currentList =
                           BlocProvider.of<WritePostGroupBloc>(context)
                               .state
                               .votes;
-                      currentList[index] = _controller.text;
+                      currentList[index] = value;
                       func!(currentList);
                     },
                     keyboardType: TextInputType.multiline,
-                    controller: _controller,
                     maxLines: null,
                     // Cho phép đa dòng
                     decoration: InputDecoration(
@@ -445,8 +430,9 @@ Widget chooseEditPicture(
               ),
               Text(
                 translate('add_picture'),
-                style: AppTextStyle.small().wSemiBold().withColor(
-                    AppColors.element),
+                style: AppTextStyle.small()
+                    .wSemiBold()
+                    .withColor(AppColors.element),
               ),
             ],
           ),
@@ -498,7 +484,7 @@ Widget choosePicture(
                   .length ==
               0)
             Container(
-              width: 140.w,
+              width: 160.w,
               height: 30.h,
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
@@ -510,7 +496,7 @@ Widget choosePicture(
               ),
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(left: 20.w, right: 20.w),
+                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -1196,7 +1182,7 @@ Widget choosePicture(
                                 child: Text(
                                   '+1',
                                   style: TextStyle(
-                                    fontFamily: AppFonts.Header2,
+                                    fontFamily: AppFonts.Header,
                                     fontSize: 32.sp,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.background,
@@ -1257,8 +1243,8 @@ Widget chooseVote(BuildContext context) {
           },
           child: Container(
             margin: EdgeInsets.only(
-                left: 110.w, top: 5.h, right: 110.w, bottom: 10.h),
-            width: 140.w,
+                left: 100.w, top: 5.h, right: 100.w, bottom: 10.h),
+            width: 160.w,
             height: 30.h,
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
@@ -1270,7 +1256,7 @@ Widget chooseVote(BuildContext context) {
             ),
             child: Center(
               child: Container(
-                margin: EdgeInsets.only(left: 5.w, right: 5.w),
+                margin: EdgeInsets.only(left: 10.w, right: 10.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -1578,7 +1564,10 @@ Widget buildTextFieldTag(BuildContext context) {
                                           InkWell(
                                             child: Text(
                                               '#$tag',
-                                              style: AppTextStyle.small().wSemiBold().withColor(AppColors.background),
+                                              style: AppTextStyle.small()
+                                                  .wSemiBold()
+                                                  .withColor(
+                                                      AppColors.background),
                                             ),
                                             onTap: () {
                                               //print("$tag selected");

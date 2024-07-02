@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
@@ -84,10 +85,10 @@ class GroupPageController {
             .read<GroupPageBloc>()
             .add(StatusGroupDiscoverEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách nhóm");
+        toastInfo(msg: translate('error_get_group'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách nhóm");
+      toastInfo(msg: translate('error_get_group'));
     }
   }
 
@@ -152,10 +153,10 @@ class GroupPageController {
             .read<GroupPageBloc>()
             .add(StatusGroupJoinedEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách nhóm");
+        toastInfo(msg: translate('error_get_group'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách nhóm");
+      toastInfo(msg: translate('error_get_group'));
     }
   }
 
@@ -191,11 +192,11 @@ class GroupPageController {
         }
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi tham gia nhóm");
+        toastInfo(msg: translate('error_join_group'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi tham gia nhóm");
+      toastInfo(msg: translate('error_join_group'));
     }
   }
 }

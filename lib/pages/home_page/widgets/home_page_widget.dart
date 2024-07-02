@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/common/values/colors.dart';
 import 'package:hcmus_alumni_mobile/common/values/fonts.dart';
@@ -24,9 +25,9 @@ Widget listEvent(BuildContext context, List<Event> eventList) {
             Container(
               padding: EdgeInsets.only(left: 10.w),
               child: Text(
-                'Sự kiện nổi bật',
+                translate('featured_event'),
                 style: TextStyle(
-                  fontFamily: AppFonts.Header1,
+                  fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
                   fontSize: 14.sp,
                   color: AppColors.header,
@@ -44,9 +45,9 @@ Widget listEvent(BuildContext context, List<Event> eventList) {
                     );
                   },
                   child: Text(
-                    "Xem tất cả",
+                    translate('see_all'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header1,
+                      fontFamily: AppFonts.Header,
                       color: AppColors.element,
                       decorationColor: AppColors.textBlack,
                       fontWeight: FontWeight.bold,
@@ -133,7 +134,7 @@ Widget event(BuildContext context, Event event) {
                 color: Colors.white,
                 fontSize: 11.sp,
                 fontWeight: FontWeight.normal,
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
               ),
             ),
           ),
@@ -150,7 +151,7 @@ Widget event(BuildContext context, Event event) {
                 color: Colors.white,
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w600,
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header,
               ),
             ),
           ),
@@ -181,7 +182,7 @@ Widget event(BuildContext context, Event event) {
                       color: Colors.white,
                       fontSize: 11.sp,
                       fontWeight: FontWeight.normal,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                     ),
                   ),
                 ),
@@ -212,7 +213,7 @@ Widget event(BuildContext context, Event event) {
                     color: Colors.white,
                     fontSize: 11.sp,
                     fontWeight: FontWeight.normal,
-                    fontFamily: AppFonts.Header3,
+                    fontFamily: AppFonts.Header,
                   ),
                 ),
               ],
@@ -245,9 +246,9 @@ Widget listNews(BuildContext context, List<News> newsList) {
             Container(
               padding: EdgeInsets.only(left: 0.w),
               child: Text(
-                'Tin tức nổi bật',
+                translate('featured_news'),
                 style: TextStyle(
-                  fontFamily: AppFonts.Header1,
+                  fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
                   fontSize: 14.sp,
                 ),
@@ -264,9 +265,9 @@ Widget listNews(BuildContext context, List<News> newsList) {
                   );
                 },
                 child: Text(
-                  "Xem tất cả",
+                  translate('see_all'),
                   style: TextStyle(
-                    fontFamily: AppFonts.Header1,
+                    fontFamily: AppFonts.Header,
                     color: AppColors.element,
                     decorationColor: AppColors.textBlack,
                     fontWeight: FontWeight.bold,
@@ -344,7 +345,7 @@ Widget news(BuildContext context, News news) {
                       color: Colors.white,
                       fontSize: 9.sp,
                       fontWeight: FontWeight.normal,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                     ),
                   ),
                 ),
@@ -364,7 +365,7 @@ Widget news(BuildContext context, News news) {
                 color: Colors.black,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header,
               ),
             ),
           ),
@@ -376,7 +377,7 @@ Widget news(BuildContext context, News news) {
                 color: AppColors.textGrey,
                 fontSize: 10.sp,
                 fontWeight: FontWeight.normal,
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
               ),
             ),
           ),
@@ -402,9 +403,9 @@ Widget listHof(BuildContext context, List<HallOfFame> hallOfFameList) {
             Container(
               padding: EdgeInsets.only(left: 10.w),
               child: Text(
-                'Gương thành công',
+                translate('hall_of_fame'),
                 style: TextStyle(
-                  fontFamily: AppFonts.Header1,
+                  fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
                   fontSize: 14.sp,
                 ),
@@ -420,9 +421,9 @@ Widget listHof(BuildContext context, List<HallOfFame> hallOfFameList) {
                     );
                   },
                   child: Text(
-                    "Xem tất cả",
+                    translate('see_all'),
                     style: TextStyle(
-                      fontFamily: AppFonts.Header1,
+                      fontFamily: AppFonts.Header,
                       color: AppColors.element,
                       decorationColor: AppColors.textBlack,
                       fontWeight: FontWeight.bold,
@@ -501,7 +502,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
                       color: Colors.white,
                       fontSize: 9.sp,
                       fontWeight: FontWeight.normal,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                     ),
                   ),
                 ),
@@ -521,7 +522,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
                   color: Colors.black,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
-                  fontFamily: AppFonts.Header2,
+                  fontFamily: AppFonts.Header,
                 ),
               ),
             ],
@@ -531,13 +532,13 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
             // Center the row content
             children: [
               Text(
-                'Khoá ${hallOfFame.beginningYear}',
+                '${translate('academic_year')} ${hallOfFame.beginningYear}',
                 maxLines: 2,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 10.sp,
                   fontWeight: FontWeight.normal,
-                  fontFamily: AppFonts.Header3,
+                  fontFamily: AppFonts.Header,
                 ),
               ),
             ],
@@ -564,9 +565,9 @@ Widget advise(BuildContext context) {
             Container(
               padding: EdgeInsets.only(left: 10.w),
               child: Text(
-                'Tư vấn/Cố vấn',
+                translate('advise'),
                 style: TextStyle(
-                  fontFamily: AppFonts.Header1,
+                  fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
                   fontSize: 14.sp,
                 ),
@@ -601,10 +602,10 @@ Widget advise(BuildContext context) {
                 margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
                 width: 170.w,
                 child: Text(
-                  'Giải đáp thắc mắc và tư vấn cùng đội ngũ sinh viên xịn xò',
+                  translate('advise_description'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontFamily: AppFonts.Header2,
+                    fontFamily: AppFonts.Header,
                     fontWeight: FontWeight.bold,
                     fontSize: 11.sp,
                   ),
@@ -633,9 +634,9 @@ Widget advise(BuildContext context) {
                   ),
                   child: Center(
                     child: Text(
-                      'Tư vấn',
+                      translate('advise'),
                       style: TextStyle(
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                           fontSize: 10.sp,
                           fontWeight: FontWeight.bold,
                           color: AppColors.background),

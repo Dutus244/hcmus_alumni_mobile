@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/model/friend_request.dart';
 import 'package:hcmus_alumni_mobile/model/friend_suggestion.dart';
@@ -52,7 +53,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                 counterText: '',
               ),
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 color: AppColors.textBlack,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
@@ -85,8 +86,10 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
       children: [
         GestureDetector(
           onTap: () {
-            if (func != null) {
-              func(0);
+            if (BlocProvider.of<FriendPageBloc>(context).state.page != 0) {
+              if (func != null) {
+                func(0);
+              }
             }
           },
           child: Container(
@@ -103,9 +106,9 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             ),
             child: Center(
               child: Text(
-                'Gợi ý',
+                translate('suggestion'),
                 style: TextStyle(
-                    fontFamily: AppFonts.Header3,
+                    fontFamily: AppFonts.Header,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color:
@@ -118,8 +121,10 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
         ),
         GestureDetector(
           onTap: () {
-            if (func != null) {
-              func(1);
+            if (BlocProvider.of<FriendPageBloc>(context).state.page != 1) {
+              if (func != null) {
+                func(1);
+              }
             }
           },
           child: Container(
@@ -136,10 +141,10 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             ),
             child: Center(
               child: Text(
-                'Lời mời',
+                translate('request'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontFamily: AppFonts.Header3,
+                    fontFamily: AppFonts.Header,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color:
@@ -171,9 +176,9 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             ),
             child: Center(
               child: Text(
-                'Bạn bè',
+                translate('friend'),
                 style: TextStyle(
-                    fontFamily: AppFonts.Header3,
+                    fontFamily: AppFonts.Header,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color:
@@ -217,7 +222,7 @@ Widget listSuggestion(
                     ),
                     Center(
                         child: buildTextField(
-                            context, 'Tìm kiếm bạn bè', 'search', 'search', (value) {
+                            context, translate('search_user'), 'search', 'search', (value) {
                           context.read<FriendPageBloc>().add(NameEvent(value));
                         })),
                     Container(
@@ -241,7 +246,7 @@ Widget listSuggestion(
                       ),
                       Center(
                           child: buildTextField(
-                              context, 'Tìm kiếm bạn bè', 'search', 'search', (value) {
+                              context, translate('search_user'), 'search', 'search', (value) {
                             context.read<FriendPageBloc>().add(NameEvent(value));
                           })),
                       Container(
@@ -251,12 +256,12 @@ Widget listSuggestion(
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có dữ liệu',
+                          translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 11.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header3,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                       )),
@@ -288,7 +293,7 @@ Widget listSuggestion(
                         ),
                         Center(
                             child: buildTextField(
-                                context, 'Tìm kiếm bạn bè', 'search', 'search', (value) {
+                                context, translate('search_user'), 'search', 'search', (value) {
                               context.read<FriendPageBloc>().add(NameEvent(value));
                             })),
                         Container(
@@ -361,7 +366,7 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
                           color: AppColors.textBlack,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header3,
+                          fontFamily: AppFonts.Header,
                         ),
                       ),
                     ],
@@ -391,9 +396,9 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
                           ),
                           child: Center(
                             child: Text(
-                              'Kết bạn',
+                              translate('add_friend'),
                               style: TextStyle(
-                                  fontFamily: AppFonts.Header3,
+                                  fontFamily: AppFonts.Header,
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.background),
@@ -456,12 +461,12 @@ Widget listRequest(BuildContext context, ScrollController _scrollController) {
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có dữ liệu',
+                          translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 11.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header3,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                       )),
@@ -556,7 +561,7 @@ Widget request(BuildContext context, FriendRequest request) {
                           color: AppColors.textBlack,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header3,
+                          fontFamily: AppFonts.Header,
                         ),
                       ),
                       Text(
@@ -565,7 +570,7 @@ Widget request(BuildContext context, FriendRequest request) {
                           color: AppColors.textBlack,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header3,
+                          fontFamily: AppFonts.Header,
                         ),
                       ),
                     ],
@@ -595,9 +600,9 @@ Widget request(BuildContext context, FriendRequest request) {
                           ),
                           child: Center(
                             child: Text(
-                              'Chấp nhận',
+                              translate('approve'),
                               style: TextStyle(
-                                  fontFamily: AppFonts.Header3,
+                                  fontFamily: AppFonts.Header,
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.background),
@@ -622,9 +627,9 @@ Widget request(BuildContext context, FriendRequest request) {
                           ),
                           child: Center(
                             child: Text(
-                              'Từ chối',
+                              translate('deny'),
                               style: TextStyle(
-                                  fontFamily: AppFonts.Header3,
+                                  fontFamily: AppFonts.Header,
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.bold,
                                   color:

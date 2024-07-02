@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../../common/function/handle_percentage_vote.dart';
 import '../../../common/values/colors.dart';
@@ -24,10 +25,10 @@ AppBar buildAppBar(BuildContext context) {
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Lượt bình chọn',
+          translate('voter_list'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -67,7 +68,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                               color: Colors.black,
                               fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.Header2,
+                              fontFamily: AppFonts.Header,
                             ),
                           ),
                         ),
@@ -81,7 +82,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                               color: Colors.black,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.Header2,
+                              fontFamily: AppFonts.Header,
                             ),
                           ),
                         ),
@@ -110,7 +111,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                                 color: Colors.black,
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header,
                               ),
                             ),
                           ),
@@ -124,7 +125,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                                 color: Colors.black,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: AppFonts.Header2,
+                                fontFamily: AppFonts.Header,
                               ),
                             ),
                           ),
@@ -133,12 +134,12 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                             child: Container(
                               margin: EdgeInsets.only(top: 20.h),
                               child: Text(
-                                'Không có ai chọn lựa chọn này',
+                                translate('no_votes'),
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 11.sp,
                                   fontWeight: FontWeight.normal,
-                                  fontFamily: AppFonts.Header2,
+                                  fontFamily: AppFonts.Header,
                                 ),
                               ),
                             )),
@@ -176,7 +177,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                                   color: Colors.black,
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: AppFonts.Header2,
+                                  fontFamily: AppFonts.Header,
                                 ),
                               ),
                             ),
@@ -190,7 +191,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                                   color: Colors.black,
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: AppFonts.Header2,
+                                  fontFamily: AppFonts.Header,
                                 ),
                               ),
                             ),
@@ -267,7 +268,7 @@ Widget voter(BuildContext context, Voter voter) {
                   color: AppColors.textBlack,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w900,
-                  fontFamily: AppFonts.Header2,
+                  fontFamily: AppFonts.Header,
                 ),
               )
             ],

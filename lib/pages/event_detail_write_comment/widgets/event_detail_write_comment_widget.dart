@@ -233,7 +233,7 @@ Widget navigation(BuildContext context, Event event, int route, int profile) {
                         Text(
                           translate('send'),
                           style: TextStyle(
-                              fontFamily: AppFonts.Header2,
+                              fontFamily: AppFonts.Header,
                               fontSize: 12.sp,
                               fontWeight: FontWeight.bold,
                               color: comment != ""

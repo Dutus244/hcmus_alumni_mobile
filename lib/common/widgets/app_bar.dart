@@ -9,6 +9,7 @@ import '../values/fonts.dart';
 AppBar buildAppBar(BuildContext context, String title) {
   return AppBar(
     backgroundColor: AppColors.background,
+    automaticallyImplyLeading: false,
     title: Container(
       height: 40.h,
       margin: EdgeInsets.only(left: 0.w, right: 0.w),
@@ -37,7 +38,7 @@ AppBar buildAppBar(BuildContext context, String title) {
             title,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontFamily: AppFonts.Header0,
+              fontFamily: AppFonts.Header,
               fontWeight: FontWeight.bold,
               fontSize: 16.sp,
               color: AppColors.secondaryHeader,

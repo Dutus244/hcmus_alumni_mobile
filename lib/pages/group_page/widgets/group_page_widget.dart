@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_participant_count.dart';
 import 'package:hcmus_alumni_mobile/model/group.dart';
 import 'package:hcmus_alumni_mobile/pages/group_page/group_page_controller.dart';
 
 import '../../../common/function/handle_datetime.dart';
+import '../../../common/values/assets.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
 import '../bloc/group_page_blocs.dart';
@@ -56,10 +59,10 @@ AppBar buildAppBar(BuildContext context) {
             ],
           ),
           Text(
-            'Nhóm',
+            translate('group'),
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontFamily: AppFonts.Header0,
+              fontFamily: AppFonts.Header,
               fontWeight: FontWeight.bold,
               fontSize: 16.sp,
               color: AppColors.secondaryHeader,
@@ -169,8 +172,10 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
       children: [
         GestureDetector(
           onTap: () {
-            if (func != null) {
-              func(0);
+            if (BlocProvider.of<GroupPageBloc>(context).state.page != 0) {
+              if (func != null) {
+                func(0);
+              }
             }
           },
           child: Container(
@@ -188,9 +193,9 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             ),
             child: Center(
               child: Text(
-                'Khám phá',
+                translate('discover'),
                 style: TextStyle(
-                    fontFamily: AppFonts.Header1,
+                    fontFamily: AppFonts.Header,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color:
@@ -203,8 +208,10 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
         ),
         GestureDetector(
           onTap: () {
-            if (func != null) {
-              func(1);
+            if (BlocProvider.of<GroupPageBloc>(context).state.page != 1) {
+              if (func != null) {
+                func(1);
+              }
             }
           },
           child: Container(
@@ -222,9 +229,9 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             ),
             child: Center(
               child: Text(
-                'Nhóm của bạn',
+                translate('your_group'),
                 style: TextStyle(
-                    fontFamily: AppFonts.Header1,
+                    fontFamily: AppFonts.Header,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
                     color:
@@ -285,12 +292,12 @@ Widget listGroupDiscover(
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có dữ liệu',
+                          translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 11.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                       )),
@@ -391,9 +398,9 @@ Widget listGroupDiscover(
 Widget groupDiscover(BuildContext context, Group group) {
   String typeGroup = '';
   if (group.privacy == 'PUBLIC') {
-    typeGroup = 'Nhóm Công khai';
+    typeGroup = '${translate('group')} ${translate('public')}';
   } else {
-    typeGroup = 'Nhóm Riêng tư';
+    typeGroup = '${translate('group')} ${translate('private')}';
   }
   return GestureDetector(
     onTap: () {
@@ -440,7 +447,7 @@ Widget groupDiscover(BuildContext context, Group group) {
                     color: Colors.black,
                     fontSize: 13.sp,
                     fontWeight: FontWeight.bold,
-                    fontFamily: AppFonts.Header2,
+                    fontFamily: AppFonts.Header,
                   ),
                 ),
               ),
@@ -448,13 +455,13 @@ Widget groupDiscover(BuildContext context, Group group) {
                 margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
                 child: Text(
                   typeGroup +
-                      ' - ${handleParticipantCount(group.participantCount)} thành viên',
+                      ' - ${handleParticipantCount(group.participantCount)} ${translate('members').toLowerCase()}',
                   maxLines: 2,
                   style: TextStyle(
                     color: AppColors.textBlack,
                     fontSize: 11.sp,
                     fontWeight: FontWeight.normal,
-                    fontFamily: AppFonts.Header3,
+                    fontFamily: AppFonts.Header,
                   ),
                 ),
               ),
@@ -476,7 +483,7 @@ Widget groupDiscover(BuildContext context, Group group) {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontFamily: AppFonts.Header3,
+                          fontFamily: AppFonts.Header,
                           fontSize: 10.sp,
                           fontWeight: FontWeight.normal,
                           color: Color.fromARGB(255, 5, 90, 188),
@@ -519,7 +526,7 @@ Widget groupDiscover(BuildContext context, Group group) {
                             color: AppColors.textGrey,
                             fontSize: 11.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header3,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                       )
@@ -550,9 +557,9 @@ Widget groupDiscover(BuildContext context, Group group) {
                       ),
                       child: Center(
                         child: Text(
-                          'Đang chờ duyệt',
+                          translate('waiting_approval'),
                           style: TextStyle(
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                             color: AppColors.textBlack,
@@ -572,9 +579,9 @@ Widget groupDiscover(BuildContext context, Group group) {
                       ),
                       child: Center(
                         child: Text(
-                          'Tham gia',
+                          translate('join'),
                           style: TextStyle(
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background,
@@ -593,9 +600,9 @@ Widget groupDiscover(BuildContext context, Group group) {
 Widget infoGroup(BuildContext context, Group group) {
   String typeGroup = '';
   if (group.privacy == 'PUBLIC') {
-    typeGroup = 'Nhóm Công khai';
+    typeGroup = '${translate('group')} ${translate('public')}';
   } else {
-    typeGroup = 'Nhóm Riêng tư';
+    typeGroup = '${translate('group')} ${translate('private')}';
   }
 
   return Container(
@@ -642,7 +649,7 @@ Widget infoGroup(BuildContext context, Group group) {
                     color: Colors.black,
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    fontFamily: AppFonts.Header2,
+                    fontFamily: AppFonts.Header,
                   ),
                 ),
               ),
@@ -650,13 +657,13 @@ Widget infoGroup(BuildContext context, Group group) {
                 margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
                 child: Text(
                   typeGroup +
-                      ' - ${handleParticipantCount(group.participantCount)} thành viên',
+                      ' - ${handleParticipantCount(group.participantCount)} ${translate('members').toLowerCase()}',
                   maxLines: 2,
                   style: TextStyle(
                     color: AppColors.textBlack,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.normal,
-                    fontFamily: AppFonts.Header3,
+                    fontFamily: AppFonts.Header,
                   ),
                 ),
               ),
@@ -665,24 +672,21 @@ Widget infoGroup(BuildContext context, Group group) {
                 child: Row(
                   children: [
                     SvgPicture.asset(
-                      "assets/icons/tag.svg",
+                      AppAssets.tagIconS,
                       width: 12.w,
                       height: 12.h,
                       color: AppColors.textGrey,
                     ),
-                    for (int i = 0; i < group.tags.length; i += 1)
-                      Container(
-                        margin: EdgeInsets.only(left: 2.w),
-                        child: Text(
-                          group.tags[i].name,
-                          style: TextStyle(
-                            fontFamily: AppFonts.Header3,
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.normal,
-                            color: Color.fromARGB(255, 5, 90, 188),
-                          ),
-                        ),
+                    Container(
+                      margin: EdgeInsets.only(left: 2.w),
+                      width: 125.w,
+                      child: Text(
+                        group.tags.map((tag) => tag.name).join(' '),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyle.xSmall().withColor(AppColors.tag),
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -694,12 +698,12 @@ Widget infoGroup(BuildContext context, Group group) {
               Container(
                 margin: EdgeInsets.only(left: 10.w, top: 5.h),
                 child: Text(
-                  'Giới thiệu',
+                  translate('introduce'),
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
-                    fontFamily: AppFonts.Header2,
+                    fontFamily: AppFonts.Header,
                   ),
                 ),
               ),
@@ -709,10 +713,10 @@ Widget infoGroup(BuildContext context, Group group) {
                 child: ExpandableText(
                   group.description,
                   maxLines: 3,
-                  expandText: 'Xem thêm',
-                  collapseText: 'Thu gọn',
+                  expandText: translate('see_more'),
+                  collapseText: translate('colllapse'),
                   style: TextStyle(
-                    fontFamily: AppFonts.Header3,
+                    fontFamily: AppFonts.Header,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.normal,
                     color: AppColors.textBlack,
@@ -727,12 +731,12 @@ Widget infoGroup(BuildContext context, Group group) {
                     Container(
                       margin: EdgeInsets.only(left: 10.w, top: 5.h),
                       child: Text(
-                        'Thành viên',
+                        translate('member'),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 14.sp,
                           fontWeight: FontWeight.bold,
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                         ),
                       ),
                     ),
@@ -761,7 +765,7 @@ Widget infoGroup(BuildContext context, Group group) {
                           color: Colors.black,
                           fontSize: 12.sp,
                           fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header3,
+                          fontFamily: AppFonts.Header,
                         ),
                       ),
                     ),
@@ -770,12 +774,12 @@ Widget infoGroup(BuildContext context, Group group) {
               Container(
                 margin: EdgeInsets.only(left: 10.w, top: 5.h),
                 child: Text(
-                  'Hoạt động trong nhóm',
+                  translate('group_activities'),
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
-                    fontFamily: AppFonts.Header2,
+                    fontFamily: AppFonts.Header,
                   ),
                 ),
               ),
@@ -793,12 +797,12 @@ Widget infoGroup(BuildContext context, Group group) {
                       width: 5.w,
                     ),
                     Text(
-                      'Tổng số ${handleParticipantCount(group.participantCount)} thành viên',
+                      '${translate('total')} ${handleParticipantCount(group.participantCount)} ${translate('members').toLowerCase()}',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.normal,
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header,
                       ),
                     )
                   ],
@@ -818,12 +822,12 @@ Widget infoGroup(BuildContext context, Group group) {
                       width: 5.w,
                     ),
                     Text(
-                      'Tạo khoảng ${handleTimeDifference1(group.createAt)}',
+                      '${translate('created_about')} ${handleTimeDifference1(group.createAt)}',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.normal,
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header,
                       ),
                     )
                   ],
@@ -861,9 +865,9 @@ Widget infoGroup(BuildContext context, Group group) {
                       ),
                       child: Center(
                         child: Text(
-                          'Đang chờ duyệt',
+                          translate('waiting_approval'),
                           style: TextStyle(
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                             color: AppColors.textBlack,
@@ -884,9 +888,9 @@ Widget infoGroup(BuildContext context, Group group) {
                       ),
                       child: Center(
                         child: Text(
-                          'Tham gia nhóm',
+                          translate('join'),
                           style: TextStyle(
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background,
@@ -947,12 +951,12 @@ Widget listGroupJoined(
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có dữ liệu',
+                          translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 11.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                       )),
@@ -1053,9 +1057,9 @@ Widget listGroupJoined(
 Widget groupJoined(BuildContext context, Group group) {
   String typeGroup = '';
   if (group.privacy == 'PUBLIC') {
-    typeGroup = 'Nhóm Công khai';
+    typeGroup = '${translate('group')} ${translate('public')}';
   } else {
-    typeGroup = 'Nhóm Riêng tư';
+    typeGroup = '${translate('group')} ${translate('private')}';
   }
 
   return GestureDetector(
@@ -1107,7 +1111,7 @@ Widget groupJoined(BuildContext context, Group group) {
                     color: Colors.black,
                     fontSize: 13.sp,
                     fontWeight: FontWeight.bold,
-                    fontFamily: AppFonts.Header2,
+                    fontFamily: AppFonts.Header,
                   ),
                 ),
               ),
@@ -1115,22 +1119,22 @@ Widget groupJoined(BuildContext context, Group group) {
                 margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
                 child: Text(
                   typeGroup +
-                      ' - ${handleParticipantCount(group.participantCount)} thành viên',
+                      ' - ${handleParticipantCount(group.participantCount)} ${translate('members').toLowerCase()}',
                   maxLines: 2,
                   style: TextStyle(
                     color: AppColors.textBlack,
                     fontSize: 11.sp,
                     fontWeight: FontWeight.normal,
-                    fontFamily: AppFonts.Header3,
+                    fontFamily: AppFonts.Header,
                   ),
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 3.h, left: 10.w, right: 10.w),
+                margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
                 child: Row(
                   children: [
                     SvgPicture.asset(
-                      "assets/icons/tag.svg",
+                      AppAssets.tagIconS,
                       width: 12.w,
                       height: 12.h,
                       color: AppColors.textGrey,
@@ -1142,12 +1146,7 @@ Widget groupJoined(BuildContext context, Group group) {
                         group.tags.map((tag) => tag.name).join(' '),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: AppFonts.Header3,
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.normal,
-                          color: Color.fromARGB(255, 5, 90, 188),
-                        ),
+                        style: AppTextStyle.xSmall().withColor(AppColors.tag),
                       ),
                     ),
                   ],
@@ -1186,7 +1185,7 @@ Widget groupJoined(BuildContext context, Group group) {
                             color: AppColors.textGrey,
                             fontSize: 11.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header3,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                       )

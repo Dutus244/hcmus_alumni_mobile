@@ -71,4 +71,7 @@ class AppRoutes {
   static const CHAT_PAGE = "/chatPage";
   static const CHAT_DETAIL = "/chatDetail";
   static const CHAT_CREATE = "/chatCreate";
+
+  static const POST_ADVISE_DETAIL = "/postAdviseDetail";
+  static const POST_GROUP_DETAIL = "/postGroupDetail";
 }

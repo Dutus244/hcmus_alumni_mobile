@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/model/notification.dart';
+import 'package:hcmus_alumni_mobile/pages/notification_page/notification_page_controller.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
@@ -12,7 +13,7 @@ import '../../../common/widgets/loading_widget.dart';
 import '../bloc/notification_page_blocs.dart';
 import '../bloc/notification_page_states.dart';
 
-Widget listNotificaitons(BuildContext context, ScrollController _scrollController) {
+Widget listNotifications(BuildContext context, ScrollController _scrollController) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
@@ -46,7 +47,7 @@ Widget listNotificaitons(BuildContext context, ScrollController _scrollControlle
                                 color: Colors.black,
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header3,
+                                fontFamily: AppFonts.Header,
                               ),
                             ),
                           )),
@@ -96,14 +97,75 @@ Widget listNotificaitons(BuildContext context, ScrollController _scrollControlle
 Widget notification(BuildContext context, Notifications notifications) {
   return GestureDetector(
     onTap: () {
-      Navigator.pushNamed(context, "",
-          arguments: {
-
-          });
+      NotificationPageController(context: context).handleSeenNotification(notifications.id);
+      switch (notifications.entityTable) {
+        case "request_friend":
+          Navigator.pushNamedAndRemoveUntil(context,
+              "/applicationPage", (route) => false,
+              arguments: {"route": 4});
+          break;
+        case "comment_event":
+         Navigator.pushNamed(context,
+            "/eventDetail",
+            arguments: {"id": notifications.parentId},
+          );
+          break;
+        case "news_event":
+         Navigator.pushNamed(context,
+            "/newsDetail",
+            arguments: {"id": notifications.parentId},
+          );
+          break;
+        case "group":
+         Navigator.pushNamed(context,
+            "/groupDetail",
+            arguments: {"id": notifications.entityId},
+          );
+          break;
+        case "request_join_group":
+          switch (notifications.notificationType) {
+            case "CREATE":
+             Navigator.pushNamed(context,
+                "/groupMemberApprove",
+                arguments: {"groupId": notifications.entityId},
+              );
+              break;
+            case "UPDATE":
+             Navigator.pushNamed(context,
+                "/groupDetail",
+                arguments: {"id": notifications.entityId},
+              );
+              break;
+          }
+        case "interact_post_group":
+         Navigator.pushNamed(context,
+            "/postGroupDetail",
+            arguments: {"id": notifications.entityId},
+          );
+          break;
+        case "comment_post_group":
+         Navigator.pushNamed(context,
+            "/postGroupDetail",
+            arguments: {"id": notifications.parentId},
+          );
+          break;
+        case "interact_post_advise":
+         Navigator.pushNamed(context,
+            "/postAdviseDetail",
+            arguments: {"id": notifications.entityId},
+          );
+          break;
+        case "comment_post_advise":
+         Navigator.pushNamed(context,
+            "/postAdviseDetail",
+            arguments: {"id": notifications.parentId},
+          );
+          break;
+      }
     },
     child: Container(
         padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h, bottom: 5.h),
-        color: notifications.isRead ? Colors.transparent : AppColors.elementLight,
+        color: notifications.status.name != "Chưa xem" ? Colors.transparent : AppColors.elementLight,
         child: Row(
           children: [
             Container(
@@ -113,7 +175,7 @@ Widget notification(BuildContext context, Notifications notifications) {
                 radius: 40,
                 child: null,
                 backgroundImage:
-                NetworkImage(notifications.creator.avatarUrl),
+                NetworkImage(notifications.notificationImageUrl),
               ),
             ),
             Container(
@@ -127,14 +189,14 @@ Widget notification(BuildContext context, Notifications notifications) {
                   margin: EdgeInsets.only(right: 10.w),
                   width: 270.w,
                   child: Text(
-                    notifications.content,
+                    notifications.notificationMessage,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: AppColors.textBlack,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.normal,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                     ),
                   ),
                 ),
@@ -145,12 +207,12 @@ Widget notification(BuildContext context, Notifications notifications) {
                   margin: EdgeInsets.only(right: 10.w),
                   width: 270.w,
                   child: Text(
-                    handleDateTime1(notifications.createTime),
+                    handleDateTime1(notifications.createAt),
                     style: TextStyle(
                       color: AppColors.textGrey,
                       fontSize: 10.sp,
                       fontWeight: FontWeight.normal,
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                     ),
                   ),
                 ),

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
 import 'package:http/http.dart' as http;
@@ -34,10 +35,10 @@ class GroupManagementController {
         var group = Group.fromJson(jsonMap);
         context.read< GroupManagementBloc>().add(GroupEvent(group));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy thông tin nhóm");
+        toastInfo(msg: translate('error_get_info_group'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy thông tin nhóm");
+      toastInfo(msg: translate('error_get_info_group'));
     }
   }
 
@@ -62,11 +63,11 @@ class GroupManagementController {
         Navigator.pop(context);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi thoát nhóm");
+        toastInfo(msg: translate('error_exit_group'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi thoát nhóm");
+      toastInfo(msg: translate('error_exit_group'));
     }
   }
 
@@ -74,16 +75,16 @@ class GroupManagementController {
     final shouldDelte = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Xoá nhóm'),
-        content: Text('Bạn có muốn xoá nhóm này?'),
+        title: Text(translate('delete_group')),
+        content: Text(translate('delete_group_question')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Huỷ'),
+            child: Text(translate('cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text('Xoá'),
+            child: Text(translate('delete')),
           ),
         ],
       ),
@@ -107,11 +108,11 @@ class GroupManagementController {
           Navigator.pop(context);
         } else {
           // Handle other status codes if needed
-          toastInfo(msg: "Có lỗi xả ra khi xoá nhóm");
+          toastInfo(msg: translate('error_delete_group'));
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: "Có lỗi xả ra khi xoá nhóm");
+        toastInfo(msg: translate('error_delete_group'));
       }
     }
     return shouldDelte ?? false;

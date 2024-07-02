@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/group_request.dart';
 import 'package:hcmus_alumni_mobile/model/group_request_response.dart';
 
@@ -85,10 +86,10 @@ class GroupMemberApproveController {
         }
         context.read<GroupMemberApproveBloc>().add(StatusEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách yêu cầu tham gia nhóm");
+        toastInfo(msg: translate('error_get_request_group'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách yêu cầu tham gia nhóm");
+      toastInfo(msg: translate('error_get_request_group'));
     }
   }
 
@@ -115,7 +116,7 @@ class GroupMemberApproveController {
     }
   }
 
-  Future<void> handleDeneidRequest(String groupId, String userId) async {
+  Future<void> handleDeniedRequest(String groupId, String userId) async {
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$groupId/requests/$userId';
     var token = Global.storageService.getUserAuthToken();
@@ -131,10 +132,10 @@ class GroupMemberApproveController {
         GroupMemberApproveController(context: context)
             .handleGetMember(groupId, 0);
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi từ chối yêu cầu");
+        toastInfo(msg: translate('error_deny_request_group'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi từ chối yêu cầu");
+      toastInfo(msg: translate('error_deny_request_group'));
     }
   }
 }

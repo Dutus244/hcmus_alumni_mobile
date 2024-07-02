@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/main.dart';
 import 'package:hcmus_alumni_mobile/pages/option_page/bloc/option_page_events.dart';
+import 'package:hcmus_alumni_mobile/pages/option_page/option_page_controller.dart';
 
 import '../../../common/services/socket_service.dart';
 import '../../../common/values/colors.dart';
@@ -28,7 +29,7 @@ AppBar buildAppBar(BuildContext context) {
           translate('option'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -59,7 +60,7 @@ Widget optionPage(BuildContext context) {
                   color: AppColors.textBlack,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
-                  fontFamily: AppFonts.Header2,
+                  fontFamily: AppFonts.Header,
                 ),
               ),
             ),
@@ -91,7 +92,7 @@ Widget optionPage(BuildContext context) {
                           color: AppColors.textBlack,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                         ),
                       ),
                     ],
@@ -118,51 +119,51 @@ Widget optionPage(BuildContext context) {
                   color: AppColors.textBlack,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
-                  fontFamily: AppFonts.Header2,
+                  fontFamily: AppFonts.Header,
                 ),
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              color: Colors.transparent,
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/notification.svg",
-                        width: 16.w,
-                        height: 16.h,
-                        color: Colors.black,
-                      ),
-                      Container(
-                        width: 10.h,
-                      ),
-                      Text(
-                        translate('notification_setting'),
-                        style: TextStyle(
-                          color: AppColors.textBlack,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SvgPicture.asset(
-                    "assets/icons/arrow_next.svg",
-                    width: 16.w,
-                    height: 16.h,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () {},
+          //   child: Container(
+          //     color: Colors.transparent,
+          //     margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //       children: [
+          //         Row(
+          //           children: [
+          //             SvgPicture.asset(
+          //               "assets/icons/notification.svg",
+          //               width: 16.w,
+          //               height: 16.h,
+          //               color: Colors.black,
+          //             ),
+          //             Container(
+          //               width: 10.h,
+          //             ),
+          //             Text(
+          //               translate('notification_setting'),
+          //               style: TextStyle(
+          //                 color: AppColors.textBlack,
+          //                 fontSize: 16.sp,
+          //                 fontWeight: FontWeight.w900,
+          //                 fontFamily: AppFonts.Header,
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //         SvgPicture.asset(
+          //           "assets/icons/arrow_next.svg",
+          //           width: 16.w,
+          //           height: 16.h,
+          //           color: Colors.black,
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           GestureDetector(
             onTap: () {
               showModalBottomSheet(
@@ -194,7 +195,7 @@ Widget optionPage(BuildContext context) {
                           color: AppColors.textBlack,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                         ),
                       ),
                     ],
@@ -208,7 +209,7 @@ Widget optionPage(BuildContext context) {
                       color: AppColors.textBlack,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.normal,
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header,
                     ),
                   )
                 ],
@@ -227,7 +228,7 @@ Widget optionPage(BuildContext context) {
                   color: AppColors.textBlack,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
-                  fontFamily: AppFonts.Header2,
+                  fontFamily: AppFonts.Header,
                 ),
               ),
             ),
@@ -259,7 +260,7 @@ Widget optionPage(BuildContext context) {
                           color: AppColors.textBlack,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                         ),
                       ),
                     ],
@@ -276,14 +277,7 @@ Widget optionPage(BuildContext context) {
           ),
           GestureDetector(
             onTap: () {
-              Global.storageService.setString(AppConstants.USER_AUTH_TOKEN, '');
-              Global.storageService
-                  .setBool(AppConstants.USER_REMEMBER_LOGIN, false);
-              Global.storageService.setString(AppConstants.USER_EMAIL, '');
-              Global.storageService.setString(AppConstants.USER_PASSWORD, '');
-              socketService.disconnect();
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil("/signIn", (route) => false);
+              OptionPageController(context: context).handleSignOut();
             },
             child: Container(
               color: Colors.transparent,
@@ -308,7 +302,7 @@ Widget optionPage(BuildContext context) {
                           color: AppColors.textBlack,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header2,
+                          fontFamily: AppFonts.Header,
                         ),
                       ),
                     ],
@@ -336,7 +330,7 @@ Widget optionPage(BuildContext context) {
                     color: AppColors.textBlack,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
-                    fontFamily: AppFonts.Header2,
+                    fontFamily: AppFonts.Header,
                   ),
                 ),
               ),
@@ -369,7 +363,7 @@ Widget chooseLanguage(
                       color: Colors.black,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      fontFamily: AppFonts.Header2,
+                      fontFamily: AppFonts.Header,
                     ),
                   ),
                 ),
@@ -391,7 +385,7 @@ Widget chooseLanguage(
                               color: Colors.black,
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.Header2,
+                              fontFamily: AppFonts.Header,
                             ),
                           ),
                         ],
@@ -435,7 +429,7 @@ Widget chooseLanguage(
                               color: Colors.black,
                               fontSize: 14.sp,
                               fontWeight: FontWeight.bold,
-                              fontFamily: AppFonts.Header2,
+                              fontFamily: AppFonts.Header,
                             ),
                           ),
                         ],

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,8 +7,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/services/firebase_service.dart';
+import 'package:hcmus_alumni_mobile/pages/application_page/application_page.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hcmus_alumni_mobile/pages/write_post_advise/write_post_advise.dart';
 
 import 'common/routes/pages.dart';
 import 'global.dart';
@@ -15,15 +19,20 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: FirebaseOptions(
-      apiKey: 'AIzaSyCLggDtQppE4ePbYut9yxReKjVrTsA6MlI',
-      appId: '1:436562093949:android:a411ef450c3297a50a4e14',
-      messagingSenderId: '436562093949', // Corrected the senderId
-      projectId: 'alumverse-23173',      // Corrected the projectId
-      storageBucket: 'alumverse-23173.appspot.com',
-    ),
-  );
+  if (Platform.isAndroid) {
+    await Firebase.initializeApp(
+      options: FirebaseOptions(
+        apiKey: 'AIzaSyCLggDtQppE4ePbYut9yxReKjVrTsA6MlI',
+        appId: '1:436562093949:android:a411ef450c3297a50a4e14',
+        messagingSenderId: '436562093949',
+        projectId: 'alumverse-23173',
+        storageBucket: 'alumverse-23173.appspot.com',
+      ),
+    );
+  } else if (Platform.isIOS) {
+    await Firebase.initializeApp();
+  }
+
   await FirebaseService().initNotifications();
   await Global.init();
   await dotenv.load(fileName: '.env');

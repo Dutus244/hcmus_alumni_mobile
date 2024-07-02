@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_events.dart';
 import 'package:hcmus_alumni_mobile/pages/news_event_page/bloc/news_event_page_states.dart';
@@ -62,16 +63,16 @@ class _NewsEventPageState extends State<NewsEventPage> {
         final shouldExit = await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Thoát ứng dụng'),
-            content: Text('Bạn có muốn thoát ứng dụng?'),
+            title: Text(translate('exit_application')),
+            content: Text(translate('exit_application_question')),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: Text('Huỷ'),
+                child: Text(translate('cancel')),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: Text('Thoát'),
+                child: Text(translate('exit')),
               ),
             ],
           ),
@@ -85,7 +86,7 @@ class _NewsEventPageState extends State<NewsEventPage> {
           builder: (context, state) {
         return Container(
           child: Scaffold(
-            appBar: buildAppBar(context, 'Tin tức & Sự kiện'),
+            appBar: buildAppBar(context, translate('news_event')),
             backgroundColor: AppColors.background,
             body: BlocProvider.of<NewsEventPageBloc>(context).state.page == 0
                 ? listNews(context, _scrollController)

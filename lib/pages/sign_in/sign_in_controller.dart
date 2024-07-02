@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/services/firebase_service.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../common/function/handle_save_permission.dart';
 import '../../common/services/socket_service.dart';
@@ -42,30 +44,45 @@ class SignInController {
 
     try {
       var response = await http.post(url, body: map);
-
+      print(response.body);
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         String jwtToken = jsonMap['jwt'];
-        Global.storageService
-            .setString(AppConstants.USER_AUTH_TOKEN, jwtToken);
-        if (rememberLogin) {
-          Global.storageService
-              .setBool(AppConstants.USER_REMEMBER_LOGIN, true);
-          Global.storageService
-              .setString(AppConstants.USER_EMAIL, email);
-          Global.storageService
-              .setString(AppConstants.USER_PASSWORD, password);
+
+        var url =
+            Uri.parse('${dotenv.env['API_URL']}/notification/subscription');
+        final token = await FirebaseService().getFcmToken();
+        var headers = <String, String>{
+          'Authorization': 'Bearer $jwtToken',
+          'Content-Type': 'application/json',
+        };
+        final body = jsonEncode({
+          'token': token,
+        });
+        try {
+          await http.post(url, body: body, headers: headers);
+        } catch (error) {
+          print(error);
         }
-        Global.storageService.setString(AppConstants.USER_ID, '0ac25d55-1ee6-4794-8d46-58f82cde644c');
+
+        Global.storageService.setString(AppConstants.USER_AUTH_TOKEN, jwtToken);
+        if (rememberLogin) {
+          Global.storageService.setBool(AppConstants.USER_REMEMBER_LOGIN, true);
+          Global.storageService.setString(AppConstants.USER_EMAIL, email);
+          Global.storageService.setString(AppConstants.USER_PASSWORD, password);
+        }
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
+        Global.storageService.setString(
+            AppConstants.USER_ID, decodedToken["sub"]);
 
         List<String> permissions = List<String>.from(jsonMap['permissions']);
         handleSavePermission(permissions);
         toastInfo(msg: translate('sign_in_success'));
-        socketService.connect(Global.storageService.getUserId());
+        socketService.connect('0ac25d55-1ee6-4794-8d46-58f82cde644c');
 
         Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": 0});
+            "/applicationPage", (route) => false, arguments: {"route": 0}
+            );
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
@@ -99,17 +116,36 @@ class SignInController {
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         String jwtToken = jsonMap['jwt'];
-        Global.storageService
-            .setString(AppConstants.USER_AUTH_TOKEN, jwtToken);
-        Global.storageService.setString(AppConstants.USER_ID, '0ac25d55-1ee6-4794-8d46-58f82cde644c');
+
+        var url =
+            Uri.parse('${dotenv.env['API_URL']}/notification/subscription');
+        final token = await FirebaseService().getFcmToken();
+        var headers = <String, String>{
+          'Authorization': 'Bearer $jwtToken',
+          'Content-Type': 'application/json',
+        };
+        final body = jsonEncode({
+          'token': token,
+        });
+        try {
+          await http.post(url, body: body, headers: headers);
+        } catch (error) {
+          print(error);
+        }
+
+        Global.storageService.setString(AppConstants.USER_AUTH_TOKEN, jwtToken);
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
+        Global.storageService.setString(
+            AppConstants.USER_ID, decodedToken["sub"]);
         List<String> permissions = List<String>.from(jsonMap['permissions']);
         handleSavePermission(permissions);
         toastInfo(msg: translate('sign_in_success'));
-        socketService.connect(Global.storageService.getUserId());
+        print(Global.storageService.getUserId());
+        socketService.connect('0ac25d55-1ee6-4794-8d46-58f82cde644c');
 
         Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false,
-            arguments: {"route": 0});
+            "/applicationPage", (route) => false, arguments: {"route": 0}
+            );
       } else {
         toastInfo(msg: translate('email_password_invalid'));
       }

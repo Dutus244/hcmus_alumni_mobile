@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/widgets/loading_widget.dart';
 import 'package:hcmus_alumni_mobile/model/group.dart';
 import 'package:hcmus_alumni_mobile/pages/group_management/group_management_controller.dart';
@@ -18,10 +19,10 @@ AppBar buildAppBar(BuildContext context) {
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Quản lý nhóm',
+          translate('group_management'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -38,9 +39,9 @@ Widget groupManagement(BuildContext context, Group? group) {
   }
   String typeGroup = '';
   if (group.privacy == 'PUBLIC') {
-    typeGroup = 'Nhóm Công khai';
+    typeGroup = '${translate('group')} ${translate('public')}';
   } else {
-    typeGroup = 'Nhóm Riêng tư';
+    typeGroup = '${translate('group')} ${translate('private')}';
   }
 
   return Column(
@@ -78,7 +79,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                         color: AppColors.textBlack,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w900,
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header,
                       ),
                     ),
                     Text(
@@ -87,7 +88,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                         color: AppColors.textGrey,
                         fontSize: 12.sp,
                         fontWeight: FontWeight.normal,
-                        fontFamily: AppFonts.Header3,
+                        fontFamily: AppFonts.Header,
                       ),
                     ),
                   ],
@@ -124,12 +125,12 @@ Widget groupManagement(BuildContext context, Group? group) {
                       width: 10.h,
                     ),
                     Text(
-                      'Chỉnh sửa nhóm',
+                      translate('edit_group'),
                       style: TextStyle(
                         color: AppColors.textBlack,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w900,
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header,
                       ),
                     ),
                   ],
@@ -142,7 +143,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                   context,
                   "/groupMemberApprove",
                   arguments: {
-                    "group": group,
+                    "groupId": group.id,
                   },
                 );
                 GroupManagementController(context: context).handleGetGroup(group.id);
@@ -162,12 +163,12 @@ Widget groupManagement(BuildContext context, Group? group) {
                       width: 10.h,
                     ),
                     Text(
-                      'Phê duyệt thành viên',
+                      translate('approve_group_members'),
                       style: TextStyle(
                         color: AppColors.textBlack,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w900,
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header,
                       ),
                     ),
                   ],
@@ -200,12 +201,12 @@ Widget groupManagement(BuildContext context, Group? group) {
                       width: 10.h,
                     ),
                     Text(
-                      'Quản lý thành viên',
+                      translate('manage_member'),
                       style: TextStyle(
                         color: AppColors.textBlack,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w900,
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header,
                       ),
                     ),
                   ],
@@ -231,12 +232,12 @@ Widget groupManagement(BuildContext context, Group? group) {
                       width: 10.h,
                     ),
                     Text(
-                      'Rời nhóm',
+                      translate('exit_group'),
                       style: TextStyle(
                         color: AppColors.textBlack,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w900,
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header,
                       ),
                     ),
                   ],
@@ -262,12 +263,12 @@ Widget groupManagement(BuildContext context, Group? group) {
                       width: 10.h,
                     ),
                     Text(
-                      'Xoá nhóm',
+                      translate('delete_group'),
                       style: TextStyle(
                         color: AppColors.textBlack,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w900,
-                        fontFamily: AppFonts.Header2,
+                        fontFamily: AppFonts.Header,
                       ),
                     ),
                   ],

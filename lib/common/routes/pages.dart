@@ -88,6 +88,10 @@ import 'package:hcmus_alumni_mobile/pages/option_page/option_page.dart';
 import 'package:hcmus_alumni_mobile/pages/other_profile_detail/other_profile_detail.dart';
 import 'package:hcmus_alumni_mobile/pages/other_profile_page/bloc/other_profile_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/other_profile_page/other_profile_page.dart';
+import 'package:hcmus_alumni_mobile/pages/post_advise_detail/bloc/post_advise_detail_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/post_advise_detail/post_advise_detail.dart';
+import 'package:hcmus_alumni_mobile/pages/post_group_detail/bloc/post_group_detail_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/post_group_detail/post_group_detail.dart';
 import 'package:hcmus_alumni_mobile/pages/sign_in/sign_in.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
 import 'package:hcmus_alumni_mobile/pages/terms_of_service/term_of_service.dart';
@@ -466,6 +470,18 @@ class AppPages {
           page: const ChatCreate(),
           bloc: BlocProvider(
             create: (_) => ChatCreateBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.POST_ADVISE_DETAIL,
+          page: const PostAdviseDetail(),
+          bloc: BlocProvider(
+            create: (_) => PostAdviseDetailBloc(),
+          )),
+      PageEntity(
+          route: AppRoutes.POST_GROUP_DETAIL,
+          page: const PostGroupDetail(),
+          bloc: BlocProvider(
+            create: (_) => PostGroupDetailBloc(),
           )),
     ];
   }

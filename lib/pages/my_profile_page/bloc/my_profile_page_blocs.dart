@@ -14,6 +14,13 @@ class MyProfilePageBloc extends Bloc<MyProfilePageEvent, MyProfilePageState> {
     on<EventsEvent>(_eventsEvent);
     on<IndexEventEvent>(_indexEventEvent);
     on<HasReachedMaxEventEvent>(_hasReachedMaxEventEvent);
+    on<StatusCommentAdviseEvent>(_statusCommentAdviseEvent);
+    on<CommentAdvisesEvent>(_commentAdvisesEvent);
+    on<IndexCommentAdviseEvent>(_indexCommentAdviseEvent);
+    on<HasReachedMaxCommentAdviseEvent>(_hasReachedMaxCommentAdviseEvent);
+    on<EducationsEvent>(_educationsEvent);
+    on<JobsEvent>(_jobsEvent);
+    on<AchievementsEvent>(_achievementsEvent);
   }
 
   void _pageEvent(PageEvent event, Emitter<MyProfilePageState> emit) {
@@ -55,5 +62,36 @@ class MyProfilePageBloc extends Bloc<MyProfilePageEvent, MyProfilePageState> {
   void _hasReachedMaxEventEvent(
       HasReachedMaxEventEvent event, Emitter<MyProfilePageState> emit) {
     emit(state.copyWith(hasReachedMaxEvent: event.hasReachedMaxEvent));
+  }
+
+  void _statusCommentAdviseEvent(
+      StatusCommentAdviseEvent event, Emitter<MyProfilePageState> emit) async {
+    emit(state.copyWith(statusCommentAdvise: event.statusCommentAdvise));
+  }
+
+  void _commentAdvisesEvent(CommentAdvisesEvent event, Emitter<MyProfilePageState> emit) async {
+    emit(state.copyWith(commentAdvises: event.commentAdvises));
+  }
+
+  void _indexCommentAdviseEvent(
+      IndexCommentAdviseEvent event, Emitter<MyProfilePageState> emit) {
+    emit(state.copyWith(indexCommentAdvise: event.indexCommentAdvise));
+  }
+
+  void _hasReachedMaxCommentAdviseEvent(
+      HasReachedMaxCommentAdviseEvent event, Emitter<MyProfilePageState> emit) {
+    emit(state.copyWith(hasReachedMaxCommentAdvise: event.hasReachedMaxCommentAdvise));
+  }
+
+  void _educationsEvent(EducationsEvent event, Emitter<MyProfilePageState> emit) async {
+    emit(state.copyWith(educations: event.educations));
+  }
+
+  void _jobsEvent(JobsEvent event, Emitter<MyProfilePageState> emit) async {
+    emit(state.copyWith(jobs: event.jobs));
+  }
+
+  void _achievementsEvent(AchievementsEvent event, Emitter<MyProfilePageState> emit) async {
+    emit(state.copyWith(achievements: event.achievements));
   }
 }

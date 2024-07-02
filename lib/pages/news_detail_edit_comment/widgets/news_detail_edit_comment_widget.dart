@@ -25,7 +25,7 @@ AppBar buildAppBar(BuildContext context) {
           translate('news'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header3,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -80,7 +80,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
               ),
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
               ),
@@ -101,7 +101,7 @@ Widget header(News news) {
         child: Text(
           news.title,
           style: TextStyle(
-            fontFamily: AppFonts.Header3,
+            fontFamily: AppFonts.Header,
             fontSize: 14.sp,
             fontWeight: FontWeight.bold,
             color: AppColors.textBlack,
@@ -113,7 +113,7 @@ Widget header(News news) {
         child: Text(
           translate('edit_comment'),
           style: TextStyle(
-            fontFamily: AppFonts.Header3,
+            fontFamily: AppFonts.Header,
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
             color: AppColors.textBlack,
@@ -146,7 +146,7 @@ Widget header(News news) {
                 color: AppColors.textBlack,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
               ),
             ),
           ],
@@ -188,7 +188,7 @@ Widget buttonEdit(BuildContext context, News news, Comment Comment) {
                 Text(
                   translate('save'),
                   style: TextStyle(
-                      fontFamily: AppFonts.Header3,
+                      fontFamily: AppFonts.Header,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
                       color: comment != ""

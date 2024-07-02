@@ -28,6 +28,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
     _scrollController.addListener(_onScroll);
     MyProfilePageController(context: context).handleLoadEventsData(0);
     MyProfilePageController(context: context).handleLoadPostData(0);
+    MyProfilePageController(context: context).handleLoadCommentPostAdviseData(0);
   }
 
   void _onScroll() {
@@ -42,9 +43,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
       if (BlocProvider.of<MyProfilePageBloc>(context).state.page == 0) {
         MyProfilePageController(context: context).handleLoadPostData(
             BlocProvider.of<MyProfilePageBloc>(context).state.indexPost);
-      } else {
+      } else if (BlocProvider.of<MyProfilePageBloc>(context).state.page == 1) {
         MyProfilePageController(context: context).handleLoadEventsData(
             BlocProvider.of<MyProfilePageBloc>(context).state.indexEvent);
+      } else if (BlocProvider.of<MyProfilePageBloc>(context).state.page == 2) {
+        MyProfilePageController(context: context).handleLoadCommentPostAdviseData(
+            BlocProvider.of<MyProfilePageBloc>(context).state.indexCommentAdvise);
       }
     }
   }
@@ -52,14 +56,28 @@ class _MyProfilePageState extends State<MyProfilePage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MyProfilePageBloc, MyProfilePageState>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: buildAppBar(context),
-            backgroundColor: AppColors.background,
-            body:  BlocProvider.of<MyProfilePageBloc>(context).state.page == 0
-                ? listPosts(context, _scrollController)
-                : listEvent(context, _scrollController),
-          );
-        });
+      builder: (context, state) {
+        Widget body;
+        switch (state.page) {
+          case 0:
+            body = listPosts(context, _scrollController);
+            break;
+          case 1:
+            body = listEvent(context, _scrollController);
+            break;
+          case 2:
+            body = listCommentAdvise(context, _scrollController);
+            break;
+          default:
+            body = Center(child: Text('Page not found'));
+        }
+
+        return Scaffold(
+          appBar: buildAppBar(context),
+          backgroundColor: AppColors.background,
+          body: body,
+        );
+      },
+    );
   }
 }

@@ -25,7 +25,6 @@ class _ListCommentPostGroupState extends State<ListCommentPostGroup> {
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
   late String id;
-  late String groupId;
 
   @override
   void initState() {
@@ -43,7 +42,7 @@ class _ListCommentPostGroupState extends State<ListCommentPostGroup> {
         _isFetchingData = false;
       });
 
-      ListCommentPostAdviseController(context: context).handleGetComment(
+      ListCommentPostGroupController(context: context).handleGetComment(
           id,
           BlocProvider.of<ListCommentPostGroupBloc>(context)
               .state
@@ -57,8 +56,7 @@ class _ListCommentPostGroupState extends State<ListCommentPostGroup> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       id = args["id"];
-      groupId = args["groupId"];
-      ListCommentPostAdviseController(context: context).handleGetComment(id, 0);
+      ListCommentPostGroupController(context: context).handleGetComment(id, 0);
     }
 
     return BlocBuilder<ListCommentPostGroupBloc, ListCommentPostGroupState>(

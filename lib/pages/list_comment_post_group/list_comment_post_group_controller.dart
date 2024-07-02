@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
@@ -15,10 +16,10 @@ import 'bloc/list_comment_post_group_blocs.dart';
 import 'bloc/list_comment_post_group_events.dart';
 import 'bloc/list_comment_post_group_states.dart';
 
-class ListCommentPostAdviseController {
+class ListCommentPostGroupController {
   final BuildContext context;
 
-  const ListCommentPostAdviseController({required this.context});
+  const ListCommentPostGroupController({required this.context});
 
   Future<void> handleGetComment(String id, int page) async {
     if (page == 0) {
@@ -88,24 +89,26 @@ class ListCommentPostAdviseController {
             .read<ListCommentPostGroupBloc>()
             .add(StatusCommentEvent(Status.success));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
+        toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
+      toastInfo(msg: translate('error_get_comment'));
     }
   }
 
-  Future<void> handleGetChildrenComment(String commentId) async {
+  Future<void> handleGetChildrenComment(Comment comment) async {
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/groups/comments/$commentId/children';
+    var endpoint = '/groups/comments/${comment.id}/children';
     var pageSize = 10;
     var token = Global.storageService.getUserAuthToken();
     var headers = <String, String>{
       'Authorization': 'Bearer $token', // Include bearer token in the headers
     };
 
+    var page = (comment.childrenComments.length / pageSize).toInt();
+
     try {
-      var url = Uri.parse('$apiUrl$endpoint?page=0&pageSize=$pageSize');
+      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
 
@@ -114,7 +117,7 @@ class ListCommentPostAdviseController {
         List<Comment> currentList =
             BlocProvider.of<ListCommentPostGroupBloc>(context).state.comments;
 
-        Comment? parentComment = findParentComment(currentList, commentId);
+        Comment? parentComment = findParentComment(currentList, comment.id);
 
         if (parentComment != null) {
           await parentComment.fetchChildrenComments(jsonMap);
@@ -124,10 +127,10 @@ class ListCommentPostAdviseController {
             .read<ListCommentPostGroupBloc>()
             .add(CommentsEvent(currentList));
       } else {
-        toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
+        toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bình luận");
+      toastInfo(msg: translate('error_get_comment'));
     }
   }
 
@@ -169,15 +172,15 @@ class ListCommentPostAdviseController {
 
       var response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 201) {
-        ListCommentPostAdviseController(context: context)
+        ListCommentPostGroupController(context: context)
             .handleGetComment(id, 0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi gửi bình luận");
+        toastInfo(msg: translate('error_send_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi gửi bình luận");
+      toastInfo(msg: translate('error_send_comment'));
     }
   }
 
@@ -204,15 +207,15 @@ class ListCommentPostAdviseController {
 
       var response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 201) {
-        ListCommentPostAdviseController(context: context)
+        ListCommentPostGroupController(context: context)
             .handleGetComment(id, 0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi gửi bình luận");
+        toastInfo(msg: translate('error_send_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi gửi bình luận");
+      toastInfo(msg: translate('error_send_comment'));
     }
   }
 
@@ -239,15 +242,15 @@ class ListCommentPostAdviseController {
       var response = await http.put(url, headers: headers, body: body);
 
       if (response.statusCode == 200) {
-        ListCommentPostAdviseController(context: context)
+        ListCommentPostGroupController(context: context)
             .handleGetComment(id, 0);
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa bình luận");
+        toastInfo(msg: translate('error_edit_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi chỉnh sửa bình luận");
+      toastInfo(msg: translate('error_edit_comment'));
     }
   }
 
@@ -255,16 +258,16 @@ class ListCommentPostAdviseController {
     final shouldDelte = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Xoá bình luận'),
-        content: Text('Bạn có muốn xoá bình luận này?'),
+        title: Text(translate('delete_comment')),
+        content: Text(translate('delete_comment_question')),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Huỷ'),
+            child: Text(translate('cancel')),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text('Xoá'),
+            child: Text(translate('delete')),
           ),
         ],
       ),
@@ -286,15 +289,15 @@ class ListCommentPostAdviseController {
         var response = await http.delete(url, headers: headers);
 
         if (response.statusCode == 200) {
-          ListCommentPostAdviseController(context: context)
+          ListCommentPostGroupController(context: context)
               .handleGetComment(id, 0);
         } else {
           // Handle other status codes if needed
-          toastInfo(msg: "Có lỗi xả ra khi xoá bình luận");
+          toastInfo(msg: translate('error_delete_comment'));
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: "Có lỗi xả ra khi xoá bình luận");
+        toastInfo(msg: translate('error_delete_comment'));
       }
     }
     return shouldDelte ?? false;

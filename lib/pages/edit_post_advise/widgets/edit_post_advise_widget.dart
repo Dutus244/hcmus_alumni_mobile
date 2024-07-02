@@ -529,7 +529,7 @@ Widget choosePicture(BuildContext context,
                   .length ==
               0)
             Container(
-              width: 140.w,
+              width: 160.w,
               height: 30.h,
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
@@ -541,7 +541,7 @@ Widget choosePicture(BuildContext context,
               ),
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(left: 20.w, right: 20.w),
+                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/model/hall_of_fame.dart';
 import 'package:hcmus_alumni_mobile/pages/hof_page/bloc/hof_page_states.dart';
 
@@ -21,10 +22,10 @@ AppBar buildAppBar(BuildContext context) {
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Gương thành công',
+          translate('hall_of_fame'),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: AppFonts.Header0,
+            fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
             fontSize: 16.sp,
             color: AppColors.secondaryHeader,
@@ -73,7 +74,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                 counterText: '',
               ),
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 color: AppColors.textBlack,
                 fontWeight: FontWeight.normal,
                 fontSize: 12.sp,
@@ -139,7 +140,7 @@ Widget dropdownButtonFaculty(List<String> faculties, BuildContext context,
           child: Text(
             faculties[index],
             style: TextStyle(
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.element),
@@ -156,9 +157,9 @@ Widget dropdownButtonFaculty(List<String> faculties, BuildContext context,
       child: Container(
         padding: EdgeInsets.only(left: 5.w),
         child: Text(
-          'Khoa',
+          translate('faculty'),
           style: TextStyle(
-              fontFamily: AppFonts.Header2,
+              fontFamily: AppFonts.Header,
               fontSize: 12.sp,
               fontWeight: FontWeight.bold,
               color: AppColors.element),
@@ -206,7 +207,7 @@ Widget dropdownButtonGraduationYear(List<String> graduationYear,
           child: Text(
             graduationYear[index],
             style: TextStyle(
-                fontFamily: AppFonts.Header2,
+                fontFamily: AppFonts.Header,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.element),
@@ -223,9 +224,9 @@ Widget dropdownButtonGraduationYear(List<String> graduationYear,
       child: Container(
         padding: EdgeInsets.only(left: 5.w),
         child: Text(
-          'Khoá',
+          translate('year'),
           style: TextStyle(
-              fontFamily: AppFonts.Header2,
+              fontFamily: AppFonts.Header,
               fontSize: 12.sp,
               fontWeight: FontWeight.bold,
               color: AppColors.element),
@@ -284,7 +285,7 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                   children: [
                     Center(
                         child: buildTextField(
-                            context, 'Tìm gương thành công', 'search', 'search',
+                            context, translate('search_hof'), 'search', 'search',
                             (value) {
                       context.read<HofPageBloc>().add(NameEvent(value));
                     })),
@@ -328,7 +329,7 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                   return Column(
                     children: [
                       Center(
-                          child: buildTextField(context, 'Tìm gương thành công',
+                          child: buildTextField(context, translate('search_hof'),
                               'search', 'search', (value) {
                         context.read<HofPageBloc>().add(NameEvent(value));
                       })),
@@ -367,12 +368,12 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
-                          'Không có dữ liệu',
+                          translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 11.sp,
                             fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header2,
+                            fontFamily: AppFonts.Header,
                           ),
                         ),
                       )),
@@ -399,7 +400,7 @@ Widget listHof(BuildContext context, ScrollController _scrollController) {
                         Center(
                             child: buildTextField(
                                 context,
-                                'Tìm gương thành công',
+                                translate('search_hof'),
                                 'search',
                                 'search', (value) {
                           context.read<HofPageBloc>().add(NameEvent(value));
@@ -511,7 +512,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
                         color: Colors.white,
                         fontSize: 11.sp,
                         fontWeight: FontWeight.normal,
-                        fontFamily: AppFonts.Header3,
+                        fontFamily: AppFonts.Header,
                       ),
                     ),
                   ),
@@ -527,7 +528,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
                   hallOfFame.title,
                   maxLines: 1,
                   style: TextStyle(
-                    fontFamily: AppFonts.Header2,
+                    fontFamily: AppFonts.Header,
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textBlack,
@@ -541,10 +542,10 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
               Container(
                 margin: EdgeInsets.only(top: 3.h),
                 child: Text(
-                  'Khoá ${hallOfFame.beginningYear}',
+                  '${translate('academic_year')} ${hallOfFame.beginningYear}',
                   maxLines: 1,
                   style: TextStyle(
-                    fontFamily: AppFonts.Header3,
+                    fontFamily: AppFonts.Header,
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
                     color: AppColors.textGrey,
@@ -560,7 +561,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontFamily: AppFonts.Header3,
+                fontFamily: AppFonts.Header,
                 fontSize: 12.sp,
                 fontWeight: FontWeight.normal,
                 color: AppColors.textBlack,
