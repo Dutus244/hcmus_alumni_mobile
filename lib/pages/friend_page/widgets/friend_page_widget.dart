@@ -565,7 +565,7 @@ Widget request(BuildContext context, FriendRequest request) {
                         ),
                       ),
                       Text(
-                        handleTimeDifference1('2024-06-20 09:02:16'),
+                        handleTimeDifference1(request.createAt),
                         style: TextStyle(
                           color: AppColors.textBlack,
                           fontSize: 12.sp,
@@ -612,7 +612,7 @@ Widget request(BuildContext context, FriendRequest request) {
                       ),
                       GestureDetector(
                         onTap: () {
-                          FriendPageController(context: context).handleDeneidRequest(request.user.id);
+                          FriendPageController(context: context).handleDeniedRequest(request.user.id);
                         },
                         child: Container(
                           width: 120.w,

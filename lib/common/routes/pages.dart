@@ -85,6 +85,7 @@ import 'package:hcmus_alumni_mobile/pages/notification_page/bloc/notification_pa
 import 'package:hcmus_alumni_mobile/pages/notification_page/notification_page.dart';
 import 'package:hcmus_alumni_mobile/pages/option_page/bloc/option_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/option_page/option_page.dart';
+import 'package:hcmus_alumni_mobile/pages/other_profile_detail/bloc/other_profile_detail_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/other_profile_detail/other_profile_detail.dart';
 import 'package:hcmus_alumni_mobile/pages/other_profile_page/bloc/other_profile_page_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/other_profile_page/other_profile_page.dart';
@@ -433,7 +434,10 @@ class AppPages {
           )),
       PageEntity(
           route: AppRoutes.OTHER_PROFILE_DETAIL,
-          page: const OtherProfileDetail()),
+          page: const OtherProfileDetail(),
+          bloc: BlocProvider(
+            create: (_) => OtherProfileDetailBloc(),
+          )),
       PageEntity(
           route: AppRoutes.OPTION_PAGE,
           page: const OptionPage(),

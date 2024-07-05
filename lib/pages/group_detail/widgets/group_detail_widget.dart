@@ -14,6 +14,7 @@ import '../../../common/values/fonts.dart';
 import '../../../common/values/text_style.dart';
 import '../../../common/widgets/flutter_toast.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../../../model/group.dart';
 import '../../../model/post.dart';
 import '../bloc/group_detail_states.dart';
@@ -238,6 +239,9 @@ Widget buildCreatePostButton(BuildContext context, Group group) {
 }
 
 Widget joinGroup(BuildContext context, Group group) {
+  if (!Global.storageService.permissionGroupJoin()) {
+    return Container();
+  }
   return GestureDetector(
     onTap: () {
       GroupDetailController(context: context).handleRequestJoinGroup(group.id);

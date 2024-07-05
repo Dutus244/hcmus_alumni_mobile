@@ -29,7 +29,7 @@ class ChatPageController {
   }
 
   Future<void> handleLoadInboxData(int page) async {
-    await Future.delayed(Duration(microseconds: 500));
+    await Future.delayed(Duration(seconds: 1));
     if (page == 0) {
       context.read<ChatPageBloc>().add(HasReachedMaxInboxEvent(false));
       context.read<ChatPageBloc>().add(IndexInboxEvent(1));
@@ -61,6 +61,7 @@ class ChatPageController {
       if (response.statusCode == 200) {
         // Convert the JSON string to a Map
         var jsonMap = json.decode(responseBody);
+        print(jsonMap);
         // Pass the Map to the fromJson method
         var inboxResponse = InboxResponse.fromJson(jsonMap);
         if (inboxResponse.inboxes.isEmpty) {

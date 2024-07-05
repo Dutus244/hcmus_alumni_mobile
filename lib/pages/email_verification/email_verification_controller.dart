@@ -3,7 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/email_verification/bloc/email_verification_blocs.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
+import '../../common/function/handle_save_permission.dart';
+import '../../common/services/firebase_service.dart';
+import '../../common/services/socket_service.dart';
 import '../../common/values/constants.dart';
 import '../../common/widgets/flutter_toast.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +15,8 @@ import 'dart:async';
 
 import '../../global.dart';
 import 'dart:convert';
+
+import '../../model/user.dart';
 
 class EmailVerificationController {
   final BuildContext context;
@@ -82,9 +88,12 @@ class EmailVerificationController {
 
       final password = Global.storageService.getUserPassword();
 
+      print(email);
+      print(password);
+
       try {
         var response = await http.post(url, body: map);
-
+        print(response.statusCode);
         if (response.statusCode == 200) {
           var url = Uri.parse('${dotenv.env['API_URL']}/auth/signup');
           final map = <String, dynamic>{};
@@ -93,7 +102,8 @@ class EmailVerificationController {
 
           try {
             var response = await http.post(url, body: map);
-            if (response.statusCode == 201) {
+            if (response.statusCode == 200) {
+              print("hi");
               var url = Uri.parse('${dotenv.env['API_URL']}/auth/login');
               final map = <String, dynamic>{};
               map['email'] = email;
@@ -102,10 +112,36 @@ class EmailVerificationController {
               try {
                 var response = await http.post(url, body: map);
                 if (response.statusCode == 200) {
+                  print("hello");
                   Map<String, dynamic> jsonMap = json.decode(response.body);
                   String jwtToken = jsonMap['jwt'];
                   Global.storageService.setString(
                       AppConstants.USER_AUTH_TOKEN, jwtToken);
+
+                  var url =
+                  Uri.parse('${dotenv.env['API_URL']}/notification/subscription');
+                  final token = await NotificationServices().getDeviceToken();
+                  var headers = <String, String>{
+                    'Authorization': 'Bearer $jwtToken',
+                    'Content-Type': 'application/json',
+                  };
+                  final body = jsonEncode({
+                    'token': token,
+                  });
+                  try {
+                    await http.post(url, body: body, headers: headers);
+                  } catch (error) {
+                    print(error);
+                  }
+
+                  Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
+                  Global.storageService
+                      .setString(AppConstants.USER_ID, decodedToken["sub"]);
+
+                  List<String> permissions = List<String>.from(jsonMap['permissions']);
+                  handleSavePermission(permissions);
+                  socketService.connect(Global.storageService.getUserId());
+
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       "/alumniInformation", (route) => false);
                 } else {
@@ -125,6 +161,7 @@ class EmailVerificationController {
                   }
                 }
               } catch (error) {
+                print(error);
                 toastInfo(msg: translate('error_login'));
               }
             } else {
@@ -140,6 +177,7 @@ class EmailVerificationController {
               }
             }
           } catch (error) {
+            print(error);
             toastInfo(msg: translate('error_register'));
           }
         } else {

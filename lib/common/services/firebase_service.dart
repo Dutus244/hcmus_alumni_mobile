@@ -349,9 +349,10 @@ class NotificationServices {
         );
         break;
       case "comment_post_group":
+        List<String> temp = data["parentId"].toString().split(',');
         navigatorKey.currentState?.pushNamed(
           "/postGroupDetail",
-          arguments: {"id": data["parentId"]},
+          arguments: {"id": temp[0]},
         );
         break;
       case "interact_post_advise":
@@ -364,6 +365,12 @@ class NotificationServices {
         navigatorKey.currentState?.pushNamed(
           "/postAdviseDetail",
           arguments: {"id": data["parentId"]},
+        );
+        break;
+      case "message":
+        navigatorKey.currentState?.pushNamed(
+          "/chatDetail",
+          arguments: {"inboxId": int.parse(data["parentId"]), "name": message.notification?.title},
         );
         break;
     }

@@ -8,5 +8,5 @@ class Friend {
   );
 
   Friend.fromJson(Map<String, dynamic> json)
-      : user = User.fromJson(json["user"]);
+      : user = User.fromJson(json["friend"]);
 }

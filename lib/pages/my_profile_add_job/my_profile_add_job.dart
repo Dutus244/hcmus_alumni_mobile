@@ -17,7 +17,7 @@ class MyProfileAddJob extends StatefulWidget {
 
 class _MyProfileAddJobState extends State<MyProfileAddJob> {
   int option = 0;
-  late Job job;
+  Job? job;
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
@@ -27,10 +27,11 @@ class _MyProfileAddJobState extends State<MyProfileAddJob> {
       context.read<MyProfileAddJobBloc>().add(MyProfileAddJobResetEvent());
       if (option == 1) {
         job = args["job"];
-        context.read<MyProfileAddJobBloc>().add(CompanyNameEvent(job.companyName));
-        context.read<MyProfileAddJobBloc>().add(PositionEvent(job.position));
-        context.read<MyProfileAddJobBloc>().add(StartTimeEvent(job.startTime));
-        context.read<MyProfileAddJobBloc>().add(EndTimeEvent(job.endTime));
+        context.read<MyProfileAddJobBloc>().add(CompanyNameEvent(job!.companyName));
+        context.read<MyProfileAddJobBloc>().add(PositionEvent(job!.position));
+        context.read<MyProfileAddJobBloc>().add(StartTimeEvent(job!.startTime));
+        context.read<MyProfileAddJobBloc>().add(EndTimeEvent(job!.endTime));
+        context.read<MyProfileAddJobBloc>().add(IsWorkingEvent(job!.isWorking));
       }
     }
 
@@ -39,7 +40,7 @@ class _MyProfileAddJobState extends State<MyProfileAddJob> {
           return Scaffold(
               appBar: buildAppBar(context),
               backgroundColor: AppColors.background,
-              body: myProfileAddJob(context));
+              body: myProfileAddJob(context, option, job != null ? job!.id : ''));
         });
   }
 }

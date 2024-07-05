@@ -5,12 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/values/text_style.dart';
+import 'package:hcmus_alumni_mobile/pages/other_profile_page/other_profile_page_controller.dart';
 
 import '../../../common/function/handle_datetime.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/loading_widget.dart';
+import '../../../global.dart';
 import '../../../model/event.dart';
+import '../../../model/user.dart';
 import '../bloc/other_profile_page_blocs.dart';
 import '../bloc/other_profile_page_states.dart';
 import 'dart:io';
@@ -22,7 +25,7 @@ AppBar buildAppBar(BuildContext context) {
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Nguyễn Duy',
+          BlocProvider.of<OtherProfilePageBloc>(context).state.user != null ? BlocProvider.of<OtherProfilePageBloc>(context).state.user!.fullName : '',
           textAlign: TextAlign.center,
           style: AppTextStyle.medium().wSemiBold(),
         ),
@@ -58,7 +61,7 @@ Widget listFriend(BuildContext context) {
       Container(
         margin: EdgeInsets.only(left: 10.w, top: 2.h),
         child: Text(
-          '300 ${translate('friends').toLowerCase()}',
+          '${BlocProvider.of<OtherProfilePageBloc>(context).state.friendCount} ${translate('friends').toLowerCase()}',
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontSize: 12.sp,
@@ -67,224 +70,133 @@ Widget listFriend(BuildContext context) {
           ),
         ),
       ),
-      Container(
+      if (BlocProvider.of<OtherProfilePageBloc>(context).state.friends.length > 0)
+        Container(
         margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
+            for (int i = 0; i < BlocProvider.of<OtherProfilePageBloc>(context).state.friends.length; i += 1)
+              if (i <= 2)
+                GestureDetector(
+                  onTap: () {
+                    if (BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.id ==
+                        Global.storageService.getUserId()) {
+                      Navigator.pushNamed(
+                        context,
+                        "/myProfilePage",
+                      );
+                    } else {
+                      Navigator.pushNamed(context, "/otherProfilePage",
+                          arguments: {
+                            "id": BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.id,
+                          });
+                    }
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.w),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.avatarUrl),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        height: 90.h,
+                        width: 90.h,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 10.h),
+                        width: 110.w,
+                        height: 30.h,
+                        child: Text(
+                          BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.fullName,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: AppFonts.Header,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textBlack,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  height: 90.h,
-                  width: 90.h,
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.small().wSemiBold(),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                )
-              ],
-            ),
           ],
         ),
       ),
-      Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
+      if (BlocProvider.of<OtherProfilePageBloc>(context).state.friends.length > 3)
+        Container(
+          margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              for (int i = 3; i < BlocProvider.of<OtherProfilePageBloc>(context).state.friends.length; i += 1)
+                GestureDetector(
+                  onTap: () {
+                    if (BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.id ==
+                        Global.storageService.getUserId()) {
+                      Navigator.pushNamed(
+                        context,
+                        "/myProfilePage",
+                      );
+                    } else {
+                      Navigator.pushNamed(context, "/otherProfilePage",
+                          arguments: {
+                            "id": BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.id,
+                          });
+                    }
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.w),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.avatarUrl),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        height: 90.h,
+                        width: 90.h,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 10.h),
+                        width: 110.w,
+                        height: 30.h,
+                        child: Text(
+                          BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.fullName,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: AppFonts.Header,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textBlack,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  height: 90.h,
-                  width: 90.h,
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       GestureDetector(
         onTap: () async {
-
+          Navigator.pushNamed(
+            context,
+            "/friendList",
+          );
         },
         child: Container(
             width: 340.w,
@@ -318,6 +230,10 @@ Widget listFriend(BuildContext context) {
 
 Widget header(BuildContext context) {
   bool isFriend = true;
+  User? user = BlocProvider.of<OtherProfilePageBloc>(context).state.user;
+  if (user == null) {
+    return loadingWidget();
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -329,7 +245,7 @@ Widget header(BuildContext context) {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/groups/35765714-67c9-4852-8298-bc65ba6bf503/cover'),
+                  image: NetworkImage(user.coverUrl),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -342,7 +258,7 @@ Widget header(BuildContext context) {
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage('https://storage.googleapis.com/hcmus-alumverse/images/groups/35765714-67c9-4852-8298-bc65ba6bf503/cover'),
+                    image: NetworkImage(user.avatarUrl),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(65.w),
@@ -363,7 +279,7 @@ Widget header(BuildContext context) {
         child: Row(
           children: [
             Text(
-              'Nguyễn Duy',
+              user.fullName,
               style: AppTextStyle.xLarge().wSemiBold(),
             ),
           ],
@@ -374,7 +290,7 @@ Widget header(BuildContext context) {
         child: Row(
           children: [
             Text(
-              '300',
+              BlocProvider.of<OtherProfilePageBloc>(context).state.friendCount.toString(),
               style: AppTextStyle.base(),
             ),
             Text(
@@ -427,7 +343,7 @@ Widget header(BuildContext context) {
           if (!isFriend)
             GestureDetector(
             onTap: () {
-
+              OtherProfilePageController(context: context).handleInbox(user);
             },
             child: Container(
               margin: EdgeInsets.only(right: 10.w, top: 10.h),
@@ -507,7 +423,7 @@ Widget header(BuildContext context) {
           if (isFriend)
             GestureDetector(
             onTap: () {
-
+              OtherProfilePageController(context: context).handleInbox(user);
             },
             child: Container(
               margin: EdgeInsets.only(right: 10.w, top: 10.h),
@@ -560,62 +476,124 @@ Widget detail(BuildContext context) {
     children: [
       Container(
         margin: EdgeInsets.only(left: 10.w, top: 10.h),
-        child:  Text(
+        child: Text(
           translate('detail'),
-          style: AppTextStyle.medium().wSemiBold(),
+          style: TextStyle(
+            fontFamily: AppFonts.Header,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textBlack,
+          ),
         ),
       ),
-      Container(
-        margin: EdgeInsets.only(left: 10.w, top: 10.h, right: 10.w),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              "assets/icons/study.svg",
-              width: 17.w,
-              height: 17.h,
-              color: Colors.black.withOpacity(0.5),
-            ),
-            Container(
-              width: 10.w,
-            ),
-            Container(
-              width: 310.w,
-              child: Text(
-                'Học tại Trường Đại học Khoa học Tự nhiên, Đại học Quốc gia TP.HCM',
-                style: AppTextStyle.base(),
+      for (int i = 0;
+      i <
+          BlocProvider.of<OtherProfilePageBloc>(context)
+              .state
+              .educations
+              .length;
+      i += 1)
+        Container(
+          margin: EdgeInsets.only(left: 10.w, top: 10.h, right: 10.w),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                "assets/icons/study.svg",
+                width: 17.w,
+                height: 17.h,
+                color: Colors.black.withOpacity(0.5),
               ),
-            )
-          ],
-        ),
-      ),
-      Container(
-        margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              "assets/icons/work.svg",
-              width: 17.w,
-              height: 17.h,
-              color: Colors.black.withOpacity(0.5),
-            ),
-            Container(
-              width: 10.w,
-            ),
-            Container(
-              width: 310.w,
-              child: Text(
-                'Đã làm việc tại Trường Đại học Khoa học Tự nhiên, Đại học Quốc gia TP.HCM',
-                style: AppTextStyle.base(),
+              Container(
+                width: 10.w,
               ),
-            )
-          ],
+              Container(
+                width: 310.w,
+                child: Text(
+                  '${BlocProvider.of<OtherProfilePageBloc>(context).state.educations[i].isLearning ? translate('studying_at') : translate('studied_at')} ${BlocProvider.of<OtherProfilePageBloc>(context).state.educations[i].schoolName}',
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.normal,
+                    color: AppColors.textBlack,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
+      for (int i = 0;
+      i < BlocProvider.of<OtherProfilePageBloc>(context).state.jobs.length;
+      i += 1)
+        Container(
+          margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                "assets/icons/work.svg",
+                width: 17.w,
+                height: 17.h,
+                color: Colors.black.withOpacity(0.5),
+              ),
+              Container(
+                width: 10.w,
+              ),
+              Container(
+                width: 310.w,
+                child: Text(
+                  '${BlocProvider.of<OtherProfilePageBloc>(context).state.jobs[i].isWorking ? translate('working_at') : translate('worked_at')} ${BlocProvider.of<OtherProfilePageBloc>(context).state.jobs[i].companyName}',
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.normal,
+                    color: AppColors.textBlack,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      for (int i = 0;
+      i <
+          BlocProvider.of<OtherProfilePageBloc>(context)
+              .state
+              .achievements
+              .length;
+      i += 1)
+        Container(
+          margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                "assets/icons/achievement.svg",
+                width: 17.w,
+                height: 17.h,
+                color: Colors.black.withOpacity(0.5),
+              ),
+              Container(
+                width: 10.w,
+              ),
+              Container(
+                width: 310.w,
+                child: Text(
+                  '${translate('has_achieved')} ${BlocProvider.of<OtherProfilePageBloc>(context).state.achievements[i].name}',
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.normal,
+                    color: AppColors.textBlack,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       GestureDetector(
-        onTap: () {
+        onTap: () async {
           Navigator.pushNamed(
             context,
             "/otherProfileDetail",
+            arguments: {"id": BlocProvider.of<OtherProfilePageBloc>(context)
+                .state.user!.id}
           );
         },
         child: Container(
@@ -626,7 +604,8 @@ Widget detail(BuildContext context) {
                 width: 17.w,
                 height: 17.h,
                 decoration: const BoxDecoration(
-                    image: DecorationImage(image: AssetImage("assets/icons/3dot.png"))),
+                    image: DecorationImage(
+                        image: AssetImage("assets/icons/3dot.png"))),
               ),
               Container(
                 width: 10.w,
@@ -634,8 +613,13 @@ Widget detail(BuildContext context) {
               Container(
                 width: 310.w,
                 child: Text(
-                  '${translate('see_introductory_information')} Nguyễn Duy',
-                  style: AppTextStyle.base(),
+                  translate('view_your_referral_information'),
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.normal,
+                    color: AppColors.textBlack,
+                  ),
                 ),
               )
             ],

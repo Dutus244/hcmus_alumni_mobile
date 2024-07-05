@@ -18,7 +18,7 @@ class AlumniVerification extends StatefulWidget {
 }
 
 class _AlumniVerificationState extends State<AlumniVerification> {
-  late String fullName;
+  String fullName = "";
   File? avatar;
   @override
   void initState() {

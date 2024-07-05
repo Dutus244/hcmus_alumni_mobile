@@ -9,6 +9,7 @@ class AlumniVerificationBloc
     on<SocialMediaLinkEvent>(_socialMediaLinkEvent);
     on<StudentIdEvent>(_studentIdEvent);
     on<StartYearEvent>(_startYearEvent);
+    on<FacultyIdEvent>(_facultyIdEvent);
     on<AlumniVerificationResetEvent>(_alumniVerificationResetEvent);
   }
 
@@ -25,6 +26,11 @@ class AlumniVerificationBloc
   void _startYearEvent(
       StartYearEvent event, Emitter<AlumniVerificationState> emit) {
     emit(state.copyWith(startYear: event.startYear));
+  }
+
+  void _facultyIdEvent(
+      FacultyIdEvent event, Emitter<AlumniVerificationState> emit) {
+    emit(state.copyWith(facultyId: event.facultyId));
   }
 
   void _alumniVerificationResetEvent(AlumniVerificationResetEvent event,

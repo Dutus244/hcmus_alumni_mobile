@@ -78,7 +78,7 @@ AppBar buildAppBar(BuildContext context, String title) {
                         radius: 10,
                         child: null,
                         backgroundImage: NetworkImage(
-                            'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
+                            Global.storageService.getUserAvatarUrl()),
                       )),
                 ),
               ],

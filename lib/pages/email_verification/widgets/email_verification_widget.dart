@@ -26,7 +26,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
       child: Row(
         children: [
           Container(
-            width: 200.w,
+            width: 180.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 20.w),
             child: TextField(
@@ -56,7 +56,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
           GestureDetector(
             onTap: func2,
             child: Container(
-              padding: EdgeInsets.only(left: 20.w),
+              padding: EdgeInsets.only(left: 10.w),
               width: 100.w,
               height: 50.h,
               child: Row(

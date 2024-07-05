@@ -42,6 +42,12 @@ class HasReachedMaxFriendEvent extends FriendListEvent {
   const HasReachedMaxFriendEvent(this.hasReachedMaxFriend);
 }
 
+class FriendCountEvent extends FriendListEvent {
+  final int friendCount;
+
+  const FriendCountEvent(this.friendCount);
+}
+
 class ClearResultEvent extends FriendListEvent {}
 
 class FriendSearchResetEvent extends FriendListEvent {}

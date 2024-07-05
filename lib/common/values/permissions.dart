@@ -7,5 +7,6 @@ class AppPermissions {
   static const String COUNSEL_COMMENT_CREATE = 'Counsel.Comment.Create';
   static const String COUNSEL_VOTE = 'Counsel.Vote';
   static const String GROUP_CREATE = 'Group.Create';
+  static const String GROUP_JOIN = 'Group.Join';
   static const String PROFILE_EDIT = 'Profile.Edit';
 }

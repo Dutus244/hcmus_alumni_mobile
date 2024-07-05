@@ -1,5 +1,7 @@
+import 'package:intl/intl.dart';
+
 class Achievement {
-  final int id;
+  final String id;
   final String name;
   final String type;
   final String time;
@@ -7,8 +9,8 @@ class Achievement {
   Achievement(this.id, this.name, this.type, this.time);
 
   Achievement.fromJson(Map<String, dynamic> json)
-      : id = json["id"],
-        name = json["name"],
-        type = json["type"],
-        time = json["time"];
+      : id = json["achievementId"],
+        name = json["achievementName"],
+        type = json["achievementType"],
+        time = json["achievementTime"] != null ? DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(json["achievementTime"]).add(Duration(days: 1))) : '';
 }

@@ -115,7 +115,7 @@ Widget listFriend(BuildContext context, ScrollController _scrollController) {
                     Container(
                       margin: EdgeInsets.only(left: 10.w),
                       child: Text(
-                        '300 ${translate('friends').toLowerCase()}',
+                        '${BlocProvider.of<FriendListBloc>(context).state.friendCount} ${translate('friends').toLowerCase()}',
                         style: AppTextStyle.xLarge().wSemiBold(),
                       ),
                     ),
@@ -139,7 +139,7 @@ Widget listFriend(BuildContext context, ScrollController _scrollController) {
                       Container(
                         margin: EdgeInsets.only(left: 10.w),
                         child: Text(
-                          '300 ${translate('friends').toLowerCase()}',
+                          '${BlocProvider.of<FriendListBloc>(context).state.friendCount} ${translate('friends').toLowerCase()}',
                           style: AppTextStyle.xLarge().wSemiBold(),
                         ),
                       ),
@@ -182,12 +182,12 @@ Widget listFriend(BuildContext context, ScrollController _scrollController) {
                         Container(
                           margin: EdgeInsets.only(left: 10.w),
                           child: Text(
-                            '300 ${translate('friends').toLowerCase()}',
+                            '${BlocProvider.of<FriendListBloc>(context).state.friendCount} ${translate('friends').toLowerCase()}',
                             style: AppTextStyle.xLarge().wSemiBold(),
                           ),
                         ),
                         Container(
-                          height: 5.h,
+                          height: 10.h,
                         ),
                         friend(
                             context,

@@ -54,6 +54,12 @@ Future<void> handleSavePermission(List<String> permissions) async {
     Global.storageService.setBool(AppPermissions.GROUP_CREATE, false);
   }
 
+  if (hasPermission(permissions, AppPermissions.GROUP_JOIN)) {
+    Global.storageService.setBool(AppPermissions.GROUP_JOIN, true);
+  } else {
+    Global.storageService.setBool(AppPermissions.GROUP_JOIN, false);
+  }
+
   if (hasPermission(permissions, AppPermissions.PROFILE_EDIT)) {
     Global.storageService.setBool(AppPermissions.PROFILE_EDIT, true);
   } else {

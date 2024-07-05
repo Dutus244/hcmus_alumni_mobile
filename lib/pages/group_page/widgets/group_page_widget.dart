@@ -150,7 +150,7 @@ AppBar buildAppBar(BuildContext context) {
                       child: CircleAvatar(
                         radius: 10,
                         child: null,
-                        backgroundImage: AssetImage("assets/images/test1.png"),
+                        backgroundImage: NetworkImage(Global.storageService.getUserAvatarUrl()),
                       )),
                 ),
                 SizedBox(width: 10.w),
@@ -535,7 +535,8 @@ Widget groupDiscover(BuildContext context, Group group) {
                 ),
             ],
           ),
-          Positioned(
+          if (Global.storageService.permissionGroupJoin())
+            Positioned(
             bottom: 5.h,
             left: 10.w,
             right: 10.w,
@@ -839,7 +840,8 @@ Widget infoGroup(BuildContext context, Group group) {
             ],
           ),
         ),
-        Positioned(
+        if (Global.storageService.permissionGroupJoin())
+          Positioned(
           bottom: 0.h,
           left: 0.w,
           right: 0.w,

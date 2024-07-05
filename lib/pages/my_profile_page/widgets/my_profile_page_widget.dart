@@ -16,8 +16,10 @@ import '../../../common/values/text_style.dart';
 import '../../../common/widgets/flutter_toast.dart';
 import '../../../common/widgets/loading_widget.dart';
 import '../../../global.dart';
+import '../../../model/alumni_verification.dart';
 import '../../../model/event.dart';
 import '../../../model/post.dart';
+import '../../../model/user.dart';
 import '../bloc/my_profile_page_blocs.dart';
 import '../bloc/my_profile_page_states.dart';
 import '../bloc/my_profile_page_events.dart';
@@ -30,10 +32,11 @@ AppBar buildAppBar(BuildContext context) {
     backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
-        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets
-            .only(top: 40.h),
+        margin: Platform.isAndroid
+            ? EdgeInsets.only(top: 20.h)
+            : EdgeInsets.only(top: 40.h),
         child: Text(
-          'Nguyễn Duy',
+          Global.storageService.getUserFullName(),
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: AppFonts.Header,
@@ -60,6 +63,12 @@ Widget myProfile(BuildContext context) {
 }
 
 Widget header(BuildContext context) {
+  User? user = BlocProvider.of<MyProfilePageBloc>(context).state.user;
+  AlumniVerification? alumniVerification =
+      BlocProvider.of<MyProfilePageBloc>(context).state.alumniVerification;
+  if (user == null) {
+    return loadingWidget();
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -71,8 +80,7 @@ Widget header(BuildContext context) {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ27RdQACLBoJNY3NyFxpw_Rx03dQn4zrSY9Q&s'),
+                  image: NetworkImage(user.coverUrl),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -86,15 +94,14 @@ Widget header(BuildContext context) {
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ27RdQACLBoJNY3NyFxpw_Rx03dQn4zrSY9Q&s'),
+                    image: NetworkImage(user.avatarUrl),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(65.w),
                   border: Border.all(
                     color: Colors.white,
                     width:
-                    5.w, // Thay đổi giá trị width để làm cho viền dày hơn
+                        5.w, // Thay đổi giá trị width để làm cho viền dày hơn
                   ),
                 ),
                 height: 130.w,
@@ -109,7 +116,7 @@ Widget header(BuildContext context) {
         child: Row(
           children: [
             Text(
-              'Nguyễn Duy',
+              user.fullName,
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
@@ -120,37 +127,81 @@ Widget header(BuildContext context) {
             Container(
               width: 5.w,
             ),
-            SvgPicture.asset(
-              "assets/icons/cancel_circle1.svg",
-              width: 14.w,
-              height: 14.h,
-              color: Colors.red,
-            ),
-            Container(
-              width: 5.w,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
-                ),
-              ),
-              child: Container(
-                margin: EdgeInsets.only(
-                    left: 5.w, right: 5.w, top: 2.h, bottom: 2.h),
-                child: Text(
-                  translate('unverified_account'),
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header,
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+            if (alumniVerification != null &&
+                (alumniVerification.status == "PENDING" ||
+                    alumniVerification.status == "DENIED"))
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/icons/cancel_circle1.svg",
+                    width: 14.w,
+                    height: 14.h,
+                    color: Colors.red,
                   ),
-                ),
+                  Container(
+                    width: 5.w,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(5.w),
+                      border: Border.all(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          left: 5.w, right: 5.w, top: 2.h, bottom: 2.h),
+                      child: Text(
+                        translate('unverified_account'),
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
+            if (alumniVerification != null &&
+                alumniVerification.status == "APPROVED")
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/icons/tick_circle.svg",
+                    width: 14.w,
+                    height: 14.h,
+                    color: Colors.green,
+                  ),
+                  Container(
+                    width: 5.w,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(5.w),
+                      border: Border.all(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          left: 5.w, right: 5.w, top: 2.h, bottom: 2.h),
+                      child: Text(
+                        translate('verified_account'),
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
           ],
         ),
       ),
@@ -159,7 +210,10 @@ Widget header(BuildContext context) {
         child: Row(
           children: [
             Text(
-              '300',
+              BlocProvider.of<MyProfilePageBloc>(context)
+                  .state
+                  .friendCount
+                  .toString(),
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
@@ -182,11 +236,12 @@ Widget header(BuildContext context) {
       Row(
         children: [
           GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
+            onTap: () async {
+              await Navigator.pushNamed(
                 context,
                 "/myProfileEdit",
               );
+              MyProfilePageController(context: context).handleGetProfile();
             },
             child: Container(
               margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
@@ -287,80 +342,79 @@ Widget detail(BuildContext context) {
           ),
         ),
       ),
-      for (int i = 0; i < BlocProvider
-          .of<MyProfilePageBloc>(context)
-          .state
-          .educations.length; i+= 1)
+      for (int i = 0;
+          i <
+              BlocProvider.of<MyProfilePageBloc>(context)
+                  .state
+                  .educations
+                  .length;
+          i += 1)
         Container(
-        margin: EdgeInsets.only(left: 10.w, top: 10.h, right: 10.w),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              "assets/icons/study.svg",
-              width: 17.w,
-              height: 17.h,
-              color: Colors.black.withOpacity(0.5),
-            ),
-            Container(
-              width: 10.w,
-            ),
-            Container(
-              width: 310.w,
-              child: Text(
-                'Học tại ${BlocProvider
-                    .of<MyProfilePageBloc>(context)
-                    .state
-                    .educations[i].schoolName}',
-                style: TextStyle(
-                  fontFamily: AppFonts.Header,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.normal,
-                  color: AppColors.textBlack,
-                ),
+          margin: EdgeInsets.only(left: 10.w, top: 10.h, right: 10.w),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                "assets/icons/study.svg",
+                width: 17.w,
+                height: 17.h,
+                color: Colors.black.withOpacity(0.5),
               ),
-            )
-          ],
+              Container(
+                width: 10.w,
+              ),
+              Container(
+                width: 310.w,
+                child: Text(
+                  '${BlocProvider.of<MyProfilePageBloc>(context).state.educations[i].isLearning ? translate('studying_at') : translate('studied_at')} ${BlocProvider.of<MyProfilePageBloc>(context).state.educations[i].schoolName}',
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.normal,
+                    color: AppColors.textBlack,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-      for (int i = 0; i < BlocProvider
-          .of<MyProfilePageBloc>(context)
-          .state
-          .jobs.length; i+= 1)
+      for (int i = 0;
+          i < BlocProvider.of<MyProfilePageBloc>(context).state.jobs.length;
+          i += 1)
         Container(
-        margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              "assets/icons/work.svg",
-              width: 17.w,
-              height: 17.h,
-              color: Colors.black.withOpacity(0.5),
-            ),
-            Container(
-              width: 10.w,
-            ),
-            Container(
-              width: 310.w,
-              child: Text(
-                'Đã làm việc tại ${BlocProvider
-                    .of<MyProfilePageBloc>(context)
-                    .state
-                    .jobs[i].companyName}',
-                style: TextStyle(
-                  fontFamily: AppFonts.Header,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.normal,
-                  color: AppColors.textBlack,
-                ),
+          margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                "assets/icons/work.svg",
+                width: 17.w,
+                height: 17.h,
+                color: Colors.black.withOpacity(0.5),
               ),
-            )
-          ],
+              Container(
+                width: 10.w,
+              ),
+              Container(
+                width: 310.w,
+                child: Text(
+                  '${BlocProvider.of<MyProfilePageBloc>(context).state.jobs[i].isWorking ? translate('working_at') : translate('worked_at')} ${BlocProvider.of<MyProfilePageBloc>(context).state.jobs[i].companyName}',
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.normal,
+                    color: AppColors.textBlack,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-      for (int i = 0; i < BlocProvider
-          .of<MyProfilePageBloc>(context)
-          .state
-          .achievements.length; i+= 1)
+      for (int i = 0;
+          i <
+              BlocProvider.of<MyProfilePageBloc>(context)
+                  .state
+                  .achievements
+                  .length;
+          i += 1)
         Container(
           margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
           child: Row(
@@ -377,10 +431,7 @@ Widget detail(BuildContext context) {
               Container(
                 width: 310.w,
                 child: Text(
-                  'Đã đạt thành tựu ${BlocProvider
-                      .of<MyProfilePageBloc>(context)
-                      .state
-                      .achievements[i].name}',
+                  '${translate('has_achieved')} ${BlocProvider.of<MyProfilePageBloc>(context).state.achievements[i].name}',
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
                     fontSize: 14.sp,
@@ -393,11 +444,12 @@ Widget detail(BuildContext context) {
           ),
         ),
       GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(
+        onTap: () async {
+          await Navigator.pushNamed(
             context,
             "/myProfileEdit",
           );
+          MyProfilePageController(context: context).handleGetProfile();
         },
         child: Container(
           margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
@@ -458,7 +510,7 @@ Widget listFriend(BuildContext context) {
       Container(
         margin: EdgeInsets.only(left: 10.w, top: 2.h),
         child: Text(
-          '300 ${translate('friends').toLowerCase()}',
+          '${BlocProvider.of<MyProfilePageBloc>(context).state.friendCount} ${translate('friends').toLowerCase()}',
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontSize: 12.sp,
@@ -472,221 +524,141 @@ Widget listFriend(BuildContext context) {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
+            for (int i = 0;
+                i <
+                    BlocProvider.of<MyProfilePageBloc>(context)
+                        .state
+                        .friends
+                        .length;
+                i += 1)
+              if (i <= 2)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/otherProfilePage",
+                        arguments: {
+                          "id": BlocProvider.of<MyProfilePageBloc>(context)
+                              .state
+                              .friends[i]
+                              .user
+                              .id,
+                        });
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.w),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                BlocProvider.of<MyProfilePageBloc>(context)
+                                    .state
+                                    .friends[i]
+                                    .user
+                                    .avatarUrl),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        height: 90.h,
+                        width: 90.h,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 10.h),
+                        width: 110.w,
+                        height: 30.h,
+                        child: Text(
+                          BlocProvider.of<MyProfilePageBloc>(context)
+                              .state
+                              .friends[i]
+                              .user
+                              .fullName,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: AppFonts.Header,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textBlack,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  height: 90.h,
-                  width: 90.h,
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                )
-              ],
-            ),
           ],
         ),
       ),
-      Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
+      if (BlocProvider.of<MyProfilePageBloc>(context).state.friends.length > 3)
+        Container(
+          margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              for (int i = 3;
+                  i <
+                      BlocProvider.of<MyProfilePageBloc>(context)
+                          .state
+                          .friends
+                          .length;
+                  i += 1)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/otherProfilePage",
+                        arguments: {
+                          "id": BlocProvider.of<MyProfilePageBloc>(context)
+                              .state
+                              .friends[i]
+                              .user
+                              .id,
+                        });
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.w),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                BlocProvider.of<MyProfilePageBloc>(context)
+                                    .state
+                                    .friends[i]
+                                    .user
+                                    .avatarUrl),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        height: 90.h,
+                        width: 90.h,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 10.h),
+                        width: 110.w,
+                        height: 30.h,
+                        child: Text(
+                          BlocProvider.of<MyProfilePageBloc>(context)
+                              .state
+                              .friends[i]
+                              .user
+                              .fullName,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: AppFonts.Header,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textBlack,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  height: 90.h,
-                  width: 90.h,
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.w),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          'https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  height: 90.h,
-                  width: 90.h,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  width: 110.w,
-                  height: 30.h,
-                  child: Text(
-                    'Phạm Huỳnh Bảo Anh',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textBlack,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
       GestureDetector(
         onTap: () async {
           Navigator.pushNamed(
@@ -697,7 +669,7 @@ Widget listFriend(BuildContext context) {
         child: Container(
             width: 340.w,
             height: 40.h,
-            margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
+            margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 0.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.w),
               color: Color.fromARGB(255, 230, 230, 230),
@@ -729,8 +701,8 @@ Widget listFriend(BuildContext context) {
   );
 }
 
-Widget buildButtonChooseNewsOrEvent(BuildContext context,
-    void Function(int value)? func) {
+Widget buildButtonChooseNewsOrEvent(
+    BuildContext context, void Function(int value)? func) {
   return Container(
     margin: EdgeInsets.only(top: 5.h),
     child: SingleChildScrollView(
@@ -741,10 +713,8 @@ Widget buildButtonChooseNewsOrEvent(BuildContext context,
           GestureDetector(
             onTap: () {
               if (func != null) {
-                if (BlocProvider
-                    .of<MyProfilePageBloc>(context)
-                    .state
-                    .page != 0) {
+                if (BlocProvider.of<MyProfilePageBloc>(context).state.page !=
+                    0) {
                   func(0);
                 }
               }
@@ -754,12 +724,10 @@ Widget buildButtonChooseNewsOrEvent(BuildContext context,
               height: 30.h,
               margin: EdgeInsets.only(left: 10.w),
               decoration: BoxDecoration(
-                color: BlocProvider
-                    .of<MyProfilePageBloc>(context)
-                    .state
-                    .page == 0
-                    ? AppColors.element
-                    : AppColors.elementLight,
+                color:
+                    BlocProvider.of<MyProfilePageBloc>(context).state.page == 0
+                        ? AppColors.element
+                        : AppColors.elementLight,
                 borderRadius: BorderRadius.circular(15.w),
                 border: Border.all(
                   color: Colors.transparent,
@@ -772,11 +740,10 @@ Widget buildButtonChooseNewsOrEvent(BuildContext context,
                       fontFamily: AppFonts.Header,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
-                      color: BlocProvider
-                          .of<MyProfilePageBloc>(context)
-                          .state
-                          .page ==
-                          0
+                      color: BlocProvider.of<MyProfilePageBloc>(context)
+                                  .state
+                                  .page ==
+                              0
                           ? AppColors.background
                           : AppColors.element),
                 ),
@@ -786,10 +753,8 @@ Widget buildButtonChooseNewsOrEvent(BuildContext context,
           GestureDetector(
             onTap: () {
               if (func != null) {
-                if (BlocProvider
-                    .of<MyProfilePageBloc>(context)
-                    .state
-                    .page != 1) {
+                if (BlocProvider.of<MyProfilePageBloc>(context).state.page !=
+                    1) {
                   func(1);
                 }
               }
@@ -799,12 +764,10 @@ Widget buildButtonChooseNewsOrEvent(BuildContext context,
               height: 30.h,
               margin: EdgeInsets.symmetric(horizontal: 10.w),
               decoration: BoxDecoration(
-                color: BlocProvider
-                    .of<MyProfilePageBloc>(context)
-                    .state
-                    .page == 1
-                    ? AppColors.element
-                    : AppColors.elementLight,
+                color:
+                    BlocProvider.of<MyProfilePageBloc>(context).state.page == 1
+                        ? AppColors.element
+                        : AppColors.elementLight,
                 borderRadius: BorderRadius.circular(15.w),
                 border: Border.all(
                   color: Colors.transparent,
@@ -817,11 +780,10 @@ Widget buildButtonChooseNewsOrEvent(BuildContext context,
                       fontFamily: AppFonts.Header,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
-                      color: BlocProvider
-                          .of<MyProfilePageBloc>(context)
-                          .state
-                          .page ==
-                          1
+                      color: BlocProvider.of<MyProfilePageBloc>(context)
+                                  .state
+                                  .page ==
+                              1
                           ? AppColors.background
                           : AppColors.element),
                 ),
@@ -831,10 +793,8 @@ Widget buildButtonChooseNewsOrEvent(BuildContext context,
           GestureDetector(
             onTap: () {
               if (func != null) {
-                if (BlocProvider
-                    .of<MyProfilePageBloc>(context)
-                    .state
-                    .page != 2) {
+                if (BlocProvider.of<MyProfilePageBloc>(context).state.page !=
+                    2) {
                   func(2);
                 }
               }
@@ -844,12 +804,10 @@ Widget buildButtonChooseNewsOrEvent(BuildContext context,
               height: 30.h,
               margin: EdgeInsets.only(right: 10.w),
               decoration: BoxDecoration(
-                color: BlocProvider
-                    .of<MyProfilePageBloc>(context)
-                    .state
-                    .page == 2
-                    ? AppColors.element
-                    : AppColors.elementLight,
+                color:
+                    BlocProvider.of<MyProfilePageBloc>(context).state.page == 2
+                        ? AppColors.element
+                        : AppColors.elementLight,
                 borderRadius: BorderRadius.circular(15.w),
                 border: Border.all(
                   color: Colors.transparent,
@@ -862,11 +820,10 @@ Widget buildButtonChooseNewsOrEvent(BuildContext context,
                       fontFamily: AppFonts.Header,
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
-                      color: BlocProvider
-                          .of<MyProfilePageBloc>(context)
-                          .state
-                          .page ==
-                          2
+                      color: BlocProvider.of<MyProfilePageBloc>(context)
+                                  .state
+                                  .page ==
+                              2
                           ? AppColors.background
                           : AppColors.element),
                 ),
@@ -879,7 +836,6 @@ Widget buildButtonChooseNewsOrEvent(BuildContext context,
   );
 }
 
-
 Widget listEvent(BuildContext context, ScrollController _scrollController) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -888,18 +844,11 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
         child: ListView.builder(
           controller: _scrollController,
           itemCount:
-          BlocProvider
-              .of<MyProfilePageBloc>(context)
-              .state
-              .events
-              .length +
-              1,
+              BlocProvider.of<MyProfilePageBloc>(context).state.events.length +
+                  1,
           itemBuilder: (BuildContext context, int index) {
             switch (
-            BlocProvider
-                .of<MyProfilePageBloc>(context)
-                .state
-                .statusEvent) {
+                BlocProvider.of<MyProfilePageBloc>(context).state.statusEvent) {
               case Status.loading:
                 return Column(
                   children: [
@@ -917,8 +866,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                   ],
                 );
               case Status.success:
-                if (BlocProvider
-                    .of<MyProfilePageBloc>(context)
+                if (BlocProvider.of<MyProfilePageBloc>(context)
                     .state
                     .events
                     .isEmpty) {
@@ -936,28 +884,26 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                       ),
                       Center(
                           child: Container(
-                            margin: EdgeInsets.only(top: 20.h),
-                            child: Text(
-                              translate('no_event'),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header,
-                              ),
-                            ),
-                          )),
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text(
+                          translate('no_event'),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header,
+                          ),
+                        ),
+                      )),
                     ],
                   );
                 }
                 if (index >=
-                    BlocProvider
-                        .of<MyProfilePageBloc>(context)
+                    BlocProvider.of<MyProfilePageBloc>(context)
                         .state
                         .events
                         .length) {
-                  if (BlocProvider
-                      .of<MyProfilePageBloc>(context)
+                  if (BlocProvider.of<MyProfilePageBloc>(context)
                       .state
                       .hasReachedMaxEvent) {
                     return SizedBox();
@@ -974,15 +920,16 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                           height: 10.h,
                         ),
                         buildButtonChooseNewsOrEvent(context, (value) {
-                          context.read<MyProfilePageBloc>().add(PageEvent(value));
+                          context
+                              .read<MyProfilePageBloc>()
+                              .add(PageEvent(value));
                         }),
                         Container(
                           height: 10.h,
                         ),
                         event(
                             context,
-                            BlocProvider
-                                .of<MyProfilePageBloc>(context)
+                            BlocProvider.of<MyProfilePageBloc>(context)
                                 .state
                                 .events[index]),
                       ],
@@ -990,8 +937,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                   } else {
                     return event(
                         context,
-                        BlocProvider
-                            .of<MyProfilePageBloc>(context)
+                        BlocProvider.of<MyProfilePageBloc>(context)
                             .state
                             .events[index]);
                   }
@@ -1288,18 +1234,11 @@ Widget listPosts(BuildContext context, ScrollController _scrollController) {
         child: ListView.builder(
           controller: _scrollController,
           itemCount:
-          BlocProvider
-              .of<MyProfilePageBloc>(context)
-              .state
-              .posts
-              .length +
-              1,
+              BlocProvider.of<MyProfilePageBloc>(context).state.posts.length +
+                  1,
           itemBuilder: (BuildContext context, int index) {
             switch (
-            BlocProvider
-                .of<MyProfilePageBloc>(context)
-                .state
-                .statusPost) {
+                BlocProvider.of<MyProfilePageBloc>(context).state.statusPost) {
               case Status.loading:
                 return Column(
                   children: [
@@ -1317,8 +1256,7 @@ Widget listPosts(BuildContext context, ScrollController _scrollController) {
                   ],
                 );
               case Status.success:
-                if (BlocProvider
-                    .of<MyProfilePageBloc>(context)
+                if (BlocProvider.of<MyProfilePageBloc>(context)
                     .state
                     .posts
                     .isEmpty) {
@@ -1336,28 +1274,26 @@ Widget listPosts(BuildContext context, ScrollController _scrollController) {
                       ),
                       Center(
                           child: Container(
-                            margin: EdgeInsets.only(top: 20.h),
-                            child: Text(
-                              translate('no_posts'),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header,
-                              ),
-                            ),
-                          )),
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text(
+                          translate('no_posts'),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header,
+                          ),
+                        ),
+                      )),
                     ],
                   );
                 }
                 if (index >=
-                    BlocProvider
-                        .of<MyProfilePageBloc>(context)
+                    BlocProvider.of<MyProfilePageBloc>(context)
                         .state
                         .posts
                         .length) {
-                  if (BlocProvider
-                      .of<MyProfilePageBloc>(context)
+                  if (BlocProvider.of<MyProfilePageBloc>(context)
                       .state
                       .hasReachedMaxPost) {
                     return SizedBox();
@@ -1374,15 +1310,16 @@ Widget listPosts(BuildContext context, ScrollController _scrollController) {
                           height: 10.h,
                         ),
                         buildButtonChooseNewsOrEvent(context, (value) {
-                          context.read<MyProfilePageBloc>().add(PageEvent(value));
+                          context
+                              .read<MyProfilePageBloc>()
+                              .add(PageEvent(value));
                         }),
                         Container(
                           height: 10.h,
                         ),
                         post(
                             context,
-                            BlocProvider
-                                .of<MyProfilePageBloc>(context)
+                            BlocProvider.of<MyProfilePageBloc>(context)
                                 .state
                                 .posts[index]),
                       ],
@@ -1390,8 +1327,7 @@ Widget listPosts(BuildContext context, ScrollController _scrollController) {
                   } else {
                     return post(
                         context,
-                        BlocProvider
-                            .of<MyProfilePageBloc>(context)
+                        BlocProvider.of<MyProfilePageBloc>(context)
                             .state
                             .posts[index]);
                   }
@@ -1457,8 +1393,8 @@ Widget postOption(BuildContext context, Post post) {
               GestureDetector(
                 onTap: () async {
                   bool shouldDelete =
-                  await MyProfilePageController(context: context)
-                      .handleDeletePost(post.id);
+                      await MyProfilePageController(context: context)
+                          .handleDeletePost(post.id);
                   if (shouldDelete) {
                     Navigator.pop(context); // Close the modal after deletion
                   }
@@ -1516,10 +1452,7 @@ Widget post(BuildContext context, Post post) {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            width: MediaQuery.of(context).size.width,
             height: 35.h,
             margin: EdgeInsets.only(top: 5.h),
             child: Row(
@@ -1536,7 +1469,7 @@ Widget post(BuildContext context, Post post) {
                         radius: 10,
                         child: null,
                         backgroundImage:
-                        NetworkImage(post.creator.avatarUrl ?? ""),
+                            NetworkImage(post.creator.avatarUrl ?? ""),
                       )),
                 ),
                 Container(
@@ -1631,10 +1564,7 @@ Widget post(BuildContext context, Post post) {
           ),
           Container(
             padding: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            width: MediaQuery.of(context).size.width,
             child: ExpandableText(
               post.content,
               maxLines: 4,
@@ -1678,13 +1608,16 @@ Widget post(BuildContext context, Post post) {
                                   MyProfilePageController(context: context)
                                       .handleVote(post.id, post.votes[i].id);
                                 } else {
-                                  for (int j = 0; j < post.votes.length;
-                                  j += 1) {
+                                  for (int j = 0;
+                                      j < post.votes.length;
+                                      j += 1) {
                                     if (post.votes[j].name ==
                                         post.voteSelectedOne) {
                                       MyProfilePageController(context: context)
-                                          .handleUpdateVote(post.id,
-                                          post.votes[j].id, post.votes[i].id);
+                                          .handleUpdateVote(
+                                              post.id,
+                                              post.votes[j].id,
+                                              post.votes[i].id);
                                     }
                                   }
                                 }
@@ -1719,8 +1652,7 @@ Widget post(BuildContext context, Post post) {
                         child: Row(
                           children: [
                             Text(
-                              '${calculatePercentages(
-                                  post.votes[i].voteCount, post.totalVote)}%',
+                              '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
                                   fontSize: 12.sp,
@@ -1767,11 +1699,10 @@ Widget post(BuildContext context, Post post) {
                             Checkbox(
                               checkColor: AppColors.background,
                               fillColor:
-                              MaterialStateProperty.resolveWith<Color?>(
-                                    (Set<MaterialState> states) {
+                                  MaterialStateProperty.resolveWith<Color?>(
+                                (Set<MaterialState> states) {
                                   if (states.contains(MaterialState.selected)) {
-                                    return AppColors
-                                        .element; // Selected color
+                                    return AppColors.element; // Selected color
                                   }
                                   return Colors.transparent; // Unselected color
                                 },
@@ -1783,7 +1714,7 @@ Widget post(BuildContext context, Post post) {
                                 } else {
                                   MyProfilePageController(context: context)
                                       .handleDeleteVote(
-                                      post.id, post.votes[i].id);
+                                          post.id, post.votes[i].id);
                                 }
                               },
                               value: post.voteSelectedMultiple
@@ -1818,8 +1749,7 @@ Widget post(BuildContext context, Post post) {
                         child: Row(
                           children: [
                             Text(
-                              '${calculatePercentages(
-                                  post.votes[i].voteCount, post.totalVote)}%',
+                              '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
                                   fontSize: 12.sp,
@@ -1852,35 +1782,33 @@ Widget post(BuildContext context, Post post) {
 
                 showDialog(
                   context: context,
-                  builder: (context) =>
-                      AlertDialog(
-                        title: Text(translate('add_option')),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextField(
-                              controller: textController,
-                              decoration: InputDecoration(
-                                hintText: translate('add_option'),
-                              ),
-                            ),
-                          ],
+                  builder: (context) => AlertDialog(
+                    title: Text(translate('add_option')),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextField(
+                          controller: textController,
+                          decoration: InputDecoration(
+                            hintText: translate('add_option'),
+                          ),
                         ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            child: Text(translate('cancel')),
-                          ),
-                          TextButton(
-                            onPressed: () =>
-                                Navigator.pop(context, {
-                                  'confirmed': true,
-                                  'vote': textController.text,
-                                }),
-                            child: Text(translate('add')),
-                          ),
-                        ],
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        child: Text(translate('cancel')),
                       ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, {
+                          'confirmed': true,
+                          'vote': textController.text,
+                        }),
+                        child: Text(translate('add')),
+                      ),
+                    ],
+                  ),
                 ).then((result) {
                   if (result != null && result['confirmed'] == true) {
                     String vote = result['vote'];
@@ -2031,8 +1959,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    post.pictures[1].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[1].pictureUrl),
                               ),
                             ),
                           ),
@@ -2043,8 +1971,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    post.pictures[2].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[2].pictureUrl),
                               ),
                             ),
                           ),
@@ -2080,8 +2008,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    post.pictures[0].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[0].pictureUrl),
                               ),
                             ),
                           ),
@@ -2092,8 +2020,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    post.pictures[1].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[1].pictureUrl),
                               ),
                             ),
                           ),
@@ -2111,8 +2039,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    post.pictures[2].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[2].pictureUrl),
                               ),
                             ),
                           ),
@@ -2123,8 +2051,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    post.pictures[3].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[3].pictureUrl),
                               ),
                             ),
                           ),
@@ -2160,8 +2088,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    post.pictures[0].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[0].pictureUrl),
                               ),
                             ),
                           ),
@@ -2172,8 +2100,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    post.pictures[1].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[1].pictureUrl),
                               ),
                             ),
                           ),
@@ -2191,8 +2119,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    post.pictures[2].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[2].pictureUrl),
                               ),
                             ),
                           ),
@@ -2205,8 +2133,8 @@ Widget post(BuildContext context, Post post) {
                                   shape: BoxShape.rectangle,
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image:
-                                    NetworkImage(post.pictures[3].pictureUrl),
+                                    image: NetworkImage(
+                                        post.pictures[3].pictureUrl),
                                   ),
                                 ),
                               ),
@@ -2298,8 +2226,7 @@ Widget post(BuildContext context, Post post) {
                   child: Container(
                     padding: EdgeInsets.only(right: 10.w),
                     child: Text(
-                      '${post.childrenCommentNumber} ${translate('comments')
-                          .toLowerCase()}',
+                      '${post.childrenCommentNumber} ${translate('comments').toLowerCase()}',
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
                         fontSize: 10.sp,
@@ -2322,10 +2249,7 @@ Widget post(BuildContext context, Post post) {
                   color: AppColors.elementLight,
                 ),
                 Container(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
+                  width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.only(top: 3.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2341,55 +2265,55 @@ Widget post(BuildContext context, Post post) {
                             },
                             child: post.isReacted
                                 ? Container(
-                              margin: EdgeInsets.only(left: 40.w),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    "assets/icons/like.svg",
-                                    width: 20.w,
-                                    height: 20.h,
-                                    color: AppColors.element,
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.only(left: 5.w),
-                                    child: Text(
-                                      translate('like'),
-                                      style: TextStyle(
-                                        fontFamily: AppFonts.Header,
-                                        fontSize: 10.sp,
-                                        fontWeight: FontWeight.normal,
-                                        color: AppColors.element,
-                                      ),
+                                    margin: EdgeInsets.only(left: 40.w),
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/like.svg",
+                                          width: 20.w,
+                                          height: 20.h,
+                                          color: AppColors.element,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(left: 5.w),
+                                          child: Text(
+                                            translate('like'),
+                                            style: TextStyle(
+                                              fontFamily: AppFonts.Header,
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.normal,
+                                              color: AppColors.element,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )
+                                  )
                                 : Container(
-                              margin: EdgeInsets.only(left: 40.w),
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    "assets/icons/like.svg",
-                                    width: 20.w,
-                                    height: 20.h,
-                                    color: AppColors.textBlack,
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.only(left: 5.w),
-                                    child: Text(
-                                      translate('like'),
-                                      style: TextStyle(
-                                        fontFamily: AppFonts.Header,
-                                        fontSize: 10.sp,
-                                        fontWeight: FontWeight.normal,
-                                        color: AppColors.textBlack,
-                                      ),
+                                    margin: EdgeInsets.only(left: 40.w),
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/like.svg",
+                                          width: 20.w,
+                                          height: 20.h,
+                                          color: AppColors.textBlack,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(left: 5.w),
+                                          child: Text(
+                                            translate('like'),
+                                            style: TextStyle(
+                                              fontFamily: AppFonts.Header,
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.normal,
+                                              color: AppColors.textBlack,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
                           ),
                         ),
                       if (Global.storageService
@@ -2407,7 +2331,7 @@ Widget post(BuildContext context, Post post) {
                             },
                             child: Container(
                               margin: Global.storageService
-                                  .permissionCounselReactionCreate()
+                                      .permissionCounselReactionCreate()
                                   ? EdgeInsets.only(right: 40.w)
                                   : EdgeInsets.only(left: 40.w),
                               child: Row(
@@ -2416,7 +2340,7 @@ Widget post(BuildContext context, Post post) {
                                     height: 20.h,
                                     width: 20.w,
                                     child:
-                                    Image.asset('assets/icons/comment.png'),
+                                        Image.asset('assets/icons/comment.png'),
                                   ),
                                   Container(
                                     padding: EdgeInsets.only(left: 5.w),
@@ -2451,24 +2375,21 @@ Widget post(BuildContext context, Post post) {
   );
 }
 
-Widget listCommentAdvise(BuildContext context, ScrollController _scrollController) {
+Widget listCommentAdvise(
+    BuildContext context, ScrollController _scrollController) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       Expanded(
         child: ListView.builder(
           controller: _scrollController,
-          itemCount:
-          BlocProvider
-              .of<MyProfilePageBloc>(context)
-              .state
-              .commentAdvises
-              .length +
+          itemCount: BlocProvider.of<MyProfilePageBloc>(context)
+                  .state
+                  .commentAdvises
+                  .length +
               1,
           itemBuilder: (BuildContext context, int index) {
-            switch (
-            BlocProvider
-                .of<MyProfilePageBloc>(context)
+            switch (BlocProvider.of<MyProfilePageBloc>(context)
                 .state
                 .statusCommentAdvise) {
               case Status.loading:
@@ -2488,8 +2409,7 @@ Widget listCommentAdvise(BuildContext context, ScrollController _scrollControlle
                   ],
                 );
               case Status.success:
-                if (BlocProvider
-                    .of<MyProfilePageBloc>(context)
+                if (BlocProvider.of<MyProfilePageBloc>(context)
                     .state
                     .commentAdvises
                     .isEmpty) {
@@ -2507,28 +2427,26 @@ Widget listCommentAdvise(BuildContext context, ScrollController _scrollControlle
                       ),
                       Center(
                           child: Container(
-                            margin: EdgeInsets.only(top: 20.h),
-                            child: Text(
-                              translate('no_data'),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header,
-                              ),
-                            ),
-                          )),
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text(
+                          translate('no_data'),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header,
+                          ),
+                        ),
+                      )),
                     ],
                   );
                 }
                 if (index >=
-                    BlocProvider
-                        .of<MyProfilePageBloc>(context)
+                    BlocProvider.of<MyProfilePageBloc>(context)
                         .state
                         .commentAdvises
                         .length) {
-                  if (BlocProvider
-                      .of<MyProfilePageBloc>(context)
+                  if (BlocProvider.of<MyProfilePageBloc>(context)
                       .state
                       .hasReachedMaxCommentAdvise) {
                     return SizedBox();
@@ -2545,15 +2463,16 @@ Widget listCommentAdvise(BuildContext context, ScrollController _scrollControlle
                           height: 10.h,
                         ),
                         buildButtonChooseNewsOrEvent(context, (value) {
-                          context.read<MyProfilePageBloc>().add(PageEvent(value));
+                          context
+                              .read<MyProfilePageBloc>()
+                              .add(PageEvent(value));
                         }),
                         Container(
                           height: 10.h,
                         ),
                         commentAdvise(
                             context,
-                            BlocProvider
-                                .of<MyProfilePageBloc>(context)
+                            BlocProvider.of<MyProfilePageBloc>(context)
                                 .state
                                 .commentAdvises[index]),
                       ],
@@ -2561,8 +2480,7 @@ Widget listCommentAdvise(BuildContext context, ScrollController _scrollControlle
                   } else {
                     return commentAdvise(
                         context,
-                        BlocProvider
-                            .of<MyProfilePageBloc>(context)
+                        BlocProvider.of<MyProfilePageBloc>(context)
                             .state
                             .commentAdvises[index]);
                   }
@@ -2622,7 +2540,7 @@ Widget commentAdvise(BuildContext context, Comment comment) {
                         radius: 10,
                         child: null,
                         backgroundImage:
-                        NetworkImage(comment.creator.avatarUrl ?? ""),
+                            NetworkImage(comment.creator.avatarUrl ?? ""),
                       )),
                 ),
                 Column(
@@ -2650,7 +2568,8 @@ Widget commentAdvise(BuildContext context, Comment comment) {
                                         style: TextStyle(
                                           color: AppColors.textBlack,
                                           fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold, // Make this part bold
+                                          fontWeight: FontWeight.bold,
+                                          // Make this part bold
                                           fontFamily: AppFonts.Header,
                                         ),
                                       ),
@@ -2668,7 +2587,8 @@ Widget commentAdvise(BuildContext context, Comment comment) {
                                         style: TextStyle(
                                           color: AppColors.textBlack,
                                           fontSize: 14.sp,
-                                          fontWeight: FontWeight.bold, // Make this part bold
+                                          fontWeight: FontWeight.bold,
+                                          // Make this part bold
                                           fontFamily: AppFonts.Header,
                                         ),
                                       ),

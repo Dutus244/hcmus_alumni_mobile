@@ -6,7 +6,9 @@ import 'my_profile_edit_states.dart';
 class MyProfileEditBloc extends Bloc<MyProfileEditEvent, MyProfileEditState> {
   MyProfileEditBloc() : super(MyProfileEditState()) {
     on<FullNameEvent>(_fullNameEvent);
+    on<StatusEvent>(_statusEvent);
     on<PhoneEvent>(_phoneEvent);
+    on<EmailEvent>(_emailEvent);
     on<FacultyIdEvent>(_facultyIdEvent);
     on<SexEvent>(_sexEvent);
     on<DobEvent>(_dobEvent);
@@ -24,14 +26,24 @@ class MyProfileEditBloc extends Bloc<MyProfileEditEvent, MyProfileEditState> {
     on<EducationsEvent>(_educationsEvent);
     on<AchievementsEvent>(_achievementsEvent);
     on<MyProfileEditResetEvent>(_myProfileEditResetEvent);
+    on<UpdateProfileEvent>(_updateProfileEvent);
+    on<UpdateAlumniVerEvent>(_updateAlumniVerEvent);
   }
 
   void _fullNameEvent(FullNameEvent event, Emitter<MyProfileEditState> emit) {
     emit(state.copyWith(fullName: event.fullName));
   }
 
+  void _statusEvent(StatusEvent event, Emitter<MyProfileEditState> emit) {
+    emit(state.copyWith(status: event.status));
+  }
+
   void _phoneEvent(PhoneEvent event, Emitter<MyProfileEditState> emit) {
     emit(state.copyWith(phone: event.phone));
+  }
+
+  void _emailEvent(EmailEvent event, Emitter<MyProfileEditState> emit) {
+    emit(state.copyWith(email: event.email));
   }
 
   void _facultyIdEvent(FacultyIdEvent event, Emitter<MyProfileEditState> emit) {
@@ -100,5 +112,28 @@ class MyProfileEditBloc extends Bloc<MyProfileEditEvent, MyProfileEditState> {
 
   void _myProfileEditResetEvent(MyProfileEditResetEvent event, Emitter<MyProfileEditState> emit) {
     emit(MyProfileEditState());
+  }
+
+  void _updateProfileEvent(UpdateProfileEvent event, Emitter<MyProfileEditState> emit) {
+    emit(state.copyWith(
+      networkAvatar : event.user.avatarUrl,
+      networkCover: event.user.coverUrl,
+      fullName: event.user.fullName,
+      phone: event.user.phone,
+      email: event.user.email,
+      facultyId: event.user.faculty?.id,
+      sex: event.user.sex?.name,
+      dob: event.user.dob,
+      socialLink: event.user.socialMediaLink,
+      aboutMe: event.user.aboutMe,
+    ));
+  }
+
+  void _updateAlumniVerEvent(UpdateAlumniVerEvent event, Emitter<MyProfileEditState> emit) {
+    emit(state.copyWith(
+      studentId: event.alumniVerification.studentId,
+      startYear: event.alumniVerification.beginningYear != null ? event.alumniVerification.beginningYear.toString() : '',
+      status: event.alumniVerification.status,
+    ));
   }
 }

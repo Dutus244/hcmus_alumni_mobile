@@ -1,14 +1,19 @@
 import 'package:hcmus_alumni_mobile/model/achievement.dart';
+import 'package:hcmus_alumni_mobile/model/alumni_verification.dart';
 
 import '../../../model/comment.dart';
 import '../../../model/education.dart';
 import '../../../model/event.dart';
+import '../../../model/friend.dart';
 import '../../../model/job.dart';
 import '../../../model/post.dart';
+import '../../../model/user.dart';
 
 enum Status { loading, success }
 
 class MyProfilePageState {
+  final User? user;
+  final AlumniVerification? alumniVerification;
   final int page;
   final Status statusPost;
   final List<Post> posts;
@@ -25,9 +30,13 @@ class MyProfilePageState {
   final List<Education> educations;
   final List<Job> jobs;
   final List<Achievement> achievements;
+  final int friendCount;
+  final List<Friend> friends;
 
   MyProfilePageState(
-      {this.page = 0,
+      {this.user,
+      this.alumniVerification,
+      this.page = 0,
       this.statusPost = Status.loading,
       this.posts = const [],
       this.indexPost = 0,
@@ -42,10 +51,14 @@ class MyProfilePageState {
       this.hasReachedMaxCommentAdvise = false,
       this.educations = const [],
       this.jobs = const [],
-      this.achievements = const []});
+      this.achievements = const [],
+      this.friendCount = 0,
+      this.friends = const []});
 
   MyProfilePageState copyWith(
-      {int? page,
+      {User? user,
+      AlumniVerification? alumniVerification,
+      int? page,
       Status? statusPost,
       List<Post>? posts,
       int? indexPost,
@@ -60,8 +73,12 @@ class MyProfilePageState {
       bool? hasReachedMaxCommentAdvise,
       List<Education>? educations,
       List<Job>? jobs,
-      List<Achievement>? achievements}) {
+      List<Achievement>? achievements,
+      int? friendCount,
+      List<Friend>? friends}) {
     return MyProfilePageState(
+        user: user ?? this.user,
+        alumniVerification: alumniVerification ?? this.alumniVerification,
         page: page ?? this.page,
         statusPost: statusPost ?? this.statusPost,
         posts: posts ?? this.posts,
@@ -78,6 +95,8 @@ class MyProfilePageState {
             hasReachedMaxCommentAdvise ?? this.hasReachedMaxCommentAdvise,
         educations: educations ?? this.educations,
         jobs: jobs ?? this.jobs,
-        achievements: achievements ?? this.achievements);
+        achievements: achievements ?? this.achievements,
+        friendCount: friendCount ?? this.friendCount,
+        friends: friends ?? this.friends);
   }
 }

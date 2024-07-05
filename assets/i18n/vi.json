@@ -330,5 +330,14 @@
   "m": " phút",
   "h": " giờ",
   "d": " ngày",
-  "w": " tuần"
+  "w": " tuần",
+  "studying_at": "Đang học tại",
+  "studied_at": "Đã học tại",
+  "working_at": "Đang làm việc tại",
+  "worked_at": "Đã làm việc tại",
+  "has_achieved": "Đã đạt thành tựu",
+  "verified_account": "Tài khoản đã xác thực",
+  "accepted": "Đã được chấp thuận",
+  "denied": "Bị từ chối",
+  "unsent": "Chưa gửi"
 }

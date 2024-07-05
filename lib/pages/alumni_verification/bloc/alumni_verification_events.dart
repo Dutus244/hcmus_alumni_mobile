@@ -20,4 +20,10 @@ class StartYearEvent extends AlumniVerificationEvent {
   const StartYearEvent(this.startYear);
 }
 
+class FacultyIdEvent extends AlumniVerificationEvent {
+  final int facultyId;
+
+  const FacultyIdEvent(this.facultyId);
+}
+
 class AlumniVerificationResetEvent extends AlumniVerificationEvent {}
