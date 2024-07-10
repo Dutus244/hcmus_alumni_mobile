@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 
 import '../../global.dart';
 import '../../model/achievement_response.dart';
+import '../../model/alumni.dart';
+import '../../model/alumni_verification.dart';
 import '../../model/education_response.dart';
 import '../../model/job_response.dart';
 import '../../model/user.dart';
@@ -22,7 +24,7 @@ class OtherProfileDetailController {
     print(id);
     var token = Global.storageService.getUserAuthToken();
     var url = Uri.parse(
-        '${dotenv.env['API_URL']}/user/${Global.storageService.getUserId()}/profile');
+        '${dotenv.env['API_URL']}/user/$id/profile');
     var headers = <String, String>{
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
@@ -35,6 +37,20 @@ class OtherProfileDetailController {
         print(jsonMap);
         var user = User.fromJson(jsonMap["user"]);
         context.read<OtherProfileDetailBloc>().add(UserEvent(user));
+        if (jsonMap["alumniVerification"] != null) {
+          var alumniVerification =
+          AlumniVerification.fromJson(jsonMap["alumniVerification"]);
+          context
+              .read<OtherProfileDetailBloc>()
+              .add(AlumniVerificationEvent(alumniVerification));
+        }
+        if (jsonMap["alumni"] != null) {
+          var alumni =
+          Alumni.fromJson(jsonMap["alumni"]);
+          context
+              .read<OtherProfileDetailBloc>()
+              .add(AlumniEvent(alumni));
+        }
       }
     } catch (error) {
       print(error);

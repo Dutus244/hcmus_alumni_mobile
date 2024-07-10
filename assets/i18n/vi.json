@@ -339,5 +339,14 @@
   "verified_account": "Tài khoản đã xác thực",
   "accepted": "Đã được chấp thuận",
   "denied": "Bị từ chối",
-  "unsent": "Chưa gửi"
+  "unsent": "Chưa gửi",
+  "error_send_request": "Có lỗi xảy ra khi gửi lời mời",
+  "error_deny_request": "Có lỗi xảy ra khi từ chối lời mời",
+  "error_approve_request": "Có lỗi xảy ra khi chấp nhận lời mời",
+  "error_change_password": "Có lỗi xảy ra khi thay đổi mật khẩu",
+  "error_delete_friend": "Có lỗi xảy ra khi xoá bạn bè",
+  "error_create_inbox": "Có lỗi xảy ra khi tạo cuộc hội thoại",
+  "cancel_invitation": "Huỷ lời mời",
+  "all": "Tất cả",
+  "saved_successfully": "Lưu thành công"
 }

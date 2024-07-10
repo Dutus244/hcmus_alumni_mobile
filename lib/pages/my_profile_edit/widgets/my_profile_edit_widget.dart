@@ -711,7 +711,7 @@ Widget editProfile(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                buildTextFieldStartYear(context, translate('class'), '', '', (value) {
+                buildTextFieldClass(context, translate('class'), '', '', (value) {
                   context.read<MyProfileEditBloc>().add(ClasssEvent(value));
                 }),
                 Container(
@@ -748,7 +748,7 @@ Widget editProfile(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                buildTextFieldStartYear(
+                buildTextFieldEndYear(
                     context, translate('graduation_year'), '', '', (value) {
                   context.read<MyProfileEditBloc>().add(EndYearEvent(value));
                 }),
@@ -1232,7 +1232,7 @@ Widget job(BuildContext context, Job job) {
                   ),
                 ),
                 Container(
-                  width: 100.w,
+                  width: 232.w,
                   child: Text(
                     job.position,
                     style: TextStyle(
@@ -1482,7 +1482,7 @@ Widget education(BuildContext context, Education education) {
                   ),
                 ),
                 Container(
-                  width: 100.w,
+                  width: 232.w,
                   child: Text(
                     education.degree,
                     style: TextStyle(
@@ -1732,7 +1732,7 @@ Widget achievement(BuildContext context, Achievement achievement) {
                   ),
                 ),
                 Container(
-                  width: 100.w,
+                  width: 232.w,
                   child: Text(
                     achievement.type,
                     style: TextStyle(

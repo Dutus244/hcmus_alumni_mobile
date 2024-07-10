@@ -1025,8 +1025,7 @@ Widget navigation(BuildContext context, Message? message, int inboxId,
   String content = BlocProvider.of<ChatDetailBloc>(context).state.content;
   List<File> images = BlocProvider.of<ChatDetailBloc>(context).state.images;
   return Container(
-    height:
-        BlocProvider.of<ChatDetailBloc>(context).state.mode == 0 ? 60.h : 100.h,
+
     child: Column(
       children: [
         if (BlocProvider.of<ChatDetailBloc>(context).state.mode == 0)

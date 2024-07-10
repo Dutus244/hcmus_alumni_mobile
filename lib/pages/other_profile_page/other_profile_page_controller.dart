@@ -38,7 +38,7 @@ class OtherProfilePageController {
           BlocProvider.of<OtherProfilePageBloc>(context).state.indexEvent + 1));
     }
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/events';
+    var endpoint = '/events/participated';
     var pageSize = 5;
     var token = Global.storageService.getUserAuthToken();
 
@@ -101,7 +101,7 @@ class OtherProfilePageController {
     print(id);
     var token = Global.storageService.getUserAuthToken();
     var url = Uri.parse(
-        '${dotenv.env['API_URL']}/user/${Global.storageService.getUserId()}/profile');
+        '${dotenv.env['API_URL']}/user/$id/profile');
     var headers = <String, String>{
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
@@ -111,9 +111,9 @@ class OtherProfilePageController {
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
-        print(jsonMap);
         var user = User.fromJson(jsonMap["user"]);
         context.read<OtherProfilePageBloc>().add(UserEvent(user));
+        context.read<OtherProfilePageBloc>().add(IsFriendStatusEvent(jsonMap["isFriendStatus"]));
       }
     } catch (error) {
       print(error);
@@ -122,7 +122,7 @@ class OtherProfilePageController {
 
   Future<void> handleGetFriendCount(String id) async {
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/user/friends/count';
+    var endpoint = '/user/$id/friends/count';
 
     var token = Global.storageService.getUserAuthToken();
 
@@ -143,7 +143,7 @@ class OtherProfilePageController {
 
   Future<void> handleLoadFriendData(String id) async {
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/user/friends';
+    var endpoint = '/user/$id/friends';
     var pageSize = 6;
 
     var token = Global.storageService.getUserAuthToken();
@@ -280,13 +280,85 @@ class OtherProfilePageController {
         });
       } else {
         // Handle other status codes if needed
-        toastInfo(msg: "Có lỗi xả ra khi tạo cuộc hội thoại");
+        toastInfo(msg: translate('error_create_inbox'));
         print(response.body);
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi tạo cuộc hội thoại");
+      toastInfo(msg: translate('error_create_inbox'));
       print(error);
+    }
+  }
+
+  Future<void> handleSendRequest(String id) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/user/friends/requests';
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      "Content-Type": "application/json" // Include bearer token in the headers
+    };
+
+    var body = json.encode({
+      'friendId': id,
+    });
+
+    try {
+      // Send the request
+      var response = await http.post(
+        Uri.parse('$apiUrl$endpoint'),
+        headers: headers,
+        body: body,
+      );
+      if (response.statusCode == 201) {
+        handleGetProfile(id);
+      } else {
+        Map<String, dynamic> jsonMap = json.decode(response.body);
+        print(jsonMap);
+        int errorCode = jsonMap['error']['code'];
+        if (errorCode == 23203) {
+          handleGetProfile(id);
+          return;
+        }
+        toastInfo(msg: translate('error_send_request'));
+      }
+    } catch (e) {
+      // Exception occurred
+      toastInfo(msg: translate('error_send_request'));
+      print(e);
+      return;
+    }
+  }
+
+  Future<bool> handleDeleteFriend(String id) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/user/friends/$id';
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      "Content-Type": "application/json" // Include bearer token in the headers
+    };
+
+    try {
+      // Send the request
+      var response = await http.delete(
+        Uri.parse('$apiUrl$endpoint'),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        handleGetProfile(id);
+        return true;
+      } else {
+        toastInfo(msg: translate('error_delete_friend'));
+        return false;
+      }
+    } catch (e) {
+      // Exception occurred
+      toastInfo(msg: translate('error_delete_friend'));
+      print(e);
+      return false;
     }
   }
 }

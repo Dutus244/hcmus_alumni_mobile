@@ -673,6 +673,8 @@ Widget contact(BuildContext context, User user) {
 
 Widget aboutMe(BuildContext context, User user) {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
     children: [
       Container(
         margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),

@@ -14,26 +14,53 @@ import '../bloc/group_info_blocs.dart';
 
 import 'dart:io';
 
-AppBar buildAppBar(BuildContext context, Group group  ) {
+// AppBar buildAppBar(BuildContext context, Group group  ) {
+//   return AppBar(
+//     backgroundColor: AppColors.background,
+//     flexibleSpace: Center(
+//       child: Container(
+//         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+//         child: Text(
+//           group.name,
+//           textAlign: TextAlign.center,
+//           style: TextStyle(
+//             fontFamily: AppFonts.Header,
+//             fontWeight: FontWeight.bold,
+//             fontSize: 16.sp,
+//             color: AppColors.secondaryHeader,
+//           ),
+//         ),
+//       ),
+//     ),
+//   );
+// }
+
+AppBar buildAppBar(BuildContext context, Group group ) {
   return AppBar(
     backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
         margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
-        child: Text(
-          group.name,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: AppFonts.Header,
-            fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
-            color: AppColors.secondaryHeader,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width - 80.w, // Giới hạn chiều rộng tối đa của Text
+          ),
+          child: Text(
+            group.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: AppFonts.Header,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.sp,
+              color: AppColors.secondaryHeader,
+            ),
           ),
         ),
       ),
     ),
   );
 }
+
 
 Widget infoGroup(BuildContext context, Group group) {
   return Column(

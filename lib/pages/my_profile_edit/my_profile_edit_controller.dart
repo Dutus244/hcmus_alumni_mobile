@@ -17,6 +17,7 @@ import '../../global.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
+import '../../model/alumni.dart';
 import '../../model/alumni_verification.dart';
 import '../../model/job.dart';
 import '../../model/user.dart';
@@ -41,6 +42,7 @@ class MyProfileEditController {
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
+        print(jsonMap);
         var user = User.fromJson(jsonMap["user"]);
         context.read<MyProfileEditBloc>().add(UpdateProfileEvent(user));
         if (jsonMap["alumniVerification"] != null) {
@@ -51,6 +53,13 @@ class MyProfileEditController {
               .add(UpdateAlumniVerEvent(alumniVerification));
         } else {
           context.read<MyProfileEditBloc>().add(StatusEvent("UNSENT"));
+        }
+        if (jsonMap["alumni"] != null) {
+          var alumni =
+          Alumni.fromJson(jsonMap["alumni"]);
+          context
+              .read<MyProfileEditBloc>()
+              .add(UpdateAlumniEvent(alumni));
         }
       }
     } catch (error) {
@@ -231,7 +240,7 @@ class MyProfileEditController {
       'alumni': {
         'alumClass': classs,
         'graduationYear':
-            graduationYear != "" ? int.parse(graduationYear) : 2020,
+            graduationYear != "" ? int.parse(graduationYear) : 0,
       },
     });
 
@@ -243,6 +252,7 @@ class MyProfileEditController {
         body: body,
       );
       if (response.statusCode == 200) {
+        toastInfo(msg: translate('saved_successfully'));
       } else {
         toastInfo(msg: translate('error_verify_alumni'));
       }

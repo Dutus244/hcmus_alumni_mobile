@@ -54,6 +54,8 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
       OtherProfilePageController(context: context).handleGetJob(id);
       OtherProfilePageController(context: context).handleGetEducation(id);
       OtherProfilePageController(context: context).handleGetAchievement(id);
+      OtherProfilePageController(context: context).handleGetFriendCount(id);
+      OtherProfilePageController(context: context).handleLoadFriendData(id);
     }
 
     return BlocBuilder<OtherProfilePageBloc, OtherProfilePageState>(
@@ -61,7 +63,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
           return Scaffold(
             appBar: buildAppBar(context),
             backgroundColor: AppColors.background,
-            body:  listEvent(context, _scrollController),
+            body:  listEvent(context, _scrollController, id),
           );
         });
   }

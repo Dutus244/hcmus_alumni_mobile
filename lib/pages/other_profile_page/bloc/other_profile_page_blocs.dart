@@ -15,6 +15,7 @@ class OtherProfilePageBloc extends Bloc<OtherProfilePageEvent, OtherProfilePageS
     on<AchievementsEvent>(_achievementsEvent);
     on<FriendCountEvent>(_friendCountEvent);
     on<FriendsEvent>(_friendsEvent);
+    on<IsFriendStatusEvent>(_isFriendStatusEvent);
   }
 
   void _statusEventEvent(
@@ -59,5 +60,9 @@ class OtherProfilePageBloc extends Bloc<OtherProfilePageEvent, OtherProfilePageS
 
   void _friendsEvent(FriendsEvent event, Emitter<OtherProfilePageState> emit) async {
     emit(state.copyWith(friends: event.friends));
+  }
+
+  void _isFriendStatusEvent(IsFriendStatusEvent event, Emitter<OtherProfilePageState> emit) async {
+    emit(state.copyWith(isFriendStatus: event.isFriendStatus));
   }
 }

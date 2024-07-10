@@ -20,17 +20,17 @@ class FriendListController {
 
   const FriendListController({required this.context});
 
-  Future<void> handleSearchFriend() async {
+  Future<void> handleSearchFriend(String id) async {
     final state = context
         .read<FriendListBloc>()
         .state;
     String name = state.name;
     context.read<FriendListBloc>().add(NameSearchEvent(name));
     await Future.delayed(Duration(milliseconds: 100));
-    handleLoadFriendData(0);
+    handleLoadFriendData(0, id);
   }
 
-  Future<void> handleLoadFriendData(int page) async {
+  Future<void> handleLoadFriendData(int page, String id) async {
     await Future.delayed(Duration(microseconds: 500));
     if (page == 0) {
       context.read<FriendListBloc>().add(HasReachedMaxFriendEvent(false));
@@ -46,7 +46,7 @@ class FriendListController {
     String name = state.nameSearch;
 
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/user/friends';
+    var endpoint = '/user/$id/friends';
     var pageSize = 20;
 
     var token = Global.storageService.getUserAuthToken();
@@ -98,15 +98,17 @@ class FriendListController {
         }
       } else {
         // Handle other status codes if needed
+        print(responseBody);
         toastInfo(msg: translate('error_get_friend'));
       }
     } catch (error) {
       // Handle errors
+      print(error);
       toastInfo(msg: translate('error_get_friend'));
     }
   }
 
-  Future<void> handleDeleteFriend(String id) async {
+  Future<bool> handleDeleteFriend(String id) async {
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/friends/$id';
     var token = Global.storageService.getUserAuthToken();
@@ -123,22 +125,24 @@ class FriendListController {
         headers: headers,
       );
       if (response.statusCode == 200) {
-        handleLoadFriendData(0);
-        handleGetFriendCount();
+        handleLoadFriendData(0, id);
+        handleGetFriendCount(id);
+        return true;
       } else {
         toastInfo(msg: translate('error_verify_alumni'));
+        return false;
       }
     } catch (e) {
       // Exception occurred
       toastInfo(msg: translate('error_verify_alumni'));
       print(e);
-      return;
+      return false;
     }
   }
 
-  Future<void> handleGetFriendCount() async {
+  Future<void> handleGetFriendCount(String id) async {
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/user/friends/count';
+    var endpoint = '/user/$id/friends/count';
 
     var token = Global.storageService.getUserAuthToken();
 

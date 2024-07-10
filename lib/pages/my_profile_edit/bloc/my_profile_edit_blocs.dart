@@ -28,6 +28,7 @@ class MyProfileEditBloc extends Bloc<MyProfileEditEvent, MyProfileEditState> {
     on<MyProfileEditResetEvent>(_myProfileEditResetEvent);
     on<UpdateProfileEvent>(_updateProfileEvent);
     on<UpdateAlumniVerEvent>(_updateAlumniVerEvent);
+    on<UpdateAlumniEvent>(_updateAlumniEvent);
   }
 
   void _fullNameEvent(FullNameEvent event, Emitter<MyProfileEditState> emit) {
@@ -134,6 +135,13 @@ class MyProfileEditBloc extends Bloc<MyProfileEditEvent, MyProfileEditState> {
       studentId: event.alumniVerification.studentId,
       startYear: event.alumniVerification.beginningYear != null ? event.alumniVerification.beginningYear.toString() : '',
       status: event.alumniVerification.status,
+    ));
+  }
+
+  void _updateAlumniEvent(UpdateAlumniEvent event, Emitter<MyProfileEditState> emit) {
+    emit(state.copyWith(
+      endYear: event.alumni.graduationYear.toString(),
+      classs: event.alumni.alumClass,
     ));
   }
 }

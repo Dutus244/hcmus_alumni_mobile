@@ -339,5 +339,14 @@
   "verified_account": "Verified account",
   "accepted": "Accepted",
   "denied": "Denied",
-  "unsent": "Unsent"
+  "unsent": "Unsent",
+  "error_send_request": "An error occurred while sending request",
+  "error_deny_request": "An error occurred while denying request",
+  "error_approve_request": "An error occurred while approving request",
+  "error_change_password": "An error occurred while changing password",
+  "error_delete_friend": "An error occurred while deleting friend",
+  "error_create_inbox": "An error occurred while creating inbox",
+  "cancel_invitation": "Cancel invitation",
+  "all": "All",
+  "saved_successfully": "Saved successfully"
 }

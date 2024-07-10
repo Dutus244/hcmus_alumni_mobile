@@ -30,6 +30,7 @@ class _FriendPageState extends State<FriendPage> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
+    FriendPageController(context: context).handleLoadUserData(0);
     FriendPageController(context: context).handleLoadSuggestionData(0);
     FriendPageController(context: context).handleLoadRequestData(0);
     context.read<FriendPageBloc>().add(NameEvent(''));
@@ -46,9 +47,12 @@ class _FriendPageState extends State<FriendPage> {
       });
 
       if (BlocProvider.of<FriendPageBloc>(context).state.page == 0) {
+        FriendPageController(context: context).handleLoadUserData(
+            BlocProvider.of<FriendPageBloc>(context).state.indexUser);
+      } else  if (BlocProvider.of<FriendPageBloc>(context).state.page == 1) {
         FriendPageController(context: context).handleLoadSuggestionData(
             BlocProvider.of<FriendPageBloc>(context).state.indexSuggestion);
-      } else {
+      } else if (BlocProvider.of<FriendPageBloc>(context).state.page == 2) {
         FriendPageController(context: context).handleLoadRequestData(
             BlocProvider.of<FriendPageBloc>(context).state.indexRequest);
       }
@@ -84,13 +88,26 @@ class _FriendPageState extends State<FriendPage> {
       },
       child: BlocBuilder<FriendPageBloc, FriendPageState>(
           builder: (context, state) {
+            Widget body;
+            switch (state.page) {
+              case 0:
+                body = listUser(context, _scrollController);
+                break;
+              case 1:
+                body = listSuggestion(context, _scrollController);
+                break;
+              case 2:
+                body = listRequest(context, _scrollController);
+                break;
+              default:
+                body = Center(child: Text('Page not found'));
+            }
+
             return Container(
               child: Scaffold(
                 appBar: buildAppBar(context, translate('friend')),
                 backgroundColor: AppColors.background,
-                body: BlocProvider.of<FriendPageBloc>(context).state.page == 0
-                    ? listSuggestion(context, _scrollController)
-                    : listRequest(context, _scrollController),
+                body: body,
               ),
             );
           }),

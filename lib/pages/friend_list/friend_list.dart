@@ -21,6 +21,7 @@ class FriendList extends StatefulWidget {
 class _FriendListState extends State<FriendList> {
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
+  String id = "";
 
   @override
   void initState() {
@@ -29,8 +30,6 @@ class _FriendListState extends State<FriendList> {
     context.read<FriendListBloc>().add(NameEvent(''));
     context.read<FriendListBloc>().add(NameSearchEvent(''));
     context.read<FriendListBloc>().add(ClearResultEvent());
-    FriendListController(context: context).handleLoadFriendData(0);
-    FriendListController(context: context).handleGetFriendCount();
   }
 
   void _onScroll() {
@@ -43,17 +42,25 @@ class _FriendListState extends State<FriendList> {
       });
 
       FriendListController(context: context).handleLoadFriendData(
-          BlocProvider.of<FriendListBloc>(context).state.indexFriend);
+          BlocProvider.of<FriendListBloc>(context).state.indexFriend, id);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic>? args =
+    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    if (args != null) {
+      id = args["id"];
+      FriendListController(context: context).handleLoadFriendData(0, id);
+      FriendListController(context: context).handleGetFriendCount(id);
+    }
+
     return BlocBuilder<FriendListBloc, FriendListState>(builder: (context, state) {
       return Scaffold(
         appBar: buildAppBar(context),
         backgroundColor: AppColors.background,
-        body: listFriend(context, _scrollController),
+        body: listFriend(context, _scrollController, id),
       );
     });
   }

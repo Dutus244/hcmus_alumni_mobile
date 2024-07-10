@@ -66,10 +66,10 @@ class SignInController {
         }
 
         Global.storageService.setString(AppConstants.USER_AUTH_TOKEN, jwtToken);
+        Global.storageService.setString(AppConstants.USER_EMAIL, email);
+        Global.storageService.setString(AppConstants.USER_PASSWORD, password);
         if (rememberLogin) {
           Global.storageService.setBool(AppConstants.USER_REMEMBER_LOGIN, true);
-          Global.storageService.setString(AppConstants.USER_EMAIL, email);
-          Global.storageService.setString(AppConstants.USER_PASSWORD, password);
         }
         Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
         Global.storageService
@@ -117,6 +117,7 @@ class SignInController {
         }
       }
     } catch (error) {
+      print(error);
       toastInfo(msg: translate('error_login'));
     }
   }

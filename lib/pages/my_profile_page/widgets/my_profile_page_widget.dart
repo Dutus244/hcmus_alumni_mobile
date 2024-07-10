@@ -661,10 +661,8 @@ Widget listFriend(BuildContext context) {
         ),
       GestureDetector(
         onTap: () async {
-          Navigator.pushNamed(
-            context,
-            "/friendList",
-          );
+          Navigator.pushNamed(context, "/friendList",
+              arguments: {"id": Global.storageService.getUserId()});
         },
         child: Container(
             width: 340.w,

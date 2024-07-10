@@ -34,19 +34,19 @@ AppBar buildAppBar(BuildContext context) {
   );
 }
 
-Widget myProfile(BuildContext context) {
+Widget myProfile(BuildContext context, String id) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
       header(context),
       detail(context),
-      listFriend(context),
+      listFriend(context, id),
     ],
   );
 }
 
-Widget listFriend(BuildContext context) {
+Widget listFriend(BuildContext context, String id) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -196,6 +196,7 @@ Widget listFriend(BuildContext context) {
           Navigator.pushNamed(
             context,
             "/friendList",
+              arguments: { "id": id}
           );
         },
         child: Container(
@@ -228,8 +229,43 @@ Widget listFriend(BuildContext context) {
   );
 }
 
+Widget deleteFriend(BuildContext context, String id) {
+  return GestureDetector(
+    onTap: () async {
+      bool isDelete = await OtherProfilePageController(context: context).handleDeleteFriend(id);
+      if (isDelete) {
+        Navigator.pop(context);
+      }
+    },
+    child: Container(
+      height: 60.h,
+      child: Container(
+        margin: EdgeInsets.only(left: 20.w, right: 10.w, bottom: 20.h),
+        color: Colors.transparent,
+        child: Row(
+          children: [
+            SvgPicture.asset(
+              "assets/icons/delete_friend.svg",
+              width: 14.w,
+              height: 14.h,
+              color: AppColors.textBlack,
+            ),
+            Container(
+              width: 10.w,
+            ),
+            Text(
+              translate('unfriend'),
+              style: AppTextStyle.medium().wSemiBold(),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 Widget header(BuildContext context) {
-  bool isFriend = true;
+  String isFriendStatus = BlocProvider.of<OtherProfilePageBloc>(context).state.isFriendStatus;
   User? user = BlocProvider.of<OtherProfilePageBloc>(context).state.user;
   if (user == null) {
     return loadingWidget();
@@ -302,10 +338,10 @@ Widget header(BuildContext context) {
       ),
       Row(
         children: [
-          if (!isFriend)
+          if (isFriendStatus == "Not Friend")
             GestureDetector(
             onTap: () {
-
+              OtherProfilePageController(context: context).handleSendRequest(user.id);
             },
             child: Container(
               margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
@@ -340,7 +376,7 @@ Widget header(BuildContext context) {
               ),
             ),
           ),
-          if (!isFriend)
+          if (isFriendStatus == "Not Friend")
             GestureDetector(
             onTap: () {
               OtherProfilePageController(context: context).handleInbox(user);
@@ -378,13 +414,13 @@ Widget header(BuildContext context) {
               ),
             ),
           ),
-          if (isFriend)
+          if (isFriendStatus == "true")
             GestureDetector(
             onTap: () {
               showModalBottomSheet(
                 isScrollControlled: true,
                 context: context,
-                builder: (ctx) => deleteFriend(context),
+                builder: (ctx) => deleteFriend(context, user.id),
               );
             },
             child: Container(
@@ -420,7 +456,7 @@ Widget header(BuildContext context) {
               ),
             ),
           ),
-          if (isFriend)
+          if (isFriendStatus == "true")
             GestureDetector(
             onTap: () {
               OtherProfilePageController(context: context).handleInbox(user);
@@ -458,6 +494,82 @@ Widget header(BuildContext context) {
               ),
             ),
           ),
+          if (isFriendStatus == "Pending")
+            GestureDetector(
+              onTap: () {
+                OtherProfilePageController(context: context).handleSendRequest(user.id);
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+                width: 160.w,
+                height: 30.h,
+                decoration: BoxDecoration(
+                  color: AppColors.element,
+                  borderRadius: BorderRadius.circular(5.w),
+                  border: Border.all(
+                    color: Colors.transparent,
+                  ),
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/add_friend.svg",
+                        width: 14.w,
+                        height: 14.h,
+                        color: AppColors.background,
+                      ),
+                      Container(
+                        width: 5.w,
+                      ),
+                      Text(
+                        translate('cancel_invitation'),
+                        style: AppTextStyle.base().wSemiBold().withColor(AppColors.background),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          if (isFriendStatus == "Pending")
+            GestureDetector(
+              onTap: () {
+                OtherProfilePageController(context: context).handleInbox(user);
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 10.w, top: 10.h),
+                width: 160.w,
+                height: 30.h,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 230, 230, 230),
+                  borderRadius: BorderRadius.circular(5.w),
+                  border: Border.all(
+                    color: Colors.transparent,
+                  ),
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/chat.svg",
+                        width: 14.w,
+                        height: 14.h,
+                        color: AppColors.textBlack,
+                      ),
+                      Container(
+                        width: 5.w,
+                      ),
+                      Text(
+                        translate('chat'),
+                        style: AppTextStyle.base().wSemiBold(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
       Container(
@@ -635,39 +747,7 @@ Widget detail(BuildContext context) {
   );
 }
 
-Widget deleteFriend(BuildContext context) {
-  return GestureDetector(
-    onTap: () {
-
-    },
-    child: Container(
-      height: 60.h,
-      child: Container(
-        margin: EdgeInsets.only(left: 20.w, right: 10.w, bottom: 20.h),
-        color: Colors.transparent,
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              "assets/icons/delete_friend.svg",
-              width: 14.w,
-              height: 14.h,
-              color: AppColors.textBlack,
-            ),
-            Container(
-              width: 10.w,
-            ),
-            Text(
-              translate('unfriend'),
-              style: AppTextStyle.medium().wSemiBold(),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-Widget listEvent(BuildContext context, ScrollController _scrollController) {
+Widget listEvent(BuildContext context, ScrollController _scrollController, String id) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
@@ -685,7 +765,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    myProfile(context),
+                    myProfile(context, id),
                     Container(
                       height: 10.h,
                     ),
@@ -711,7 +791,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      myProfile(context),
+                      myProfile(context, id),
                       Container(
                         height: 10.h,
                       ),
@@ -755,7 +835,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        myProfile(context),
+                        myProfile(context, id),
                         Container(
                           height: 10.h,
                         ),

@@ -46,6 +46,10 @@ class ChatPageController {
     var pageSize = 10;
 
     var token = Global.storageService.getUserAuthToken();
+    final state = context
+        .read<ChatPageBloc>()
+        .state;
+    String nameSearch = state.nameSearch;
 
     var headers = <String, String>{
       'Authorization': 'Bearer $token', // Include bearer token in the headers
@@ -53,7 +57,7 @@ class ChatPageController {
 
     try {
       var url = Uri.parse(
-          '$apiUrl$endpoint?page=$page&pageSize=$pageSize');
+          '$apiUrl$endpoint?page=$page&pageSize=$pageSize&query=$nameSearch');
 
       // Specify UTF-8 encoding for decoding response
       var response = await http.get(url, headers: headers);

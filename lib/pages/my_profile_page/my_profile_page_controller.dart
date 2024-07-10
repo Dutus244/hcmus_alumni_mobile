@@ -516,6 +516,7 @@ class MyProfilePageController {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
     };
+    print(token);
     try {
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
@@ -556,7 +557,7 @@ class MyProfilePageController {
 
   Future<void> handleGetFriendCount() async {
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/user/friends/count';
+    var endpoint = '/user/${Global.storageService.getUserId()}/friends/count';
 
     var token = Global.storageService.getUserAuthToken();
 
@@ -577,7 +578,7 @@ class MyProfilePageController {
 
   Future<void> handleLoadFriendData() async {
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/user/friends';
+    var endpoint = '/user/${Global.storageService.getUserId()}/friends';
     var pageSize = 6;
 
     var token = Global.storageService.getUserAuthToken();
@@ -598,6 +599,7 @@ class MyProfilePageController {
         var jsonMap = json.decode(responseBody);
         // Pass the Map to the fromJson method
         var friendResponse = FriendResponse.fromJson(jsonMap);
+        print(friendResponse.friends.length);
         context
             .read<MyProfilePageBloc>()
             .add(FriendsEvent(friendResponse.friends));

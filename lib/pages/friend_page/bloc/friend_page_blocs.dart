@@ -16,10 +16,42 @@ class FriendPageBloc extends Bloc<FriendPageEvent, FriendPageState> {
     on<FriendRequestsEvent>(_friendRequestsEvent);
     on<IndexRequestEvent>(_indexRequestEvent);
     on<HasReachedMaxRequestEvent>(_hasReachedMaxRequestEvent);
+    on<NameUserEvent>(_nameUserEvent);
+    on<NameUserSearchEvent>(_nameUserSearchEvent);
+    on<StatusEvent>(_statusEvent);
+    on<UsersEvent>(_usersEvent);
+    on<IndexUserEvent>(_indexUserEvent);
+    on<HasReachedMaxUserEvent>(_hasReachedMaxUserEvent);
   }
 
   void _pageEvent(PageEvent event, Emitter<FriendPageState> emit) async {
     emit(state.copyWith(page: event.page));
+  }
+
+  void _nameUserEvent(NameUserEvent event, Emitter<FriendPageState> emit) {
+    emit(state.copyWith(nameUser: event.nameUser));
+  }
+
+  void _nameUserSearchEvent(
+      NameUserSearchEvent event, Emitter<FriendPageState> emit) {
+    emit(state.copyWith(nameUserSearch: event.nameUserSearch));
+  }
+
+  void _statusEvent(StatusEvent event, Emitter<FriendPageState> emit) async {
+    emit(state.copyWith(status: event.status));
+  }
+
+  void _usersEvent(UsersEvent event, Emitter<FriendPageState> emit) async {
+    emit(state.copyWith(users: event.users));
+  }
+
+  void _indexUserEvent(IndexUserEvent event, Emitter<FriendPageState> emit) {
+    emit(state.copyWith(indexUser: event.indexUser));
+  }
+
+  void _hasReachedMaxUserEvent(
+      HasReachedMaxUserEvent event, Emitter<FriendPageState> emit) {
+    emit(state.copyWith(hasReachedMaxUser: event.hasReachedMaxUser));
   }
 
   void _nameEvent(NameEvent event, Emitter<FriendPageState> emit) {

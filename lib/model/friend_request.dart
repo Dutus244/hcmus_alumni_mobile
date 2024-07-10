@@ -10,6 +10,6 @@ class FriendRequest {
   );
 
   FriendRequest.fromJson(Map<String, dynamic> json)
-      : user = User.fromJson(json["friend"]),
+      : user = User.fromJson(json["user"]),
         createAt = json["createAt"];
 }

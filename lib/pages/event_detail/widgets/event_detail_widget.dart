@@ -350,13 +350,9 @@ Widget eventContent(BuildContext context, Event event) {
         ),
       ),
       Container(
+        margin: EdgeInsets.only(top: 10.h),
         padding: EdgeInsets.only(top: 0.h, left: 5.w, right: 5.w),
-        child: Html(
-          data: htmlFix,
-          style: {
-            "span": Style(fontSize: FontSize.medium, fontFamily: "Roboto")
-          },
-        ),
+        child: Text(event.content, style: AppTextStyle.small(),),
       ),
       Container(
         padding: EdgeInsets.only(top: 5.h, left: 20.w, right: 20.w),

@@ -36,7 +36,7 @@ AppBar buildAppBar(BuildContext context) {
 }
 
 Widget buildTextField(BuildContext context, String hintText, String textType,
-    String iconName, void Function(String value)? func) {
+    String iconName, void Function(String value)? func, String id) {
   return Container(
       width: 340.w,
       height: 40.h,
@@ -78,7 +78,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
           ),
           GestureDetector(
             onTap: () {
-              FriendListController(context: context).handleSearchFriend();
+              FriendListController(context: context).handleSearchFriend(id);
             },
             child: Container(
               width: 16.w,
@@ -91,7 +91,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
       ));
 }
 
-Widget listFriend(BuildContext context, ScrollController _scrollController) {
+Widget listFriend(BuildContext context, ScrollController _scrollController, String id) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
@@ -111,7 +111,7 @@ Widget listFriend(BuildContext context, ScrollController _scrollController) {
                         child: buildTextField(
                             context, translate('search_friend'), 'search', AppAssets.searchIconP, (value) {
                       context.read<FriendListBloc>().add(NameEvent(value));
-                    })),
+                    }, id)),
                     Container(
                       margin: EdgeInsets.only(left: 10.w),
                       child: Text(
@@ -135,7 +135,7 @@ Widget listFriend(BuildContext context, ScrollController _scrollController) {
                           child: buildTextField(
                               context, translate('search_friend'), 'search', AppAssets.searchIconP, (value) {
                         context.read<FriendListBloc>().add(NameEvent(value));
-                      })),
+                      }, id)),
                       Container(
                         margin: EdgeInsets.only(left: 10.w),
                         child: Text(
@@ -178,7 +178,7 @@ Widget listFriend(BuildContext context, ScrollController _scrollController) {
                                 context, translate('search_friend'), 'search', AppAssets.searchIconP,
                                 (value) {
                           context.read<FriendListBloc>().add(NameEvent(value));
-                        })),
+                        }, id)),
                         Container(
                           margin: EdgeInsets.only(left: 10.w),
                           child: Text(
@@ -276,8 +276,11 @@ Widget friend(BuildContext context, Friend friend) {
 
 Widget friendOption(BuildContext context, Friend friend) {
   return GestureDetector(
-    onTap: () {
-      FriendListController(context: context).handleDeleteFriend(friend.user.id);
+    onTap: () async {
+      bool isDelete = await FriendListController(context: context).handleDeleteFriend(friend.user.id);
+      if (isDelete) {
+        Navigator.pop(context);
+      }
     },
     child: Container(
       height: 60.h,

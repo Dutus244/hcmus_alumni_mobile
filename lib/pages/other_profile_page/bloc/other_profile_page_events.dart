@@ -71,3 +71,9 @@ class FriendsEvent extends OtherProfilePageEvent {
 
   const FriendsEvent(this.friends);
 }
+
+class IsFriendStatusEvent extends OtherProfilePageEvent {
+  final String isFriendStatus;
+
+  const IsFriendStatusEvent(this.isFriendStatus);
+}

@@ -20,7 +20,8 @@ class OptionPageController {
       'Content-Type': 'application/json',
     };
     try {
-      await http.delete(url, headers: headers);
+      var response = await http.delete(url, headers: headers);
+      print(response.body);
     } catch (error) {
       print(error);
     }

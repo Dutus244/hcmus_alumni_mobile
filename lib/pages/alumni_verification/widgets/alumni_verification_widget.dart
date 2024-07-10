@@ -129,7 +129,7 @@ Widget buildLogInAndRegButton(BuildContext context, String buttonName,
       width: 325.w,
       height: 50.h,
       margin: EdgeInsets.only(
-          left: 25.w, right: 25.w, top: buttonType == "verify" ? 0.h : 10.h),
+          left: 25.w, right: 25.w, top: buttonType == "verify" ? 10.h : 10.h),
       decoration: BoxDecoration(
         color:
             buttonType == "verify" ? AppColors.element : AppColors.elementLight,
@@ -169,7 +169,7 @@ Widget chooseFaculty(BuildContext context) {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                       fontFamily: AppFonts.Header,
                     ),
                   ),
@@ -635,8 +635,8 @@ Widget alumniVerification(BuildContext context, String fullName, File? avatar) {
             children: [
               Center(
                 child: Container(
-                  width: 230.w,
-                  height: 230.w,
+                  width: 200.w,
+                  height: 200.w,
                   child: Image.asset(
                     AppAssets.logoImage,
                     fit: BoxFit.cover,

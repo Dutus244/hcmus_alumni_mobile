@@ -35,8 +35,9 @@ Future<void> main() async {
   await dotenv.load(fileName: '.env');
   var delegate = await LocalizationDelegate.create(
     fallbackLocale: 'vi',
-    supportedLocales: ['vi', 'en'],
+    supportedLocales: ['vi'],
   );
+  print(Global.storageService.getDeviceLanguage());
   delegate.changeLocale(Locale(Global.storageService.getDeviceLanguage()));
   runApp(LocalizedApp(delegate, MyApp()));
 }
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   static void setLocale(BuildContext context, Locale newLocale) {
+    print(newLocale);
     LocalizedApp.of(context).delegate.changeLocale(newLocale);
   }
 

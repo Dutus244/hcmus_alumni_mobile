@@ -4,6 +4,7 @@ import 'package:hcmus_alumni_mobile/model/achievement.dart';
 import 'package:hcmus_alumni_mobile/model/education.dart';
 import 'package:hcmus_alumni_mobile/model/job.dart';
 
+import '../../../model/alumni.dart';
 import '../../../model/alumni_verification.dart';
 import '../../../model/user.dart';
 
@@ -141,6 +142,12 @@ class UpdateAlumniVerEvent extends MyProfileEditEvent {
   final AlumniVerification alumniVerification;
 
   const UpdateAlumniVerEvent(this.alumniVerification);
+}
+
+class UpdateAlumniEvent extends MyProfileEditEvent {
+  final Alumni alumni;
+
+  const UpdateAlumniEvent(this.alumni);
 }
 
 class MyProfileEditResetEvent extends MyProfileEditEvent {}

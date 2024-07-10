@@ -412,7 +412,7 @@ Widget groupDiscover(BuildContext context, Group group) {
     },
     child: Container(
       width: 165.w,
-      height: 235.h,
+      height: 225.h,
       decoration: BoxDecoration(
         color: AppColors.background,
         borderRadius: BorderRadius.circular(10.w),
@@ -493,46 +493,46 @@ Widget groupDiscover(BuildContext context, Group group) {
                   ],
                 ),
               ),
-              if (group.privacy == 'PUBLIC')
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, top: 2.h, right: 10.w),
-                  height: 35.h,
-                  child: Row(
-                    children: [
-                      Container(
-                          margin: EdgeInsets.only(top: 5.h),
-                          width: 40.w,
-                          child: Stack(
-                            children: [
-                              for (var i = 0; i < 2; i += 1)
-                                Positioned(
-                                  left: (0 + i * 16).w,
-                                  child: CircleAvatar(
-                                    radius: 12,
-                                    child: null,
-                                    backgroundImage:
-                                        AssetImage("assets/images/test1.png"),
-                                  ),
-                                )
-                            ],
-                          )),
-                      Container(
-                        width: 90.w,
-                        child: Text(
-                          'Trần Phúc và 27 người bạn là thành viên',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: AppColors.textGrey,
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+              // if (group.privacy == 'PUBLIC')
+              //   Container(
+              //     margin: EdgeInsets.only(left: 10.w, top: 2.h, right: 10.w),
+              //     height: 35.h,
+              //     child: Row(
+              //       children: [
+              //         Container(
+              //             margin: EdgeInsets.only(top: 5.h),
+              //             width: 40.w,
+              //             child: Stack(
+              //               children: [
+              //                 for (var i = 0; i < 2; i += 1)
+              //                   Positioned(
+              //                     left: (0 + i * 16).w,
+              //                     child: CircleAvatar(
+              //                       radius: 12,
+              //                       child: null,
+              //                       backgroundImage:
+              //                           AssetImage("assets/images/test1.png"),
+              //                     ),
+              //                   )
+              //               ],
+              //             )),
+              //         Container(
+              //           width: 90.w,
+              //           child: Text(
+              //             'Trần Phúc và 27 người bạn là thành viên',
+              //             maxLines: 2,
+              //             overflow: TextOverflow.ellipsis,
+              //             style: TextStyle(
+              //               color: AppColors.textGrey,
+              //               fontSize: 11.sp,
+              //               fontWeight: FontWeight.normal,
+              //               fontFamily: AppFonts.Header,
+              //             ),
+              //           ),
+              //         )
+              //       ],
+              //     ),
+              //   ),
             ],
           ),
           if (Global.storageService.permissionGroupJoin())
@@ -724,54 +724,54 @@ Widget infoGroup(BuildContext context, Group group) {
                   ),
                 ),
               ),
-              if (group.privacy == 'PUBLIC')
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 10.w, top: 5.h),
-                      child: Text(
-                        translate('member'),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: AppFonts.Header,
-                        ),
-                      ),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(left: 10.w, top: 5.h),
-                        height: 25.h,
-                        child: Stack(
-                          children: [
-                            for (var i = 0; i < 10; i += 1)
-                              Positioned(
-                                left: (0 + i * 16).w,
-                                child: CircleAvatar(
-                                  radius: 12,
-                                  child: null,
-                                  backgroundImage:
-                                      AssetImage("assets/images/test1.png"),
-                                ),
-                              )
-                          ],
-                        )),
-                    Container(
-                      margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                      child: Text(
-                        'Nguyễn Đinh Quang Khánh. Minh Phúc và 9 người bạn khác đã tham gia',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: AppFonts.Header,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              // if (group.privacy == 'PUBLIC')
+              //   Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: [
+              //       Container(
+              //         margin: EdgeInsets.only(left: 10.w, top: 5.h),
+              //         child: Text(
+              //           translate('member'),
+              //           style: TextStyle(
+              //             color: Colors.black,
+              //             fontSize: 14.sp,
+              //             fontWeight: FontWeight.bold,
+              //             fontFamily: AppFonts.Header,
+              //           ),
+              //         ),
+              //       ),
+              //       Container(
+              //           margin: EdgeInsets.only(left: 10.w, top: 5.h),
+              //           height: 25.h,
+              //           child: Stack(
+              //             children: [
+              //               for (var i = 0; i < 10; i += 1)
+              //                 Positioned(
+              //                   left: (0 + i * 16).w,
+              //                   child: CircleAvatar(
+              //                     radius: 12,
+              //                     child: null,
+              //                     backgroundImage:
+              //                         AssetImage("assets/images/test1.png"),
+              //                   ),
+              //                 )
+              //             ],
+              //           )),
+              //       Container(
+              //         margin: EdgeInsets.only(left: 10.w, right: 10.w),
+              //         child: Text(
+              //           'Nguyễn Đinh Quang Khánh. Minh Phúc và 9 người bạn khác đã tham gia',
+              //           style: TextStyle(
+              //             color: Colors.black,
+              //             fontSize: 12.sp,
+              //             fontWeight: FontWeight.normal,
+              //             fontFamily: AppFonts.Header,
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
               Container(
                 margin: EdgeInsets.only(left: 10.w, top: 5.h),
                 child: Text(
@@ -1078,7 +1078,7 @@ Widget groupJoined(BuildContext context, Group group) {
     },
     child: Container(
       width: 165.w,
-      height: 205.h,
+      height: 200.h,
       decoration: BoxDecoration(
         color: AppColors.background,
         borderRadius: BorderRadius.circular(10.w),
@@ -1154,46 +1154,46 @@ Widget groupJoined(BuildContext context, Group group) {
                   ],
                 ),
               ),
-              if (group.privacy == 'PUBLIC')
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, top: 2.h, right: 10.w),
-                  height: 35.h,
-                  child: Row(
-                    children: [
-                      Container(
-                          margin: EdgeInsets.only(top: 5.h),
-                          width: 40.w,
-                          child: Stack(
-                            children: [
-                              for (var i = 0; i < 2; i += 1)
-                                Positioned(
-                                  left: (0 + i * 16).w,
-                                  child: CircleAvatar(
-                                    radius: 12,
-                                    child: null,
-                                    backgroundImage:
-                                        AssetImage("assets/images/test1.png"),
-                                  ),
-                                )
-                            ],
-                          )),
-                      Container(
-                        width: 90.w,
-                        child: Text(
-                          'Trần Phúc và 27 người bạn là thành viên',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: AppColors.textGrey,
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: AppFonts.Header,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+              // if (group.privacy == 'PUBLIC')
+              //   Container(
+              //     margin: EdgeInsets.only(left: 10.w, top: 2.h, right: 10.w),
+              //     height: 35.h,
+              //     child: Row(
+              //       children: [
+              //         Container(
+              //             margin: EdgeInsets.only(top: 5.h),
+              //             width: 40.w,
+              //             child: Stack(
+              //               children: [
+              //                 for (var i = 0; i < 2; i += 1)
+              //                   Positioned(
+              //                     left: (0 + i * 16).w,
+              //                     child: CircleAvatar(
+              //                       radius: 12,
+              //                       child: null,
+              //                       backgroundImage:
+              //                           AssetImage("assets/images/test1.png"),
+              //                     ),
+              //                   )
+              //               ],
+              //             )),
+              //         Container(
+              //           width: 90.w,
+              //           child: Text(
+              //             'Trần Phúc và 27 người bạn là thành viên',
+              //             maxLines: 2,
+              //             overflow: TextOverflow.ellipsis,
+              //             style: TextStyle(
+              //               color: AppColors.textGrey,
+              //               fontSize: 11.sp,
+              //               fontWeight: FontWeight.normal,
+              //               fontFamily: AppFonts.Header,
+              //             ),
+              //           ),
+              //         )
+              //       ],
+              //     ),
+              //   ),
             ],
           ),
         ],
