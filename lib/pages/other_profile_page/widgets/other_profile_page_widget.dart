@@ -23,9 +23,16 @@ AppBar buildAppBar(BuildContext context) {
     backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
-        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        margin: Platform.isAndroid
+            ? EdgeInsets.only(top: 20.h)
+            : EdgeInsets.only(top: 40.h),
         child: Text(
-          BlocProvider.of<OtherProfilePageBloc>(context).state.user != null ? BlocProvider.of<OtherProfilePageBloc>(context).state.user!.fullName : '',
+          BlocProvider.of<OtherProfilePageBloc>(context).state.user != null
+              ? BlocProvider.of<OtherProfilePageBloc>(context)
+                  .state
+                  .user!
+                  .fullName
+              : '',
           textAlign: TextAlign.center,
           style: AppTextStyle.medium().wSemiBold(),
         ),
@@ -70,139 +77,168 @@ Widget listFriend(BuildContext context, String id) {
           ),
         ),
       ),
-      if (BlocProvider.of<OtherProfilePageBloc>(context).state.friends.length > 0)
+      if (BlocProvider.of<OtherProfilePageBloc>(context).state.friends.length >
+          0)
         Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            for (int i = 0; i < BlocProvider.of<OtherProfilePageBloc>(context).state.friends.length; i += 1)
-              if (i <= 2)
-                GestureDetector(
-                  onTap: () {
-                    if (BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.id ==
-                        Global.storageService.getUserId()) {
-                      Navigator.pushNamed(
-                        context,
-                        "/myProfilePage",
-                      );
-                    } else {
+          margin: EdgeInsets.only(top: 10.h),
+          child: Row(
+            children: [
+              for (int i = 0;
+                  i <
+                      (BlocProvider.of<OtherProfilePageBloc>(context)
+                                  .state
+                                  .friends
+                                  .length >
+                              3
+                          ? 3
+                          : BlocProvider.of<OtherProfilePageBloc>(context)
+                              .state
+                              .friends
+                              .length);
+                  i += 1)
+                if (i <= 2)
+                  GestureDetector(
+                    onTap: () {
                       Navigator.pushNamed(context, "/otherProfilePage",
                           arguments: {
-                            "id": BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.id,
+                            "id": BlocProvider.of<OtherProfilePageBloc>(context)
+                                .state
+                                .friends[i]
+                                .user
+                                .id,
                           });
-                    }
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.w),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.avatarUrl),
-                            fit: BoxFit.cover,
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5.w),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                    BlocProvider.of<OtherProfilePageBloc>(
+                                            context)
+                                        .state
+                                        .friends[i]
+                                        .user
+                                        .avatarUrl),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            height: 100.h,
+                            width: 100.h,
                           ),
-                        ),
-                        height: 90.h,
-                        width: 90.h,
+                          Container(
+                            margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                            width: 100.w,
+                            height: 40.h,
+                            child: Text(
+                              BlocProvider.of<OtherProfilePageBloc>(context)
+                                  .state
+                                  .friends[i]
+                                  .user
+                                  .fullName,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: AppFonts.Header,
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textBlack,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10.h),
-                        width: 110.w,
-                        height: 30.h,
-                        child: Text(
-                          BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.fullName,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: AppFonts.Header,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textBlack,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-          ],
+                    ),
+                  )
+            ],
+          ),
         ),
-      ),
-      if (BlocProvider.of<OtherProfilePageBloc>(context).state.friends.length > 3)
+      if (BlocProvider.of<OtherProfilePageBloc>(context).state.friends.length >
+          3)
         Container(
-          margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              for (int i = 3; i < BlocProvider.of<OtherProfilePageBloc>(context).state.friends.length; i += 1)
+              for (int i = 3;
+                  i <
+                      BlocProvider.of<OtherProfilePageBloc>(context)
+                          .state
+                          .friends
+                          .length;
+                  i += 1)
                 GestureDetector(
                   onTap: () {
-                    if (BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.id ==
-                        Global.storageService.getUserId()) {
-                      Navigator.pushNamed(
-                        context,
-                        "/myProfilePage",
-                      );
-                    } else {
-                      Navigator.pushNamed(context, "/otherProfilePage",
-                          arguments: {
-                            "id": BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.id,
-                          });
-                    }
+                    Navigator.pushNamed(context, "/otherProfilePage",
+                        arguments: {
+                          "id": BlocProvider.of<OtherProfilePageBloc>(context)
+                              .state
+                              .friends[i]
+                              .user
+                              .id,
+                        });
                   },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.w),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.avatarUrl),
-                            fit: BoxFit.cover,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 10.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.w),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  BlocProvider.of<OtherProfilePageBloc>(context)
+                                      .state
+                                      .friends[i]
+                                      .user
+                                      .avatarUrl),
+                              fit: BoxFit.cover,
+                            ),
                           ),
+                          height: 100.h,
+                          width: 100.h,
                         ),
-                        height: 90.h,
-                        width: 90.h,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10.h),
-                        width: 110.w,
-                        height: 30.h,
-                        child: Text(
-                          BlocProvider.of<OtherProfilePageBloc>(context).state.friends[i].user.fullName,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: AppFonts.Header,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textBlack,
+                        Container(
+                          margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                          width: 100.w,
+                          height: 40.h,
+                          child: Text(
+                            BlocProvider.of<OtherProfilePageBloc>(context)
+                                .state
+                                .friends[i]
+                                .user
+                                .fullName,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: AppFonts.Header,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textBlack,
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
+                )
             ],
           ),
         ),
       GestureDetector(
         onTap: () async {
-          Navigator.pushNamed(
-            context,
-            "/friendList",
-              arguments: { "id": id}
-          );
+          Navigator.pushNamed(context, "/friendList", arguments: {"id": id});
         },
         child: Container(
             width: 340.w,
             height: 40.h,
-            margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
+            margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 0.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.w),
               color: Color.fromARGB(255, 230, 230, 230),
@@ -232,7 +268,8 @@ Widget listFriend(BuildContext context, String id) {
 Widget deleteFriend(BuildContext context, String id) {
   return GestureDetector(
     onTap: () async {
-      bool isDelete = await OtherProfilePageController(context: context).handleDeleteFriend(id);
+      bool isDelete = await OtherProfilePageController(context: context)
+          .handleDeleteFriend(id);
       if (isDelete) {
         Navigator.pop(context);
       }
@@ -265,7 +302,8 @@ Widget deleteFriend(BuildContext context, String id) {
 }
 
 Widget header(BuildContext context) {
-  String isFriendStatus = BlocProvider.of<OtherProfilePageBloc>(context).state.isFriendStatus;
+  String isFriendStatus =
+      BlocProvider.of<OtherProfilePageBloc>(context).state.isFriendStatus;
   User? user = BlocProvider.of<OtherProfilePageBloc>(context).state.user;
   if (user == null) {
     return loadingWidget();
@@ -290,7 +328,8 @@ Widget header(BuildContext context) {
             ),
             Positioned(
               left: 10.w,
-              bottom: 0.h, // Đẩy CircleAvatar xuống dưới một nửa chiều cao của nó để nó nằm ở mép
+              bottom: 0.h,
+              // Đẩy CircleAvatar xuống dưới một nửa chiều cao của nó để nó nằm ở mép
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -300,7 +339,8 @@ Widget header(BuildContext context) {
                   borderRadius: BorderRadius.circular(65.w),
                   border: Border.all(
                     color: Colors.white,
-                    width: 5.w, // Thay đổi giá trị width để làm cho viền dày hơn
+                    width:
+                        5.w, // Thay đổi giá trị width để làm cho viền dày hơn
                   ),
                 ),
                 height: 130.w,
@@ -326,7 +366,10 @@ Widget header(BuildContext context) {
         child: Row(
           children: [
             Text(
-              BlocProvider.of<OtherProfilePageBloc>(context).state.friendCount.toString(),
+              BlocProvider.of<OtherProfilePageBloc>(context)
+                  .state
+                  .friendCount
+                  .toString(),
               style: AppTextStyle.base(),
             ),
             Text(
@@ -340,164 +383,170 @@ Widget header(BuildContext context) {
         children: [
           if (isFriendStatus == "Not Friend")
             GestureDetector(
-            onTap: () {
-              OtherProfilePageController(context: context).handleSendRequest(user.id);
-            },
-            child: Container(
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-              width: 160.w,
-              height: 30.h,
-              decoration: BoxDecoration(
-                color: AppColors.element,
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
+              onTap: () {
+                OtherProfilePageController(context: context)
+                    .handleSendRequest(user.id);
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+                width: 160.w,
+                height: 30.h,
+                decoration: BoxDecoration(
+                  color: AppColors.element,
+                  borderRadius: BorderRadius.circular(5.w),
+                  border: Border.all(
+                    color: Colors.transparent,
+                  ),
                 ),
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/add_friend.svg",
-                      width: 14.w,
-                      height: 14.h,
-                      color: AppColors.background,
-                    ),
-                    Container(
-                      width: 5.w,
-                    ),
-                    Text(
-                      translate('add_friend'),
-                      style: AppTextStyle.base().wSemiBold().withColor(AppColors.background),
-                    ),
-                  ],
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/add_friend.svg",
+                        width: 14.w,
+                        height: 14.h,
+                        color: AppColors.background,
+                      ),
+                      Container(
+                        width: 5.w,
+                      ),
+                      Text(
+                        translate('add_friend'),
+                        style: AppTextStyle.base()
+                            .wSemiBold()
+                            .withColor(AppColors.background),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
           if (isFriendStatus == "Not Friend")
             GestureDetector(
-            onTap: () {
-              OtherProfilePageController(context: context).handleInbox(user);
-            },
-            child: Container(
-              margin: EdgeInsets.only(right: 10.w, top: 10.h),
-              width: 160.w,
-              height: 30.h,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 230, 230, 230),
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
+              onTap: () {
+                OtherProfilePageController(context: context).handleInbox(user);
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 10.w, top: 10.h),
+                width: 160.w,
+                height: 30.h,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 230, 230, 230),
+                  borderRadius: BorderRadius.circular(5.w),
+                  border: Border.all(
+                    color: Colors.transparent,
+                  ),
                 ),
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/chat.svg",
-                      width: 14.w,
-                      height: 14.h,
-                      color: AppColors.textBlack,
-                    ),
-                    Container(
-                      width: 5.w,
-                    ),
-                    Text(
-                      translate('chat'),
-                      style: AppTextStyle.base().wSemiBold(),
-                    ),
-                  ],
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/chat.svg",
+                        width: 14.w,
+                        height: 14.h,
+                        color: AppColors.textBlack,
+                      ),
+                      Container(
+                        width: 5.w,
+                      ),
+                      Text(
+                        translate('chat'),
+                        style: AppTextStyle.base().wSemiBold(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
           if (isFriendStatus == "true")
             GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (ctx) => deleteFriend(context, user.id),
-              );
-            },
-            child: Container(
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-              width: 160.w,
-              height: 30.h,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 230, 230, 230),
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
+              onTap: () {
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (ctx) => deleteFriend(context, user.id),
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+                width: 160.w,
+                height: 30.h,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 230, 230, 230),
+                  borderRadius: BorderRadius.circular(5.w),
+                  border: Border.all(
+                    color: Colors.transparent,
+                  ),
                 ),
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/friend.svg",
-                      width: 20.w,
-                      height: 20.h,
-                      color: AppColors.textBlack,
-                    ),
-                    Container(
-                      width: 5.w,
-                    ),
-                    Text(
-                      translate('friend'),
-                      style: AppTextStyle.base().wSemiBold(),
-                    ),
-                  ],
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/friend.svg",
+                        width: 20.w,
+                        height: 20.h,
+                        color: AppColors.textBlack,
+                      ),
+                      Container(
+                        width: 5.w,
+                      ),
+                      Text(
+                        translate('friend'),
+                        style: AppTextStyle.base().wSemiBold(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
           if (isFriendStatus == "true")
             GestureDetector(
-            onTap: () {
-              OtherProfilePageController(context: context).handleInbox(user);
-            },
-            child: Container(
-              margin: EdgeInsets.only(right: 10.w, top: 10.h),
-              width: 160.w,
-              height: 30.h,
-              decoration: BoxDecoration(
-                color: AppColors.element,
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
+              onTap: () {
+                OtherProfilePageController(context: context).handleInbox(user);
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 10.w, top: 10.h),
+                width: 160.w,
+                height: 30.h,
+                decoration: BoxDecoration(
+                  color: AppColors.element,
+                  borderRadius: BorderRadius.circular(5.w),
+                  border: Border.all(
+                    color: Colors.transparent,
+                  ),
                 ),
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/chat.svg",
-                      width: 14.w,
-                      height: 14.h,
-                      color: AppColors.background,
-                    ),
-                    Container(
-                      width: 5.w,
-                    ),
-                    Text(
-                      translate('chat'),
-                      style: AppTextStyle.base().wSemiBold().withColor(AppColors.background),
-                    ),
-                  ],
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/chat.svg",
+                        width: 14.w,
+                        height: 14.h,
+                        color: AppColors.background,
+                      ),
+                      Container(
+                        width: 5.w,
+                      ),
+                      Text(
+                        translate('chat'),
+                        style: AppTextStyle.base()
+                            .wSemiBold()
+                            .withColor(AppColors.background),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
           if (isFriendStatus == "Pending")
             GestureDetector(
               onTap: () {
-                OtherProfilePageController(context: context).handleSendRequest(user.id);
+                OtherProfilePageController(context: context)
+                    .handleSendRequest(user.id);
               },
               child: Container(
                 margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
@@ -525,7 +574,9 @@ Widget header(BuildContext context) {
                       ),
                       Text(
                         translate('cancel_invitation'),
-                        style: AppTextStyle.base().wSemiBold().withColor(AppColors.background),
+                        style: AppTextStyle.base()
+                            .wSemiBold()
+                            .withColor(AppColors.background),
                       ),
                     ],
                   ),
@@ -599,12 +650,12 @@ Widget detail(BuildContext context) {
         ),
       ),
       for (int i = 0;
-      i <
-          BlocProvider.of<OtherProfilePageBloc>(context)
-              .state
-              .educations
-              .length;
-      i += 1)
+          i <
+              BlocProvider.of<OtherProfilePageBloc>(context)
+                  .state
+                  .educations
+                  .length;
+          i += 1)
         Container(
           margin: EdgeInsets.only(left: 10.w, top: 10.h, right: 10.w),
           child: Row(
@@ -634,8 +685,8 @@ Widget detail(BuildContext context) {
           ),
         ),
       for (int i = 0;
-      i < BlocProvider.of<OtherProfilePageBloc>(context).state.jobs.length;
-      i += 1)
+          i < BlocProvider.of<OtherProfilePageBloc>(context).state.jobs.length;
+          i += 1)
         Container(
           margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
           child: Row(
@@ -665,12 +716,12 @@ Widget detail(BuildContext context) {
           ),
         ),
       for (int i = 0;
-      i <
-          BlocProvider.of<OtherProfilePageBloc>(context)
-              .state
-              .achievements
-              .length;
-      i += 1)
+          i <
+              BlocProvider.of<OtherProfilePageBloc>(context)
+                  .state
+                  .achievements
+                  .length;
+          i += 1)
         Container(
           margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
           child: Row(
@@ -701,12 +752,9 @@ Widget detail(BuildContext context) {
         ),
       GestureDetector(
         onTap: () async {
-          Navigator.pushNamed(
-            context,
-            "/otherProfileDetail",
-            arguments: {"id": BlocProvider.of<OtherProfilePageBloc>(context)
-                .state.user!.id}
-          );
+          Navigator.pushNamed(context, "/otherProfileDetail", arguments: {
+            "id": BlocProvider.of<OtherProfilePageBloc>(context).state.user!.id
+          });
         },
         child: Container(
           margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
@@ -747,19 +795,23 @@ Widget detail(BuildContext context) {
   );
 }
 
-Widget listEvent(BuildContext context, ScrollController _scrollController, String id) {
+Widget listEvent(
+    BuildContext context, ScrollController _scrollController, String id) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       Expanded(
         child: ListView.builder(
           controller: _scrollController,
-          itemCount:
-          BlocProvider.of<OtherProfilePageBloc>(context).state.events.length +
+          itemCount: BlocProvider.of<OtherProfilePageBloc>(context)
+                  .state
+                  .events
+                  .length +
               1,
           itemBuilder: (BuildContext context, int index) {
-            switch (
-            BlocProvider.of<OtherProfilePageBloc>(context).state.statusEvent) {
+            switch (BlocProvider.of<OtherProfilePageBloc>(context)
+                .state
+                .statusEvent) {
               case Status.loading:
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -807,12 +859,12 @@ Widget listEvent(BuildContext context, ScrollController _scrollController, Strin
                       ),
                       Center(
                           child: Container(
-                            margin: EdgeInsets.only(top: 20.h),
-                            child: Text(
-                              translate('no_event_found'),
-                              style: AppTextStyle.small(),
-                            ),
-                          )),
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text(
+                          translate('no_event_found'),
+                          style: AppTextStyle.small(),
+                        ),
+                      )),
                     ],
                   );
                 }
@@ -908,7 +960,8 @@ Widget event(BuildContext context, Event event) {
                     Text(
                       handleDateTime1(event.publishedAt),
                       maxLines: 1,
-                      style: AppTextStyle.xSmall().withColor(AppColors.textGrey),
+                      style:
+                          AppTextStyle.xSmall().withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -929,7 +982,8 @@ Widget event(BuildContext context, Event event) {
                     Text(
                       event.views.toString(),
                       maxLines: 1,
-                      style: AppTextStyle.xSmall().withColor(AppColors.textGrey),
+                      style:
+                          AppTextStyle.xSmall().withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -950,7 +1004,8 @@ Widget event(BuildContext context, Event event) {
                     Text(
                       event.participants.toString(),
                       maxLines: 1,
-                      style: AppTextStyle.xSmall().withColor(AppColors.textGrey),
+                      style:
+                          AppTextStyle.xSmall().withColor(AppColors.textGrey),
                     ),
                   ],
                 ),

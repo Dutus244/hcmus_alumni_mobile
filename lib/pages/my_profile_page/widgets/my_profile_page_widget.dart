@@ -520,29 +520,32 @@ Widget listFriend(BuildContext context) {
         ),
       ),
       Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+        margin: EdgeInsets.only(top: 10.h),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             for (int i = 0;
-                i <
-                    BlocProvider.of<MyProfilePageBloc>(context)
-                        .state
-                        .friends
-                        .length;
+                i < (BlocProvider.of<MyProfilePageBloc>(context)
+                    .state
+                    .friends
+                    .length > 3 ? 3 : BlocProvider.of<MyProfilePageBloc>(context)
+                    .state
+                    .friends
+                    .length)
+                    ;
                 i += 1)
-              if (i <= 2)
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, "/otherProfilePage",
-                        arguments: {
-                          "id": BlocProvider.of<MyProfilePageBloc>(context)
-                              .state
-                              .friends[i]
-                              .user
-                              .id,
-                        });
-                  },
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, "/otherProfilePage",
+                      arguments: {
+                        "id": BlocProvider.of<MyProfilePageBloc>(context)
+                            .state
+                            .friends[i]
+                            .user
+                            .id,
+                      });
+                },
+                child: Container(
+                  margin: EdgeInsets.only(left: 10.w),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -560,13 +563,13 @@ Widget listFriend(BuildContext context) {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        height: 90.h,
-                        width: 90.h,
+                        height: 100.h,
+                        width: 100.h,
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 10.h),
-                        width: 110.w,
-                        height: 30.h,
+                        margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                        width: 100.w,
+                        height: 40.h,
                         child: Text(
                           BlocProvider.of<MyProfilePageBloc>(context)
                               .state
@@ -586,14 +589,13 @@ Widget listFriend(BuildContext context) {
                     ],
                   ),
                 ),
+              )
           ],
         ),
       ),
       if (BlocProvider.of<MyProfilePageBloc>(context).state.friends.length > 3)
         Container(
-          margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               for (int i = 3;
                   i <
@@ -613,49 +615,52 @@ Widget listFriend(BuildContext context) {
                               .id,
                         });
                   },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.w),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                BlocProvider.of<MyProfilePageBloc>(context)
-                                    .state
-                                    .friends[i]
-                                    .user
-                                    .avatarUrl),
-                            fit: BoxFit.cover,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 10.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.w),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  BlocProvider.of<MyProfilePageBloc>(context)
+                                      .state
+                                      .friends[i]
+                                      .user
+                                      .avatarUrl),
+                              fit: BoxFit.cover,
+                            ),
                           ),
+                          height: 100.h,
+                          width: 100.h,
                         ),
-                        height: 90.h,
-                        width: 90.h,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10.h),
-                        width: 110.w,
-                        height: 30.h,
-                        child: Text(
-                          BlocProvider.of<MyProfilePageBloc>(context)
-                              .state
-                              .friends[i]
-                              .user
-                              .fullName,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: AppFonts.Header,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textBlack,
+                        Container(
+                          margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                          width: 100.w,
+                          height: 40.h,
+                          child: Text(
+                            BlocProvider.of<MyProfilePageBloc>(context)
+                                .state
+                                .friends[i]
+                                .user
+                                .fullName,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: AppFonts.Header,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textBlack,
+                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
+                )
             ],
           ),
         ),

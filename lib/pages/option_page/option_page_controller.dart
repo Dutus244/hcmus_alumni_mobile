@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
+import '../../common/services/firebase_service.dart';
 import '../../common/services/socket_service.dart';
 import '../../common/values/constants.dart';
 import '../../global.dart';
@@ -19,8 +22,12 @@ class OptionPageController {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
     };
+    final notificationToken = await NotificationServices().getDeviceToken();
+    final body = jsonEncode({
+      'token': notificationToken,
+    });
     try {
-      var response = await http.delete(url, headers: headers);
+      var response = await http.delete(url, headers: headers, body: body);
       print(response.body);
     } catch (error) {
       print(error);
