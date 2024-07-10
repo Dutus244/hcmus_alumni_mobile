@@ -88,6 +88,10 @@ class StorageService {
     return _prefs.getBool(AppPermissions.GROUP_CREATE) ?? false;
   }
 
+  bool permissionGroupJoin() {
+    return _prefs.getBool(AppPermissions.GROUP_JOIN) ?? false;
+  }
+
   bool permissionProfileEdit() {
     return _prefs.getBool(AppPermissions.PROFILE_EDIT) ?? false;
   }

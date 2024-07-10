@@ -6,7 +6,7 @@ class EducationResponse {
   EducationResponse(this.educations);
 
   EducationResponse.fromJson(Map<String, dynamic> json)
-      : educations = (json["educations"] as List)
+      : educations = (json["education"] as List)
             .map((i) => new Education.fromJson(i))
             .toList();
 }

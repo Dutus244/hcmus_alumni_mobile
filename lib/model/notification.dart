@@ -12,7 +12,7 @@ class Notifications {
   final Status status;
   final String notificationImageUrl;
   final String notificationMessage;
-  final String? parentId;
+  final String parentId;
 
   Notifications(
       this.id,
@@ -31,12 +31,12 @@ class Notifications {
       : id = json["id"],
         notifier = User.fromJson(json["notifier"]),
         actor = User.fromJson(json["actor"]),
-        entityId = json["entityId"],
-        entityTable = json["entityTable"],
-        notificationType = json["notificationType"],
-        createAt = json["createAt"],
+        entityId = json["entityId"] ?? "",
+        entityTable = json["entityTable"] ?? "",
+        notificationType = json["notificationType"] ?? "",
+        createAt = json["createAt"] ?? "",
         status = Status.fromJson(json["status"]),
-        notificationImageUrl = json["notificationImageUrl"],
-        notificationMessage = json["notificationMessage"],
-        parentId = json["parentId"];
+        notificationImageUrl = json["notificationImageUrl"] ?? "",
+        notificationMessage = json["notificationMessage"] ?? "",
+        parentId = json["parentId"] ?? "";
 }

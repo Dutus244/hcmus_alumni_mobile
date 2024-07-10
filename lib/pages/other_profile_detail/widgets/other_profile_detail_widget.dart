@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/widgets/loading_widget.dart';
+import 'package:hcmus_alumni_mobile/model/alumni.dart';
+import 'package:hcmus_alumni_mobile/model/alumni_verification.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
@@ -10,6 +14,9 @@ import '../../../model/achievement.dart';
 import '../../../model/education.dart';
 import '../../../model/job.dart';
 import 'dart:io';
+
+import '../../../model/user.dart';
+import '../bloc/other_profile_detail_blocs.dart';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
@@ -33,6 +40,10 @@ AppBar buildAppBar(BuildContext context) {
 }
 
 Widget otherProfileDetail(BuildContext context) {
+  User? user = BlocProvider.of<OtherProfileDetailBloc>(context).state.user;
+  if (user == null) {
+    return loadingWidget();
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -41,9 +52,9 @@ Widget otherProfileDetail(BuildContext context) {
           child: ListView(
             scrollDirection: Axis.vertical,
             children: [
-              profile(context),
-              contact(context),
-              aboutMe(context),
+              profile(context, user),
+              contact(context, user),
+              aboutMe(context, user),
               jobs(context),
               educations(context),
               achievements(context),
@@ -56,31 +67,30 @@ Widget otherProfileDetail(BuildContext context) {
   );
 }
 
-Widget profile(BuildContext context) {
-  String faculty = "Chọn khoa";
-  switch ("1") {
-    case "1":
+Widget profile(BuildContext context, User user) {
+  String faculty = translate('choose_faculty');
+  AlumniVerification? alumniVerification = BlocProvider.of<OtherProfileDetailBloc>(context).state.alumniVerification;
+  Alumni? alumni = BlocProvider.of<OtherProfileDetailBloc>(context).state.alumni;
+  switch (user.faculty != null ? user.faculty!.id : 0) {
+    case 1:
       faculty = "Công nghệ thông tin";
-    case "2":
+    case 2:
       faculty = "Vật lý – Vật lý kỹ thuật";
-    case "3":
+    case 3:
       faculty = "Địa chất";
-    case "4":
+    case 4:
       faculty = "Toán – Tin học";
-    case "5":
+    case 5:
       faculty = "Điện tử - Viễn thông";
-    case "6":
+    case 6:
       faculty = "Khoa học & Công nghệ Vật liệu";
-    case "7":
+    case 7:
       faculty = "Hóa học";
-    case "8":
+    case 8:
       faculty = "Sinh học – Công nghệ Sinh học";
-    case "9":
+    case 9:
       faculty = "Môi trường";
   }
-  String name = 'Đặng Nguyễn Duy';
-  String sex = 'Nam';
-  String birthday = '24/04/2002';
 
   return Column(
     children: [
@@ -122,7 +132,7 @@ Widget profile(BuildContext context) {
                   margin: EdgeInsets.only(bottom: 10.h),
                   width: 232.w,
                   child: Text(
-                    name,
+                    user.fullName,
                     style: TextStyle(
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
@@ -202,7 +212,7 @@ Widget profile(BuildContext context) {
         margin: EdgeInsets.only(left: 10.w, right: 10.w),
         child: Row(
           children: [
-            sex == "Nam"
+            (user.sex != null ? user.sex!.name : "Nam") == "Nam"
                 ? SvgPicture.asset(
               "assets/icons/men.svg",
               width: 25.w,
@@ -226,7 +236,7 @@ Widget profile(BuildContext context) {
                   margin: EdgeInsets.only(bottom: 10.h),
                   width: 232.w,
                   child: Text(
-                    sex,
+                    user.sex != null ? user.sex!.name : "Nam",
                     style: TextStyle(
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
@@ -274,9 +284,9 @@ Widget profile(BuildContext context) {
                   width: 232.w,
                   margin: EdgeInsets.only(bottom: 10.h),
                   child: Text(
-                    birthday !=
+                    user.dob !=
                         ""
-                        ? birthday
+                        ? user.dob
                         : '',
                     style: TextStyle(
                       color: AppColors.textBlack,
@@ -324,7 +334,7 @@ Widget profile(BuildContext context) {
                   width: 232.w,
                   margin: EdgeInsets.only(bottom: 10.h),
                   child: Text(
-                    'dutus24',
+                    user.socialMediaLink,
                     style: TextStyle(
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
@@ -371,7 +381,7 @@ Widget profile(BuildContext context) {
                   width: 232.w,
                   margin: EdgeInsets.only(bottom: 10.h),
                   child: Text(
-                    '20127013',
+                    alumniVerification != null ? alumniVerification.studentId! : "",
                     style: TextStyle(
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
@@ -418,7 +428,7 @@ Widget profile(BuildContext context) {
                   width: 232.w,
                   margin: EdgeInsets.only(bottom: 10.h),
                   child: Text(
-                    '20CLC11',
+                    alumni != null ? alumni.alumClass : "",
                     style: TextStyle(
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
@@ -465,7 +475,7 @@ Widget profile(BuildContext context) {
                   width: 232.w,
                   margin: EdgeInsets.only(bottom: 10.h),
                   child: Text(
-                    '2020',
+                    alumniVerification != null ? alumniVerification.beginningYear.toString() : "",
                     style: TextStyle(
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
@@ -512,7 +522,7 @@ Widget profile(BuildContext context) {
                   width: 232.w,
                   margin: EdgeInsets.only(bottom: 10.h),
                   child: Text(
-                    '2024',
+                    alumni != null ? alumni.graduationYear.toString() : "",
                     style: TextStyle(
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
@@ -542,7 +552,7 @@ Widget profile(BuildContext context) {
   );
 }
 
-Widget contact(BuildContext context) {
+Widget contact(BuildContext context, User user) {
   return Column(
     children: [
       Container(
@@ -584,7 +594,7 @@ Widget contact(BuildContext context) {
                   width: 232.w,
                   margin: EdgeInsets.only(bottom: 10.h),
                   child: Text(
-                    'test@gmail.com',
+                    user.email,
                     style: TextStyle(
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
@@ -631,7 +641,7 @@ Widget contact(BuildContext context) {
                   width: 232.w,
                   margin: EdgeInsets.only(bottom: 10.h),
                   child: Text(
-                    '0123456789',
+                    user.phone,
                     style: TextStyle(
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
@@ -661,8 +671,10 @@ Widget contact(BuildContext context) {
   );
 }
 
-Widget aboutMe(BuildContext context) {
+Widget aboutMe(BuildContext context, User user) {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
     children: [
       Container(
         margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
@@ -684,7 +696,7 @@ Widget aboutMe(BuildContext context) {
       Container(
         margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
         child: Text(
-          'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
+          user.aboutMe,
           style: TextStyle(
             color: AppColors.textBlack,
             fontFamily: AppFonts.Header,
@@ -698,7 +710,7 @@ Widget aboutMe(BuildContext context) {
 }
 
 Widget jobs(BuildContext context) {
-  List<Job> jobs = [];
+  List<Job> jobs = BlocProvider.of<OtherProfileDetailBloc>(context).state.jobs;
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -816,7 +828,7 @@ Widget job(BuildContext context, Job job) {
 }
 
 Widget educations(BuildContext context) {
-  List<Education> educations = [];
+  List<Education> educations = BlocProvider.of<OtherProfileDetailBloc>(context).state.educations;
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -938,7 +950,7 @@ Widget education(BuildContext context, Education education) {
 }
 
 Widget achievements(BuildContext context) {
-  List<Achievement> achievements = [];
+  List<Achievement> achievements = BlocProvider.of<OtherProfileDetailBloc>(context).state.achievements;
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,

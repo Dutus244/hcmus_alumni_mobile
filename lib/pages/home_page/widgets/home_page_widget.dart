@@ -6,6 +6,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/function/handle_datetime.dart';
 import 'package:hcmus_alumni_mobile/common/values/colors.dart';
 import 'package:hcmus_alumni_mobile/common/values/fonts.dart';
+import 'package:hcmus_alumni_mobile/global.dart';
 import 'package:hcmus_alumni_mobile/model/event.dart';
 
 import '../../../model/hall_of_fame.dart';
@@ -612,7 +613,8 @@ Widget advise(BuildContext context) {
                 ),
               ),
             ),
-            Align(
+            if (Global.storageService.permissionCounselCreate())
+              Align(
               alignment: Alignment.centerRight,
               child: GestureDetector(
                 onTap: () {

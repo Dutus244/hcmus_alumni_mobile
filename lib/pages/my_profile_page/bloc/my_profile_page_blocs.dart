@@ -5,6 +5,8 @@ import 'my_profile_page_states.dart';
 
 class MyProfilePageBloc extends Bloc<MyProfilePageEvent, MyProfilePageState> {
   MyProfilePageBloc() : super(MyProfilePageState()) {
+    on<UserEvent>(_userEvent);
+    on<AlumniVerificationEvent>(_alumniVerificationEvent);
     on<PageEvent>(_pageEvent);
     on<StatusPostEvent>(_statusPostEvent);
     on<PostsEvent>(_postsEvent);
@@ -21,6 +23,16 @@ class MyProfilePageBloc extends Bloc<MyProfilePageEvent, MyProfilePageState> {
     on<EducationsEvent>(_educationsEvent);
     on<JobsEvent>(_jobsEvent);
     on<AchievementsEvent>(_achievementsEvent);
+    on<FriendCountEvent>(_friendCountEvent);
+    on<FriendsEvent>(_friendsEvent);
+  }
+
+  void _userEvent(UserEvent event, Emitter<MyProfilePageState> emit) {
+    emit(state.copyWith(user: event.user));
+  }
+
+  void _alumniVerificationEvent(AlumniVerificationEvent event, Emitter<MyProfilePageState> emit) {
+    emit(state.copyWith(alumniVerification: event.alumniVerification));
   }
 
   void _pageEvent(PageEvent event, Emitter<MyProfilePageState> emit) {
@@ -93,5 +105,13 @@ class MyProfilePageBloc extends Bloc<MyProfilePageEvent, MyProfilePageState> {
 
   void _achievementsEvent(AchievementsEvent event, Emitter<MyProfilePageState> emit) async {
     emit(state.copyWith(achievements: event.achievements));
+  }
+
+  void _friendCountEvent(FriendCountEvent event, Emitter<MyProfilePageState> emit) async {
+    emit(state.copyWith(friendCount: event.friendCount));
+  }
+
+  void _friendsEvent(FriendsEvent event, Emitter<MyProfilePageState> emit) async {
+    emit(state.copyWith(friends: event.friends));
   }
 }

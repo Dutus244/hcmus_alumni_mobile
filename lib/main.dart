@@ -8,6 +8,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/services/firebase_service.dart';
+import 'package:hcmus_alumni_mobile/pages/alumni_information/alumni_information.dart';
+import 'package:hcmus_alumni_mobile/pages/alumni_verification/alumni_verification.dart';
 import 'package:hcmus_alumni_mobile/pages/application_page/application_page.dart';
 import 'package:hcmus_alumni_mobile/pages/splash/splash.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -33,8 +35,9 @@ Future<void> main() async {
   await dotenv.load(fileName: '.env');
   var delegate = await LocalizationDelegate.create(
     fallbackLocale: 'vi',
-    supportedLocales: ['vi', 'en'],
+    supportedLocales: ['vi'],
   );
+  print(Global.storageService.getDeviceLanguage());
   delegate.changeLocale(Locale(Global.storageService.getDeviceLanguage()));
   runApp(LocalizedApp(delegate, MyApp()));
 }
@@ -43,6 +46,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   static void setLocale(BuildContext context, Locale newLocale) {
+    print(newLocale);
     LocalizedApp.of(context).delegate.changeLocale(newLocale);
   }
 

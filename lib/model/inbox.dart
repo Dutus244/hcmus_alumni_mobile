@@ -11,9 +11,10 @@ class Inbox {
   final String updateAt;
   final List<InboxMember> members;
   final Message latestMessage;
+  final bool hasRead;
 
   Inbox(this.id, this.name, this.isGroup, this.createAt, this.updateAt,
-      this.latestMessage, this.members);
+      this.latestMessage, this.members, this.hasRead);
 
   Inbox.fromJson(Map<String, dynamic> json)
       : id = json["id"],
@@ -22,5 +23,6 @@ class Inbox {
         createAt = json["createAt"],
         updateAt = json["updateAt"],
         members = InboxMemberResponse.fromJson(json).members,
-        latestMessage = Message.fromJson(json["latestMessage"]);
+        latestMessage = Message.fromJson(json["latestMessage"]),
+        hasRead = json["hasRead"];
 }

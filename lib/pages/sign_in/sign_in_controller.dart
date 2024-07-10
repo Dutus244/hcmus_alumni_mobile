@@ -10,6 +10,7 @@ import '../../common/services/socket_service.dart';
 import '../../common/values/constants.dart';
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
+import '../../model/user.dart';
 import 'bloc/sign_in_blocs.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -65,23 +66,40 @@ class SignInController {
         }
 
         Global.storageService.setString(AppConstants.USER_AUTH_TOKEN, jwtToken);
+        Global.storageService.setString(AppConstants.USER_EMAIL, email);
+        Global.storageService.setString(AppConstants.USER_PASSWORD, password);
         if (rememberLogin) {
           Global.storageService.setBool(AppConstants.USER_REMEMBER_LOGIN, true);
-          Global.storageService.setString(AppConstants.USER_EMAIL, email);
-          Global.storageService.setString(AppConstants.USER_PASSWORD, password);
         }
         Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
-        Global.storageService.setString(
-            AppConstants.USER_ID, decodedToken["sub"]);
+        Global.storageService
+            .setString(AppConstants.USER_ID, decodedToken["sub"]);
 
         List<String> permissions = List<String>.from(jsonMap['permissions']);
         handleSavePermission(permissions);
-        toastInfo(msg: translate('sign_in_success'));
-        socketService.connect('0ac25d55-1ee6-4794-8d46-58f82cde644c');
+        socketService.connect(Global.storageService.getUserId());
 
+        url = Uri.parse(
+            '${dotenv.env['API_URL']}/user/${Global.storageService.getUserId()}/profile');
+        try {
+          var response = await http.get(url, headers: headers);
+          var responseBody = utf8.decode(response.bodyBytes);
+          if (response.statusCode == 200) {
+            var jsonMap = json.decode(responseBody);
+            var user = User.fromJson(jsonMap["user"]);
+            Global.storageService
+                .setString(AppConstants.USER_FULL_NAME, user.fullName);
+            Global.storageService
+                .setString(AppConstants.USER_AVATAR_URL, user.avatarUrl);
+          }
+        } catch (error) {
+          print(error);
+        }
+
+        toastInfo(msg: translate('sign_in_success'));
         Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false, arguments: {"route": 0}
-            );
+            "/applicationPage", (route) => false,
+            arguments: {"route": 0});
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
@@ -99,6 +117,7 @@ class SignInController {
         }
       }
     } catch (error) {
+      print(error);
       toastInfo(msg: translate('error_login'));
     }
   }
@@ -134,16 +153,34 @@ class SignInController {
 
         Global.storageService.setString(AppConstants.USER_AUTH_TOKEN, jwtToken);
         Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
-        Global.storageService.setString(
-            AppConstants.USER_ID, decodedToken["sub"]);
+        Global.storageService
+            .setString(AppConstants.USER_ID, decodedToken["sub"]);
         List<String> permissions = List<String>.from(jsonMap['permissions']);
         handleSavePermission(permissions);
-        toastInfo(msg: translate('sign_in_success'));
-        socketService.connect('0ac25d55-1ee6-4794-8d46-58f82cde644c');
+        socketService.connect(Global.storageService.getUserId());
 
+        url = Uri.parse(
+            '${dotenv.env['API_URL']}/user/${Global.storageService.getUserId()}/profile');
+        try {
+          var response = await http.get(url, headers: headers);
+          var responseBody = utf8.decode(response.bodyBytes);
+          print(responseBody);
+          if (response.statusCode == 200) {
+            var jsonMap = json.decode(responseBody);
+            var user = User.fromJson(jsonMap["user"]);
+            Global.storageService
+                .setString(AppConstants.USER_FULL_NAME, user.fullName);
+            Global.storageService
+                .setString(AppConstants.USER_AVATAR_URL, user.avatarUrl);
+          }
+        } catch (error) {
+          print(error);
+        }
+
+        toastInfo(msg: translate('sign_in_success'));
         Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", (route) => false, arguments: {"route": 0}
-            );
+            "/applicationPage", (route) => false,
+            arguments: {"route": 0});
       } else {
         toastInfo(msg: translate('email_password_invalid'));
       }

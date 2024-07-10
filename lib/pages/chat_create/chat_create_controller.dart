@@ -47,8 +47,8 @@ class ChatCreateController {
     String name = state.nameSearch;
 
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/groups';
-    var pageSize = 5;
+    var endpoint = '/user';
+    var pageSize = 20;
 
     var token = Global.storageService.getUserAuthToken();
 
@@ -66,47 +66,32 @@ class ChatCreateController {
       if (response.statusCode == 200) {
         // Convert the JSON string to a Map
         var jsonMap = json.decode(responseBody);
-        jsonMap = {
-          "users": [
-            {
-              "id": "0ac25d55-1ee6-4794-8d46-58f82cde644c",
-              "fullName": "Test 9",
-              "avatarUrl":
-                  "https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea"
-            },
-            {
-              "id": "16364790-7770-40d3-a517-7cd932cc3f8c",
-              "fullName": "Test 6",
-              "avatarUrl":
-                  "https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea"
-            },
-            {
-              "id": "360e7456-2fe9-410b-b17f-70295df95641",
-              "fullName": "Test 8",
-              "avatarUrl":
-                  "https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea"
-            },
-          ]
-        };
         // Pass the Map to the fromJson method
         var userResponse = UserResponse.fromJson(jsonMap);
-        if (userResponse.users.isEmpty) {
+
+        List<User> tempList = userResponse.users;
+
+        for (int i = 0; i < tempList.length; i += 1) {
+          if (tempList[i].id == Global.storageService.getUserId()) {
+            tempList.removeAt(i);
+          }
+        }
+        if (tempList.isEmpty) {
           if (page == 0) {
-            context.read<ChatCreateBloc>().add(UsersEvent(userResponse.users));
+            context.read<ChatCreateBloc>().add(UsersEvent(tempList));
           }
           context.read<ChatCreateBloc>().add(HasReachedMaxUserEvent(true));
           context.read<ChatCreateBloc>().add(StatusEvent(Status.success));
           return;
         }
         if (page == 0) {
-          context.read<ChatCreateBloc>().add(UsersEvent(userResponse.users));
+          context.read<ChatCreateBloc>().add(UsersEvent(tempList));
         } else {
           List<User> currentList =
               BlocProvider.of<ChatCreateBloc>(context).state.users;
 
           // Create a new list by adding newsResponse.news to the existing list
-          List<User> updatedNewsList = List.of(currentList)
-            ..addAll(userResponse.users);
+          List<User> updatedNewsList = List.of(currentList)..addAll(tempList);
 
           context.read<ChatCreateBloc>().add(UsersEvent(updatedNewsList));
         }

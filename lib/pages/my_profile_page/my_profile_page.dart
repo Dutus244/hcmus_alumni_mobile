@@ -26,6 +26,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
+    MyProfilePageController(context: context).handleGetProfile();
+    MyProfilePageController(context: context).handleGetFriendCount();
+    MyProfilePageController(context: context).handleLoadFriendData();
+    MyProfilePageController(context: context).handleGetJob();
+    MyProfilePageController(context: context).handleGetEducation();
+    MyProfilePageController(context: context).handleGetAchievement();
     MyProfilePageController(context: context).handleLoadEventsData(0);
     MyProfilePageController(context: context).handleLoadPostData(0);
     MyProfilePageController(context: context).handleLoadCommentPostAdviseData(0);

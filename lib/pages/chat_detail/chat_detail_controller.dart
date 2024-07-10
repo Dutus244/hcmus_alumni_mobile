@@ -41,7 +41,7 @@ class ChatDetailController {
 
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/messages/inbox/$inboxId';
-    var pageSize = 10;
+    var pageSize = 20;
 
     var token = Global.storageService.getUserAuthToken();
 
@@ -205,6 +205,7 @@ class ChatDetailController {
             'senderId': Global.storageService.getUserId()
           });
         } catch (error) {
+          print(error);
           toastInfo(msg: 'Có lỗi trong việc gửi tin nhắn');
         }
       }

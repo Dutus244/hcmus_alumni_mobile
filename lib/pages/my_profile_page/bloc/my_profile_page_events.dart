@@ -1,14 +1,29 @@
 import 'package:hcmus_alumni_mobile/model/comment.dart';
 import 'package:hcmus_alumni_mobile/model/education.dart';
 import 'package:hcmus_alumni_mobile/model/event.dart';
+import 'package:hcmus_alumni_mobile/model/friend.dart';
+import 'package:hcmus_alumni_mobile/model/user.dart';
 
 import '../../../model/achievement.dart';
+import '../../../model/alumni_verification.dart';
 import '../../../model/job.dart';
 import '../../../model/post.dart';
 import 'my_profile_page_states.dart';
 
 class MyProfilePageEvent {
   const MyProfilePageEvent();
+}
+
+class UserEvent extends MyProfilePageEvent {
+  final User user;
+
+  const UserEvent(this.user);
+}
+
+class AlumniVerificationEvent extends MyProfilePageEvent {
+  final AlumniVerification alumniVerification;
+
+  const AlumniVerificationEvent(this.alumniVerification);
 }
 
 class PageEvent extends MyProfilePageEvent {
@@ -105,4 +120,16 @@ class AchievementsEvent extends MyProfilePageEvent {
   final List<Achievement> achievements;
 
   const AchievementsEvent(this.achievements);
+}
+
+class FriendCountEvent extends MyProfilePageEvent {
+  final int friendCount;
+
+  const FriendCountEvent(this.friendCount);
+}
+
+class FriendsEvent extends MyProfilePageEvent {
+  final List<Friend> friends;
+
+  const FriendsEvent(this.friends);
 }

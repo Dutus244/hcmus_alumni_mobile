@@ -6,7 +6,7 @@ class FriendRequestResponse {
   FriendRequestResponse(this.requests);
 
   FriendRequestResponse.fromJson(Map<String, dynamic> json)
-      : requests = (json["requests"] as List)
+      : requests = (json["friendRequests"] as List)
             .map((i) => new FriendRequest.fromJson(i))
             .toList();
 }

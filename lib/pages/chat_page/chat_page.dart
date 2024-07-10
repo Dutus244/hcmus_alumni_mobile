@@ -28,14 +28,9 @@ class _ChatPageState extends State<ChatPage> {
     _scrollController.addListener(_onScroll);
     ChatPageController(context: context).handleLoadInboxData(0);
     socketService.messages.listen((message) {
+      print(message);
       ChatPageController(context: context).handleLoadInboxData(0);
     });
-  }
-
-  @override
-  void dispose() {
-    socketService.disconnect();
-    super.dispose();
   }
 
   void _onScroll() {

@@ -18,7 +18,7 @@ class MyProfileAddEducation extends StatefulWidget {
 
 class _MyProfileAddEducationState extends State<MyProfileAddEducation> {
   int option = 0;
-  late Education education;
+  Education? education;
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
@@ -28,10 +28,11 @@ class _MyProfileAddEducationState extends State<MyProfileAddEducation> {
       context.read<MyProfileAddEducationBloc>().add(MyProfileAddEducationResetEvent());
       if (option == 1) {
         education = args["education"];
-        context.read<MyProfileAddEducationBloc>().add(SchoolNameEvent(education.schoolName));
-        context.read<MyProfileAddEducationBloc>().add(DegreeEvent(education.degree));
-        context.read<MyProfileAddEducationBloc>().add(StartTimeEvent(education.startTime));
-        context.read<MyProfileAddEducationBloc>().add(EndTimeEvent(education.endTime));
+        context.read<MyProfileAddEducationBloc>().add(SchoolNameEvent(education!.schoolName));
+        context.read<MyProfileAddEducationBloc>().add(DegreeEvent(education!.degree));
+        context.read<MyProfileAddEducationBloc>().add(StartTimeEvent(education!.startTime));
+        context.read<MyProfileAddEducationBloc>().add(EndTimeEvent(education!.endTime));
+        context.read<MyProfileAddEducationBloc>().add(IsStudyingEvent(education!.isLearning));
       }
     }
 
@@ -40,7 +41,7 @@ class _MyProfileAddEducationState extends State<MyProfileAddEducation> {
           return Scaffold(
               appBar: buildAppBar(context),
               backgroundColor: AppColors.background,
-              body: myProfileAddEducation(context));
+              body: myProfileAddEducation(context, option, education != null ? education!.id : ''));
         });
   }
 }

@@ -29,7 +29,7 @@ class ChatPageController {
   }
 
   Future<void> handleLoadInboxData(int page) async {
-    await Future.delayed(Duration(microseconds: 500));
+    await Future.delayed(Duration(seconds: 1));
     if (page == 0) {
       context.read<ChatPageBloc>().add(HasReachedMaxInboxEvent(false));
       context.read<ChatPageBloc>().add(IndexInboxEvent(1));
@@ -46,6 +46,10 @@ class ChatPageController {
     var pageSize = 10;
 
     var token = Global.storageService.getUserAuthToken();
+    final state = context
+        .read<ChatPageBloc>()
+        .state;
+    String nameSearch = state.nameSearch;
 
     var headers = <String, String>{
       'Authorization': 'Bearer $token', // Include bearer token in the headers
@@ -53,7 +57,7 @@ class ChatPageController {
 
     try {
       var url = Uri.parse(
-          '$apiUrl$endpoint?page=$page&pageSize=$pageSize');
+          '$apiUrl$endpoint?page=$page&pageSize=$pageSize&query=$nameSearch');
 
       // Specify UTF-8 encoding for decoding response
       var response = await http.get(url, headers: headers);
@@ -61,6 +65,7 @@ class ChatPageController {
       if (response.statusCode == 200) {
         // Convert the JSON string to a Map
         var jsonMap = json.decode(responseBody);
+        print(jsonMap);
         // Pass the Map to the fromJson method
         var inboxResponse = InboxResponse.fromJson(jsonMap);
         if (inboxResponse.inboxes.isEmpty) {

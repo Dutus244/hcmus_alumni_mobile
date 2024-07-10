@@ -18,7 +18,7 @@ class MyProfileAddAchievement extends StatefulWidget {
 
 class _MyProfileAddAchievementState extends State<MyProfileAddAchievement> {
   int option = 0;
-  late Achievement achievement;
+  Achievement? achievement;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +29,9 @@ class _MyProfileAddAchievementState extends State<MyProfileAddAchievement> {
       context.read<MyProfileAddAchievementBloc>().add(MyProfileAddAchievementResetEvent());
       if (option == 1) {
         achievement = args["achievement"];
-        context.read<MyProfileAddAchievementBloc>().add(NameEvent(achievement.name));
-        context.read<MyProfileAddAchievementBloc>().add(TypeEvent(achievement.type));
-        context.read<MyProfileAddAchievementBloc>().add(TimeEvent(achievement.time));
+        context.read<MyProfileAddAchievementBloc>().add(NameEvent(achievement!.name));
+        context.read<MyProfileAddAchievementBloc>().add(TypeEvent(achievement!.type));
+        context.read<MyProfileAddAchievementBloc>().add(TimeEvent(achievement!.time));
       }
     }
 
@@ -40,7 +40,7 @@ class _MyProfileAddAchievementState extends State<MyProfileAddAchievement> {
           return Scaffold(
               appBar: buildAppBar(context),
               backgroundColor: AppColors.background,
-              body: myProfileAddJob(context));
+              body: myProfileAddAchievement(context, option, achievement != null ? achievement!.id : ''));
         });
   }
 }

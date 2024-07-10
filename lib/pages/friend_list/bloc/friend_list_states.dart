@@ -11,6 +11,8 @@ class FriendListState {
   final int indexFriend;
   final bool hasReachedMaxFriend;
 
+  final int friendCount;
+
   const FriendListState({
     this.name = "",
     this.nameSearch = "",
@@ -18,6 +20,7 @@ class FriendListState {
     this.friends = const [],
     this.indexFriend = 0,
     this.hasReachedMaxFriend = false,
+    this.friendCount = 0,
   });
 
   FriendListState copyWith({
@@ -27,6 +30,7 @@ class FriendListState {
     List<Friend>? friends,
     int? indexFriend,
     bool? hasReachedMaxFriend,
+    int? friendCount,
   }) {
     return FriendListState(
       name: name ?? this.name,
@@ -35,6 +39,7 @@ class FriendListState {
       friends: friends ?? this.friends,
       indexFriend : indexFriend ?? this.indexFriend,
       hasReachedMaxFriend: hasReachedMaxFriend ?? this.hasReachedMaxFriend,
+      friendCount: friendCount ?? this.friendCount,
     );
   }
 }

@@ -263,7 +263,7 @@ Widget dropdownButtonGraduationYear(List<String> graduationYear,
 
 List<String> listYear() {
   List<String> year = [];
-  for (int i = 2000; i < 2025; i += 1) {
+  for (int i = 1950; i < 2025; i += 1) {
     year.add(i.toString());
   }
   return year;

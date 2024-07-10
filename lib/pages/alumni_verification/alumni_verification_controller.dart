@@ -9,8 +9,10 @@ import 'package:hcmus_alumni_mobile/pages/alumni_verification/bloc/alumni_verifi
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
+import '../../common/values/constants.dart';
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
+import '../../model/user.dart';
 
 class AlumniVerificationController {
   final BuildContext context;
@@ -22,7 +24,7 @@ class AlumniVerificationController {
     String socialMediaLink = state.socialMediaLink;
     String studentId = state.studentId;
     String startYear = state.startYear.toString();
-
+    String facultyId = state.facultyId.toString();
 
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/alumni-verification';
@@ -37,6 +39,7 @@ class AlumniVerificationController {
     var request = http.MultipartRequest('POST', Uri.parse('$apiUrl$endpoint'));
     request.headers.addAll(headers);
     request.fields['fullName'] = fullName;
+    request.fields['facultyId'] = facultyId;
     request.fields['studentId'] = studentId;
     request.fields['beginningYear'] = startYear;
     request.fields['socialMediaLink'] = socialMediaLink;
@@ -57,9 +60,27 @@ class AlumniVerificationController {
 
       // Convert the streamed response to a regular HTTP response
       var response = await http.Response.fromStream(streamedResponse);
+      print(response.body);
       if (response.statusCode == 201) {
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil("/applicationPage", (route) => false);
+        var url = Uri.parse(
+            '${dotenv.env['API_URL']}/user/${Global.storageService.getUserId()}/profile');
+        try {
+          var response = await http.get(url, headers: headers);
+          var responseBody = utf8.decode(response.bodyBytes);
+          if (response.statusCode == 200) {
+            var jsonMap = json.decode(responseBody);
+            var user = User.fromJson(jsonMap["user"]);
+            Global.storageService
+                .setString(AppConstants.USER_FULL_NAME, user.fullName);
+            Global.storageService
+                .setString(AppConstants.USER_AVATAR_URL, user.avatarUrl);
+          }
+        } catch (error) {
+          print(error);
+        }
+
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            "/applicationPage", arguments: {"route": 0}, (route) => false);
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];

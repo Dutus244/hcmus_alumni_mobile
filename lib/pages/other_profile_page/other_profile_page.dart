@@ -20,6 +20,7 @@ class OtherProfilePage extends StatefulWidget {
 class _OtherProfilePageState extends State<OtherProfilePage> {
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
+  String id = "";
 
   @override
   void initState() {
@@ -45,12 +46,24 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic>? args =
+    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    if (args != null) {
+      id = args["id"];
+      OtherProfilePageController(context: context).handleGetProfile(id);
+      OtherProfilePageController(context: context).handleGetJob(id);
+      OtherProfilePageController(context: context).handleGetEducation(id);
+      OtherProfilePageController(context: context).handleGetAchievement(id);
+      OtherProfilePageController(context: context).handleGetFriendCount(id);
+      OtherProfilePageController(context: context).handleLoadFriendData(id);
+    }
+
     return BlocBuilder<OtherProfilePageBloc, OtherProfilePageState>(
         builder: (context, state) {
           return Scaffold(
             appBar: buildAppBar(context),
             backgroundColor: AppColors.background,
-            body:  listEvent(context, _scrollController),
+            body:  listEvent(context, _scrollController, id),
           );
         });
   }

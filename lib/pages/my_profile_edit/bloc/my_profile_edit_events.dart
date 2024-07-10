@@ -4,6 +4,10 @@ import 'package:hcmus_alumni_mobile/model/achievement.dart';
 import 'package:hcmus_alumni_mobile/model/education.dart';
 import 'package:hcmus_alumni_mobile/model/job.dart';
 
+import '../../../model/alumni.dart';
+import '../../../model/alumni_verification.dart';
+import '../../../model/user.dart';
+
 class MyProfileEditEvent {
   const MyProfileEditEvent();
 }
@@ -20,8 +24,14 @@ class PhoneEvent extends MyProfileEditEvent {
   const PhoneEvent(this.phone);
 }
 
+class EmailEvent extends MyProfileEditEvent {
+  final String email;
+
+  const EmailEvent(this.email);
+}
+
 class FacultyIdEvent extends MyProfileEditEvent {
-  final String facultyId;
+  final int facultyId;
 
   const FacultyIdEvent(this.facultyId);
 }
@@ -86,6 +96,12 @@ class NetworkCoverEvent extends MyProfileEditEvent {
   const NetworkCoverEvent(this.networkCover);
 }
 
+class StatusEvent extends MyProfileEditEvent {
+  final String status;
+
+  const StatusEvent(this.status);
+}
+
 class AvatarEvent extends MyProfileEditEvent {
   final File avatar;
 
@@ -114,6 +130,24 @@ class AchievementsEvent extends MyProfileEditEvent {
   final List<Achievement> achievements;
 
   const AchievementsEvent(this.achievements);
+}
+
+class UpdateProfileEvent extends MyProfileEditEvent {
+  final User user;
+
+  const UpdateProfileEvent(this.user);
+}
+
+class UpdateAlumniVerEvent extends MyProfileEditEvent {
+  final AlumniVerification alumniVerification;
+
+  const UpdateAlumniVerEvent(this.alumniVerification);
+}
+
+class UpdateAlumniEvent extends MyProfileEditEvent {
+  final Alumni alumni;
+
+  const UpdateAlumniEvent(this.alumni);
 }
 
 class MyProfileEditResetEvent extends MyProfileEditEvent {}

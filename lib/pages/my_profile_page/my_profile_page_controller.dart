@@ -9,11 +9,17 @@ import 'package:hcmus_alumni_mobile/model/comment.dart';
 
 import '../../common/widgets/flutter_toast.dart';
 import '../../global.dart';
+import '../../model/achievement_response.dart';
+import '../../model/alumni_verification.dart';
 import '../../model/comment_response.dart';
+import '../../model/education_response.dart';
 import '../../model/event.dart';
 import '../../model/event_response.dart';
+import '../../model/friend_response.dart';
+import '../../model/job_response.dart';
 import '../../model/post.dart';
 import '../../model/post_response.dart';
+import '../../model/user.dart';
 import 'bloc/my_profile_page_blocs.dart';
 import 'bloc/my_profile_page_events.dart';
 import 'bloc/my_profile_page_states.dart';
@@ -23,6 +29,34 @@ class MyProfilePageController {
   final BuildContext context;
 
   const MyProfilePageController({required this.context});
+
+  Future<void> handleGetProfile() async {
+    var token = Global.storageService.getUserAuthToken();
+    var url = Uri.parse(
+        '${dotenv.env['API_URL']}/user/${Global.storageService.getUserId()}/profile');
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+    try {
+      var response = await http.get(url, headers: headers);
+      var responseBody = utf8.decode(response.bodyBytes);
+      if (response.statusCode == 200) {
+        var jsonMap = json.decode(responseBody);
+        var user = User.fromJson(jsonMap["user"]);
+        context.read<MyProfilePageBloc>().add(UserEvent(user));
+        if (jsonMap["alumniVerification"] != null) {
+          var alumniVerification =
+              AlumniVerification.fromJson(jsonMap["alumniVerification"]);
+          context
+              .read<MyProfilePageBloc>()
+              .add(AlumniVerificationEvent(alumniVerification));
+        }
+      }
+    } catch (error) {
+      print(error);
+    }
+  }
 
   Future<void> handleLoadEventsData(int page) async {
     if (page == 0) {
@@ -38,7 +72,7 @@ class MyProfilePageController {
           BlocProvider.of<MyProfilePageBloc>(context).state.indexEvent + 1));
     }
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/events';
+    var endpoint = '/events/participated';
     var pageSize = 5;
     var token = Global.storageService.getUserAuthToken();
 
@@ -124,10 +158,14 @@ class MyProfilePageController {
         var postResponse = PostResponse.fromJson(jsonMap);
         if (postResponse.posts.isEmpty) {
           if (page == 0) {
-            context.read<MyProfilePageBloc>().add(PostsEvent(postResponse.posts));
+            context
+                .read<MyProfilePageBloc>()
+                .add(PostsEvent(postResponse.posts));
           }
           context.read<MyProfilePageBloc>().add(HasReachedMaxPostEvent(true));
-          context.read<MyProfilePageBloc>().add(StatusPostEvent(Status.success));
+          context
+              .read<MyProfilePageBloc>()
+              .add(StatusPostEvent(Status.success));
           return;
         }
         if (page == 0) {
@@ -205,7 +243,7 @@ class MyProfilePageController {
   }
 
   Future<bool> handleDeletePost(String id) async {
-    final shouldDelte = await showDialog(
+    final shouldDelete = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(translate('delete_post')),
@@ -222,7 +260,7 @@ class MyProfilePageController {
         ],
       ),
     );
-    if (shouldDelte != null && shouldDelte) {
+    if (shouldDelete != null && shouldDelete) {
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/counsel/$id';
 
@@ -248,7 +286,7 @@ class MyProfilePageController {
         toastInfo(msg: translate('error_delete_post'));
       }
     }
-    return shouldDelte ?? false;
+    return shouldDelete ?? false;
   }
 
   Future<void> handleVote(String id, int newVoteId) async {
@@ -316,7 +354,9 @@ class MyProfilePageController {
       'Content-Type': 'application/json', // Specify content type as JSON
     };
 
-    Map<String, dynamic> data = {'updatedVoteId': newVoteId}; // Define your JSON data
+    Map<String, dynamic> data = {
+      'updatedVoteId': newVoteId
+    }; // Define your JSON data
     var body = json.encode(data); // Encode the data to JSON
     try {
       var url = Uri.parse('$apiUrl$endpoint');
@@ -352,7 +392,8 @@ class MyProfilePageController {
     try {
       var url = Uri.parse('$apiUrl$endpoint');
 
-      var response = await http.post(url, headers: headers, body: json.encode(map));
+      var response =
+          await http.post(url, headers: headers, body: json.encode(map));
       print(response.statusCode);
       print(response.body);
       if (response.statusCode == 201) {
@@ -371,7 +412,9 @@ class MyProfilePageController {
 
   Future<void> handleLoadCommentPostAdviseData(int page) async {
     if (page == 0) {
-      context.read<MyProfilePageBloc>().add(HasReachedMaxCommentAdviseEvent(false));
+      context
+          .read<MyProfilePageBloc>()
+          .add(HasReachedMaxCommentAdviseEvent(false));
       context.read<MyProfilePageBloc>().add(IndexCommentAdviseEvent(1));
     } else {
       if (BlocProvider.of<MyProfilePageBloc>(context)
@@ -380,10 +423,12 @@ class MyProfilePageController {
         return;
       }
       context.read<MyProfilePageBloc>().add(IndexCommentAdviseEvent(
-          BlocProvider.of<MyProfilePageBloc>(context).state.indexCommentAdvise + 1));
+          BlocProvider.of<MyProfilePageBloc>(context).state.indexCommentAdvise +
+              1));
     }
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/counsel/users/${Global.storageService.getUserId()}/comments';
+    var endpoint =
+        '/counsel/users/${Global.storageService.getUserId()}/comments';
     var pageSize = 5;
     var token = Global.storageService.getUserAuthToken();
 
@@ -404,7 +449,9 @@ class MyProfilePageController {
                 .read<MyProfilePageBloc>()
                 .add(CommentAdvisesEvent(commentResponse.comments));
           }
-          context.read<MyProfilePageBloc>().add(HasReachedMaxCommentAdviseEvent(true));
+          context
+              .read<MyProfilePageBloc>()
+              .add(HasReachedMaxCommentAdviseEvent(true));
           context
               .read<MyProfilePageBloc>()
               .add(StatusCommentAdviseEvent(Status.success));
@@ -420,17 +467,149 @@ class MyProfilePageController {
               BlocProvider.of<MyProfilePageBloc>(context).state.commentAdvises;
           List<Comment> updatedEventList = List.of(currentList)
             ..addAll(commentResponse.comments);
-          context.read<MyProfilePageBloc>().add(CommentAdvisesEvent(updatedEventList));
+          context
+              .read<MyProfilePageBloc>()
+              .add(CommentAdvisesEvent(updatedEventList));
         }
         if (commentResponse.comments.length < pageSize) {
-          context.read<MyProfilePageBloc>().add(HasReachedMaxCommentAdviseEvent(true));
+          context
+              .read<MyProfilePageBloc>()
+              .add(HasReachedMaxCommentAdviseEvent(true));
         }
-        context.read<MyProfilePageBloc>().add(StatusCommentAdviseEvent(Status.success));
+        context
+            .read<MyProfilePageBloc>()
+            .add(StatusCommentAdviseEvent(Status.success));
       } else {
         toastInfo(msg: translate('error_get_events_participated'));
       }
     } catch (error) {
       toastInfo(msg: translate('error_get_events_participated'));
+    }
+  }
+
+  Future<void> handleGetJob() async {
+    var token = Global.storageService.getUserAuthToken();
+    var url = Uri.parse(
+        '${dotenv.env['API_URL']}/user/${Global.storageService.getUserId()}/profile/job');
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+    try {
+      var response = await http.get(url, headers: headers);
+      var responseBody = utf8.decode(response.bodyBytes);
+      if (response.statusCode == 200) {
+        var jsonMap = json.decode(responseBody);
+        var jobResponse = JobResponse.fromJson(jsonMap);
+        context.read<MyProfilePageBloc>().add(JobsEvent(jobResponse.jobs));
+      }
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> handleGetEducation() async {
+    var token = Global.storageService.getUserAuthToken();
+    var url = Uri.parse(
+        '${dotenv.env['API_URL']}/user/${Global.storageService.getUserId()}/profile/education');
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+    print(token);
+    try {
+      var response = await http.get(url, headers: headers);
+      var responseBody = utf8.decode(response.bodyBytes);
+      if (response.statusCode == 200) {
+        var jsonMap = json.decode(responseBody);
+        var educationResponse = EducationResponse.fromJson(jsonMap);
+        context
+            .read<MyProfilePageBloc>()
+            .add(EducationsEvent(educationResponse.educations));
+      }
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> handleGetAchievement() async {
+    var token = Global.storageService.getUserAuthToken();
+    var url = Uri.parse(
+        '${dotenv.env['API_URL']}/user/${Global.storageService.getUserId()}/profile/achievement');
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+    try {
+      var response = await http.get(url, headers: headers);
+      var responseBody = utf8.decode(response.bodyBytes);
+      if (response.statusCode == 200) {
+        var jsonMap = json.decode(responseBody);
+        var achievementResponse = AchievementResponse.fromJson(jsonMap);
+        context
+            .read<MyProfilePageBloc>()
+            .add(AchievementsEvent(achievementResponse.achievements));
+      }
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> handleGetFriendCount() async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/user/${Global.storageService.getUserId()}/friends/count';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token', // Include bearer token in the headers
+    };
+
+    try {
+      var url = Uri.parse(
+          '$apiUrl$endpoint');
+      var response = await http.get(url, headers: headers);
+      var responseBody = utf8.decode(response.bodyBytes);
+      context.read<MyProfilePageBloc>().add(FriendCountEvent(int.parse(responseBody)));
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  Future<void> handleLoadFriendData() async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/user/${Global.storageService.getUserId()}/friends';
+    var pageSize = 6;
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token', // Include bearer token in the headers
+    };
+
+    try {
+      var url = Uri.parse(
+          '$apiUrl$endpoint?page=0&pageSize=$pageSize');
+
+      // Specify UTF-8 encoding for decoding response
+      var response = await http.get(url, headers: headers);
+      var responseBody = utf8.decode(response.bodyBytes);
+      if (response.statusCode == 200) {
+        // Convert the JSON string to a Map
+        var jsonMap = json.decode(responseBody);
+        // Pass the Map to the fromJson method
+        var friendResponse = FriendResponse.fromJson(jsonMap);
+        print(friendResponse.friends.length);
+        context
+            .read<MyProfilePageBloc>()
+            .add(FriendsEvent(friendResponse.friends));
+      } else {
+        // Handle other status codes if needed
+        toastInfo(msg: translate('error_get_friend'));
+      }
+    } catch (error) {
+      // Handle errors
+      toastInfo(msg: translate('error_get_friend'));
     }
   }
 }

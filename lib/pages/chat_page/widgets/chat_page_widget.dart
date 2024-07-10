@@ -10,6 +10,7 @@ import 'package:hcmus_alumni_mobile/common/values/assets.dart';
 import 'package:hcmus_alumni_mobile/global.dart';
 import 'package:hcmus_alumni_mobile/model/inbox.dart';
 
+import '../../../common/services/socket_service.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/text_style.dart';
 import '../../../common/widgets/loading_widget.dart';
@@ -206,9 +207,6 @@ Widget listInbox(BuildContext context, ScrollController _scrollController) {
                                 AppAssets.searchIconP, (value) {
                           context.read<ChatPageBloc>().add(NameEvent(value));
                         })),
-                        Container(
-                          height: 10.h,
-                        ),
                         inbox(
                             context,
                             BlocProvider.of<ChatPageBloc>(context)
@@ -235,82 +233,102 @@ Widget listInbox(BuildContext context, ScrollController _scrollController) {
 Widget inbox(BuildContext context, Inbox inbox) {
   return GestureDetector(
     onTap: () {
+      socketService.readInbox(inbox.id, {
+        'userId': Global.storageService.getUserId(),
+        'lastReadMessageId': inbox.latestMessage.id,
+      });
       Navigator.pushNamed(context, "/chatDetail", arguments: {
         "inboxId": inbox.id,
-        "name": inbox.members[0].userId == ""
+        "name": inbox.members[0].userId != Global.storageService.getUserId()
             ? inbox.members[0].user.fullName
             : inbox.members[1].user.fullName
       });
     },
     child: Container(
-        margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 15.h),
-        color: Colors.transparent,
-        child: Row(
-          children: [
-            Container(
-              width: 50.w,
-              height: 50.h,
-              child: CircleAvatar(
-                radius: 20,
-                child: null,
-                backgroundImage: NetworkImage(inbox.members[0].user.avatarUrl),
+        color: inbox.hasRead ? Colors.transparent : AppColors.elementLight,
+        child: Container(
+          margin:
+              EdgeInsets.only(left: 10.w, right: 10.w, top: 7.h, bottom: 7.h),
+          child: Row(
+            children: [
+              Container(
+                width: 50.w,
+                height: 50.h,
+                child: CircleAvatar(
+                  radius: 20,
+                  child: null,
+                  backgroundImage:
+                      NetworkImage(inbox.members[0].userId != Global.storageService.getUserId()
+                          ? inbox.members[0].user.avatarUrl
+                          : inbox.members[1].user.avatarUrl),
+                ),
               ),
-            ),
-            Container(
-              width: 15.w,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(right: 10.w),
-                  width: 250.w,
-                  child: Row(
+              Container(
+                width: 15.w,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 10.w),
+                    width: 250.w,
+                    child: Row(
+                      children: [
+                        Text(
+                          inbox.members[0].user.id ==
+                                  Global.storageService.getUserId()
+                              ? inbox.members[1].user.fullName
+                              : inbox.members[0].user.fullName,
+                          style: inbox.hasRead
+                              ? AppTextStyle.small()
+                              : AppTextStyle.small().wSemiBold(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 5.h,
+                  ),
+                  Row(
                     children: [
-                      Text(
-                        inbox.members[0].user.id ==
-                                Global.storageService.getUserId()
-                            ? inbox.members[1].user.fullName
-                            : inbox.members[0].user.fullName,
-                        style: AppTextStyle.small(),
+                      Container(
+                        width: 180.w,
+                        child: Text(
+                          (inbox.latestMessage.sender.id ==
+                                      Global.storageService.getUserId()
+                                  ? '${translate('me')}: '
+                                  : '') +
+                              (inbox.latestMessage.messageType == "IMAGE"
+                                  ? 'Đã gửi một ảnh'
+                                  : inbox.latestMessage.content),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: inbox.hasRead
+                              ? AppTextStyle.small()
+                                  .withColor(AppColors.textGrey)
+                              : AppTextStyle.small()
+                                  .withColor(AppColors.textGrey)
+                                  .wSemiBold(),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          ' ${handleDateTime3(inbox.latestMessage.createAt)}',
+                          style: inbox.hasRead
+                              ? AppTextStyle.small()
+                                  .withColor(AppColors.textGrey)
+                              : AppTextStyle.small()
+                                  .withColor(AppColors.textGrey)
+                                  .wSemiBold(),
+                        ),
                       ),
                     ],
                   ),
-                ),
-                Container(
-                  height: 5.h,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      width: 180.w,
-                      child: Text(
-                        (inbox.latestMessage.sender.id ==
-                                    Global.storageService.getUserId()
-                                ? '${translate('me')}: '
-                                : '') +
-                            (inbox.latestMessage.messageType == "IMAGE"
-                                ? 'Đã gửi một ảnh'
-                                : inbox.latestMessage.content),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            AppTextStyle.small().withColor(AppColors.textGrey),
-                      ),
-                    ),
-                    Container(
-                      child: Text(
-                        ' ${handleDateTime3(inbox.latestMessage.createAt)}',
-                        style:
-                            AppTextStyle.small().withColor(AppColors.textGrey),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         )),
   );
 }

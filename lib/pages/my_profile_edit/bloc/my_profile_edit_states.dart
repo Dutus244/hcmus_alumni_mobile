@@ -7,7 +7,8 @@ import '../../../model/job.dart';
 class MyProfileEditState {
   final String fullName;
   final String phone;
-  final String facultyId;
+  final String email;
+  final int facultyId;
   final String sex;
   final String dob;
   final String socialLink;
@@ -23,32 +24,35 @@ class MyProfileEditState {
   final List<Job> jobs;
   final List<Education> educations;
   final List<Achievement> achievements;
+  final String status;
 
-  MyProfileEditState({
-    this.fullName = "",
-    this.phone = "",
-    this.facultyId = "",
-    this.sex = "Nam",
-    this.dob = "",
-    this.socialLink = "",
-    this.aboutMe = "",
-    this.classs = "",
-    this.studentId = "",
-    this.startYear = "",
-    this.endYear = "",
-    this.networkAvatar = "",
-    this.networkCover = "",
-    this.avatar = null,
-    this.cover = const [],
-    this.jobs = const [],
-    this.educations = const [],
-    this.achievements = const [],
-  });
+  MyProfileEditState(
+      {this.fullName = "",
+      this.phone = "",
+      this.email = "",
+      this.facultyId = 0,
+      this.sex = "Nam",
+      this.dob = "",
+      this.socialLink = "",
+      this.aboutMe = "",
+      this.classs = "",
+      this.studentId = "",
+      this.startYear = "",
+      this.endYear = "",
+      this.networkAvatar = "",
+      this.networkCover = "",
+      this.avatar = null,
+      this.cover = const [],
+      this.jobs = const [],
+      this.educations = const [],
+      this.achievements = const [],
+      this.status = ""});
 
   MyProfileEditState copyWith({
     String? fullName,
     String? phone,
-    String? facultyId,
+    String? email,
+    int? facultyId,
     String? sex,
     String? dob,
     String? socialLink,
@@ -64,10 +68,12 @@ class MyProfileEditState {
     List<Job>? jobs,
     List<Education>? educations,
     List<Achievement>? achievements,
+    String? status,
   }) {
     return MyProfileEditState(
         fullName: fullName ?? this.fullName,
         phone: phone ?? this.phone,
+        email: email ?? this.email,
         facultyId: facultyId ?? this.facultyId,
         sex: sex ?? this.sex,
         dob: dob ?? this.dob,
@@ -83,6 +89,7 @@ class MyProfileEditState {
         cover: cover ?? this.cover,
         jobs: jobs ?? this.jobs,
         educations: educations ?? this.educations,
-        achievements: achievements ?? this.achievements);
+        achievements: achievements ?? this.achievements,
+        status: status ?? this.status);
   }
 }

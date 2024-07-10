@@ -3,7 +3,7 @@ class AppAssets {
 
   // Image
   static const String logoImage = 'assets/images/logos/logo.png';
-  static const String noneAvatarImage = 'assets/images/none_avatar.png';
+  static const String noneAvatarImage = 'assets/images/avatar/none_avatar.png';
   static const String welcomeImage1 = 'assets/images/welcome/welcome1.png';
   static const String welcomeImage2 = 'assets/images/welcome/welcome2.png';
   static const String welcomeImage3 = 'assets/images/welcome/welcome3.png';

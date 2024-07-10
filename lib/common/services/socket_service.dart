@@ -48,6 +48,14 @@ class SocketService extends WidgetsBindingObserver {
     );
   }
 
+  void readInbox(int inboxId, Map<String, dynamic> message) {
+    String body = jsonEncode(message); // Chuyển đổi Map thành chuỗi JSON
+    stompClient?.send(
+      destination: '/app/read-inbox/$inboxId',
+      body: body,
+    );
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.detached) {

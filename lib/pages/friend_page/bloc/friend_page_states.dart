@@ -1,5 +1,6 @@
 import 'package:hcmus_alumni_mobile/model/friend_suggestion.dart';
 import 'package:hcmus_alumni_mobile/model/friend_request.dart';
+import 'package:hcmus_alumni_mobile/model/user.dart';
 
 enum Status { loading, success }
 
@@ -7,6 +8,14 @@ class FriendPageState {
   final int page;
   final String name;
   final String nameSearch;
+
+  final String nameUser;
+  final String nameUserSearch;
+
+  final Status status;
+  final List<User> users;
+  final int indexUser;
+  final bool hasReachedMaxUser;
 
   final Status statusSuggestion;
   final List<FriendSuggestion> friendSuggestions;
@@ -22,6 +31,12 @@ class FriendPageState {
     this.page = 0,
     this.name = "",
     this.nameSearch = "",
+    this.nameUser = "",
+    this.nameUserSearch = "",
+    this.status = Status.loading,
+    this.users = const [],
+    this.indexUser = 0,
+    this.hasReachedMaxUser = false,
     this.statusSuggestion = Status.loading,
     this.friendSuggestions = const [],
     this.indexSuggestion = 0,
@@ -36,6 +51,12 @@ class FriendPageState {
     int? page,
     String? name,
     String? nameSearch,
+    String? nameUser,
+    String? nameUserSearch,
+    Status? status,
+    List<User>? users,
+    int? indexUser,
+    bool? hasReachedMaxUser,
     Status? statusSuggestion,
     List<FriendSuggestion>? friendSuggestions,
     int? indexSuggestion,
@@ -49,6 +70,12 @@ class FriendPageState {
         page: page ?? this.page,
         name: name ?? this.name,
         nameSearch: nameSearch ?? this.nameSearch,
+        nameUser: nameUser ?? this.nameUser,
+        nameUserSearch: nameUserSearch ?? this.nameUserSearch,
+        status: status ?? this.status,
+        users: users ?? this.users,
+        indexUser: indexUser ?? this.indexUser,
+        hasReachedMaxUser: hasReachedMaxUser ?? this.hasReachedMaxUser,
         statusSuggestion: statusSuggestion ?? this.statusSuggestion,
         friendSuggestions: friendSuggestions ?? this.friendSuggestions,
         indexSuggestion: indexSuggestion ?? this.indexSuggestion,

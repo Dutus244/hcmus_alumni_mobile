@@ -8,10 +8,12 @@ import 'package:flutter_holo_date_picker/widget/date_picker_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/values/text_style.dart';
 import 'package:hcmus_alumni_mobile/model/achievement.dart';
 import 'package:hcmus_alumni_mobile/model/education.dart';
 import 'package:hcmus_alumni_mobile/model/job.dart';
 import 'package:hcmus_alumni_mobile/pages/my_profile_edit/bloc/my_profile_edit_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/my_profile_edit/my_profile_edit_controller.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -159,7 +161,7 @@ Widget editAvatar(BuildContext context, void Function(File value)? func) {
               child: CircleAvatar(
                 radius: 65.w, // Đặt bán kính của CircleAvatar
                 backgroundImage: AssetImage(
-                    "assets/images/none_avatar.png"), // URL hình ảnh của CircleAvatar
+                    "assets/images/avatar/none_avatar.png"), // URL hình ảnh của CircleAvatar
               ),
             ),
           ),
@@ -213,6 +215,7 @@ Future<void> _cropImage(
 
     // Dispatch event with the cropped file
     func!(croppedFileAsFile);
+    MyProfileEditController(context: context).handleChangeAvatar(croppedFileAsFile);
   }
 }
 
@@ -274,6 +277,7 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
                 func!(pickedFiles
                     .map((pickedFile) => File(pickedFile.path))
                     .toList());
+                MyProfileEditController(context: context).handleChangeCover(File(pickedFiles[0].path));
               },
               child: Text(
                 translate('edit'),
@@ -300,6 +304,7 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
             func!(pickedFiles
                 .map((pickedFile) => File(pickedFile.path))
                 .toList());
+            MyProfileEditController(context: context).handleChangeCover(File(pickedFiles[0].path));
           },
           child: Container(
             margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
@@ -328,6 +333,7 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
             func!(pickedFiles
                 .map((pickedFile) => File(pickedFile.path))
                 .toList());
+            MyProfileEditController(context: context).handleChangeCover(File(pickedFiles[0].path));
           },
           child: Container(
             margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
@@ -357,6 +363,7 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
             func!(pickedFiles
                 .map((pickedFile) => File(pickedFile.path))
                 .toList());
+            MyProfileEditController(context: context).handleChangeCover(File(pickedFiles[0].path));
           },
           child: Container(
             margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
@@ -386,23 +393,23 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
 Widget editProfile(BuildContext context) {
   String faculty = translate('choose_faculty');
   switch (BlocProvider.of<MyProfileEditBloc>(context).state.facultyId) {
-    case "1":
+    case 1:
       faculty = "Công nghệ thông tin";
-    case "2":
+    case 2:
       faculty = "Vật lý – Vật lý kỹ thuật";
-    case "3":
+    case 3:
       faculty = "Địa chất";
-    case "4":
+    case 4:
       faculty = "Toán – Tin học";
-    case "5":
+    case 5:
       faculty = "Điện tử - Viễn thông";
-    case "6":
+    case 6:
       faculty = "Khoa học & Công nghệ Vật liệu";
-    case "7":
+    case 7:
       faculty = "Hóa học";
-    case "8":
+    case 8:
       faculty = "Sinh học – Công nghệ Sinh học";
-    case "9":
+    case 9:
       faculty = "Môi trường";
   }
 
@@ -442,7 +449,8 @@ Widget editProfile(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                buildTextFieldFullName(context, translate('full_name'), '', '', (value) {
+                buildTextFieldFullName(context, translate('full_name'), '', '',
+                    (value) {
                   context.read<MyProfileEditBloc>().add(FullNameEvent(value));
                 }),
                 Container(
@@ -614,7 +622,9 @@ Widget editProfile(BuildContext context) {
                     width: 232.w,
                     margin: EdgeInsets.only(bottom: 10.h),
                     child: Text(
-                      BlocProvider.of<MyProfileEditBloc>(context).state.dob !=
+                      BlocProvider.of<MyProfileEditBloc>(context)
+                                  .state
+                                  .dob !=
                               ""
                           ? BlocProvider.of<MyProfileEditBloc>(context)
                               .state
@@ -663,8 +673,8 @@ Widget editProfile(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                buildTextFieldSocialLink(context, translate('social_network'), '', '',
-                    (value) {
+                buildTextFieldSocialLink(
+                    context, translate('social_network'), '', '', (value) {
                   context.read<MyProfileEditBloc>().add(SocialLinkEvent(value));
                 }),
                 Container(
@@ -701,7 +711,7 @@ Widget editProfile(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                buildTextFieldStartYear(context, 'Lớp', '', '', (value) {
+                buildTextFieldClass(context, translate('class'), '', '', (value) {
                   context.read<MyProfileEditBloc>().add(ClasssEvent(value));
                 }),
                 Container(
@@ -738,8 +748,8 @@ Widget editProfile(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                buildTextFieldStartYear(context, translate('graduation_year'), '', '',
-                    (value) {
+                buildTextFieldEndYear(
+                    context, translate('graduation_year'), '', '', (value) {
                   context.read<MyProfileEditBloc>().add(EndYearEvent(value));
                 }),
                 Container(
@@ -805,7 +815,9 @@ Widget editContact(BuildContext context) {
                   width: 232.w,
                   margin: EdgeInsets.only(bottom: 10.h),
                   child: Text(
-                    'test@gmail.com',
+                    BlocProvider.of<MyProfileEditBloc>(context)
+                        .state
+                        .email,
                     style: TextStyle(
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
@@ -893,14 +905,59 @@ Widget editAboutMe(BuildContext context) {
           ],
         ),
       ),
-      buildTextFieldAboutMe(context, translate('describe_yourself'), '', '', (value) {
+      buildTextFieldAboutMe(context, translate('describe_yourself'), '', '',
+          (value) {
         context.read<MyProfileEditBloc>().add(AboutMeEvent(value));
-      })
+      }),
+      GestureDetector(
+        onTap: () {
+          MyProfileEditController(context: context).handleSaveProfile();
+        },
+        child: Container(
+          margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
+          height: 30.h,
+          decoration: BoxDecoration(
+            color: AppColors.element,
+            borderRadius: BorderRadius.circular(5.w),
+            border: Border.all(
+              color: Colors.transparent,
+            ),
+          ),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  translate('save'),
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.background,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      )
     ],
   );
 }
 
 Widget editAlumni(BuildContext context) {
+  String status = "";
+  switch (BlocProvider.of<MyProfileEditBloc>(context).state.status) {
+    case "PENDING":
+      status = translate('waiting_approval');
+    case "APPROVED":
+      status = translate('accepted');
+    case "DENIED":
+      status = translate('denied');
+    case "UNSENT":
+      status = translate('unsent');
+  }
+
   return Column(
     children: [
       Container(
@@ -926,12 +983,12 @@ Widget editAlumni(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              translate('waiting_approval'),
+              status,
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
                 fontSize: 14.sp,
-                color: Colors.red,
+                color: BlocProvider.of<MyProfileEditBloc>(context).state.status == "APPROVED" ? Colors.green : Colors.red,
               ),
             )
           ],
@@ -954,10 +1011,19 @@ Widget editAlumni(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                buildTextFieldStudentId(context, translate('student_id'), '', '',
-                    (value) {
-                  context.read<MyProfileEditBloc>().add(StudentIdEvent(value));
-                }),
+                if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "DENIED" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "UNSENT")
+                  buildTextFieldStudentId(
+                      context, translate('student_id'), '', '', (value) {
+                    context.read<MyProfileEditBloc>().add(StudentIdEvent(value));
+                  }),
+                if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "PENDING" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "APPROVED")
+                  Container(
+                    margin: EdgeInsets.only(top: 20.h, bottom: 10.h),
+                    child: Text(
+                        BlocProvider.of<MyProfileEditBloc>(context).state.studentId,
+                      style: AppTextStyle.small().wSemiBold(),
+                    ),
+                  ),
                 Container(
                   width: 100.w,
                   child: Text(
@@ -992,10 +1058,19 @@ Widget editAlumni(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                buildTextFieldStartYear(context, 'Năm nhập học', '', '',
-                    (value) {
-                  context.read<MyProfileEditBloc>().add(StartYearEvent(value));
-                }),
+                if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "DENIED" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "UNSENT")
+                  buildTextFieldStartYear(context, translate('year_admission'), '', '',
+                          (value) {
+                        context.read<MyProfileEditBloc>().add(StartYearEvent(value));
+                      }),
+                if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "PENDING" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "APPROVED")
+                  Container(
+                    margin: EdgeInsets.only(top: 20.h, bottom: 10.h),
+                    child: Text(
+                      BlocProvider.of<MyProfileEditBloc>(context).state.startYear,
+                      style: AppTextStyle.small().wSemiBold(),
+                    ),
+                  ),
                 Container(
                   width: 100.w,
                   child: Text(
@@ -1013,8 +1088,11 @@ Widget editAlumni(BuildContext context) {
           ],
         ),
       ),
-      GestureDetector(
-        onTap: () {},
+      if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "DENIED" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "UNSENT")
+        GestureDetector(
+        onTap: () {
+          MyProfileEditController(context: context).handleAlumniVerification();
+        },
         child: Container(
           margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
           height: 30.h,
@@ -1077,12 +1155,13 @@ Widget editJob(BuildContext context) {
           i += 1)
         job(context, BlocProvider.of<MyProfileEditBloc>(context).state.jobs[i]),
       GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(
+        onTap: () async {
+          await Navigator.pushNamed(
             context,
             "/myProfileAddJob",
             arguments: {"option": 0},
           );
+          MyProfileEditController(context: context).handleGetJob();
         },
         child: Container(
           color: Colors.transparent,
@@ -1153,7 +1232,7 @@ Widget job(BuildContext context, Job job) {
                   ),
                 ),
                 Container(
-                  width: 100.w,
+                  width: 232.w,
                   child: Text(
                     job.position,
                     style: TextStyle(
@@ -1167,7 +1246,9 @@ Widget job(BuildContext context, Job job) {
                 Container(
                   width: 200.w,
                   child: Text(
-                    '${job.startTime} - ${job.endTime}',
+                    job.isWorking
+                        ? '${job.startTime} - ${translate('still_working_here')}'
+                        : '${job.startTime} - ${job.endTime}',
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
@@ -1211,12 +1292,13 @@ Widget jobOption(BuildContext context, Job job) {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
+                onTap: () async {
+                  await Navigator.pushNamed(
                     context,
                     "/myProfileAddJob",
                     arguments: {"option": 1, "job": job},
                   );
+                  MyProfileEditController(context: context).handleGetJob();
                 },
                 child: Container(
                   margin: EdgeInsets.only(left: 10.w, top: 10.h),
@@ -1246,7 +1328,13 @@ Widget jobOption(BuildContext context, Job job) {
                 ),
               ),
               GestureDetector(
-                onTap: () async {},
+                onTap: () async {
+                  bool shouldDelete =
+                  await MyProfileEditController(context: context).handleDeleteJob(job);
+                  if (shouldDelete) {
+                    Navigator.pop(context); // Close the modal after deletion
+                  }
+                },
                 child: Container(
                   margin: EdgeInsets.only(left: 10.w, top: 10.h),
                   color: Colors.transparent,
@@ -1317,12 +1405,13 @@ Widget editEducation(BuildContext context) {
         education(context,
             BlocProvider.of<MyProfileEditBloc>(context).state.educations[i]),
       GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(
+        onTap: () async {
+          await Navigator.pushNamed(
             context,
             "/myProfileAddEducation",
             arguments: {"option": 0},
           );
+          MyProfileEditController(context: context).handleGetEducation();
         },
         child: Container(
           color: Colors.transparent,
@@ -1366,7 +1455,7 @@ Widget education(BuildContext context, Education education) {
         Row(
           children: [
             SvgPicture.asset(
-              "assets/icons/work.svg",
+              "assets/icons/study.svg",
               width: 25.w,
               height: 25.h,
               color: Colors.black,
@@ -1393,7 +1482,7 @@ Widget education(BuildContext context, Education education) {
                   ),
                 ),
                 Container(
-                  width: 100.w,
+                  width: 232.w,
                   child: Text(
                     education.degree,
                     style: TextStyle(
@@ -1407,7 +1496,9 @@ Widget education(BuildContext context, Education education) {
                 Container(
                   width: 200.w,
                   child: Text(
-                    '${education.startTime} - ${education.endTime}',
+                    education.isLearning
+                        ? '${education.startTime} - ${translate('still_studying_here')}'
+                        : '${education.startTime} - ${education.endTime}',
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
@@ -1451,12 +1542,13 @@ Widget educationOption(BuildContext context, Education education) {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
+                onTap: () async {
+                  await Navigator.pushNamed(
                     context,
                     "/myProfileAddEducation",
                     arguments: {"option": 1, "education": education},
                   );
+                  MyProfileEditController(context: context).handleGetEducation();
                 },
                 child: Container(
                   margin: EdgeInsets.only(left: 10.w, top: 10.h),
@@ -1486,7 +1578,13 @@ Widget educationOption(BuildContext context, Education education) {
                 ),
               ),
               GestureDetector(
-                onTap: () async {},
+                onTap: () async {
+                  bool shouldDelete =
+                  await MyProfileEditController(context: context).handleDeleteEducation(education);
+                  if (shouldDelete) {
+                    Navigator.pop(context); // Close the modal after deletion
+                  }
+                },
                 child: Container(
                   margin: EdgeInsets.only(left: 10.w, top: 10.h),
                   color: Colors.transparent,
@@ -1557,12 +1655,13 @@ Widget editAchievement(BuildContext context) {
         achievement(context,
             BlocProvider.of<MyProfileEditBloc>(context).state.achievements[i]),
       GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(
+        onTap: () async {
+          await Navigator.pushNamed(
             context,
             "/myProfileAddAchievement",
             arguments: {"option": 0},
           );
+          MyProfileEditController(context: context).handleGetAchievement();
         },
         child: Container(
           color: Colors.transparent,
@@ -1633,7 +1732,7 @@ Widget achievement(BuildContext context, Achievement achievement) {
                   ),
                 ),
                 Container(
-                  width: 100.w,
+                  width: 232.w,
                   child: Text(
                     achievement.type,
                     style: TextStyle(
@@ -1691,12 +1790,13 @@ Widget achievementOption(BuildContext context, Achievement achievement) {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
+                onTap: () async {
+                  await Navigator.pushNamed(
                     context,
                     "/myProfileAddAchievement",
                     arguments: {"option": 1, "achievement": achievement},
                   );
+                  MyProfileEditController(context: context).handleGetAchievement();
                 },
                 child: Container(
                   margin: EdgeInsets.only(left: 10.w, top: 10.h),
@@ -1726,7 +1826,13 @@ Widget achievementOption(BuildContext context, Achievement achievement) {
                 ),
               ),
               GestureDetector(
-                onTap: () async {},
+                onTap: () async {
+                  bool shouldDelete =
+                  await MyProfileEditController(context: context).handleDeleteAchievement(achievement);
+                  if (shouldDelete) {
+                    Navigator.pop(context); // Close the modal after deletion
+                  }
+                },
                 child: Container(
                   margin: EdgeInsets.only(left: 10.w, top: 10.h),
                   color: Colors.transparent,
@@ -1916,7 +2022,7 @@ Widget chooseFaculty(BuildContext context) {
                     Container(
                       margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
-                        value: '1',
+                        value: 1,
                         groupValue: BlocProvider.of<MyProfileEditBloc>(context)
                             .state
                             .facultyId,
@@ -1957,7 +2063,7 @@ Widget chooseFaculty(BuildContext context) {
                     Container(
                       margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
-                        value: '2',
+                        value: 2,
                         groupValue: BlocProvider.of<MyProfileEditBloc>(context)
                             .state
                             .facultyId,
@@ -1998,7 +2104,7 @@ Widget chooseFaculty(BuildContext context) {
                     Container(
                       margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
-                        value: '3',
+                        value: 3,
                         groupValue: BlocProvider.of<MyProfileEditBloc>(context)
                             .state
                             .facultyId,
@@ -2039,7 +2145,7 @@ Widget chooseFaculty(BuildContext context) {
                     Container(
                       margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
-                        value: '4',
+                        value: 4,
                         groupValue: BlocProvider.of<MyProfileEditBloc>(context)
                             .state
                             .facultyId,
@@ -2080,7 +2186,7 @@ Widget chooseFaculty(BuildContext context) {
                     Container(
                       margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
-                        value: '5',
+                        value: 5,
                         groupValue: BlocProvider.of<MyProfileEditBloc>(context)
                             .state
                             .facultyId,
@@ -2121,7 +2227,7 @@ Widget chooseFaculty(BuildContext context) {
                     Container(
                       margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
-                        value: '6',
+                        value: 6,
                         groupValue: BlocProvider.of<MyProfileEditBloc>(context)
                             .state
                             .facultyId,
@@ -2162,7 +2268,7 @@ Widget chooseFaculty(BuildContext context) {
                     Container(
                       margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
-                        value: '7',
+                        value: 7,
                         groupValue: BlocProvider.of<MyProfileEditBloc>(context)
                             .state
                             .facultyId,
@@ -2203,7 +2309,7 @@ Widget chooseFaculty(BuildContext context) {
                     Container(
                       margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
-                        value: '8',
+                        value: 8,
                         groupValue: BlocProvider.of<MyProfileEditBloc>(context)
                             .state
                             .facultyId,
@@ -2244,7 +2350,7 @@ Widget chooseFaculty(BuildContext context) {
                     Container(
                       margin: EdgeInsets.only(right: 10.w),
                       child: Radio(
-                        value: '9',
+                        value: 9,
                         groupValue: BlocProvider.of<MyProfileEditBloc>(context)
                             .state
                             .facultyId,

@@ -73,13 +73,18 @@ Widget groupManagement(BuildContext context, Group? group) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      group.name,
-                      style: TextStyle(
-                        color: AppColors.textBlack,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w900,
-                        fontFamily: AppFonts.Header,
+                    Container(
+                      width: 260.w,
+                      child: Text(
+                        group.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: AppColors.textBlack,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w900,
+                          fontFamily: AppFonts.Header,
+                        ),
                       ),
                     ),
                     Text(

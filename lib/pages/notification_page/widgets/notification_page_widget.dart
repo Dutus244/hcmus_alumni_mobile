@@ -110,7 +110,7 @@ Widget notification(BuildContext context, Notifications notifications) {
             arguments: {"id": notifications.parentId},
           );
           break;
-        case "news_event":
+        case "comment_news":
          Navigator.pushNamed(context,
             "/newsDetail",
             arguments: {"id": notifications.parentId},
@@ -195,7 +195,7 @@ Widget notification(BuildContext context, Notifications notifications) {
                     style: TextStyle(
                       color: AppColors.textBlack,
                       fontSize: 12.sp,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: notifications.status.name == "Chưa xem" ? FontWeight.bold : FontWeight.normal,
                       fontFamily: AppFonts.Header,
                     ),
                   ),
@@ -211,7 +211,7 @@ Widget notification(BuildContext context, Notifications notifications) {
                     style: TextStyle(
                       color: AppColors.textGrey,
                       fontSize: 10.sp,
-                      fontWeight: FontWeight.normal,
+                      fontWeight:  notifications.status.name == "Chưa xem" ? FontWeight.bold : FontWeight.normal,
                       fontFamily: AppFonts.Header,
                     ),
                   ),

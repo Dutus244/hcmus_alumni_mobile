@@ -103,12 +103,13 @@ class NewsEventPageController {
       'Authorization': 'Bearer $token',
     };
     try {
-      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
+      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize&order=asc');
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var eventResponse = EventResponse.fromJson(jsonMap);
+        print(eventResponse.events.length);
 
         if (eventResponse.events.isEmpty) {
           if (page == 0) {

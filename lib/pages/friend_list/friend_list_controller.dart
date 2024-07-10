@@ -20,17 +20,17 @@ class FriendListController {
 
   const FriendListController({required this.context});
 
-  Future<void> handleSearchFriend() async {
+  Future<void> handleSearchFriend(String id) async {
     final state = context
         .read<FriendListBloc>()
         .state;
     String name = state.name;
     context.read<FriendListBloc>().add(NameSearchEvent(name));
     await Future.delayed(Duration(milliseconds: 100));
-    handleLoadFriendData(0);
+    handleLoadFriendData(0, id);
   }
 
-  Future<void> handleLoadFriendData(int page) async {
+  Future<void> handleLoadFriendData(int page, String id) async {
     await Future.delayed(Duration(microseconds: 500));
     if (page == 0) {
       context.read<FriendListBloc>().add(HasReachedMaxFriendEvent(false));
@@ -46,8 +46,8 @@ class FriendListController {
     String name = state.nameSearch;
 
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/groups';
-    var pageSize = 5;
+    var endpoint = '/user/$id/friends';
+    var pageSize = 20;
 
     var token = Global.storageService.getUserAuthToken();
 
@@ -57,7 +57,7 @@ class FriendListController {
 
     try {
       var url = Uri.parse(
-          '$apiUrl$endpoint?page=$page&pageSize=$pageSize&name=$name');
+          '$apiUrl$endpoint?page=$page&pageSize=$pageSize&fullName=$name');
 
       // Specify UTF-8 encoding for decoding response
       var response = await http.get(url, headers: headers);
@@ -65,24 +65,6 @@ class FriendListController {
       if (response.statusCode == 200) {
         // Convert the JSON string to a Map
         var jsonMap = json.decode(responseBody);
-        jsonMap = {
-          "friends": [
-            {
-              "user": {
-                "id": "1",
-                "fullName": "Cao Nguyên",
-                "avatarUrl": "https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea"
-              }
-            },
-            {
-              "user": {
-                "id": "1",
-                "fullName": "Cao Nguyên",
-                "avatarUrl": "https://storage.googleapis.com/hcmus-alumverse/images/users/avatar/c201bfdf3aadfe93c59f148a039322da99d8d96fdbba4055852689c761a9f8ea"
-              }
-            },
-          ]
-        };
         // Pass the Map to the fromJson method
         var friendResponse = FriendResponse.fromJson(jsonMap);
         if (friendResponse.friends.isEmpty) {
@@ -116,15 +98,66 @@ class FriendListController {
         }
       } else {
         // Handle other status codes if needed
+        print(responseBody);
         toastInfo(msg: translate('error_get_friend'));
       }
     } catch (error) {
       // Handle errors
+      print(error);
       toastInfo(msg: translate('error_get_friend'));
     }
   }
 
-  Future<void> handleDeleteFriend(String id) async {
-    FriendListController(context: context).handleLoadFriendData(0);
+  Future<bool> handleDeleteFriend(String id) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/user/friends/$id';
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      "Content-Type": "application/json" // Include bearer token in the headers
+    };
+
+    try {
+      // Send the request
+      var response = await http.delete(
+        Uri.parse('$apiUrl$endpoint'),
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        handleLoadFriendData(0, id);
+        handleGetFriendCount(id);
+        return true;
+      } else {
+        toastInfo(msg: translate('error_verify_alumni'));
+        return false;
+      }
+    } catch (e) {
+      // Exception occurred
+      toastInfo(msg: translate('error_verify_alumni'));
+      print(e);
+      return false;
+    }
+  }
+
+  Future<void> handleGetFriendCount(String id) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/user/$id/friends/count';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token', // Include bearer token in the headers
+    };
+
+    try {
+      var url = Uri.parse(
+          '$apiUrl$endpoint');
+      var response = await http.get(url, headers: headers);
+      var responseBody = utf8.decode(response.bodyBytes);
+      context.read<FriendListBloc>().add(FriendCountEvent(int.parse(responseBody)));
+    } catch (error) {
+      print(error);
+    }
   }
 }

@@ -13,6 +13,7 @@ class FriendListBloc extends Bloc<FriendListEvent, FriendListState> {
     on<IndexFriendEvent>(_indexFriendEvent);
     on<HasReachedMaxFriendEvent>(_hasReachedMaxFriendEvent);
     on<ClearResultEvent>(_clearResultEvent);
+    on<FriendCountEvent>(_friendCountEvent);
   }
 
   void _nameEvent(NameEvent event, Emitter<FriendListState> emit) {
@@ -52,5 +53,10 @@ class FriendListBloc extends Bloc<FriendListEvent, FriendListState> {
         friends: const [],
         indexFriend: 0,
         hasReachedMaxFriend: false));
+  }
+
+  void _friendCountEvent(
+      FriendCountEvent event, Emitter<FriendListState> emit) {
+    emit(state.copyWith(friendCount: event.friendCount));
   }
 }
