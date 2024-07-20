@@ -285,9 +285,6 @@ Widget buildCommentWidget(
                                       .add(ChildrenEvent(comment));
                                   context
                                       .read<PostAdviseDetailBloc>()
-                                      .add(ContentEvent(comment.content));
-                                  context
-                                      .read<PostAdviseDetailBloc>()
                                       .add(ReplyEvent(1));
                                 },
                                 child: Text(
@@ -489,9 +486,6 @@ Widget buildCommentWidget(
 
 Widget buildTextFieldContent(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<PostAdviseDetailBloc>(context).state.content);
-
   return Container(
       width: 290.w,
       margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 5.w, bottom: 2.h),
@@ -507,12 +501,12 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
           Container(
             margin: EdgeInsets.only(left: 10.w),
             width: 260.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<PostAdviseDetailBloc>(context).state.content,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(

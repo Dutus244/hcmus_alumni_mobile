@@ -127,7 +127,7 @@ Widget event(BuildContext context, Event event) {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.w),
               shape: BoxShape.rectangle,
-              color: AppColors.element,
+              color: Colors.grey,
             ),
             child: Text(
               event.faculty.name,
@@ -331,14 +331,14 @@ Widget news(BuildContext context, News news) {
               Align(
                 alignment: Alignment.topLeft,
                 child: Container(
-                  height: 15.h,
+                  height: 19.h,
                   margin: EdgeInsets.only(left: 5.w, top: 5.h),
                   padding: EdgeInsets.only(
-                      left: 2.w, right: 2.w, bottom: 2.h, top: 2.h),
+                      left: 5.w, right: 5.w, bottom: 4.h, top: 4.h),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.w),
                     shape: BoxShape.rectangle,
-                    color: AppColors.element,
+                    color: Colors.grey,
                   ),
                   child: Text(
                     news.faculty.name,
@@ -488,14 +488,14 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
               Align(
                 alignment: Alignment.topLeft,
                 child: Container(
-                  height: 15.h,
+                  height: 19.h,
                   margin: EdgeInsets.only(left: 5.w, top: 5.h),
                   padding: EdgeInsets.only(
-                      left: 2.w, right: 2.w, bottom: 2.h, top: 2.h),
+                      left: 5.w, right: 5.w, bottom: 4.h, top: 4.h),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.w),
                     shape: BoxShape.rectangle,
-                    color: AppColors.element,
+                    color: Colors.grey,
                   ),
                   child: Text(
                     hallOfFame.faculty.name,

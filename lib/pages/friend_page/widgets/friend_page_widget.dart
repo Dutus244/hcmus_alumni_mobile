@@ -168,7 +168,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 color: BlocProvider.of<FriendPageBloc>(context).state.page == 0
                     ? AppColors.element
                     : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(15.w),
+                borderRadius: BorderRadius.circular(5.w),
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -204,7 +204,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 color: BlocProvider.of<FriendPageBloc>(context).state.page == 1
                     ? AppColors.element
                     : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(15.w),
+                borderRadius: BorderRadius.circular(5.w),
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -240,7 +240,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 color: BlocProvider.of<FriendPageBloc>(context).state.page == 2
                     ? AppColors.element
                     : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(15.w),
+                borderRadius: BorderRadius.circular(5.w),
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -262,12 +262,13 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
+            onTap: () async {
+              await Navigator.pushNamed(
                 context,
                 "/friendList",
                 arguments: { "id": Global.storageService.getUserId()}
               );
+              FriendPageController(context: context).handleLoadSuggestionData(0);
             },
             child: Container(
               width: 105.w,
@@ -277,7 +278,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 color: BlocProvider.of<FriendPageBloc>(context).state.page == 3
                     ? AppColors.element
                     : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(15.w),
+                borderRadius: BorderRadius.circular(5.w),
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -883,7 +884,7 @@ Widget request(BuildContext context, FriendRequest request) {
                           ),
                           child: Center(
                             child: Text(
-                              translate('approve'),
+                              translate('accept'),
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
                                   fontSize: 11.sp,
@@ -910,7 +911,7 @@ Widget request(BuildContext context, FriendRequest request) {
                           ),
                           child: Center(
                             child: Text(
-                              translate('deny'),
+                              translate('delete'),
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
                                   fontSize: 11.sp,

@@ -58,7 +58,7 @@ Widget buildButtonChooseInfoOrParticipant(
               color: BlocProvider.of<EventDetailBloc>(context).state.page == 1
                   ? AppColors.elementLight
                   : AppColors.element,
-              borderRadius: BorderRadius.circular(15.w),
+              borderRadius: BorderRadius.circular(5.w),
               border: Border.all(
                 color: Colors.transparent,
               ),
@@ -84,7 +84,7 @@ Widget buildButtonChooseInfoOrParticipant(
               color: BlocProvider.of<EventDetailBloc>(context).state.page == 1
                   ? AppColors.element
                   : AppColors.elementLight,
-              borderRadius: BorderRadius.circular(15.w),
+              borderRadius: BorderRadius.circular(5.w),
               border: Border.all(
                 color: Colors.transparent,
               ),

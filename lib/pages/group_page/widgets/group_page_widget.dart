@@ -186,7 +186,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
               color: BlocProvider.of<GroupPageBloc>(context).state.page == 1
                   ? AppColors.elementLight
                   : AppColors.element,
-              borderRadius: BorderRadius.circular(15.w),
+              borderRadius: BorderRadius.circular(5.w),
               border: Border.all(
                 color: Colors.transparent,
               ),
@@ -222,7 +222,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
               color: BlocProvider.of<GroupPageBloc>(context).state.page == 1
                   ? AppColors.element
                   : AppColors.elementLight,
-              borderRadius: BorderRadius.circular(15.w),
+              borderRadius: BorderRadius.circular(5.w),
               border: Border.all(
                 color: Colors.transparent,
               ),

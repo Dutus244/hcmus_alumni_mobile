@@ -117,7 +117,7 @@ Widget buildCreatePostButton(BuildContext context) {
               width: 300.w,
               height: 30.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.w),
+                borderRadius: BorderRadius.circular(10.w),
                 border: Border.all(
                   color: Colors.grey.withOpacity(0.5),
                 ),

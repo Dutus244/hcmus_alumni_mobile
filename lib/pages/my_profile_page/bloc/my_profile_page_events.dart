@@ -21,7 +21,7 @@ class UserEvent extends MyProfilePageEvent {
 }
 
 class AlumniVerificationEvent extends MyProfilePageEvent {
-  final AlumniVerification alumniVerification;
+  final AlumniVerification? alumniVerification;
 
   const AlumniVerificationEvent(this.alumniVerification);
 }

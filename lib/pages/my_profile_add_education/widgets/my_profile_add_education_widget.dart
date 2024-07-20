@@ -152,9 +152,6 @@ Widget buildTextFieldSchoolName1(BuildContext context, String hintText,
 
 Widget buildTextFieldSchoolName2(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddEducationBloc>(context).state.schoolName);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
@@ -178,12 +175,12 @@ Widget buildTextFieldSchoolName2(BuildContext context, String hintText,
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<MyProfileAddEducationBloc>(context).state.schoolName,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -277,9 +274,6 @@ Widget buildTextFieldDegree1(BuildContext context, String hintText,
 
 Widget buildTextFieldDegree2(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddEducationBloc>(context).state.degree);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
@@ -303,12 +297,12 @@ Widget buildTextFieldDegree2(BuildContext context, String hintText,
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<MyProfileAddEducationBloc>(context).state.degree,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -349,12 +343,14 @@ class DateInputFormatter extends TextInputFormatter {
     // Only allow digits
     newText = newText.replaceAll(RegExp(r'[^0-9]'), '');
 
-    // Insert slashes at the correct positions
+    // Insert slash at the correct position for MM/yyyy format
     if (newText.length >= 3) {
       newText = '${newText.substring(0, 2)}/${newText.substring(2)}';
     }
-    if (newText.length >= 6) {
-      newText = '${newText.substring(0, 5)}/${newText.substring(5)}';
+
+    // Limit to 7 characters (MM/yyyy)
+    if (newText.length > 7) {
+      newText = newText.substring(0, 7);
     }
 
     return TextEditingValue(
@@ -457,16 +453,16 @@ Widget buildTextFieldStartTime2(BuildContext context, String hintText, void Func
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
+              initialValue: BlocProvider.of<MyProfileAddEducationBloc>(context).state.startTime,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(10), // Limit length to 10 characters
                 DateInputFormatter(), // Custom date formatter
               ],
               keyboardType: TextInputType.datetime,
-              controller: _controller,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -565,9 +561,6 @@ Widget buildTextFieldEndTime1(BuildContext context, String hintText, void Functi
 }
 
 Widget buildTextFieldEndTime2(BuildContext context, String hintText, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddEducationBloc>(context).state.endTime);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
@@ -591,16 +584,16 @@ Widget buildTextFieldEndTime2(BuildContext context, String hintText, void Functi
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
+              initialValue: BlocProvider.of<MyProfileAddEducationBloc>(context).state.endTime,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(10), // Limit length to 10 characters
                 DateInputFormatter(), // Custom date formatter
               ],
               keyboardType: TextInputType.datetime,
-              controller: _controller,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(

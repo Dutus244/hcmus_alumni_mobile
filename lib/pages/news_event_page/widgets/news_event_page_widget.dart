@@ -40,7 +40,7 @@ Widget buildButtonChooseNewsOrEvent(
               color: BlocProvider.of<NewsEventPageBloc>(context).state.page == 1
                   ? AppColors.elementLight
                   : AppColors.element,
-              borderRadius: BorderRadius.circular(15.w),
+              borderRadius: BorderRadius.circular(5.w),
               border: Border.all(
                 color: Colors.transparent,
               ),
@@ -78,7 +78,7 @@ Widget buildButtonChooseNewsOrEvent(
               color: BlocProvider.of<NewsEventPageBloc>(context).state.page == 1
                   ? AppColors.element
                   : AppColors.elementLight,
-              borderRadius: BorderRadius.circular(15.w),
+              borderRadius: BorderRadius.circular(5.w),
               border: Border.all(
                 color: Colors.transparent,
               ),
@@ -345,7 +345,7 @@ Widget news(BuildContext context, News news) {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
                       shape: BoxShape.rectangle,
-                      color: AppColors.element,
+                      color: Colors.grey,
                     ),
                     child: Text(
                       news.faculty.name,
@@ -711,7 +711,7 @@ Widget event(BuildContext context, Event event) {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
                       shape: BoxShape.rectangle,
-                      color: AppColors.element,
+                      color: Colors.grey,
                     ),
                     child: Text(
                       event.faculty.name,

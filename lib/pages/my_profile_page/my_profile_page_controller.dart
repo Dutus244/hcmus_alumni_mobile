@@ -43,11 +43,17 @@ class MyProfilePageController {
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
+        print(jsonMap);
         var user = User.fromJson(jsonMap["user"]);
         context.read<MyProfilePageBloc>().add(UserEvent(user));
         if (jsonMap["alumniVerification"] != null) {
           var alumniVerification =
               AlumniVerification.fromJson(jsonMap["alumniVerification"]);
+          context
+              .read<MyProfilePageBloc>()
+              .add(AlumniVerificationEvent(alumniVerification));
+        } else {
+          AlumniVerification alumniVerification = new AlumniVerification("PENDING", "", 0);
           context
               .read<MyProfilePageBloc>()
               .add(AlumniVerificationEvent(alumniVerification));

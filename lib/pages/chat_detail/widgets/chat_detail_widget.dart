@@ -971,9 +971,6 @@ Widget messageOption(BuildContext context, Message message) {
 
 Widget buildTextFieldContent(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<ChatDetailBloc>(context).state.content);
-
   return Container(
       width: 270.w,
       margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 5.w, bottom: 2.h),
@@ -990,11 +987,10 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
             margin: EdgeInsets.only(left: 10.w),
             width: 250.w,
             child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(

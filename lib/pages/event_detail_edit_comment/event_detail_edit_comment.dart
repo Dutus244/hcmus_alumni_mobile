@@ -18,29 +18,31 @@ class EventDetailEditComment extends StatefulWidget {
 }
 
 class _EventDetailEditCommentState extends State<EventDetailEditComment> {
-  late Event event;
-  late Comment comment;
+  Event? event;
+  Comment? comment;
 
   @override
   void initState() {
     super.initState();
-    context
-        .read<EventDetailEditCommentBloc>()
-        .add(EventDetailEditCommentResetEvent());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      handleNavigation();
+    });
   }
 
-  @override
-  Widget build(BuildContext context) {
+  void handleNavigation() {
     Map<String, dynamic>? args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       event = args["event"];
       comment = args["comment"];
       context
           .read<EventDetailEditCommentBloc>()
-          .add(CommentEvent(comment.content));
+          .add(CommentEvent(comment!.content));
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<EventDetailEditCommentBloc,
         EventDetailEditCommentState>(builder: (context, state) {
       return Scaffold(

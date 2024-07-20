@@ -218,6 +218,7 @@ class MyProfileEditController {
     String aboutMe = state.aboutMe;
     String classs = state.classs;
     String graduationYear = state.endYear;
+    String dob = state.dob;
 
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/profile';
@@ -235,7 +236,9 @@ class MyProfileEditController {
         'sexId': sexId,
         'socialMediaLink': socialMediaLink,
         'phone': phone,
-        'aboutMe': aboutMe
+        'aboutMe': aboutMe,
+        'dob': dob == "" ? "" : DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy')
+            .parse(dob))
       },
       'alumni': {
         'alumClass': classs,
@@ -244,6 +247,8 @@ class MyProfileEditController {
       },
     });
 
+    print(body);
+
     try {
       // Send the request
       var response = await http.put(
@@ -251,6 +256,7 @@ class MyProfileEditController {
         headers: headers,
         body: body,
       );
+      print(response.body);
       if (response.statusCode == 200) {
         toastInfo(msg: translate('saved_successfully'));
       } else {
@@ -258,6 +264,7 @@ class MyProfileEditController {
       }
     } catch (e) {
       // Exception occurred
+      print(e);
       toastInfo(msg: translate('error_verify_alumni'));
       return;
     }
@@ -300,6 +307,7 @@ class MyProfileEditController {
 
       // Convert the streamed response to a regular HTTP response
       var response = await http.Response.fromStream(streamedResponse);
+      print(response.body);
       if (response.statusCode == 201) {
         handleGetProfile();
       } else {

@@ -18,30 +18,36 @@ class EditPostGroup extends StatefulWidget {
 }
 
 class _EditPostGroupState extends State<EditPostGroup> {
-  late Post post;
-  late String id;
+  Post? post;
+  String id = "";
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      handleNavigation();
+    });
+  }
+
+  void handleNavigation() {
     Map<String, dynamic>? args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       id = args["id"];
       post = args["post"];
-      // Now you can use the passedValue in your widget
-      context
-          .read<EditPostGroupBloc>()
-          .add(EditPostGroupResetEvent());
-      EditPostGroupController(context: context).handleLoad(post);
+      EditPostGroupController(context: context).handleLoad(post!.id);
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<EditPostGroupBloc, EditPostGroupState>(
         builder: (context, state) {
           return Scaffold(
               appBar: buildAppBar(context),
               backgroundColor: AppColors.background,
               body: BlocProvider.of<EditPostGroupBloc>(context).state.page == 0
-                  ? writePost(context, post.id, id)
+                  ? writePost(context, post, id)
                   : editPicture(context));
         });
   }

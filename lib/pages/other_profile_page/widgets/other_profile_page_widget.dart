@@ -390,7 +390,7 @@ Widget header(BuildContext context) {
               child: Container(
                 margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
                 width: 160.w,
-                height: 30.h,
+                height: 35.h,
                 decoration: BoxDecoration(
                   color: AppColors.element,
                   borderRadius: BorderRadius.circular(5.w),
@@ -430,7 +430,7 @@ Widget header(BuildContext context) {
               child: Container(
                 margin: EdgeInsets.only(right: 10.w, top: 10.h),
                 width: 160.w,
-                height: 30.h,
+                height: 35.h,
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 230, 230, 230),
                   borderRadius: BorderRadius.circular(5.w),
@@ -472,7 +472,7 @@ Widget header(BuildContext context) {
               child: Container(
                 margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
                 width: 160.w,
-                height: 30.h,
+                height: 35.h,
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 230, 230, 230),
                   borderRadius: BorderRadius.circular(5.w),
@@ -510,7 +510,7 @@ Widget header(BuildContext context) {
               child: Container(
                 margin: EdgeInsets.only(right: 10.w, top: 10.h),
                 width: 160.w,
-                height: 30.h,
+                height: 35.h,
                 decoration: BoxDecoration(
                   color: AppColors.element,
                   borderRadius: BorderRadius.circular(5.w),
@@ -1149,7 +1149,7 @@ Widget event(BuildContext context, Event event) {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
                       shape: BoxShape.rectangle,
-                      color: AppColors.element,
+                      color: Colors.grey,
                     ),
                     child: Text(
                       event.faculty.name,

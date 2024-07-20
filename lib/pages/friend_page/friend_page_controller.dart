@@ -329,6 +329,7 @@ class FriendPageController {
       );
       if (response.statusCode == 200) {
         handleLoadRequestData(0);
+        handleLoadSuggestionData(0);
       } else {
         toastInfo(msg: translate('error_deny_alumni'));
       }

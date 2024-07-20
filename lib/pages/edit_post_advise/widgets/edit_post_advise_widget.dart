@@ -8,13 +8,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/values/assets.dart';
 import 'package:hcmus_alumni_mobile/common/values/text_style.dart';
+import 'package:hcmus_alumni_mobile/common/widgets/loading_widget.dart';
 import 'package:hcmus_alumni_mobile/model/picture.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
 import '../../../common/values/colors.dart';
+import '../../../common/values/fonts.dart';
 import '../../../common/widgets/flutter_toast.dart';
 import '../../../global.dart';
+import '../../../model/post.dart';
 import '../bloc/edit_post_advise_blocs.dart';
 import '../bloc/edit_post_advise_events.dart';
 import '../edit_post_advise_controller.dart';
@@ -138,12 +141,6 @@ Widget buttonFinishEditPicture(BuildContext context) {
 
 Widget buildTextFieldTitle(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider
-          .of<EditPostAdviseBloc>(context)
-          .state
-          .title);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
@@ -155,12 +152,15 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
         children: [
           Container(
             width: 300.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider
+                  .of<EditPostAdviseBloc>(context)
+                  .state
+                  .title,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -188,12 +188,10 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
 
 Widget buildTextFieldContent(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider
-          .of<EditPostAdviseBloc>(context)
-          .state
-          .content);
-
+  print(BlocProvider
+      .of<EditPostAdviseBloc>(context)
+      .state
+      .content);
   return GestureDetector(
     child: Container(
         width: 320.w,
@@ -206,12 +204,15 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
           children: [
             Container(
               width: 300.w,
-              child: TextField(
-                onTapOutside: (PointerDownEvent event) {
-                  func!(_controller.text);
+              child: TextFormField(
+                onChanged: (value) {
+                  func!(value);
                 },
-                controller: _controller,
                 keyboardType: TextInputType.multiline,
+                initialValue: BlocProvider
+                    .of<EditPostAdviseBloc>(context)
+                    .state
+                    .content,
                 maxLines: null,
                 // Cho phép đa dòng
                 decoration: InputDecoration(
@@ -238,12 +239,10 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
   );
 }
 
-Widget writePost(BuildContext context, String id) {
-  TextEditingController controller = TextEditingController();
-  controller.text = BlocProvider
-      .of<EditPostAdviseBloc>(context)
-      .state
-      .title;
+Widget writePost(BuildContext context, Post? post) {
+  if (post == null) {
+    return loadingWidget();
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -269,7 +268,7 @@ Widget writePost(BuildContext context, String id) {
           ],
         ),
       ),
-      buttonEdit(context, id),
+      buttonEdit(context, post.id),
     ],
   );
 }

@@ -19,10 +19,18 @@ class MyProfileAddEducation extends StatefulWidget {
 class _MyProfileAddEducationState extends State<MyProfileAddEducation> {
   int option = 0;
   Education? education;
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      handleNavigation();
+    });
+  }
+
+  void handleNavigation() {
     Map<String, dynamic>? args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       option = args["option"];
       context.read<MyProfileAddEducationBloc>().add(MyProfileAddEducationResetEvent());
@@ -35,7 +43,10 @@ class _MyProfileAddEducationState extends State<MyProfileAddEducation> {
         context.read<MyProfileAddEducationBloc>().add(IsStudyingEvent(education!.isLearning));
       }
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<MyProfileAddEducationBloc, MyProfileAddEducationState>(
         builder: (context, state) {
           return Scaffold(

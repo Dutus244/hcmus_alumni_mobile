@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/widgets/loading_widget.dart';
 import 'package:hcmus_alumni_mobile/model/comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail_edit_comment/bloc/news_detail_edit_comment_blocs.dart';
 
@@ -38,9 +39,6 @@ AppBar buildAppBar(BuildContext context) {
 
 Widget buildTextField(BuildContext context, String hintText, String textType,
     String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<NewsDetailEditCommentBloc>(context).state.comment);
-
   return Container(
       width: 320.w,
       height: 350.h,
@@ -54,12 +52,12 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
           Container(
             width: 300.w,
             height: 350.h,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<NewsDetailEditCommentBloc>(context).state.comment,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -213,7 +211,10 @@ Widget buttonEdit(BuildContext context, News news, Comment Comment) {
   );
 }
 
-Widget newsDetailEditComment(BuildContext context, News news, Comment comment) {
+Widget newsDetailEditComment(BuildContext context, News? news, Comment? comment) {
+  if (news == null || comment == null) {
+    return loadingWidget();
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,

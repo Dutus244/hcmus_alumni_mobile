@@ -23,12 +23,33 @@ class EditPostGroupController {
     return tags.map((tag) => {'name': tag}).toList();
   }
 
-  Future<void> handleLoad(Post post) async {
-    List<String> tags = post.tags.map((tag) => tag.name.toString()).toList();
-    context.read<EditPostGroupBloc>().add(TagsEvent(tags));
-    context.read<EditPostGroupBloc>().add(TitleEvent(post.title));
-    context.read<EditPostGroupBloc>().add(ContentEvent(post.content));
-    context.read<EditPostGroupBloc>().add(PictureNetworksEvent(post.pictures));
+  Future<void> handleLoad(String id) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/groups/posts/$id';
+    var token = Global.storageService.getUserAuthToken();
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      var url = Uri.parse('$apiUrl$endpoint');
+      var response = await http.get(url, headers: headers);
+      var responseBody = utf8.decode(response.bodyBytes);
+      if (response.statusCode == 200) {
+        var jsonMap = json.decode(responseBody);
+        var post = Post.fromJson(jsonMap);
+        context.read<EditPostGroupBloc>().add(EditPostGroupResetEvent());
+        List<String> tags = post.tags.map((tag) => tag.name.toString()).toList();
+        context.read<EditPostGroupBloc>().add(TagsEvent(tags));
+        context.read<EditPostGroupBloc>().add(TitleEvent(post.title));
+        context.read<EditPostGroupBloc>().add(ContentEvent(post.content));
+        context.read<EditPostGroupBloc>().add(PictureNetworksEvent(post.pictures));
+      } else {
+        toastInfo(msg: translate('error_get_post'));
+      }
+    } catch (error) {
+      toastInfo(msg: translate('error_get_post'));
+    }
   }
 
   Future<void> handlePost(String id, String groupId) async {

@@ -137,9 +137,6 @@ Widget buildTextFieldName1(BuildContext context, String hintText,
 
 Widget buildTextFieldName2(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddAchievementBloc>(context).state.name);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
@@ -163,12 +160,12 @@ Widget buildTextFieldName2(BuildContext context, String hintText,
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<MyProfileAddAchievementBloc>(context).state.name,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -261,9 +258,6 @@ Widget buildTextFieldType1(BuildContext context, String hintText,
 
 Widget buildTextFieldType2(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddAchievementBloc>(context).state.type);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
@@ -287,12 +281,12 @@ Widget buildTextFieldType2(BuildContext context, String hintText,
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<MyProfileAddAchievementBloc>(context).state.type,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -333,12 +327,14 @@ class DateInputFormatter extends TextInputFormatter {
     // Only allow digits
     newText = newText.replaceAll(RegExp(r'[^0-9]'), '');
 
-    // Insert slashes at the correct positions
+    // Insert slash at the correct position for MM/yyyy format
     if (newText.length >= 3) {
       newText = '${newText.substring(0, 2)}/${newText.substring(2)}';
     }
-    if (newText.length >= 6) {
-      newText = '${newText.substring(0, 5)}/${newText.substring(5)}';
+
+    // Limit to 7 characters (MM/yyyy)
+    if (newText.length > 7) {
+      newText = newText.substring(0, 7);
     }
 
     return TextEditingValue(
@@ -415,9 +411,6 @@ Widget buildTextFieldTime1(BuildContext context, String hintText, void Function(
 }
 
 Widget buildTextFieldTime2(BuildContext context, String hintText, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddAchievementBloc>(context).state.time);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
@@ -441,16 +434,16 @@ Widget buildTextFieldTime2(BuildContext context, String hintText, void Function(
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
+              initialValue: BlocProvider.of<MyProfileAddAchievementBloc>(context).state.time,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(10), // Limit length to 10 characters
                 DateInputFormatter(), // Custom date formatter
               ],
               keyboardType: TextInputType.datetime,
-              controller: _controller,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(

@@ -504,7 +504,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
                       shape: BoxShape.rectangle,
-                      color: AppColors.element,
+                      color: Colors.grey,
                     ),
                     child: Text(
                       hallOfFame.faculty.name,

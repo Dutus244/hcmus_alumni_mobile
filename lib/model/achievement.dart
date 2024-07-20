@@ -12,5 +12,5 @@ class Achievement {
       : id = json["achievementId"],
         name = json["achievementName"],
         type = json["achievementType"],
-        time = json["achievementTime"] != null ? DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(json["achievementTime"]).add(Duration(days: 1))) : '';
+        time = json["achievementTime"] != null ? DateFormat('MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(json["achievementTime"]).add(Duration(days: 1))) : '';
 }

@@ -66,6 +66,7 @@ Widget header(BuildContext context) {
   User? user = BlocProvider.of<MyProfilePageBloc>(context).state.user;
   AlumniVerification? alumniVerification =
       BlocProvider.of<MyProfilePageBloc>(context).state.alumniVerification;
+  print(alumniVerification);
   if (user == null) {
     return loadingWidget();
   }
@@ -127,6 +128,42 @@ Widget header(BuildContext context) {
             Container(
               width: 5.w,
             ),
+            if (alumniVerification == null)
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/icons/cancel_circle1.svg",
+                    width: 14.w,
+                    height: 14.h,
+                    color: Colors.red,
+                  ),
+                  Container(
+                    width: 5.w,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(5.w),
+                      border: Border.all(
+                        color: Colors.transparent,
+                      ),
+                    ),
+                    child: Container(
+                      margin: EdgeInsets.only(
+                          left: 5.w, right: 5.w, top: 2.h, bottom: 2.h),
+                      child: Text(
+                        translate('unverified_account'),
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             if (alumniVerification != null &&
                 (alumniVerification.status == "PENDING" ||
                     alumniVerification.status == "DENIED"))
@@ -246,7 +283,7 @@ Widget header(BuildContext context) {
             child: Container(
               margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
               width: 290.w,
-              height: 30.h,
+              height: 35.h,
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 230, 230, 230),
                 borderRadius: BorderRadius.circular(5.w),
@@ -666,8 +703,10 @@ Widget listFriend(BuildContext context) {
         ),
       GestureDetector(
         onTap: () async {
-          Navigator.pushNamed(context, "/friendList",
+          await Navigator.pushNamed(context, "/friendList",
               arguments: {"id": Global.storageService.getUserId()});
+          MyProfilePageController(context: context).handleLoadFriendData();
+          MyProfilePageController(context: context).handleGetFriendCount();
         },
         child: Container(
             width: 340.w,
@@ -731,7 +770,7 @@ Widget buildButtonChooseNewsOrEvent(
                     BlocProvider.of<MyProfilePageBloc>(context).state.page == 0
                         ? AppColors.element
                         : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(15.w),
+                borderRadius: BorderRadius.circular(5.w),
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -771,7 +810,7 @@ Widget buildButtonChooseNewsOrEvent(
                     BlocProvider.of<MyProfilePageBloc>(context).state.page == 1
                         ? AppColors.element
                         : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(15.w),
+                borderRadius: BorderRadius.circular(5.w),
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -811,7 +850,7 @@ Widget buildButtonChooseNewsOrEvent(
                     BlocProvider.of<MyProfilePageBloc>(context).state.page == 2
                         ? AppColors.element
                         : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(15.w),
+                borderRadius: BorderRadius.circular(5.w),
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -1197,7 +1236,7 @@ Widget event(BuildContext context, Event event) {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
                       shape: BoxShape.rectangle,
-                      color: AppColors.element,
+                      color: Colors.grey,
                     ),
                     child: Text(
                       event.faculty.name,

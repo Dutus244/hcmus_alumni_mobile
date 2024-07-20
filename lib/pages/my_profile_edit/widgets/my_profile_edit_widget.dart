@@ -1870,9 +1870,6 @@ Widget achievementOption(BuildContext context, Achievement achievement) {
 
 Widget buildTextFieldFullName(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileEditBloc>(context).state.fullName);
-
   return Container(
       width: 232.w,
       decoration: BoxDecoration(
@@ -1883,12 +1880,12 @@ Widget buildTextFieldFullName(BuildContext context, String hintText,
         children: [
           Container(
             width: 230.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<MyProfileEditBloc>(context).state.fullName,
               maxLines: 1,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -1922,9 +1919,6 @@ Widget buildTextFieldFullName(BuildContext context, String hintText,
 
 Widget buildTextFieldPhoneNumber(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileEditBloc>(context).state.phone);
-
   return Container(
       width: 232.w,
       decoration: BoxDecoration(
@@ -1935,12 +1929,12 @@ Widget buildTextFieldPhoneNumber(BuildContext context, String hintText,
         children: [
           Container(
             width: 230.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
+              initialValue: BlocProvider.of<MyProfileEditBloc>(context).state.phone,
               keyboardType: TextInputType.number,
-              controller: _controller,
               maxLines: 1,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -2592,9 +2586,6 @@ Widget chooseBirthday(BuildContext context) {
 
 Widget buildTextFieldSocialLink(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileEditBloc>(context).state.socialLink);
-
   return Container(
       width: 232.w,
       decoration: BoxDecoration(
@@ -2605,12 +2596,12 @@ Widget buildTextFieldSocialLink(BuildContext context, String hintText,
         children: [
           Container(
             width: 230.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<MyProfileEditBloc>(context).state.socialLink,
               maxLines: 1,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -2644,17 +2635,14 @@ Widget buildTextFieldSocialLink(BuildContext context, String hintText,
 
 Widget buildTextFieldAboutMe(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileEditBloc>(context).state.aboutMe);
-
   return Container(
     margin: EdgeInsets.only(left: 10.w, right: 10.w),
-    child: TextField(
-      onTapOutside: (PointerDownEvent event) {
-        func!(_controller.text);
+    child: TextFormField(
+      onChanged: (value) {
+        func!(value);
       },
       keyboardType: TextInputType.multiline,
-      controller: _controller,
+      initialValue: BlocProvider.of<MyProfileEditBloc>(context).state.aboutMe,
       maxLines: null,
       // Cho phép đa dòng
       decoration: InputDecoration(
@@ -2686,9 +2674,6 @@ Widget buildTextFieldAboutMe(BuildContext context, String hintText,
 
 Widget buildTextFieldStudentId(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileEditBloc>(context).state.studentId);
-
   return Container(
       width: 232.w,
       decoration: BoxDecoration(
@@ -2699,12 +2684,12 @@ Widget buildTextFieldStudentId(BuildContext context, String hintText,
         children: [
           Container(
             width: 230.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<MyProfileEditBloc>(context).state.studentId,
               maxLines: 1,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -2738,9 +2723,6 @@ Widget buildTextFieldStudentId(BuildContext context, String hintText,
 
 Widget buildTextFieldStartYear(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileEditBloc>(context).state.startYear);
-
   return Container(
       width: 232.w,
       decoration: BoxDecoration(
@@ -2751,12 +2733,12 @@ Widget buildTextFieldStartYear(BuildContext context, String hintText,
         children: [
           Container(
             width: 230.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
+              initialValue: BlocProvider.of<MyProfileEditBloc>(context).state.startYear,
               keyboardType: TextInputType.number,
-              controller: _controller,
               maxLines: 1,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -2790,9 +2772,6 @@ Widget buildTextFieldStartYear(BuildContext context, String hintText,
 
 Widget buildTextFieldEndYear(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileEditBloc>(context).state.endYear);
-
   return Container(
       width: 232.w,
       decoration: BoxDecoration(
@@ -2803,12 +2782,12 @@ Widget buildTextFieldEndYear(BuildContext context, String hintText,
         children: [
           Container(
             width: 230.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
+              initialValue: BlocProvider.of<MyProfileEditBloc>(context).state.endYear,
               keyboardType: TextInputType.number,
-              controller: _controller,
               maxLines: 1,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -2842,9 +2821,6 @@ Widget buildTextFieldEndYear(BuildContext context, String hintText,
 
 Widget buildTextFieldClass(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileEditBloc>(context).state.classs);
-
   return Container(
       width: 232.w,
       decoration: BoxDecoration(
@@ -2855,12 +2831,12 @@ Widget buildTextFieldClass(BuildContext context, String hintText,
         children: [
           Container(
             width: 230.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<MyProfileEditBloc>(context).state.classs,
               maxLines: 1,
               // Cho phép đa dòng
               decoration: InputDecoration(

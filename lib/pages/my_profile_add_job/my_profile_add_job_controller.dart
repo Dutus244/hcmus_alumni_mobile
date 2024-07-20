@@ -31,13 +31,13 @@ class MyProfileAddJobController {
     var endpoint = '/user/profile/job';
     var token = Global.storageService.getUserAuthToken();
 
-    String startTime = state.startTime;
+    String startTime = "01/" + state.startTime;
     if (!isValidDate(startTime)) {
       toastInfo(msg: "Ngày nhập không hợp lệ");
       return;
     }
 
-    String endTime = state.endTime;
+    String endTime = "01/" + state.endTime;
     if (endTime != "" && !isValidDate(endTime)) {
       toastInfo(msg: "Ngày nhập không hợp lệ");
       return;
@@ -51,13 +51,13 @@ class MyProfileAddJobController {
     var body = json.encode({
       'companyName': state.companyName,
       'position': state.position,
-      'startTime': state.startTime != ""
+      'startTime': startTime != ""
           ? DateFormat('yyyy-MM-dd')
-              .format(DateFormat('dd/MM/yyyy').parse(state.startTime))
+              .format(DateFormat('dd/MM/yyyy').parse(startTime))
           : "",
-      'endTime': state.endTime != ""
+      'endTime': endTime != ""
           ? DateFormat('yyyy-MM-dd')
-              .format(DateFormat('dd/MM/yyyy').parse(state.endTime))
+              .format(DateFormat('dd/MM/yyyy').parse(endTime))
           : "",
       'isWorking': state.isWorking,
       'privacy': 'PUBLIC',
@@ -89,13 +89,13 @@ class MyProfileAddJobController {
     var endpoint = '/user/profile/job/$id';
     var token = Global.storageService.getUserAuthToken();
 
-    String startTime = state.startTime;
+    String startTime = "01/" + state.startTime;
     if (!isValidDate(startTime)) {
       toastInfo(msg: "Ngày nhập không hợp lệ");
       return;
     }
 
-    String endTime = state.endTime;
+    String endTime = "01/" + state.endTime;
     if (endTime != "" && !isValidDate(endTime)) {
       toastInfo(msg: "Ngày nhập không hợp lệ");
       return;
@@ -109,13 +109,13 @@ class MyProfileAddJobController {
     var body = json.encode({
       'companyName': state.companyName,
       'position': state.position,
-      'startTime': state.startTime != ""
+      'startTime': startTime != ""
           ? DateFormat('yyyy-MM-dd')
-              .format(DateFormat('dd/MM/yyyy').parse(state.startTime))
+              .format(DateFormat('dd/MM/yyyy').parse(startTime))
           : "",
-      'endTime': state.endTime != ""
+      'endTime': endTime != ""
           ? DateFormat('yyyy-MM-dd')
-              .format(DateFormat('dd/MM/yyyy').parse(state.endTime))
+              .format(DateFormat('dd/MM/yyyy').parse(endTime))
           : "",
       'isWorking': state.isWorking,
       'privacy': 'PUBLIC',

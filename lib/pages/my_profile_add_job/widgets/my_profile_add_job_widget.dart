@@ -153,9 +153,6 @@ Widget buildTextFieldCompanyName1(BuildContext context, String hintText,
 
 Widget buildTextFieldCompanyName2(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddJobBloc>(context).state.companyName);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
@@ -179,12 +176,12 @@ Widget buildTextFieldCompanyName2(BuildContext context, String hintText,
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<MyProfileAddJobBloc>(context).state.companyName,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -278,9 +275,6 @@ Widget buildTextFieldPosition1(BuildContext context, String hintText,
 
 Widget buildTextFieldPosition2(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddJobBloc>(context).state.position);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
@@ -304,12 +298,12 @@ Widget buildTextFieldPosition2(BuildContext context, String hintText,
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<MyProfileAddJobBloc>(context).state.position,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -350,12 +344,14 @@ class DateInputFormatter extends TextInputFormatter {
     // Only allow digits
     newText = newText.replaceAll(RegExp(r'[^0-9]'), '');
 
-    // Insert slashes at the correct positions
+    // Insert slash at the correct position for MM/yyyy format
     if (newText.length >= 3) {
       newText = '${newText.substring(0, 2)}/${newText.substring(2)}';
     }
-    if (newText.length >= 6) {
-      newText = '${newText.substring(0, 5)}/${newText.substring(5)}';
+
+    // Limit to 7 characters (MM/yyyy)
+    if (newText.length > 7) {
+      newText = newText.substring(0, 7);
     }
 
     return TextEditingValue(
@@ -432,9 +428,6 @@ Widget buildTextFieldStartTime1(BuildContext context, String hintText, void Func
 }
 
 Widget buildTextFieldStartTime2(BuildContext context, String hintText, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddJobBloc>(context).state.startTime);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
@@ -458,16 +451,16 @@ Widget buildTextFieldStartTime2(BuildContext context, String hintText, void Func
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
+              initialValue: BlocProvider.of<MyProfileAddJobBloc>(context).state.startTime,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(10), // Limit length to 10 characters
                 DateInputFormatter(), // Custom date formatter
               ],
               keyboardType: TextInputType.datetime,
-              controller: _controller,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -499,59 +492,6 @@ Widget buildTextFieldStartTime2(BuildContext context, String hintText, void Func
       ));
 }
 
-Widget buildTextFieldStartTime(
-    BuildContext context) {
-  return GestureDetector(
-    onTap: () {
-      showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (ctx) => chooseStartTime(context),
-      );
-    },
-    child: Container(
-        width: 320.w,
-        height: 40.h,
-        margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
-        decoration: BoxDecoration(
-          color: AppColors.background,
-          borderRadius: BorderRadius.all(Radius.circular(15.w)),
-          border: Border.all(color: AppColors.primaryFourthElementText),
-        ),
-        child: Row(
-          children: [
-            Container(
-              margin: EdgeInsets.only(left: 10.w),
-              child: SvgPicture.asset(
-                "assets/icons/calendar.svg",
-                width: 16.w,
-                height: 16.h,
-                color: Colors.black,
-              ),
-            ),
-            Container(
-              width: 270.w,
-              padding: EdgeInsets.only(top: 2.h, left: 10.w),
-              child: Text(
-                BlocProvider.of<MyProfileAddJobBloc>(context).state.startTime ==
-                        ''
-                    ? translate('choose_start_time')
-                    : BlocProvider.of<MyProfileAddJobBloc>(context)
-                        .state
-                        .startTime,
-                style: TextStyle(
-                  color: AppColors.textBlack,
-                  fontFamily: AppFonts.Header,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12.sp,
-                ),
-              ),
-            )
-          ],
-        )),
-  );
-}
-
 DateTime convertToDateTime(String dateString) {
   List<String> parts = dateString.split('/');
   int day = int.parse(parts[0]);
@@ -565,92 +505,6 @@ String convertDateTimeToString(DateTime dateTime) {
   String month = dateTime.month.toString().padLeft(2, '0');
   String year = dateTime.year.toString();
   return '$day/$month/$year';
-}
-
-Widget chooseStartTime(BuildContext context) {
-  late DateTime? _selectedDay;
-
-  if (BlocProvider.of<MyProfileAddJobBloc>(context).state.startTime != "") {
-    _selectedDay = convertToDateTime(
-        BlocProvider.of<MyProfileAddJobBloc>(context).state.startTime);
-  } else {
-    _selectedDay = convertToDateTime("01/01/2000");
-  }
-
-  return Container(
-    height: 210.h,
-    child: Stack(
-      children: [
-        SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 10.h),
-                child: Center(
-                  child: Text(
-                    translate('choose_start_time'),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: AppFonts.Header,
-                    ),
-                  ),
-                ),
-              ),
-              DatePickerWidget(
-                looping: false,
-                firstDate: DateTime(1950),
-                lastDate: DateTime(2030),
-                initialDate: _selectedDay,
-                dateFormat: "dd-MMMM-yyyy",
-                locale: DatePicker.localeFromString('vi'),
-                onChange: (DateTime newDay, _) {
-                  context
-                      .read<MyProfileAddJobBloc>()
-                      .add(StartTimeEvent(convertDateTimeToString(newDay)));
-                },
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  height: 30.h,
-                  decoration: BoxDecoration(
-                    color: AppColors.element,
-                    borderRadius: BorderRadius.circular(5.w),
-                    border: Border.all(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          translate('choose'),
-                          style: TextStyle(
-                            fontFamily: AppFonts.Header,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.background,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
 }
 
 Widget isWorking(BuildContext context, void Function(bool value)? func) {
@@ -761,9 +615,6 @@ Widget buildTextFieldEndTime1(BuildContext context, String hintText, void Functi
 }
 
 Widget buildTextFieldEndTime2(BuildContext context, String hintText, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddJobBloc>(context).state.endTime);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
@@ -787,16 +638,16 @@ Widget buildTextFieldEndTime2(BuildContext context, String hintText, void Functi
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
+              initialValue: BlocProvider.of<MyProfileAddJobBloc>(context).state.endTime,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(10), // Limit length to 10 characters
                 DateInputFormatter(), // Custom date formatter
               ],
               keyboardType: TextInputType.datetime,
-              controller: _controller,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
