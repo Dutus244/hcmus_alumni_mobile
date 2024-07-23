@@ -715,7 +715,7 @@ Widget infoGroup(BuildContext context, Group group) {
                   group.description,
                   maxLines: 3,
                   expandText: translate('see_more'),
-                  collapseText: translate('colllapse'),
+                  collapseText: translate('collapse'),
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
                     fontSize: 12.sp,

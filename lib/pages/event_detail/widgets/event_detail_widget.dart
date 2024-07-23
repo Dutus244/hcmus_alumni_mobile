@@ -386,7 +386,7 @@ Widget eventContent(BuildContext context, Event event) {
                 event.tags.map((tag) => tag.name).join(' '),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyle.xSmall().withColor(AppColors.tag),
+                style: AppTextStyle.small().withColor(AppColors.tag),
               ),
             ),
           ],

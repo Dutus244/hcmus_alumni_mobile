@@ -169,6 +169,29 @@ Widget informationGroup(BuildContext context, Group group) {
                   ],
                 ),
               ),
+              Container(
+                margin: EdgeInsets.only(top: 2.h, right: 10.w),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      AppAssets.tagIconS,
+                      width: 12.w,
+                      height: 12.h,
+                      color: AppColors.textGrey,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 2.w),
+                      width: 300.w,
+                      child: Text(
+                        group.tags.map((tag) => tag.name).join(' '),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyle.small().withColor(AppColors.tag),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -689,7 +712,7 @@ Widget group(BuildContext context, ScrollController _scrollController,
 
 Widget postOption(BuildContext context, Post post, String groupId) {
   return Container(
-    height: 90.h,
+    height: post.permissions.edit ? 90.h : 50.h,
     child: Stack(
       children: [
         SingleChildScrollView(
@@ -697,7 +720,8 @@ Widget postOption(BuildContext context, Post post, String groupId) {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              GestureDetector(
+              if (post.permissions.edit)
+                GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(
                     context,
@@ -735,7 +759,8 @@ Widget postOption(BuildContext context, Post post, String groupId) {
                   ),
                 ),
               ),
-              GestureDetector(
+              if (post.permissions.delete)
+                GestureDetector(
                 onTap: () async {
                   bool shouldDelete = await GroupDetailController(context: context)
                       .handleDeletePost(post.id, groupId);

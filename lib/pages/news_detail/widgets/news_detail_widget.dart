@@ -924,7 +924,7 @@ Widget news(BuildContext context, News news) {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5.w),
                       shape: BoxShape.rectangle,
-                      color: AppColors.element,
+                      color: Colors.grey,
                     ),
                     child: Text(
                       news.faculty.name,

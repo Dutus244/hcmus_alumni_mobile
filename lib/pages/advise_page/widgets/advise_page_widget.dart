@@ -233,7 +233,7 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
 
 Widget postOption(BuildContext context, Post post) {
   return Container(
-    height: post.votes.length == 0 ? 90.h : 50.h,
+    height: (post.votes.length == 0 && post.permissions.edit) ? 90.h : 50.h,
     child: Stack(
       children: [
         SingleChildScrollView(
@@ -241,7 +241,7 @@ Widget postOption(BuildContext context, Post post) {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              if (post.votes.length == 0)
+              if (post.votes.length == 0 && post.permissions.edit)
                 GestureDetector(
                   onTap: () async {
                     await Navigator.pushNamed(
@@ -270,7 +270,7 @@ Widget postOption(BuildContext context, Post post) {
                         ),
                         Text(
                           translate('edit_post'),
-                          style: AppTextStyle.medium().wMedium(),
+                          style: AppTextStyle.medium().wSemiBold(),
                         ),
                       ],
                     ),
@@ -301,7 +301,7 @@ Widget postOption(BuildContext context, Post post) {
                       ),
                       Text(
                         translate('delete_post'),
-                        style: AppTextStyle.medium().wMedium(),
+                        style: AppTextStyle.medium().wSemiBold(),
                       ),
                     ],
                   ),

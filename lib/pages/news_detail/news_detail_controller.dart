@@ -162,7 +162,7 @@ class NewsDetailController {
   Future<void> handleGetRelatedNews(String id) async {
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/news/$id/related';
-    var limit = '3';
+    var limit = '5';
     var token = Global.storageService.getUserAuthToken();
     var headers = <String, String>{
       'Authorization': 'Bearer $token',

@@ -83,12 +83,12 @@ class AdvisePageController {
       } else {
         // Handle other status codes if needed
         toastInfo(msg: translate('error_get_posts'));
-        return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_get_posts'));
-      return;
+      if (error.toString() != "Looking up a deactivated widget's ancestor is unsafe.\nAt this point the state of the widget's element tree is no longer stable.\nTo safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.") {
+        toastInfo(msg: translate('error_get_posts'));
+      }
     }
   }
 
