@@ -30,7 +30,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -66,7 +66,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16.sp,
+                              fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -80,7 +80,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                             '${calculatePercentages(vote.voteCount, post.totalVote)}% - ${vote.voteCount} lượt bình chọn',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 12.sp,
+                              fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -109,7 +109,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 16.sp,
+                                fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -123,7 +123,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                               '${calculatePercentages(vote.voteCount, post.totalVote)}% - ${vote.voteCount} lượt bình chọn',
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -137,7 +137,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                                 translate('no_votes'),
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 11.sp,
+                                  fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.normal,
                                   fontFamily: AppFonts.Header,
                                 ),
@@ -175,7 +175,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 16.sp,
+                                  fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: AppFonts.Header,
                                 ),
@@ -189,7 +189,7 @@ Widget listVoters(BuildContext context, Vote vote, Post post, ScrollController _
                                 '${calculatePercentages(vote.voteCount, post.totalVote)}% - ${vote.voteCount} lượt bình chọn',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 12.sp,
+                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: AppFonts.Header,
                                 ),
@@ -266,7 +266,7 @@ Widget voter(BuildContext context, Voter voter) {
                 voter.user.fullName,
                 style: TextStyle(
                   color: AppColors.textBlack,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.w900,
                   fontFamily: AppFonts.Header,
                 ),

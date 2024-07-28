@@ -13,8 +13,8 @@ import 'dart:io';
 import '../../../common/values/colors.dart';
 import '../alumni_information_controller.dart';
 
-Widget buildTextField(String hintText, String textType, String iconName,
-    void Function(String value)? func) {
+Widget buildTextField(BuildContext context, String hintText, String textType,
+    String iconName, void Function(String value)? func) {
   return Container(
       width: 325.w,
       height: 40.h,
@@ -50,10 +50,11 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
+                hintStyle: AppTextStyle.small(context)
+                    .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               maxLength: textType == 'studentId' ? 8 : 100,
             ),
@@ -74,9 +75,8 @@ Widget buildLogInAndRegButton(
       margin: EdgeInsets.only(
           left: 25.w, right: 25.w, top: buttonType == "verify" ? 20.h : 20.h),
       decoration: BoxDecoration(
-        color: buttonType == "verify"
-            ? AppColors.element
-            : AppColors.elementLight,
+        color:
+            buttonType == "verify" ? AppColors.element : AppColors.elementLight,
         borderRadius: BorderRadius.circular(15.w),
         border: Border.all(
           color: buttonType == "verify"
@@ -87,9 +87,10 @@ Widget buildLogInAndRegButton(
       child: Center(
         child: Text(
           buttonName,
-          style: AppTextStyle.medium().wSemiBold().withColor(buttonType == "verify"
-              ? AppColors.background
-              : AppColors.element),
+          style: AppTextStyle.medium(context).wSemiBold().withColor(
+              buttonType == "verify"
+                  ? AppColors.background
+                  : AppColors.element),
         ),
       ),
     ),
@@ -217,14 +218,15 @@ Widget alumniInformation(BuildContext context) {
                 padding: EdgeInsets.only(bottom: 5.h),
                 child: Text(
                   translate('start').toUpperCase(),
-                  style: AppTextStyle.medium().wSemiBold(),
+                  style: AppTextStyle.medium(context).wSemiBold(),
                 ),
               )),
               Center(
                   child: Container(
                 padding: EdgeInsets.only(bottom: 10.h),
                 child: Text(translate('alumni_information_verify_title'),
-                    textAlign: TextAlign.center, style: AppTextStyle.small()),
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.small(context)),
               )),
               SizedBox(
                 height: 5.h,
@@ -235,8 +237,8 @@ Widget alumniInformation(BuildContext context) {
               SizedBox(
                 height: 25.h,
               ),
-              buildTextField(translate('full_name*'), "fullName", AppAssets.userIconP,
-                  (value) {
+              buildTextField(context, translate('full_name*'), "fullName",
+                  AppAssets.userIconP, (value) {
                 context.read<AlumniInformationBloc>().add(FullNameEvent(value));
               }),
             ],

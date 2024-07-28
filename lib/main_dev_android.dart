@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -26,12 +24,11 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   await Global.init();
-  await dotenv.load(fileName: '.env.dev.ios');
+  await dotenv.load(fileName: '.env.dev.android');
   var delegate = await LocalizationDelegate.create(
     fallbackLocale: 'vi',
     supportedLocales: ['vi'],
   );
-  print(Global.storageService.getDeviceLanguage());
   delegate.changeLocale(Locale(Global.storageService.getDeviceLanguage()));
   runApp(LocalizedApp(delegate, MyApp()));
 }
@@ -40,7 +37,6 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   static void setLocale(BuildContext context, Locale newLocale) {
-    print(newLocale);
     LocalizedApp.of(context).delegate.changeLocale(newLocale);
   }
 

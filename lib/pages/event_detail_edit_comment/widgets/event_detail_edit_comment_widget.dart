@@ -27,7 +27,7 @@ AppBar buildAppBar(BuildContext context) {
         child: Text(
           translate('event'),
           textAlign: TextAlign.center,
-          style: AppTextStyle.medium().wSemiBold(),
+          style: AppTextStyle.medium(context).wSemiBold(),
         ),
       ),
     ),
@@ -68,10 +68,10 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
+                hintStyle: AppTextStyle.small(context).withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
             ),
           )
@@ -79,7 +79,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
       ));
 }
 
-Widget header(Event event) {
+Widget header(BuildContext context, Event event) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -88,14 +88,14 @@ Widget header(Event event) {
         margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
         child: Text(
           event.title,
-          style: AppTextStyle.base().wSemiBold(),
+          style: AppTextStyle.base(context).wSemiBold(),
         ),
       ),
       Container(
         margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
         child: Text(
           translate('edit_comment'),
-          style: AppTextStyle.xxLarge().wSemiBold(),
+          style: AppTextStyle.xxLarge(context).wSemiBold(),
         ),
       ),
       Container(
@@ -120,7 +120,7 @@ Widget header(Event event) {
             Text(
               Global.storageService.getUserFullName(),
               maxLines: 1,
-              style: AppTextStyle.small().wSemiBold(),
+              style: AppTextStyle.small(context).wSemiBold(),
             ),
           ],
         ),
@@ -159,7 +159,7 @@ Widget buttonEdit(BuildContext context, Event event, Comment Comment) {
           children: [
             Text(
               translate('save'),
-              style: AppTextStyle.base().wSemiBold().withColor(comment != ""
+              style: AppTextStyle.base(context).wSemiBold().withColor(comment != ""
                   ? AppColors.background
                   : AppColors.textBlack.withOpacity(0.3)),
             ),
@@ -193,7 +193,7 @@ Widget eventDetailEditComment(BuildContext context, Event? event, Comment? comme
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            header(event),
+            header(context, event),
             buildTextField(context, translate('your_comment'), 'comment', '',
                 (value) {
               context

@@ -21,14 +21,14 @@ AppBar buildAppBar(BuildContext context) {
         child: Text(
           translate('change_password'),
           textAlign: TextAlign.center,
-          style: AppTextStyle.medium().wSemiBold(),
+          style: AppTextStyle.medium(context).wSemiBold(),
         ),
       ),
     ),
   );
 }
 
-Widget buildTextField(String hintText, String textType, String iconName,
+Widget buildTextField(BuildContext context, String hintText, String textType, String iconName,
     void Function(String value)? func) {
   return Container(
       width: 325.w,
@@ -65,10 +65,10 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
+                hintStyle: AppTextStyle.small(context).withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               obscureText: textType == "email" ? false : true,
               maxLength: 30,
@@ -88,7 +88,7 @@ Widget changePassword(BuildContext context) {
           scrollDirection: Axis.vertical,
           children: [
             Container(height: 10.h,),
-            buildTextField(translate('new_password*'), "password", AppAssets.lockIconP, (value) {
+            buildTextField(context, translate('new_password*'), "password", AppAssets.lockIconP, (value) {
               context
                   .read<ChangePasswordBloc>()
                   .add(PasswordEvent(value));
@@ -96,7 +96,7 @@ Widget changePassword(BuildContext context) {
             SizedBox(
               height: 5.h,
             ),
-            buildTextField(translate('re_new_password*'), "password", AppAssets.lockIconP,
+            buildTextField(context, translate('re_new_password*'), "password", AppAssets.lockIconP,
                     (value) {
                   context
                       .read<ChangePasswordBloc>()
@@ -138,7 +138,7 @@ Widget buttonChange(BuildContext context) {
               children: [
                 Text(
                   translate('save'),
-                  style: AppTextStyle.base().wSemiBold().withColor((password != "" && rePassword != "")
+                  style: AppTextStyle.base(context).wSemiBold().withColor((password != "" && rePassword != "")
                       ? AppColors.background
                       : Colors.black.withOpacity(0.3)),
                 ),

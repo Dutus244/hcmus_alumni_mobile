@@ -28,7 +28,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -78,7 +78,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                 fontFamily: AppFonts.Header,
                 color: AppColors.textBlack,
                 fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
               obscureText: false,
@@ -144,7 +144,7 @@ Widget listGroup(BuildContext context, ScrollController _scrollController) {
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -255,7 +255,7 @@ Widget group(BuildContext context, Group group) {
                             group.name,
                             style: TextStyle(
                               color: AppColors.textBlack,
-                              fontSize: 12.sp,
+                              fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.w900,
                               fontFamily: AppFonts.Header,
                             ),
@@ -266,7 +266,7 @@ Widget group(BuildContext context, Group group) {
                               '$typeGroup - ${handleParticipantCount(group.participantCount)} ${translate('members').toLowerCase()}',
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -281,7 +281,7 @@ Widget group(BuildContext context, Group group) {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 11.sp,
+                                fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -304,7 +304,7 @@ Widget group(BuildContext context, Group group) {
                                   translate('waiting_approval'),
                                   style: TextStyle(
                                     fontFamily: AppFonts.Header,
-                                    fontSize: 12.sp,
+                                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.textBlack,
                                   ),
@@ -333,7 +333,7 @@ Widget group(BuildContext context, Group group) {
                                     translate('join'),
                                     style: TextStyle(
                                       fontFamily: AppFonts.Header,
-                                      fontSize: 12.sp,
+                                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.background,
                                     ),
@@ -358,7 +358,7 @@ Widget group(BuildContext context, Group group) {
                                   translate('see_details'),
                                   style: TextStyle(
                                     fontFamily: AppFonts.Header,
-                                    fontSize: 12.sp,
+                                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.element,
                                   ),

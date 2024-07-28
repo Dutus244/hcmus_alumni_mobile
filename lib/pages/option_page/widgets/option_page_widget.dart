@@ -31,7 +31,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -58,7 +58,7 @@ Widget optionPage(BuildContext context) {
                 translate('account'),
                 style: TextStyle(
                   color: AppColors.textBlack,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.bold,
                   fontFamily: AppFonts.Header,
                 ),
@@ -90,7 +90,7 @@ Widget optionPage(BuildContext context) {
                         translate('change_password'),
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -117,7 +117,7 @@ Widget optionPage(BuildContext context) {
                 translate('option'),
                 style: TextStyle(
                   color: AppColors.textBlack,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.bold,
                   fontFamily: AppFonts.Header,
                 ),
@@ -147,7 +147,7 @@ Widget optionPage(BuildContext context) {
           //               translate('notification_setting'),
           //               style: TextStyle(
           //                 color: AppColors.textBlack,
-          //                 fontSize: 16.sp,
+          //                 fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
           //                 fontWeight: FontWeight.w900,
           //                 fontFamily: AppFonts.Header,
           //               ),
@@ -193,7 +193,7 @@ Widget optionPage(BuildContext context) {
                         translate('language_setting'),
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -207,7 +207,7 @@ Widget optionPage(BuildContext context) {
                         : translate('english'),
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       fontFamily: AppFonts.Header,
                     ),
@@ -226,7 +226,7 @@ Widget optionPage(BuildContext context) {
                 translate('rule'),
                 style: TextStyle(
                   color: AppColors.textBlack,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.bold,
                   fontFamily: AppFonts.Header,
                 ),
@@ -258,7 +258,7 @@ Widget optionPage(BuildContext context) {
                         translate('terms_of_service'),
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -300,7 +300,7 @@ Widget optionPage(BuildContext context) {
                         translate('sign_out'),
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -328,7 +328,7 @@ Widget optionPage(BuildContext context) {
                   'Alumverse HCMUS',
                   style: TextStyle(
                     color: AppColors.textBlack,
-                    fontSize: 12.sp,
+                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     fontFamily: AppFonts.Header,
                   ),
@@ -361,7 +361,7 @@ Widget chooseLanguage(
                     translate('choose_language'),
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       fontFamily: AppFonts.Header,
                     ),
@@ -383,7 +383,7 @@ Widget chooseLanguage(
                             translate('vietnamese'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -427,7 +427,7 @@ Widget chooseLanguage(
                             translate('english'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),

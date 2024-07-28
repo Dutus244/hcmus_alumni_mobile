@@ -164,7 +164,6 @@ class SignInController {
         try {
           var response = await http.get(url, headers: headers);
           var responseBody = utf8.decode(response.bodyBytes);
-          print(responseBody);
           if (response.statusCode == 200) {
             var jsonMap = json.decode(responseBody);
             var user = User.fromJson(jsonMap["user"]);

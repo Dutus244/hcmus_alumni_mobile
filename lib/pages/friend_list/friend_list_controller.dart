@@ -98,7 +98,6 @@ class FriendListController {
         }
       } else {
         // Handle other status codes if needed
-        print(responseBody);
         toastInfo(msg: translate('error_get_friend'));
       }
     } catch (error) {

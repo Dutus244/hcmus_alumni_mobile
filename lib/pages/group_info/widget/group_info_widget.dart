@@ -26,7 +26,7 @@ import 'dart:io';
 //           style: TextStyle(
 //             fontFamily: AppFonts.Header,
 //             fontWeight: FontWeight.bold,
-//             fontSize: 16.sp,
+//             fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
 //             color: AppColors.secondaryHeader,
 //           ),
 //         ),
@@ -51,7 +51,7 @@ AppBar buildAppBar(BuildContext context, Group group ) {
             style: TextStyle(
               fontFamily: AppFonts.Header,
               fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
+              fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
               color: AppColors.secondaryHeader,
             ),
           ),
@@ -77,7 +77,7 @@ Widget infoGroup(BuildContext context, Group group) {
                 translate('introduce'),
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16.sp,
+                  fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.bold,
                   fontFamily: AppFonts.Header,
                 ),
@@ -93,7 +93,7 @@ Widget infoGroup(BuildContext context, Group group) {
                 collapseText: translate('collapse'),
                 style: TextStyle(
                   fontFamily: AppFonts.Header,
-                  fontSize: 14.sp,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.normal,
                   color: AppColors.textBlack,
                 ),
@@ -120,7 +120,7 @@ Widget infoGroup(BuildContext context, Group group) {
                             translate('private'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -131,7 +131,7 @@ Widget infoGroup(BuildContext context, Group group) {
                               translate('private_description'),
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 14.sp,
+                                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -164,7 +164,7 @@ Widget infoGroup(BuildContext context, Group group) {
                             translate('public'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -175,7 +175,7 @@ Widget infoGroup(BuildContext context, Group group) {
                               translate('public_description'),
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 14.sp,
+                                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -207,7 +207,7 @@ Widget infoGroup(BuildContext context, Group group) {
                           translate('group_history'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 14.sp,
+                            fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             fontFamily: AppFonts.Header,
                           ),
@@ -218,7 +218,7 @@ Widget infoGroup(BuildContext context, Group group) {
                             '${translate('group_creation_date')} ${handleDateTime2(group.createAt)}',
                             style: TextStyle(
                               color: AppColors.textGrey,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.normal,
                               fontFamily: AppFonts.Header,
                             ),
@@ -250,7 +250,7 @@ Widget infoGroup(BuildContext context, Group group) {
                           translate('members'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 14.sp,
+                            fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             fontFamily: AppFonts.Header,
                           ),
@@ -277,7 +277,7 @@ Widget infoGroup(BuildContext context, Group group) {
                                 color: AppColors.element,
                                 decorationColor: AppColors.textBlack,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                               ),
                             )),
                       ),
@@ -327,7 +327,7 @@ Widget infoGroup(BuildContext context, Group group) {
   BlocProvider.of<GroupInfoBloc>(context).state.members.length > 1 ? '${BlocProvider.of<GroupInfoBloc>(context).state.members[0].user.fullName} và người bạn khác đã tham gia' : '${BlocProvider.of<GroupInfoBloc>(context).state.members[0].user.fullName} đã tham gia',
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.normal,
                           fontFamily: AppFonts.Header,
                         ),
@@ -389,7 +389,7 @@ Widget infoGroup(BuildContext context, Group group) {
                             : '${BlocProvider.of<GroupInfoBloc>(context).state.admins[0].user.fullName} là quản trị viên',
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.normal,
                           fontFamily: AppFonts.Header,
                         ),

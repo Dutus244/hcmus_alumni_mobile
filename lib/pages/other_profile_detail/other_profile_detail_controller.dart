@@ -21,7 +21,6 @@ class OtherProfileDetailController {
   const OtherProfileDetailController({required this.context});
   
   Future<void> handleGetProfile(String id) async {
-    print(id);
     var token = Global.storageService.getUserAuthToken();
     var url = Uri.parse(
         '${dotenv.env['API_URL']}/user/$id/profile');
@@ -34,7 +33,6 @@ class OtherProfileDetailController {
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
-        print(jsonMap);
         var user = User.fromJson(jsonMap["user"]);
         context.read<OtherProfileDetailBloc>().add(UserEvent(user));
         if (jsonMap["alumniVerification"] != null) {

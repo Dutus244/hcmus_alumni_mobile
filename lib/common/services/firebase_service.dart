@@ -30,7 +30,7 @@ class NotificationServices {
   void isRefreshToken() async {
     messaging.onTokenRefresh.listen((event) {
       event.toString();
-      print('TOken Refereshed');
+      print('Token Refreshed');
     });
   }
 
@@ -58,10 +58,10 @@ class NotificationServices {
 
     if (notificationSettings.authorizationStatus ==
         AuthorizationStatus.authorized) {
-      print('user is already granted permisions');
+      print('user is already granted permissions');
     } else if (notificationSettings.authorizationStatus ==
         AuthorizationStatus.provisional) {
-      print('user is already granted provisional permisions');
+      print('user is already granted provisional permissions');
     } else {
       print('User has denied permission');
     }

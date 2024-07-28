@@ -45,7 +45,7 @@ Widget listNotifications(BuildContext context, ScrollController _scrollControlle
                               translate('no_notification'),
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -194,7 +194,7 @@ Widget notification(BuildContext context, Notifications notifications) {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: AppColors.textBlack,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: notifications.status.name == "Chưa xem" ? FontWeight.bold : FontWeight.normal,
                       fontFamily: AppFonts.Header,
                     ),
@@ -210,7 +210,7 @@ Widget notification(BuildContext context, Notifications notifications) {
                     handleDateTime1(notifications.createAt),
                     style: TextStyle(
                       color: AppColors.textGrey,
-                      fontSize: 10.sp,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight:  notifications.status.name == "Chưa xem" ? FontWeight.bold : FontWeight.normal,
                       fontFamily: AppFonts.Header,
                     ),

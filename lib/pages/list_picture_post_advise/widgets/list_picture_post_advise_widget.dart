@@ -22,7 +22,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),

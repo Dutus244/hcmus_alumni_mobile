@@ -41,7 +41,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -121,7 +121,7 @@ Widget header(BuildContext context) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 20.sp,
+                fontSize: 20.sp / MediaQuery.of(context).textScaleFactor,
                 color: AppColors.secondaryHeader,
               ),
             ),
@@ -155,7 +155,7 @@ Widget header(BuildContext context) {
                         translate('unverified_account'),
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 10.sp,
+                          fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -193,7 +193,7 @@ Widget header(BuildContext context) {
                         translate('unverified_account'),
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 10.sp,
+                          fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -230,7 +230,7 @@ Widget header(BuildContext context) {
                         translate('verified_account'),
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 10.sp,
+                          fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -254,7 +254,7 @@ Widget header(BuildContext context) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 14.sp,
+                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                 color: AppColors.secondaryHeader,
               ),
             ),
@@ -263,7 +263,7 @@ Widget header(BuildContext context) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
-                fontSize: 14.sp,
+                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                 color: AppColors.textGrey,
               ),
             ),
@@ -308,7 +308,7 @@ Widget header(BuildContext context) {
                       translate('edit_profile'),
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 14.sp,
+                        fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textBlack,
                       ),
@@ -373,7 +373,7 @@ Widget detail(BuildContext context) {
           translate('detail'),
           style: TextStyle(
             fontFamily: AppFonts.Header,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             fontWeight: FontWeight.bold,
             color: AppColors.textBlack,
           ),
@@ -405,7 +405,7 @@ Widget detail(BuildContext context) {
                   '${BlocProvider.of<MyProfilePageBloc>(context).state.educations[i].isLearning ? translate('studying_at') : translate('studied_at')} ${BlocProvider.of<MyProfilePageBloc>(context).state.educations[i].schoolName}',
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
-                    fontSize: 14.sp,
+                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.normal,
                     color: AppColors.textBlack,
                   ),
@@ -436,7 +436,7 @@ Widget detail(BuildContext context) {
                   '${BlocProvider.of<MyProfilePageBloc>(context).state.jobs[i].isWorking ? translate('working_at') : translate('worked_at')} ${BlocProvider.of<MyProfilePageBloc>(context).state.jobs[i].companyName}',
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
-                    fontSize: 14.sp,
+                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.normal,
                     color: AppColors.textBlack,
                   ),
@@ -471,7 +471,7 @@ Widget detail(BuildContext context) {
                   '${translate('has_achieved')} ${BlocProvider.of<MyProfilePageBloc>(context).state.achievements[i].name}',
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
-                    fontSize: 14.sp,
+                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.normal,
                     color: AppColors.textBlack,
                   ),
@@ -508,7 +508,7 @@ Widget detail(BuildContext context) {
                   translate('view_your_referral_information'),
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
-                    fontSize: 14.sp,
+                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.normal,
                     color: AppColors.textBlack,
                   ),
@@ -538,7 +538,7 @@ Widget listFriend(BuildContext context) {
           translate('friend'),
           style: TextStyle(
             fontFamily: AppFonts.Header,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             fontWeight: FontWeight.bold,
             color: AppColors.textBlack,
           ),
@@ -550,7 +550,7 @@ Widget listFriend(BuildContext context) {
           '${BlocProvider.of<MyProfilePageBloc>(context).state.friendCount} ${translate('friends').toLowerCase()}',
           style: TextStyle(
             fontFamily: AppFonts.Header,
-            fontSize: 12.sp,
+            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
             fontWeight: FontWeight.normal,
             color: AppColors.textGrey,
           ),
@@ -617,7 +617,7 @@ Widget listFriend(BuildContext context) {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: AppColors.textBlack,
                           ),
@@ -688,7 +688,7 @@ Widget listFriend(BuildContext context) {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontFamily: AppFonts.Header,
-                              fontSize: 12.sp,
+                              fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               color: AppColors.textBlack,
                             ),
@@ -727,7 +727,7 @@ Widget listFriend(BuildContext context) {
                     translate('see_all_friends'),
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -780,7 +780,7 @@ Widget buildButtonChooseNewsOrEvent(
                   translate('advise'),
                   style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       color: BlocProvider.of<MyProfilePageBloc>(context)
                                   .state
@@ -820,7 +820,7 @@ Widget buildButtonChooseNewsOrEvent(
                   translate('events_participated'),
                   style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       color: BlocProvider.of<MyProfilePageBloc>(context)
                                   .state
@@ -860,7 +860,7 @@ Widget buildButtonChooseNewsOrEvent(
                   translate('comment_advise'),
                   style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       color: BlocProvider.of<MyProfilePageBloc>(context)
                                   .state
@@ -931,7 +931,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                           translate('no_event'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -1027,7 +1027,7 @@ Widget event(BuildContext context, Event event) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -1053,7 +1053,7 @@ Widget event(BuildContext context, Event event) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -1079,7 +1079,7 @@ Widget event(BuildContext context, Event event) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -1106,7 +1106,7 @@ Widget event(BuildContext context, Event event) {
                       event.tags[i].name,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: Color.fromARGB(255, 5, 90, 188),
                       ),
@@ -1122,7 +1122,7 @@ Widget event(BuildContext context, Event event) {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: AppFonts.Header,
-                fontSize: 16.sp,
+                fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textBlack,
               ),
@@ -1147,7 +1147,7 @@ Widget event(BuildContext context, Event event) {
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 63, 63, 70),
                     ),
@@ -1163,7 +1163,7 @@ Widget event(BuildContext context, Event event) {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 12.sp,
+                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: Color.fromARGB(255, 63, 63, 70),
                       ),
@@ -1190,7 +1190,7 @@ Widget event(BuildContext context, Event event) {
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: 'Roboto',
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 63, 63, 70),
                     ),
@@ -1203,7 +1203,7 @@ Widget event(BuildContext context, Event event) {
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: 'Roboto',
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 63, 63, 70),
                     ),
@@ -1242,7 +1242,7 @@ Widget event(BuildContext context, Event event) {
                       event.faculty.name,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 11.sp,
+                        fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header,
                       ),
@@ -1321,7 +1321,7 @@ Widget listPosts(BuildContext context, ScrollController _scrollController) {
                           translate('no_posts'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -1423,7 +1423,7 @@ Widget postOption(BuildContext context, Post post) {
                           translate('edit_post'),
                           style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 16.sp,
+                            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: AppColors.textBlack,
                           ),
@@ -1459,7 +1459,7 @@ Widget postOption(BuildContext context, Post post) {
                         translate('delete_post'),
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textBlack,
                         ),
@@ -1526,7 +1526,7 @@ Widget post(BuildContext context, Post post) {
                         maxLines: 1,
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textBlack,
                         ),
@@ -1538,7 +1538,7 @@ Widget post(BuildContext context, Post post) {
                             maxLines: 1,
                             style: TextStyle(
                               fontFamily: AppFonts.Header,
-                              fontSize: 10.sp,
+                              fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.normal,
                               color: AppColors.textGrey,
                             ),
@@ -1575,7 +1575,7 @@ Widget post(BuildContext context, Post post) {
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontFamily: AppFonts.Header,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textBlack,
               ),
@@ -1598,7 +1598,7 @@ Widget post(BuildContext context, Post post) {
                     post.tags.map((tag) => tag.name).join(' '),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.xSmall().withColor(AppColors.tag),
+                    style: AppTextStyle.xSmall(context).withColor(AppColors.tag),
                   ),
                 ),
               ],
@@ -1614,7 +1614,7 @@ Widget post(BuildContext context, Post post) {
               collapseText: translate('collapse'),
               style: TextStyle(
                 fontFamily: AppFonts.Header,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.normal,
                 color: AppColors.textBlack,
               ),
@@ -1673,7 +1673,7 @@ Widget post(BuildContext context, Post post) {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 12.sp,
+                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.normal,
                                   color: AppColors.textGrey),
                             ),
@@ -1697,7 +1697,7 @@ Widget post(BuildContext context, Post post) {
                               '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 12.sp,
+                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.normal,
                                   color: AppColors.element),
                             ),
@@ -1770,7 +1770,7 @@ Widget post(BuildContext context, Post post) {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 12.sp,
+                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.normal,
                                   color: AppColors.textGrey),
                             ),
@@ -1794,7 +1794,7 @@ Widget post(BuildContext context, Post post) {
                               '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 12.sp,
+                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.normal,
                                   color: AppColors.element),
                             ),
@@ -1888,7 +1888,7 @@ Widget post(BuildContext context, Post post) {
                         translate('add_option'),
                         style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             color: AppColors.textGrey),
                       ),
@@ -2195,7 +2195,7 @@ Widget post(BuildContext context, Post post) {
                                       '+1',
                                       style: TextStyle(
                                         fontFamily: AppFonts.Header,
-                                        fontSize: 32.sp,
+                                        fontSize: 32.sp / MediaQuery.of(context).textScaleFactor,
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.background,
                                       ),
@@ -2246,7 +2246,7 @@ Widget post(BuildContext context, Post post) {
                           post.reactionCount.toString(),
                           style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 10.sp,
+                            fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             color: AppColors.textBlack,
                           ),
@@ -2271,7 +2271,7 @@ Widget post(BuildContext context, Post post) {
                       '${post.childrenCommentNumber} ${translate('comments').toLowerCase()}',
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textBlack,
                       ),
@@ -2322,7 +2322,7 @@ Widget post(BuildContext context, Post post) {
                                             translate('like'),
                                             style: TextStyle(
                                               fontFamily: AppFonts.Header,
-                                              fontSize: 10.sp,
+                                              fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                                               fontWeight: FontWeight.normal,
                                               color: AppColors.element,
                                             ),
@@ -2347,7 +2347,7 @@ Widget post(BuildContext context, Post post) {
                                             translate('like'),
                                             style: TextStyle(
                                               fontFamily: AppFonts.Header,
-                                              fontSize: 10.sp,
+                                              fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                                               fontWeight: FontWeight.normal,
                                               color: AppColors.textBlack,
                                             ),
@@ -2390,7 +2390,7 @@ Widget post(BuildContext context, Post post) {
                                       translate('comment'),
                                       style: TextStyle(
                                         fontFamily: AppFonts.Header,
-                                        fontSize: 10.sp,
+                                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                                         fontWeight: FontWeight.normal,
                                         color: AppColors.textBlack,
                                       ),
@@ -2474,7 +2474,7 @@ Widget listCommentAdvise(
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -2609,7 +2609,7 @@ Widget commentAdvise(BuildContext context, Comment comment) {
                                         text: '${comment.creator.fullName}',
                                         style: TextStyle(
                                           color: AppColors.textBlack,
-                                          fontSize: 14.sp,
+                                          fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                                           fontWeight: FontWeight.bold,
                                           // Make this part bold
                                           fontFamily: AppFonts.Header,
@@ -2619,7 +2619,7 @@ Widget commentAdvise(BuildContext context, Comment comment) {
                                         text: ' đã bình luận trong bài viết ',
                                         style: TextStyle(
                                           color: AppColors.textBlack,
-                                          fontSize: 14.sp,
+                                          fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                                           fontWeight: FontWeight.w500,
                                           fontFamily: AppFonts.Header,
                                         ),
@@ -2628,7 +2628,7 @@ Widget commentAdvise(BuildContext context, Comment comment) {
                                         text: '${comment.post!.title}',
                                         style: TextStyle(
                                           color: AppColors.textBlack,
-                                          fontSize: 14.sp,
+                                          fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                                           fontWeight: FontWeight.bold,
                                           // Make this part bold
                                           fontFamily: AppFonts.Header,
@@ -2646,7 +2646,7 @@ Widget commentAdvise(BuildContext context, Comment comment) {
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: AppColors.textBlack,
-                                  fontSize: 12.sp,
+                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.normal,
                                   fontFamily: AppFonts.Header,
                                 ),
@@ -2658,7 +2658,7 @@ Widget commentAdvise(BuildContext context, Comment comment) {
                                   maxLines: 1,
                                   style: TextStyle(
                                     color: AppColors.textGrey,
-                                    fontSize: 12.sp,
+                                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                     fontWeight: FontWeight.normal,
                                     fontFamily: AppFonts.Header,
                                   ),

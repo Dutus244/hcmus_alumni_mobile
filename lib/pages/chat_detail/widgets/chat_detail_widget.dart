@@ -49,7 +49,7 @@ AppBar buildAppBar(BuildContext context, String name) {
                     Text(
                       name,
                       textAlign: TextAlign.center,
-                      style: AppTextStyle.medium().wSemiBold(),
+                      style: AppTextStyle.medium(context).wSemiBold(),
                     ),
                   ],
                 ),
@@ -185,7 +185,7 @@ Widget message(BuildContext context, Message message) {
                   child: Text(
                     message.content,
                     style:
-                        AppTextStyle.medium().withColor(AppColors.background),
+                        AppTextStyle.medium(context).withColor(AppColors.background),
                   ),
                 ),
               ),
@@ -216,7 +216,7 @@ Widget message(BuildContext context, Message message) {
                                   Global.storageService.getUserId()
                               ? "chính mình"
                               : message.parentMessage!.sender.fullName),
-                      style: AppTextStyle.small().withColor(AppColors.textGrey),
+                      style: AppTextStyle.small(context).withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -238,7 +238,7 @@ Widget message(BuildContext context, Message message) {
                     child: Text(
                       message.parentMessage!.content,
                       style:
-                          AppTextStyle.medium().withColor(AppColors.textGrey),
+                          AppTextStyle.medium(context).withColor(AppColors.textGrey),
                     ),
                   ),
                 ),
@@ -268,7 +268,7 @@ Widget message(BuildContext context, Message message) {
                           left: 10.w, right: 10.w, top: 2.h, bottom: 2.h),
                       child: Text(
                         message.content,
-                        style: AppTextStyle.medium()
+                        style: AppTextStyle.medium(context)
                             .withColor(AppColors.background),
                       ),
                     ),
@@ -302,7 +302,7 @@ Widget message(BuildContext context, Message message) {
                                   Global.storageService.getUserId()
                               ? "chính mình"
                               : message.parentMessage!.sender.fullName),
-                      style: AppTextStyle.small().withColor(AppColors.textGrey),
+                      style: AppTextStyle.small(context).withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -356,7 +356,7 @@ Widget message(BuildContext context, Message message) {
                           left: 10.w, right: 10.w, top: 2.h, bottom: 2.h),
                       child: Text(
                         message.content,
-                        style: AppTextStyle.medium()
+                        style: AppTextStyle.medium(context)
                             .withColor(AppColors.background),
                       ),
                     ),
@@ -413,7 +413,7 @@ Widget message(BuildContext context, Message message) {
                                   Global.storageService.getUserId()
                               ? "chính mình"
                               : message.parentMessage!.sender.fullName),
-                      style: AppTextStyle.small().withColor(AppColors.textGrey),
+                      style: AppTextStyle.small(context).withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -435,7 +435,7 @@ Widget message(BuildContext context, Message message) {
                     child: Text(
                       message.parentMessage!.content,
                       style:
-                          AppTextStyle.medium().withColor(AppColors.textGrey),
+                          AppTextStyle.medium(context).withColor(AppColors.textGrey),
                     ),
                   ),
                 ),
@@ -487,7 +487,7 @@ Widget message(BuildContext context, Message message) {
                                   Global.storageService.getUserId()
                               ? "chính mình"
                               : message.parentMessage!.sender.fullName),
-                      style: AppTextStyle.small().withColor(AppColors.textGrey),
+                      style: AppTextStyle.small(context).withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -566,7 +566,7 @@ Widget message(BuildContext context, Message message) {
                       left: 10.w, right: 10.w, top: 2.h, bottom: 2.h),
                   child: Text(
                     message.content,
-                    style: AppTextStyle.medium(),
+                    style: AppTextStyle.medium(context),
                   ),
                 ),
               ),
@@ -598,7 +598,7 @@ Widget message(BuildContext context, Message message) {
                                   Global.storageService.getUserId()
                               ? "bạn"
                               : "chính mình"),
-                      style: AppTextStyle.small().withColor(AppColors.textGrey),
+                      style: AppTextStyle.small(context).withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -620,7 +620,7 @@ Widget message(BuildContext context, Message message) {
                     child: Text(
                       message.parentMessage!.content,
                       style:
-                          AppTextStyle.medium().withColor(AppColors.textGrey),
+                          AppTextStyle.medium(context).withColor(AppColors.textGrey),
                     ),
                   ),
                 ),
@@ -650,7 +650,7 @@ Widget message(BuildContext context, Message message) {
                           left: 10.w, right: 10.w, top: 2.h, bottom: 2.h),
                       child: Text(
                         message.content,
-                        style: AppTextStyle.medium(),
+                        style: AppTextStyle.medium(context),
                       ),
                     ),
                   ),
@@ -684,7 +684,7 @@ Widget message(BuildContext context, Message message) {
                                   Global.storageService.getUserId()
                               ? "bạn"
                               : "chính mình"),
-                      style: AppTextStyle.small().withColor(AppColors.textGrey),
+                      style: AppTextStyle.small(context).withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -738,7 +738,7 @@ Widget message(BuildContext context, Message message) {
                           left: 10.w, right: 10.w, top: 2.h, bottom: 2.h),
                       child: Text(
                         message.content,
-                        style: AppTextStyle.medium(),
+                        style: AppTextStyle.medium(context),
                       ),
                     ),
                   ),
@@ -795,7 +795,7 @@ Widget message(BuildContext context, Message message) {
                                   Global.storageService.getUserId()
                               ? "bạn"
                               : "chính mình"),
-                      style: AppTextStyle.small().withColor(AppColors.textGrey),
+                      style: AppTextStyle.small(context).withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -817,7 +817,7 @@ Widget message(BuildContext context, Message message) {
                     child: Text(
                       message.parentMessage!.content,
                       style:
-                          AppTextStyle.medium().withColor(AppColors.textGrey),
+                          AppTextStyle.medium(context).withColor(AppColors.textGrey),
                     ),
                   ),
                 ),
@@ -870,7 +870,7 @@ Widget message(BuildContext context, Message message) {
                                   Global.storageService.getUserId()
                               ? "bạn"
                               : "chính mình"),
-                      style: AppTextStyle.small().withColor(AppColors.textGrey),
+                      style: AppTextStyle.small(context).withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -957,7 +957,7 @@ Widget messageOption(BuildContext context, Message message) {
               'Trả lời',
               style: TextStyle(
                 fontFamily: AppFonts.Header,
-                fontSize: 16.sp,
+                fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textBlack,
               ),
@@ -1004,11 +1004,11 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small()
+                hintStyle: AppTextStyle.small(context)
                     .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
             ),
           )
@@ -1102,7 +1102,7 @@ Widget navigation(BuildContext context, Message? message, int inboxId,
                                             .children!
                                             .sender
                                             .fullName),
-                                style: AppTextStyle.small().wSemiBold(),
+                                style: AppTextStyle.small(context).wSemiBold(),
                               ),
                             ),
                             Container(
@@ -1122,7 +1122,7 @@ Widget navigation(BuildContext context, Message? message, int inboxId,
                                         .content,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: AppTextStyle.small(),
+                                style: AppTextStyle.small(context),
                               ),
                             ),
                           ],
@@ -1203,7 +1203,7 @@ Widget navigation(BuildContext context, Message? message, int inboxId,
                       margin: EdgeInsets.only(left: 10.w, bottom: 2.h),
                       child: Text(
                         'Chỉnh sửa bình luận',
-                        style: AppTextStyle.small(),
+                        style: AppTextStyle.small(context),
                       ),
                     ),
                     Container(
@@ -1219,7 +1219,7 @@ Widget navigation(BuildContext context, Message? message, int inboxId,
                       },
                       child: Text(
                         '- Huỷ',
-                        style: AppTextStyle.small()
+                        style: AppTextStyle.small(context)
                             .wSemiBold()
                             .withColor(AppColors.textGrey),
                       ),
@@ -1345,7 +1345,7 @@ Widget choosePicture(
                     margin: EdgeInsets.only(top: 20.h),
                     child: Text(
                       translate('no_pictures'),
-                      style: AppTextStyle.small(),
+                      style: AppTextStyle.small(context),
                     ),
                   )),
                 ],

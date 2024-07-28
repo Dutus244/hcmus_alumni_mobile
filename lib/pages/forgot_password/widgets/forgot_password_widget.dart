@@ -42,11 +42,11 @@ Widget buildTextFieldEmail(BuildContext context, String hintText,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small()
+                hintStyle: AppTextStyle.small(context)
                     .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               obscureText: false,
               maxLength: 50,
@@ -70,7 +70,7 @@ Widget buildTextFieldEmail(BuildContext context, String hintText,
                   ),
                   Text(
                     translate('send_again'),
-                    style: AppTextStyle.small().underline(),
+                    style: AppTextStyle.small(context).underline(),
                   )
                 ],
               ),
@@ -80,7 +80,7 @@ Widget buildTextFieldEmail(BuildContext context, String hintText,
       ));
 }
 
-Widget buildTextField(String hintText, String textType, String iconName,
+Widget buildTextField(BuildContext context, String hintText, String textType, String iconName,
     void Function(String value)? func) {
   return Container(
       width: 325.w,
@@ -111,11 +111,11 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small()
+                hintStyle: AppTextStyle.small(context)
                     .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               obscureText: false,
               maxLength: 8,
@@ -153,7 +153,7 @@ Widget buildVerifyAndBackButton(
       child: Center(
         child: Text(
           buttonName,
-          style: AppTextStyle.medium().wSemiBold().withColor(
+          style: AppTextStyle.medium(context).wSemiBold().withColor(
               buttonType == "verify"
                   ? AppColors.background
                   : AppColors.element),
@@ -188,7 +188,7 @@ Widget forgotPassword(BuildContext context) {
                 padding: EdgeInsets.only(bottom: 5.h),
                 child: Text(
                   translate('forgot_password').toUpperCase(),
-                  style: AppTextStyle.medium().wSemiBold(),
+                  style: AppTextStyle.medium(context).wSemiBold(),
                 ),
               )),
               SizedBox(
@@ -201,7 +201,7 @@ Widget forgotPassword(BuildContext context) {
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(translate('authentication_code*'), "code", "",
+              buildTextField(context, translate('authentication_code*'), "code", "",
                   (value) {
                 context.read<ForgotPasswordBloc>().add(CodeEvent(value));
               }),

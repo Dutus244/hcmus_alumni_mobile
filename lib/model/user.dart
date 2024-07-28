@@ -36,7 +36,11 @@ class User {
         fullName = json["fullName"] ?? "",
         phone = json["phone"] ?? "",
         sex = json["sex"] != null ? Sex.fromJson(json["sex"]) : null,
-        dob = json["dob"] != null ? DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(json["dob"]).add(Duration(days: 1))) : '',
+        dob = json["dob"] != null
+            ? DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd')
+                .parse(json["dob"])
+                .add(Duration(days: 1)))
+            : '',
         socialMediaLink = json["socialMediaLink"] ?? "",
         faculty =
             json["faculty"] != null ? Faculty.fromJson(json["faculty"]) : null,

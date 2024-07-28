@@ -65,11 +65,11 @@ class _AdvisePageListVotersState extends State<AdvisePageListVoters> {
 
     return BlocBuilder<AdvisePageListVotersBloc, AdvisePageListVotersState>(
         builder: (context, state) {
-          return Scaffold(
-            appBar: buildAppBar(context),
-            backgroundColor: AppColors.background,
-            body: listVoters(context, vote, post, _scrollController),
-          );
-        });
+      return Scaffold(
+        appBar: buildAppBar(context),
+        backgroundColor: AppColors.background,
+        body: listVoters(context, vote, post, _scrollController),
+      );
+    });
   }
 }

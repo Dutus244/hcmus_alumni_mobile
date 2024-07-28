@@ -34,7 +34,7 @@ AppBar buildAppBar(BuildContext context) {
         child: Text(
           translate('edit_post'),
           textAlign: TextAlign.center,
-          style: AppTextStyle.medium().wSemiBold(),
+          style: AppTextStyle.medium(context).wSemiBold(),
         ),
       ),
     ),
@@ -76,7 +76,7 @@ Widget buttonEdit(BuildContext context, String postId, String groupId) {
               children: [
                 Text(
                   translate('save'),
-                  style: AppTextStyle.base().wSemiBold().withColor(
+                  style: AppTextStyle.base(context).wSemiBold().withColor(
                       (title != "" && content != "")
                           ? AppColors.background
                           : Colors.black.withOpacity(0.3)),
@@ -122,7 +122,7 @@ Widget buttonFinishEditPicture(BuildContext context) {
               children: [
                 Text(
                   translate('save'),
-                  style: AppTextStyle.base().wSemiBold().withColor(
+                  style: AppTextStyle.base(context).wSemiBold().withColor(
                       AppColors.background),
                 ),
                 Container(
@@ -176,11 +176,11 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small().withColor(
+                hintStyle: AppTextStyle.small(context).withColor(
                     AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
             ),
           )
@@ -224,11 +224,11 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
                       borderSide: BorderSide(color: Colors.transparent)),
                   focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.transparent)),
-                  hintStyle: AppTextStyle.small().withColor(
+                  hintStyle: AppTextStyle.small(context).withColor(
                       AppColors.secondaryElementText),
                   counterText: '',
                 ),
-                style: AppTextStyle.small(),
+                style: AppTextStyle.small(context),
                 autocorrect: false,
               ),
             )
@@ -249,7 +249,7 @@ Widget writePost(BuildContext context, Post? post, String groupId) {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            header(),
+            header(context),
             buildTextFieldTag(context),
             buildTextFieldTitle(context, translate('title_post'), 'comment', '',
                     (value) {
@@ -444,7 +444,7 @@ Widget chooseEditPicture(BuildContext context,
               ),
               Text(
                 translate('add_picture'),
-                style: AppTextStyle.small().wSemiBold().withColor(
+                style: AppTextStyle.small(context).wSemiBold().withColor(
                     AppColors.element),
               ),
             ],
@@ -550,7 +550,7 @@ Widget choosePicture(BuildContext context,
                       ),
                       Text(
                         translate('choose_picture'),
-                        style: AppTextStyle.small().wSemiBold().withColor(
+                        style: AppTextStyle.small(context).wSemiBold().withColor(
                             AppColors.background),
                       ),
                     ],
@@ -1718,8 +1718,8 @@ Widget choosePicture(BuildContext context,
                               child: Center(
                                 child: Text(
                                   '+1',
-                                  style: AppTextStyle.xLarge()
-                                      .size(32.sp)
+                                  style: AppTextStyle.xLarge(context)
+                                      .size(32.sp, context)
                                       .wSemiBold(),
                                 ),
                               ),
@@ -1778,7 +1778,7 @@ Widget choosePicture(BuildContext context,
       ));
 }
 
-Widget header() {
+Widget header(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -1805,7 +1805,7 @@ Widget header() {
             Text(
               Global.storageService.getUserFullName(),
               maxLines: 1,
-              style: AppTextStyle.small().wSemiBold(),
+              style: AppTextStyle.small(context).wSemiBold(),
             ),
           ],
         ),
@@ -1930,7 +1930,7 @@ Widget buildTextFieldTag(BuildContext context) {
                                     InkWell(
                                       child: Text(
                                           '#$tag',
-                                          style: AppTextStyle.small()
+                                          style: AppTextStyle.small(context)
                                               .wSemiBold()
                                               .withColor(
                                               AppColors.background)
@@ -1962,7 +1962,7 @@ Widget buildTextFieldTag(BuildContext context) {
                         : null,
                   ),
                   style: TextStyle(
-                    fontSize: 11.sp, // Adjust the font size here
+                    fontSize: 11.sp / MediaQuery.of(context).textScaleFactor, // Adjust the font size here
                   ),
                   onChanged: (value) {
                     inputFieldValues.onTagChanged(value);

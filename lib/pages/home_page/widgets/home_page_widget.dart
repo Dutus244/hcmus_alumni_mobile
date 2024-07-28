@@ -30,7 +30,7 @@ Widget listEvent(BuildContext context, List<Event> eventList) {
                 style: TextStyle(
                   fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
-                  fontSize: 14.sp,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                   color: AppColors.header,
                 ),
               ),
@@ -52,7 +52,7 @@ Widget listEvent(BuildContext context, List<Event> eventList) {
                       color: AppColors.element,
                       decorationColor: AppColors.textBlack,
                       fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     ),
                   )),
             ),
@@ -133,7 +133,7 @@ Widget event(BuildContext context, Event event) {
               event.faculty.name,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 11.sp,
+                fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.normal,
                 fontFamily: AppFonts.Header,
               ),
@@ -150,7 +150,7 @@ Widget event(BuildContext context, Event event) {
               maxLines: 3,
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16.sp,
+                fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.w600,
                 fontFamily: AppFonts.Header,
               ),
@@ -181,7 +181,7 @@ Widget event(BuildContext context, Event event) {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 11.sp,
+                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       fontFamily: AppFonts.Header,
                     ),
@@ -212,7 +212,7 @@ Widget event(BuildContext context, Event event) {
                   maxLines: 1,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 11.sp,
+                    fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.normal,
                     fontFamily: AppFonts.Header,
                   ),
@@ -251,7 +251,7 @@ Widget listNews(BuildContext context, List<News> newsList) {
                 style: TextStyle(
                   fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
-                  fontSize: 14.sp,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                 ),
               ),
             ),
@@ -272,7 +272,7 @@ Widget listNews(BuildContext context, List<News> newsList) {
                     color: AppColors.element,
                     decorationColor: AppColors.textBlack,
                     fontWeight: FontWeight.bold,
-                    fontSize: 12.sp,
+                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   ),
                 ),
               ),
@@ -344,7 +344,7 @@ Widget news(BuildContext context, News news) {
                     news.faculty.name,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 9.sp,
+                      fontSize: 9.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       fontFamily: AppFonts.Header,
                     ),
@@ -364,7 +364,7 @@ Widget news(BuildContext context, News news) {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: Colors.black,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.w600,
                 fontFamily: AppFonts.Header,
               ),
@@ -376,7 +376,7 @@ Widget news(BuildContext context, News news) {
               handleDateTime1(news.publishedAt),
               style: TextStyle(
                 color: AppColors.textGrey,
-                fontSize: 10.sp,
+                fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.normal,
                 fontFamily: AppFonts.Header,
               ),
@@ -408,7 +408,7 @@ Widget listHof(BuildContext context, List<HallOfFame> hallOfFameList) {
                 style: TextStyle(
                   fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
-                  fontSize: 14.sp,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                 ),
               ),
             ),
@@ -428,7 +428,7 @@ Widget listHof(BuildContext context, List<HallOfFame> hallOfFameList) {
                       color: AppColors.element,
                       decorationColor: AppColors.textBlack,
                       fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     ),
                   )),
             ),
@@ -501,7 +501,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
                     hallOfFame.faculty.name,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 9.sp,
+                      fontSize: 9.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       fontFamily: AppFonts.Header,
                     ),
@@ -521,7 +521,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
                 hallOfFame.title,
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.w600,
                   fontFamily: AppFonts.Header,
                 ),
@@ -537,7 +537,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
                 maxLines: 2,
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 10.sp,
+                  fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.normal,
                   fontFamily: AppFonts.Header,
                 ),
@@ -570,7 +570,7 @@ Widget advise(BuildContext context) {
                 style: TextStyle(
                   fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
-                  fontSize: 14.sp,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                 ),
               ),
             ),
@@ -608,7 +608,7 @@ Widget advise(BuildContext context) {
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
                     fontWeight: FontWeight.bold,
-                    fontSize: 11.sp,
+                    fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                   ),
                 ),
               ),
@@ -639,7 +639,7 @@ Widget advise(BuildContext context) {
                       translate('advise'),
                       style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 10.sp,
+                          fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: AppColors.background),
                     ),

@@ -226,7 +226,6 @@ class FriendPageController {
     var headers = <String, String>{
       'Authorization': 'Bearer $token',
     };
-    print(token);
     try {
       var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
       var response = await http.get(url, headers: headers);

@@ -84,7 +84,6 @@ class WritePostAdviseController {
 
           var response = await http.post(url, headers: headers, body: body);
           var responseBody = utf8.decode(response.bodyBytes);
-          print(responseBody);
           if (response.statusCode == 201) {
             var jsonMap = json.decode(responseBody);
             String id = jsonMap["id"];

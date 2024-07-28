@@ -111,7 +111,6 @@ class NewsEventPageController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var eventResponse = EventResponse.fromJson(jsonMap);
-        print(eventResponse.events.length);
 
         if (eventResponse.events.isEmpty) {
           if (page == 0) {

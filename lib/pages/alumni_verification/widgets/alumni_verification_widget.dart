@@ -13,8 +13,8 @@ import '../alumni_verification_controller.dart';
 import '../bloc/alumni_verification_blocs.dart';
 import '../bloc/alumni_verification_events.dart';
 
-Widget buildTextField(String hintText, String textType, String iconName,
-    void Function(String value)? func) {
+Widget buildTextField(BuildContext context, String hintText, String textType,
+    String iconName, void Function(String value)? func) {
   return Container(
       width: 325.w,
       height: 40.h,
@@ -50,11 +50,11 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small()
+                hintStyle: AppTextStyle.small(context)
                     .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               maxLength: textType == 'studentId' ? 8 : 100,
             ),
@@ -63,8 +63,8 @@ Widget buildTextField(String hintText, String textType, String iconName,
       ));
 }
 
-Widget buildTextFieldStartYear(String hintText, String textType,
-    String iconName, void Function(int value)? func) {
+Widget buildTextFieldStartYear(BuildContext context, String hintText,
+    String textType, String iconName, void Function(int value)? func) {
   return Container(
       width: 325.w,
       height: 40.h,
@@ -100,11 +100,11 @@ Widget buildTextFieldStartYear(String hintText, String textType,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small()
+                hintStyle: AppTextStyle.small(context)
                     .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               maxLength: 30,
             ),
@@ -142,7 +142,7 @@ Widget buildLogInAndRegButton(BuildContext context, String buttonName,
       ),
       child: Center(
         child: Text(buttonName,
-            style: AppTextStyle.medium().wSemiBold().withColor(
+            style: AppTextStyle.medium(context).wSemiBold().withColor(
                 buttonType == "verify"
                     ? AppColors.background
                     : AppColors.element)),
@@ -168,7 +168,7 @@ Widget chooseFaculty(BuildContext context) {
                     translate('choose_faculty'),
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       fontFamily: AppFonts.Header,
                     ),
@@ -190,7 +190,8 @@ Widget chooseFaculty(BuildContext context) {
                             'Công nghệ thông tin',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -232,7 +233,8 @@ Widget chooseFaculty(BuildContext context) {
                             'Vật lý – Vật lý kỹ thuật',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -274,7 +276,8 @@ Widget chooseFaculty(BuildContext context) {
                             'Địa chất',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -316,7 +319,8 @@ Widget chooseFaculty(BuildContext context) {
                             'Toán – Tin học',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -358,7 +362,8 @@ Widget chooseFaculty(BuildContext context) {
                             'Điện tử - Viễn thông',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -400,7 +405,8 @@ Widget chooseFaculty(BuildContext context) {
                             'Khoa học & Công nghệ Vật liệu',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -442,7 +448,8 @@ Widget chooseFaculty(BuildContext context) {
                             'Hóa học',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -484,7 +491,8 @@ Widget chooseFaculty(BuildContext context) {
                             'Sinh học – Công nghệ Sinh học',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -526,7 +534,8 @@ Widget chooseFaculty(BuildContext context) {
                             'Môi trường',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -615,7 +624,7 @@ Widget buildTextFieldFaculty(BuildContext context, String iconName) {
               margin: EdgeInsets.only(left: 10.w, top: 10.h),
               child: Text(
                 faculty,
-                style: AppTextStyle.small(),
+                style: AppTextStyle.small(context),
               ),
             )
           ],
@@ -648,7 +657,7 @@ Widget alumniVerification(BuildContext context, String fullName, File? avatar) {
                 padding: EdgeInsets.only(bottom: 0.h),
                 child: Text(
                   translate('start').toUpperCase(),
-                  style: AppTextStyle.medium().wSemiBold(),
+                  style: AppTextStyle.medium(context).wSemiBold(),
                 ),
               )),
               Center(
@@ -657,15 +666,14 @@ Widget alumniVerification(BuildContext context, String fullName, File? avatar) {
                 child: Text(
                   translate('alumni_information_verify_title'),
                   textAlign: TextAlign.center,
-                  style: AppTextStyle.small(),
+                  style: AppTextStyle.small(context),
                 ),
               )),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(
-                  translate('student_id'), "studentId", AppAssets.userIconP,
-                  (value) {
+              buildTextField(context, translate('student_id'), "studentId",
+                  AppAssets.userIconP, (value) {
                 context
                     .read<AlumniVerificationBloc>()
                     .add(StudentIdEvent(value));
@@ -677,9 +685,8 @@ Widget alumniVerification(BuildContext context, String fullName, File? avatar) {
               SizedBox(
                 height: 5.h,
               ),
-              buildTextFieldStartYear(
-                  translate('year_admission'), "startYear", AppAssets.userIconP,
-                  (value) {
+              buildTextFieldStartYear(context, translate('year_admission'),
+                  "startYear", AppAssets.userIconP, (value) {
                 context
                     .read<AlumniVerificationBloc>()
                     .add(StartYearEvent(value));
@@ -687,8 +694,8 @@ Widget alumniVerification(BuildContext context, String fullName, File? avatar) {
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(translate('social_link'), "socialMediaLink",
-                  AppAssets.userIconP, (value) {
+              buildTextField(context, translate('social_link'),
+                  "socialMediaLink", AppAssets.userIconP, (value) {
                 context
                     .read<AlumniVerificationBloc>()
                     .add(SocialMediaLinkEvent(value));

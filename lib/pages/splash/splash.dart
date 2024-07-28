@@ -43,6 +43,8 @@ class _SplashState extends State<Splash> {
   }
 
   void handleNavigation() {
+    double textScaleFactor = MediaQuery.of(context).textScaleFactor;
+    print(textScaleFactor);
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {

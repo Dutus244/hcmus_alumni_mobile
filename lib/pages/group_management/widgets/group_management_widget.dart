@@ -24,7 +24,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -81,7 +81,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -91,7 +91,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                       '$typeGroup - ${handleParticipantCount(group.participantCount)} thành viên',
                       style: TextStyle(
                         color: AppColors.textGrey,
-                        fontSize: 12.sp,
+                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header,
                       ),
@@ -133,7 +133,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                       translate('edit_group'),
                       style: TextStyle(
                         color: AppColors.textBlack,
-                        fontSize: 16.sp,
+                        fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppFonts.Header,
                       ),
@@ -171,7 +171,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                       translate('approve_group_members'),
                       style: TextStyle(
                         color: AppColors.textBlack,
-                        fontSize: 16.sp,
+                        fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppFonts.Header,
                       ),
@@ -209,7 +209,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                       translate('manage_member'),
                       style: TextStyle(
                         color: AppColors.textBlack,
-                        fontSize: 16.sp,
+                        fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppFonts.Header,
                       ),
@@ -240,7 +240,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                       translate('exit_group'),
                       style: TextStyle(
                         color: AppColors.textBlack,
-                        fontSize: 16.sp,
+                        fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppFonts.Header,
                       ),
@@ -271,7 +271,7 @@ Widget groupManagement(BuildContext context, Group? group) {
                       translate('delete_group'),
                       style: TextStyle(
                         color: AppColors.textBlack,
-                        fontSize: 16.sp,
+                        fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.w900,
                         fontFamily: AppFonts.Header,
                       ),

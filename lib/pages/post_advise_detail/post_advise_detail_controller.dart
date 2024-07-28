@@ -411,7 +411,6 @@ class PostAdviseDetailController {
       var url = Uri.parse('$apiUrl$endpoint');
 
       var response = await http.post(url, headers: headers, body: body);
-      print(response.body);
       if (response.statusCode == 201) {
         context
             .read<PostAdviseDetailBloc>()

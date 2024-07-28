@@ -1,4 +1,5 @@
 import 'package:hcmus_alumni_mobile/model/faculty.dart';
+import 'package:hcmus_alumni_mobile/model/linker_user.dart';
 import 'package:hcmus_alumni_mobile/model/status.dart';
 import 'package:hcmus_alumni_mobile/model/user.dart';
 
@@ -15,7 +16,7 @@ class HallOfFame {
   final Faculty faculty;
   final Status status;
   final User creator;
-  final String userId;
+  final LinkerUser? linkerUser;
 
   HallOfFame(
     this.id,
@@ -30,7 +31,7 @@ class HallOfFame {
     this.faculty,
     this.status,
     this.creator,
-    this.userId,
+    this.linkerUser,
   );
 
   HallOfFame.fromJson(Map<String, dynamic> json)
@@ -46,5 +47,7 @@ class HallOfFame {
         faculty = Faculty.fromJson(json["faculty"]),
         status = Status.fromJson(json["status"]),
         creator = User.fromJson(json["creator"]),
-        userId = json["userId"] ?? "";
+        linkerUser = json["linkedUser"] != null
+            ? LinkerUser.fromJson(json["linkedUser"])
+            : null;
 }

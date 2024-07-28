@@ -50,7 +50,7 @@ Widget buildButtonChooseNewsOrEvent(
                 translate('news'),
                 style: TextStyle(
                     fontFamily: AppFonts.Header,
-                    fontSize: 12.sp,
+                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     color: BlocProvider.of<NewsEventPageBloc>(context)
                                 .state
@@ -88,7 +88,7 @@ Widget buildButtonChooseNewsOrEvent(
                 translate('event'),
                 style: TextStyle(
                     fontFamily: AppFonts.Header,
-                    fontSize: 12.sp,
+                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     color: BlocProvider.of<NewsEventPageBloc>(context)
                                 .state
@@ -143,7 +143,7 @@ Widget listNews(BuildContext context, ScrollController _scrollController) {
                           translate('no_news'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -232,7 +232,7 @@ Widget news(BuildContext context, News news) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -258,7 +258,7 @@ Widget news(BuildContext context, News news) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -285,7 +285,7 @@ Widget news(BuildContext context, News news) {
                     news.tags.map((tag) => tag.name).join(' '),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.xSmall().withColor(AppColors.tag),
+                    style: AppTextStyle.xSmall(context).withColor(AppColors.tag),
                   ),
                 ),
               ],
@@ -298,7 +298,7 @@ Widget news(BuildContext context, News news) {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: AppFonts.Header,
-                fontSize: 16.sp,
+                fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textBlack,
               ),
@@ -313,7 +313,7 @@ Widget news(BuildContext context, News news) {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: AppFonts.Header,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.normal,
                 color: AppColors.textBlack,
               ),
@@ -351,7 +351,7 @@ Widget news(BuildContext context, News news) {
                       news.faculty.name,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12.sp,
+                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header,
                       ),
@@ -416,7 +416,7 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                           translate('no_event'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -505,7 +505,7 @@ Widget event(BuildContext context, Event event) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -531,7 +531,7 @@ Widget event(BuildContext context, Event event) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -557,7 +557,7 @@ Widget event(BuildContext context, Event event) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -584,7 +584,7 @@ Widget event(BuildContext context, Event event) {
                     event.tags.map((tag) => tag.name).join(' '),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.xSmall().withColor(AppColors.tag),
+                    style: AppTextStyle.xSmall(context).withColor(AppColors.tag),
                   ),
                 ),
               ],
@@ -597,7 +597,7 @@ Widget event(BuildContext context, Event event) {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: AppFonts.Header,
-                fontSize: 16.sp,
+                fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textBlack,
               ),
@@ -622,7 +622,7 @@ Widget event(BuildContext context, Event event) {
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 63, 63, 70),
                     ),
@@ -638,7 +638,7 @@ Widget event(BuildContext context, Event event) {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 12.sp,
+                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: Color.fromARGB(255, 63, 63, 70),
                       ),
@@ -665,7 +665,7 @@ Widget event(BuildContext context, Event event) {
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: 'Roboto',
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 63, 63, 70),
                     ),
@@ -678,7 +678,7 @@ Widget event(BuildContext context, Event event) {
                     maxLines: 1,
                     style: TextStyle(
                       fontFamily: 'Roboto',
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 63, 63, 70),
                     ),
@@ -717,7 +717,7 @@ Widget event(BuildContext context, Event event) {
                       event.faculty.name,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12.sp,
+                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header,
                       ),

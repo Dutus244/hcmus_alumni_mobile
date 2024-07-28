@@ -63,8 +63,6 @@ class MyProfileAddEducationController {
       'privacy': 'PUBLIC',
     });
 
-    print(body);
-
     try {
       // Send the request
       var response = await http.post(
@@ -72,8 +70,6 @@ class MyProfileAddEducationController {
         headers: headers,
         body: body,
       );
-      print(response.statusCode);
-      print(response.body);
       if (response.statusCode == 201) {
         Navigator.pop(context);
       } else {

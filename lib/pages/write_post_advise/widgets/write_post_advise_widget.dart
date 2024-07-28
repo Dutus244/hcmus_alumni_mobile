@@ -30,7 +30,7 @@ AppBar buildAppBar(BuildContext context) {
         child: Text(
           translate('create_post'),
           textAlign: TextAlign.center,
-          style: AppTextStyle.medium().wSemiBold(),
+          style: AppTextStyle.medium(context).wSemiBold(),
         ),
       ),
     ),
@@ -66,7 +66,7 @@ Widget buttonSend(BuildContext context) {
           children: [
             Text(
               translate('post'),
-              style: AppTextStyle.base().wSemiBold().withColor(
+              style: AppTextStyle.base(context).wSemiBold().withColor(
                   (title != "" && content != "")
                       ? AppColors.background
                       : AppColors.textBlack.withOpacity(0.3)),
@@ -112,7 +112,7 @@ Widget buttonFinishEditPicture(BuildContext context) {
           children: [
             Text(
               translate('save'),
-              style: AppTextStyle.base().wSemiBold(),
+              style: AppTextStyle.base(context).wSemiBold(),
             ),
             Container(
               width: 6.w,
@@ -159,12 +159,12 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small()
+                hintStyle: AppTextStyle.small(context)
                     .wSemiBold()
                     .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small().wSemiBold(),
+              style: AppTextStyle.small(context).wSemiBold(),
               autocorrect: false,
             ),
           )
@@ -201,11 +201,11 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small()
+                hintStyle: AppTextStyle.small(context)
                     .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
             ),
           )
@@ -261,11 +261,11 @@ Widget buildTextFieldVote(BuildContext context, int index, String hintText,
                           borderSide: BorderSide(color: Colors.transparent)),
                       focusedBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.transparent)),
-                      hintStyle: AppTextStyle.small()
+                      hintStyle: AppTextStyle.small(context)
                           .withColor(AppColors.secondaryElementText),
                       counterText: '',
                     ),
-                    style: AppTextStyle.small(),
+                    style: AppTextStyle.small(context),
                     autocorrect: false,
                   ),
                 ),
@@ -296,7 +296,7 @@ Widget writePost(BuildContext context) {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            header(),
+            header(context),
             buildTextFieldTag(context),
             buildTextFieldTitle(context, translate('title_post'), 'comment', '',
                 (value) {
@@ -429,7 +429,7 @@ Widget chooseEditPicture(
               ),
               Text(
                 translate('add_picture'),
-                style: AppTextStyle.small()
+                style: AppTextStyle.small(context)
                     .wSemiBold()
                     .withColor(AppColors.element),
               ),
@@ -507,7 +507,7 @@ Widget choosePicture(
                       ),
                       Text(
                         translate('choose_picture'),
-                        style: AppTextStyle.small().wSemiBold(),
+                        style: AppTextStyle.small(context).wSemiBold(),
                       ),
                     ],
                   ),
@@ -1192,7 +1192,7 @@ Widget choosePicture(
                                   '+1',
                                   style: TextStyle(
                                     fontFamily: AppFonts.Header,
-                                    fontSize: 32.sp,
+                                    fontSize: 32.sp / MediaQuery.of(context).textScaleFactor,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.background,
                                   ),
@@ -1277,7 +1277,7 @@ Widget chooseVote(BuildContext context) {
                     ),
                     Text(
                       translate('create_vote'),
-                      style: AppTextStyle.small().wSemiBold(),
+                      style: AppTextStyle.small(context).wSemiBold(),
                     ),
                   ],
                 ),
@@ -1334,7 +1334,7 @@ Widget chooseVote(BuildContext context) {
                   ),
                   Text(
                     translate('add_option'),
-                    style: AppTextStyle.small().withColor(AppColors.textGrey),
+                    style: AppTextStyle.small(context).withColor(AppColors.textGrey),
                   ),
                 ],
               ),
@@ -1385,7 +1385,7 @@ Widget allowAddOptions(BuildContext context, void Function(bool value)? func) {
         Container(
           child: Text(
             translate('allow_people_add_option'),
-            style: AppTextStyle.small().wSemiBold(),
+            style: AppTextStyle.small(context).wSemiBold(),
           ),
         )
       ],
@@ -1424,7 +1424,7 @@ Widget allowMultipleVotes(
         Container(
           child: Text(
             translate('allow_people_choose_multiple'),
-            style: AppTextStyle.small().wSemiBold(),
+            style: AppTextStyle.small(context).wSemiBold(),
           ),
         )
       ],
@@ -1432,7 +1432,7 @@ Widget allowMultipleVotes(
   );
 }
 
-Widget header() {
+Widget header(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -1459,7 +1459,7 @@ Widget header() {
             Text(
               Global.storageService.getUserFullName(),
               maxLines: 1,
-              style: AppTextStyle.small().wSemiBold(),
+              style: AppTextStyle.small(context).wSemiBold(),
             ),
           ],
         ),
@@ -1573,7 +1573,7 @@ Widget buildTextFieldTag(BuildContext context) {
                                           InkWell(
                                             child: Text(
                                               '#$tag',
-                                              style: AppTextStyle.small()
+                                              style: AppTextStyle.small(context)
                                                   .wSemiBold()
                                                   .withColor(
                                                       AppColors.background),
@@ -1605,7 +1605,7 @@ Widget buildTextFieldTag(BuildContext context) {
                         : null,
                   ),
                   style: TextStyle(
-                    fontSize: 11.sp, // Adjust the font size here
+                    fontSize: 11.sp / MediaQuery.of(context).textScaleFactor, // Adjust the font size here
                   ),
                   onChanged: (value) {
                     inputFieldValues.onTagChanged(value);

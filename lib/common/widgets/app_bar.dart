@@ -40,7 +40,7 @@ AppBar buildAppBar(BuildContext context, String title) {
             style: TextStyle(
               fontFamily: AppFonts.Header,
               fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
+              fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
               color: AppColors.secondaryHeader,
             ),
           ),
@@ -59,8 +59,7 @@ AppBar buildAppBar(BuildContext context, String title) {
                         height: 20.h,
                         decoration: const BoxDecoration(
                             image: DecorationImage(
-                                image:
-                                AssetImage("assets/icons/chat.png"))),
+                                image: AssetImage("assets/icons/chat.png"))),
                       ),
                     ),
                     SizedBox(width: 10.w),

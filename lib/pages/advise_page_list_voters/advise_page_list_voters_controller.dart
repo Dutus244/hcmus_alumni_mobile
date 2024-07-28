@@ -21,14 +21,19 @@ class AdvisePageListVotersController {
 
   Future<void> handleLoadVoterData(int page, String postId, int voteId) async {
     if (page == 0) {
-      context.read<AdvisePageListVotersBloc>().add(HasReachedMaxVoterEvent(false));
+      context
+          .read<AdvisePageListVotersBloc>()
+          .add(HasReachedMaxVoterEvent(false));
       context.read<AdvisePageListVotersBloc>().add(IndexVoterEvent(1));
     } else {
-      if (BlocProvider.of<AdvisePageListVotersBloc>(context).state.hasReachedMaxVoter) {
+      if (BlocProvider.of<AdvisePageListVotersBloc>(context)
+          .state
+          .hasReachedMaxVoter) {
         return;
       }
       context.read<AdvisePageListVotersBloc>().add(IndexVoterEvent(
-          BlocProvider.of<AdvisePageListVotersBloc>(context).state.indexVoter + 1));
+          BlocProvider.of<AdvisePageListVotersBloc>(context).state.indexVoter +
+              1));
     }
 
     var apiUrl = dotenv.env['API_URL'];
@@ -55,14 +60,22 @@ class AdvisePageListVotersController {
         var voterResponse = VoterResponse.fromJson(jsonMap);
         if (voterResponse.voters.isEmpty) {
           if (page == 0) {
-            context.read<AdvisePageListVotersBloc>().add(VotersEvent(voterResponse.voters));
+            context
+                .read<AdvisePageListVotersBloc>()
+                .add(VotersEvent(voterResponse.voters));
           }
-          context.read<AdvisePageListVotersBloc>().add(HasReachedMaxVoterEvent(true));
-          context.read<AdvisePageListVotersBloc>().add(StatusVoterEvent(Status.success));
+          context
+              .read<AdvisePageListVotersBloc>()
+              .add(HasReachedMaxVoterEvent(true));
+          context
+              .read<AdvisePageListVotersBloc>()
+              .add(StatusVoterEvent(Status.success));
           return;
         }
         if (page == 0) {
-          context.read<AdvisePageListVotersBloc>().add(VotersEvent(voterResponse.voters));
+          context
+              .read<AdvisePageListVotersBloc>()
+              .add(VotersEvent(voterResponse.voters));
         } else {
           List<Voter> currentList =
               BlocProvider.of<AdvisePageListVotersBloc>(context).state.voters;
@@ -71,12 +84,18 @@ class AdvisePageListVotersController {
           List<Voter> updatedNewsList = List.of(currentList)
             ..addAll(voterResponse.voters);
 
-          context.read<AdvisePageListVotersBloc>().add(VotersEvent(updatedNewsList));
+          context
+              .read<AdvisePageListVotersBloc>()
+              .add(VotersEvent(updatedNewsList));
         }
-        context.read<AdvisePageListVotersBloc>().add(StatusVoterEvent(Status.success));
+        context
+            .read<AdvisePageListVotersBloc>()
+            .add(StatusVoterEvent(Status.success));
 
         if (voterResponse.voters.length < pageSize) {
-          context.read<AdvisePageListVotersBloc>().add(HasReachedMaxVoterEvent(true));
+          context
+              .read<AdvisePageListVotersBloc>()
+              .add(HasReachedMaxVoterEvent(true));
         }
       } else {
         // Handle other status codes if needed

@@ -35,7 +35,7 @@ AppBar buildAppBar(BuildContext context) {
           Text(
             translate('chat'),
             textAlign: TextAlign.center,
-            style: AppTextStyle.medium().wSemiBold(),
+            style: AppTextStyle.medium(context).wSemiBold(),
           ),
           Container(
             width: 60.w,
@@ -106,11 +106,11 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small()
+                hintStyle: AppTextStyle.small(context)
                     .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               obscureText: false,
               maxLength: 50,
@@ -176,7 +176,7 @@ Widget listInbox(BuildContext context, ScrollController _scrollController) {
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
                           translate('no_inboxes'),
-                          style: AppTextStyle.small(),
+                          style: AppTextStyle.small(context),
                         ),
                       )),
                     ],
@@ -281,8 +281,8 @@ Widget inbox(BuildContext context, Inbox inbox) {
                               ? inbox.members[1].user.fullName
                               : inbox.members[0].user.fullName,
                           style: inbox.hasRead
-                              ? AppTextStyle.small()
-                              : AppTextStyle.small().wSemiBold(),
+                              ? AppTextStyle.small(context)
+                              : AppTextStyle.small(context).wSemiBold(),
                         ),
                       ],
                     ),
@@ -305,9 +305,9 @@ Widget inbox(BuildContext context, Inbox inbox) {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: inbox.hasRead
-                              ? AppTextStyle.small()
+                              ? AppTextStyle.small(context)
                                   .withColor(AppColors.textGrey)
-                              : AppTextStyle.small()
+                              : AppTextStyle.small(context)
                                   .withColor(AppColors.textGrey)
                                   .wSemiBold(),
                         ),
@@ -316,9 +316,9 @@ Widget inbox(BuildContext context, Inbox inbox) {
                         child: Text(
                           ' ${handleDateTime3(inbox.latestMessage.createAt)}',
                           style: inbox.hasRead
-                              ? AppTextStyle.small()
+                              ? AppTextStyle.small(context)
                                   .withColor(AppColors.textGrey)
-                              : AppTextStyle.small()
+                              : AppTextStyle.small(context)
                                   .withColor(AppColors.textGrey)
                                   .wSemiBold(),
                         ),

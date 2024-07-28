@@ -49,7 +49,6 @@ class NotificationPageController {
       var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
-      print(token);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var notificationResponse = NotificationResponse.fromJson(jsonMap);

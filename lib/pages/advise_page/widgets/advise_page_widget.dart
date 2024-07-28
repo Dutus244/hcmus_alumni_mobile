@@ -48,7 +48,7 @@ AppBar buildAppBar(BuildContext context) {
           Text(
             translate('advise'),
             textAlign: TextAlign.center,
-            style: AppTextStyle.medium().wSemiBold(),
+            style: AppTextStyle.medium(context).wSemiBold(),
           ),
           Container(
             width: 60.w,
@@ -128,7 +128,7 @@ Widget buildCreatePostButton(BuildContext context) {
                   padding: EdgeInsets.only(left: 10.w),
                   child: Text(
                     translate('what_advise_do_you_want'),
-                    style: AppTextStyle.small(),
+                    style: AppTextStyle.small(context),
                   ),
                 ),
               ),
@@ -183,7 +183,7 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
                           translate('no_posts'),
-                          style: AppTextStyle.small(),
+                          style: AppTextStyle.small(context),
                         ),
                       )),
                     ],
@@ -263,14 +263,13 @@ Widget postOption(BuildContext context, Post post) {
                           AppAssets.editIconS,
                           width: 14.w,
                           height: 14.h,
-                          color: AppColors.textBlack,
                         ),
                         Container(
                           width: 10.w,
                         ),
                         Text(
                           translate('edit_post'),
-                          style: AppTextStyle.medium().wSemiBold(),
+                          style: AppTextStyle.medium(context).wSemiBold(),
                         ),
                       ],
                     ),
@@ -301,7 +300,7 @@ Widget postOption(BuildContext context, Post post) {
                       ),
                       Text(
                         translate('delete_post'),
-                        style: AppTextStyle.medium().wSemiBold(),
+                        style: AppTextStyle.medium(context).wSemiBold(),
                       ),
                     ],
                   ),
@@ -374,14 +373,14 @@ Widget post(BuildContext context, Post post) {
                       Text(
                         post.creator.fullName,
                         maxLines: 1,
-                        style: AppTextStyle.small().wSemiBold(),
+                        style: AppTextStyle.small(context).wSemiBold(),
                       ),
                       Row(
                         children: [
                           Text(
                             handleTimeDifference2(post.publishedAt),
                             maxLines: 1,
-                            style: AppTextStyle.xSmall()
+                            style: AppTextStyle.xSmall(context)
                                 .withColor(AppColors.textGrey),
                           ),
                         ],
@@ -414,7 +413,7 @@ Widget post(BuildContext context, Post post) {
             child: Text(
               post.title,
               textAlign: TextAlign.left,
-              style: AppTextStyle.small().wSemiBold(),
+              style: AppTextStyle.small(context).wSemiBold(),
             ),
           ),
           Container(
@@ -434,7 +433,8 @@ Widget post(BuildContext context, Post post) {
                     post.tags.map((tag) => tag.name).join(' '),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.xSmall().withColor(AppColors.tag),
+                    style:
+                        AppTextStyle.xSmall(context).withColor(AppColors.tag),
                   ),
                 ),
               ],
@@ -448,7 +448,7 @@ Widget post(BuildContext context, Post post) {
               maxLines: 4,
               expandText: translate('see_more'),
               collapseText: translate('collapse'),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
             ),
           ),
           if (!post.allowMultipleVotes)
@@ -481,12 +481,16 @@ Widget post(BuildContext context, Post post) {
                                   AdvisePageController(context: context)
                                       .handleVote(post.id, post.votes[i].id);
                                 } else {
-                                  for (int j = 0; j < post.votes.length; j += 1) {
+                                  for (int j = 0;
+                                      j < post.votes.length;
+                                      j += 1) {
                                     if (post.votes[j].name ==
                                         post.voteSelectedOne) {
                                       AdvisePageController(context: context)
-                                          .handleUpdateVote(post.id,
-                                              post.votes[j].id, post.votes[i].id);
+                                          .handleUpdateVote(
+                                              post.id,
+                                              post.votes[j].id,
+                                              post.votes[i].id);
                                     }
                                   }
                                 }
@@ -498,7 +502,7 @@ Widget post(BuildContext context, Post post) {
                               post.votes[i].name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: AppTextStyle.small()
+                              style: AppTextStyle.small(context)
                                   .withColor(AppColors.textGrey),
                             ),
                           ),
@@ -519,7 +523,7 @@ Widget post(BuildContext context, Post post) {
                           children: [
                             Text(
                               '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
-                              style: AppTextStyle.small()
+                              style: AppTextStyle.small(context)
                                   .withColor(AppColors.element),
                             ),
                             Container(
@@ -589,7 +593,7 @@ Widget post(BuildContext context, Post post) {
                               post.votes[i].name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: AppTextStyle.small()
+                              style: AppTextStyle.small(context)
                                   .withColor(AppColors.textGrey),
                             ),
                           ),
@@ -610,7 +614,7 @@ Widget post(BuildContext context, Post post) {
                           children: [
                             Text(
                               '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
-                              style: AppTextStyle.small()
+                              style: AppTextStyle.small(context)
                                   .withColor(AppColors.element),
                             ),
                             Container(
@@ -701,7 +705,7 @@ Widget post(BuildContext context, Post post) {
                       ),
                       Text(
                         translate('add_option'),
-                        style: AppTextStyle.small(),
+                        style: AppTextStyle.small(context),
                       ),
                     ],
                   ),
@@ -812,7 +816,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[1].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[1].pictureUrl),
                               ),
                             ),
                           ),
@@ -823,7 +828,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[2].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[2].pictureUrl),
                               ),
                             ),
                           ),
@@ -859,7 +865,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[0].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[0].pictureUrl),
                               ),
                             ),
                           ),
@@ -870,7 +877,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[1].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[1].pictureUrl),
                               ),
                             ),
                           ),
@@ -888,7 +896,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[2].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[2].pictureUrl),
                               ),
                             ),
                           ),
@@ -899,7 +908,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[3].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[3].pictureUrl),
                               ),
                             ),
                           ),
@@ -935,7 +945,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[0].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[0].pictureUrl),
                               ),
                             ),
                           ),
@@ -946,7 +957,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[1].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[1].pictureUrl),
                               ),
                             ),
                           ),
@@ -964,7 +976,8 @@ Widget post(BuildContext context, Post post) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[2].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[2].pictureUrl),
                               ),
                             ),
                           ),
@@ -977,8 +990,8 @@ Widget post(BuildContext context, Post post) {
                                   shape: BoxShape.rectangle,
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image:
-                                        NetworkImage(post.pictures[3].pictureUrl),
+                                    image: NetworkImage(
+                                        post.pictures[3].pictureUrl),
                                   ),
                                 ),
                               ),
@@ -989,14 +1002,14 @@ Widget post(BuildContext context, Post post) {
                                   height: 120.h,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.rectangle,
-                                    color:
-                                        AppColors.blurredPicture.withOpacity(0.5),
+                                    color: AppColors.blurredPicture
+                                        .withOpacity(0.5),
                                   ),
                                   child: Center(
                                     child: Text(
                                       '+1',
-                                      style: AppTextStyle.xLarge()
-                                          .size(32.sp)
+                                      style: AppTextStyle.xLarge(context)
+                                          .size(32.sp, context)
                                           .wSemiBold(),
                                     ),
                                   ),
@@ -1043,7 +1056,7 @@ Widget post(BuildContext context, Post post) {
                         padding: EdgeInsets.only(left: 5.w),
                         child: Text(
                           post.reactionCount.toString(),
-                          style: AppTextStyle.xSmall(),
+                          style: AppTextStyle.xSmall(context),
                         ),
                       ),
                     ],
@@ -1058,13 +1071,14 @@ Widget post(BuildContext context, Post post) {
                         "id": post.id,
                       },
                     );
-                    AdvisePageController(context: context).handleLoadPostData(0);
+                    AdvisePageController(context: context)
+                        .handleLoadPostData(0);
                   },
                   child: Container(
                     padding: EdgeInsets.only(right: 10.w),
                     child: Text(
                       '${post.childrenCommentNumber} ${translate('comments').toLowerCase()}',
-                      style: AppTextStyle.xSmall(),
+                      style: AppTextStyle.xSmall(context),
                     ),
                   ),
                 )
@@ -1087,7 +1101,8 @@ Widget post(BuildContext context, Post post) {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      if (Global.storageService.permissionCounselReactionCreate())
+                      if (Global.storageService
+                          .permissionCounselReactionCreate())
                         Center(
                           child: GestureDetector(
                             onTap: () {
@@ -1109,7 +1124,7 @@ Widget post(BuildContext context, Post post) {
                                           padding: EdgeInsets.only(left: 5.w),
                                           child: Text(
                                             translate('like'),
-                                            style: AppTextStyle.xSmall()
+                                            style: AppTextStyle.xSmall(context)
                                                 .withColor(AppColors.element),
                                           ),
                                         ),
@@ -1129,14 +1144,16 @@ Widget post(BuildContext context, Post post) {
                                         Container(
                                           padding: EdgeInsets.only(left: 5.w),
                                           child: Text(translate('like'),
-                                              style: AppTextStyle.xSmall()),
+                                              style:
+                                                  AppTextStyle.xSmall(context)),
                                         ),
                                       ],
                                     ),
                                   ),
                           ),
                         ),
-                      if (Global.storageService.permissionCounselCommentCreate())
+                      if (Global.storageService
+                          .permissionCounselCommentCreate())
                         Center(
                           child: GestureDetector(
                             onTap: () {
@@ -1163,7 +1180,7 @@ Widget post(BuildContext context, Post post) {
                                   Container(
                                     padding: EdgeInsets.only(left: 5.w),
                                     child: Text(translate('comment'),
-                                        style: AppTextStyle.xSmall()),
+                                        style: AppTextStyle.xSmall(context)),
                                   ),
                                 ],
                               ),

@@ -48,7 +48,6 @@ class RegisterController {
 
       try {
         var response = await http.post(url, body: map);
-        print(response.body);
         if (response.statusCode == 200) {
           Global.storageService.setString(AppConstants.USER_EMAIL, email);
           Global.storageService

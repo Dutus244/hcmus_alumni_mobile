@@ -26,7 +26,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -85,7 +85,7 @@ Widget listInteract(BuildContext context, ScrollController _scrollController) {
                               translate('no_data'),
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -183,7 +183,7 @@ Widget interact(BuildContext context, Interact interact) {
                 interact.creator.fullName,
                 style: TextStyle(
                   color: AppColors.textBlack,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.w900,
                   fontFamily: AppFonts.Header,
                 ),

@@ -135,7 +135,7 @@ class _WelcomeState extends State<Welcome> {
         Container(
           child: Text(
             "${title}",
-            style: AppTextStyle.xxLarge().wSemiBold(),
+            style: AppTextStyle.xxLarge(context).wSemiBold(),
           ),
         ),
         Container(
@@ -144,7 +144,7 @@ class _WelcomeState extends State<Welcome> {
           child: Text(
             "${subTitle}",
             textAlign: TextAlign.center,
-            style: AppTextStyle.base(),
+            style: AppTextStyle.base(context),
           ),
         ),
         GestureDetector(
@@ -172,7 +172,7 @@ class _WelcomeState extends State<Welcome> {
             child: Center(
               child: Text(
                 "${buttonName}",
-                style: AppTextStyle.medium()
+                style: AppTextStyle.medium(context)
                     .wSemiBold()
                     .withColor(AppColors.background),
               ),

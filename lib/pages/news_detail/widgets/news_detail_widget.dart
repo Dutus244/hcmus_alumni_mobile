@@ -32,7 +32,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -252,7 +252,7 @@ Widget newsContent(BuildContext context, News? news) {
                   fontFamily: AppFonts.Header,
                   color: Color.fromARGB(255, 51, 58, 73),
                   fontWeight: FontWeight.bold,
-                  fontSize: 14.sp,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                 ),
               ),
             ],
@@ -275,7 +275,7 @@ Widget newsContent(BuildContext context, News? news) {
                     news.tags[i].name,
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       color: Color.fromARGB(255, 5, 90, 188),
                     ),
@@ -333,7 +333,7 @@ Widget listComment(
                       translate('write_comment'),
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 14.sp,
+                        fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.w500,
                         color: Colors.black.withOpacity(0.5),
                       ),
@@ -356,7 +356,7 @@ Widget listComment(
               fontFamily: AppFonts.Header,
               color: Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 18.sp,
+              fontSize: 18.sp / MediaQuery.of(context).textScaleFactor,
             ),
           ),
         ),
@@ -393,7 +393,7 @@ Widget listComment(
                   translate('more_comment'),
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
-                    fontSize: 14.sp,
+                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     color: Color.fromARGB(255, 43, 107, 182),
                   ),
@@ -482,7 +482,7 @@ Widget buildCommentWidget(
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: AppColors.textBlack,
-                                  fontSize: 12.sp,
+                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.w900,
                                   fontFamily: AppFonts.Header,
                                 ),
@@ -494,7 +494,7 @@ Widget buildCommentWidget(
                               comment.content,
                               style: TextStyle(
                                 color: AppColors.textBlack,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -518,7 +518,7 @@ Widget buildCommentWidget(
                               maxLines: 1,
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -546,7 +546,7 @@ Widget buildCommentWidget(
                                   translate('reply'),
                                   style: TextStyle(
                                     color: Colors.black.withOpacity(0.8),
-                                    fontSize: 11.sp,
+                                    fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                     fontWeight: FontWeight.normal,
                                     fontFamily: AppFonts.Header,
                                   ),
@@ -576,7 +576,7 @@ Widget buildCommentWidget(
                                     translate('edit'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -599,7 +599,7 @@ Widget buildCommentWidget(
                                     translate('delete'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -625,7 +625,7 @@ Widget buildCommentWidget(
                               maxLines: 1,
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -653,7 +653,7 @@ Widget buildCommentWidget(
                                     translate('edit'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -676,7 +676,7 @@ Widget buildCommentWidget(
                                     translate('delete'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -727,7 +727,7 @@ Widget buildCommentWidget(
                 '${translate('see')} ${comment.childrenCommentNumber - comment.childrenComments.length} ${translate('comments').toLowerCase()}',
                 style: TextStyle(
                   color: AppColors.textGrey,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.normal,
                   fontFamily: AppFonts.Header,
                 ),
@@ -740,6 +740,9 @@ Widget buildCommentWidget(
 }
 
 Widget listRelatedNews(BuildContext context, List<News> newsList) {
+  if (newsList.isEmpty) {
+    return Container();
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -752,7 +755,7 @@ Widget listRelatedNews(BuildContext context, List<News> newsList) {
             fontFamily: AppFonts.Header,
             color: Colors.black,
             fontWeight: FontWeight.bold,
-            fontSize: 18.sp,
+            fontSize: 18.sp / MediaQuery.of(context).textScaleFactor,
           ),
         ),
       ),
@@ -808,7 +811,7 @@ Widget news(BuildContext context, News news) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -834,7 +837,7 @@ Widget news(BuildContext context, News news) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -861,7 +864,7 @@ Widget news(BuildContext context, News news) {
                       news.tags[i].name,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: Color.fromARGB(255, 5, 90, 188),
                       ),
@@ -877,7 +880,7 @@ Widget news(BuildContext context, News news) {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: AppFonts.Header,
-                fontSize: 16.sp,
+                fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textBlack,
               ),
@@ -892,7 +895,7 @@ Widget news(BuildContext context, News news) {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: AppFonts.Header,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.normal,
                 color: AppColors.textBlack,
               ),
@@ -930,7 +933,7 @@ Widget news(BuildContext context, News news) {
                       news.faculty.name,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 11.sp,
+                        fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header,
                       ),
@@ -1041,7 +1044,7 @@ class _ButtonEditTextState extends State<ButtonEditText> {
                             translate('choose_font_size'),
                             style: TextStyle(
                               fontFamily: AppFonts.Header,
-                              fontSize: 16.sp,
+                              fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.normal,
                               color: AppColors.element,
                             ),

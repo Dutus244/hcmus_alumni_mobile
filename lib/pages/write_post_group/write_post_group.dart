@@ -32,7 +32,6 @@ class _WritePostGroupState extends State<WritePostGroup> {
     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       id = args["id"];
-      // Now you can use the passedValue in your widget
     }
 
     return BlocBuilder<WritePostGroupBloc, WritePostGroupState>(

@@ -60,7 +60,6 @@ class AlumniVerificationController {
 
       // Convert the streamed response to a regular HTTP response
       var response = await http.Response.fromStream(streamedResponse);
-      print(response.body);
       if (response.statusCode == 201) {
         var url = Uri.parse(
             '${dotenv.env['API_URL']}/user/${Global.storageService.getUserId()}/profile');

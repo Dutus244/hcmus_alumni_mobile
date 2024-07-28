@@ -36,7 +36,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -88,7 +88,7 @@ Widget editAvatar(BuildContext context, void Function(File value)? func) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 18.sp,
+                fontSize: 18.sp / MediaQuery.of(context).textScaleFactor,
                 color: AppColors.secondaryHeader,
               ),
             ),
@@ -102,7 +102,7 @@ Widget editAvatar(BuildContext context, void Function(File value)? func) {
                 style: TextStyle(
                   fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.normal,
-                  fontSize: 14.sp,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                   color: AppColors.element,
                 ),
               ),
@@ -262,7 +262,7 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 18.sp,
+                fontSize: 18.sp / MediaQuery.of(context).textScaleFactor,
                 color: AppColors.secondaryHeader,
               ),
             ),
@@ -284,7 +284,7 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
                 style: TextStyle(
                   fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.normal,
-                  fontSize: 14.sp,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                   color: AppColors.element,
                 ),
               ),
@@ -379,7 +379,7 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
                 style: TextStyle(
                   fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   color: AppColors.background,
                 ),
               ),
@@ -391,28 +391,6 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
 }
 
 Widget editProfile(BuildContext context) {
-  String faculty = translate('choose_faculty');
-  switch (BlocProvider.of<MyProfileEditBloc>(context).state.facultyId) {
-    case 1:
-      faculty = "Công nghệ thông tin";
-    case 2:
-      faculty = "Vật lý – Vật lý kỹ thuật";
-    case 3:
-      faculty = "Địa chất";
-    case 4:
-      faculty = "Toán – Tin học";
-    case 5:
-      faculty = "Điện tử - Viễn thông";
-    case 6:
-      faculty = "Khoa học & Công nghệ Vật liệu";
-    case 7:
-      faculty = "Hóa học";
-    case 8:
-      faculty = "Sinh học – Công nghệ Sinh học";
-    case 9:
-      faculty = "Môi trường";
-  }
-
   return Column(
     children: [
       Container(
@@ -425,7 +403,7 @@ Widget editProfile(BuildContext context) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 18.sp,
+                fontSize: 18.sp / MediaQuery.of(context).textScaleFactor,
                 color: AppColors.secondaryHeader,
               ),
             ),
@@ -460,7 +438,7 @@ Widget editProfile(BuildContext context) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 10.sp,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.secondaryElementText,
                     ),
                   ),
@@ -468,64 +446,6 @@ Widget editProfile(BuildContext context) {
               ],
             ),
           ],
-        ),
-      ),
-      GestureDetector(
-        onTap: () {
-          showModalBottomSheet(
-            isScrollControlled: true,
-            context: context,
-            builder: (ctx) => chooseFaculty(context),
-          );
-        },
-        child: Container(
-          color: Colors.transparent,
-          margin:
-              EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h, bottom: 10.h),
-          child: Row(
-            children: [
-              SvgPicture.asset(
-                "assets/icons/study.svg",
-                width: 25.w,
-                height: 25.h,
-                color: Colors.black,
-              ),
-              Container(
-                width: 10.w,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(bottom: 10.h),
-                    width: 232.w,
-                    child: Text(
-                      faculty,
-                      style: TextStyle(
-                        color: AppColors.textBlack,
-                        fontFamily: AppFonts.Header,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.sp,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 100.w,
-                    child: Text(
-                      translate('faculty'),
-                      style: TextStyle(
-                        fontFamily: AppFonts.Header,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 10.sp,
-                        color: AppColors.secondaryElementText,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
         ),
       ),
       GestureDetector(
@@ -570,7 +490,7 @@ Widget editProfile(BuildContext context) {
                         color: AppColors.textBlack,
                         fontFamily: AppFonts.Header,
                         fontWeight: FontWeight.bold,
-                        fontSize: 12.sp,
+                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       ),
                     ),
                   ),
@@ -581,7 +501,7 @@ Widget editProfile(BuildContext context) {
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
                         fontWeight: FontWeight.normal,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         color: AppColors.secondaryElementText,
                       ),
                     ),
@@ -634,7 +554,7 @@ Widget editProfile(BuildContext context) {
                         color: AppColors.textBlack,
                         fontFamily: AppFonts.Header,
                         fontWeight: FontWeight.bold,
-                        fontSize: 12.sp,
+                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       ),
                     ),
                   ),
@@ -645,7 +565,7 @@ Widget editProfile(BuildContext context) {
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
                         fontWeight: FontWeight.normal,
-                        fontSize: 10.sp,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                         color: AppColors.secondaryElementText,
                       ),
                     ),
@@ -684,7 +604,7 @@ Widget editProfile(BuildContext context) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 10.sp,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.secondaryElementText,
                     ),
                   ),
@@ -721,7 +641,7 @@ Widget editProfile(BuildContext context) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 10.sp,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.secondaryElementText,
                     ),
                   ),
@@ -759,7 +679,7 @@ Widget editProfile(BuildContext context) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 10.sp,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.secondaryElementText,
                     ),
                   ),
@@ -786,7 +706,7 @@ Widget editContact(BuildContext context) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 18.sp,
+                fontSize: 18.sp / MediaQuery.of(context).textScaleFactor,
                 color: AppColors.secondaryHeader,
               ),
             ),
@@ -822,7 +742,7 @@ Widget editContact(BuildContext context) {
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     ),
                   ),
                 ),
@@ -833,7 +753,7 @@ Widget editContact(BuildContext context) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 10.sp,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.secondaryElementText,
                     ),
                   ),
@@ -871,7 +791,7 @@ Widget editContact(BuildContext context) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 10.sp,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.secondaryElementText,
                     ),
                   ),
@@ -898,7 +818,7 @@ Widget editAboutMe(BuildContext context) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 18.sp,
+                fontSize: 18.sp / MediaQuery.of(context).textScaleFactor,
                 color: AppColors.secondaryHeader,
               ),
             ),
@@ -931,7 +851,7 @@ Widget editAboutMe(BuildContext context) {
                   translate('save'),
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
-                    fontSize: 14.sp,
+                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     color: AppColors.background,
                   ),
@@ -958,6 +878,28 @@ Widget editAlumni(BuildContext context) {
       status = translate('unsent');
   }
 
+  String faculty = translate('choose_faculty');
+  switch (BlocProvider.of<MyProfileEditBloc>(context).state.facultyId) {
+    case 1:
+      faculty = "Công nghệ thông tin";
+    case 2:
+      faculty = "Vật lý – Vật lý kỹ thuật";
+    case 3:
+      faculty = "Địa chất";
+    case 4:
+      faculty = "Toán – Tin học";
+    case 5:
+      faculty = "Điện tử - Viễn thông";
+    case 6:
+      faculty = "Khoa học & Công nghệ Vật liệu";
+    case 7:
+      faculty = "Hóa học";
+    case 8:
+      faculty = "Sinh học – Công nghệ Sinh học";
+    case 9:
+      faculty = "Môi trường";
+  }
+
   return Column(
     children: [
       Container(
@@ -970,7 +912,7 @@ Widget editAlumni(BuildContext context) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 18.sp,
+                fontSize: 18.sp / MediaQuery.of(context).textScaleFactor,
                 color: AppColors.secondaryHeader,
               ),
             ),
@@ -987,7 +929,7 @@ Widget editAlumni(BuildContext context) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
-                fontSize: 14.sp,
+                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                 color: BlocProvider.of<MyProfileEditBloc>(context).state.status == "APPROVED" ? Colors.green : Colors.red,
               ),
             )
@@ -1011,17 +953,17 @@ Widget editAlumni(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "DENIED" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "UNSENT")
+                if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "DENIED" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "UNSENT" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "PENDING")
                   buildTextFieldStudentId(
                       context, translate('student_id'), '', '', (value) {
                     context.read<MyProfileEditBloc>().add(StudentIdEvent(value));
                   }),
-                if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "PENDING" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "APPROVED")
+                if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "APPROVED")
                   Container(
                     margin: EdgeInsets.only(top: 20.h, bottom: 10.h),
                     child: Text(
                         BlocProvider.of<MyProfileEditBloc>(context).state.studentId,
-                      style: AppTextStyle.small().wSemiBold(),
+                      style: AppTextStyle.small(context).wSemiBold(),
                     ),
                   ),
                 Container(
@@ -1031,7 +973,7 @@ Widget editAlumni(BuildContext context) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 10.sp,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.secondaryElementText,
                     ),
                   ),
@@ -1058,17 +1000,17 @@ Widget editAlumni(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "DENIED" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "UNSENT")
+                if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "PENDING" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "DENIED" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "UNSENT")
                   buildTextFieldStartYear(context, translate('year_admission'), '', '',
                           (value) {
                         context.read<MyProfileEditBloc>().add(StartYearEvent(value));
                       }),
-                if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "PENDING" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "APPROVED")
+                if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "APPROVED")
                   Container(
                     margin: EdgeInsets.only(top: 20.h, bottom: 10.h),
                     child: Text(
                       BlocProvider.of<MyProfileEditBloc>(context).state.startYear,
-                      style: AppTextStyle.small().wSemiBold(),
+                      style: AppTextStyle.small(context).wSemiBold(),
                     ),
                   ),
                 Container(
@@ -1078,7 +1020,7 @@ Widget editAlumni(BuildContext context) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 10.sp,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.secondaryElementText,
                     ),
                   ),
@@ -1086,6 +1028,107 @@ Widget editAlumni(BuildContext context) {
               ],
             ),
           ],
+        ),
+      ),
+      if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "APPROVED")
+        Container(
+        margin: EdgeInsets.only(left: 10.w, right: 10.w),
+        child: Row(
+          children: [
+            SvgPicture.asset(
+              "assets/icons/study.svg",
+              width: 25.w,
+              height: 25.h,
+              color: Colors.black,
+            ),
+            Container(
+              width: 10.w,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 20.h, bottom: 10.h),
+                  child: Text(
+                    faculty,
+                    style: AppTextStyle.small(context).wSemiBold(),
+                  ),
+                ),
+                Container(
+                  width: 100.w,
+                  child: Text(
+                    translate('faculty'),
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                      color: AppColors.secondaryElementText,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "PENDING" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "DENIED" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "UNSENT")
+        GestureDetector(
+        onTap: () {
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (ctx) => chooseFaculty(context),
+          );
+        },
+        child: Container(
+          color: Colors.transparent,
+          margin:
+          EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h, bottom: 10.h),
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                "assets/icons/study.svg",
+                width: 25.w,
+                height: 25.h,
+                color: Colors.black,
+              ),
+              Container(
+                width: 10.w,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10.h),
+                    width: 232.w,
+                    child: Text(
+                      faculty,
+                      style: TextStyle(
+                        color: AppColors.textBlack,
+                        fontFamily: AppFonts.Header,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 100.w,
+                    child: Text(
+                      translate('faculty'),
+                      style: TextStyle(
+                        fontFamily: AppFonts.Header,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                        color: AppColors.secondaryElementText,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
       if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "DENIED" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "UNSENT")
@@ -1111,7 +1154,7 @@ Widget editAlumni(BuildContext context) {
                   translate('reapply'),
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
-                    fontSize: 14.sp,
+                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     color: AppColors.background,
                   ),
@@ -1121,6 +1164,39 @@ Widget editAlumni(BuildContext context) {
           ),
         ),
       ),
+      if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "PENDING")
+        GestureDetector(
+          onTap: () {
+            MyProfileEditController(context: context).handleEditAlumniVerification();
+          },
+          child: Container(
+            margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
+            height: 30.h,
+            decoration: BoxDecoration(
+              color: AppColors.element,
+              borderRadius: BorderRadius.circular(5.w),
+              border: Border.all(
+                color: Colors.transparent,
+              ),
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    translate('edit'),
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.background,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
     ],
   );
 }
@@ -1140,7 +1216,7 @@ Widget editJob(BuildContext context) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 18.sp,
+                fontSize: 18.sp / MediaQuery.of(context).textScaleFactor,
                 color: AppColors.secondaryHeader,
               ),
             ),
@@ -1183,7 +1259,7 @@ Widget editJob(BuildContext context) {
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
                     fontWeight: FontWeight.bold,
-                    fontSize: 12.sp,
+                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     color: AppColors.element,
                   ),
                 ),
@@ -1227,7 +1303,7 @@ Widget job(BuildContext context, Job job) {
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     ),
                   ),
                 ),
@@ -1238,7 +1314,7 @@ Widget job(BuildContext context, Job job) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 11.sp,
+                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.textBlack,
                     ),
                   ),
@@ -1252,7 +1328,7 @@ Widget job(BuildContext context, Job job) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 10.sp,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.secondaryElementText,
                     ),
                   ),
@@ -1318,7 +1394,7 @@ Widget jobOption(BuildContext context, Job job) {
                         translate('edit_job'),
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textBlack,
                         ),
@@ -1353,7 +1429,7 @@ Widget jobOption(BuildContext context, Job job) {
                         translate('delete_job'),
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textBlack,
                         ),
@@ -1385,7 +1461,7 @@ Widget editEducation(BuildContext context) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 18.sp,
+                fontSize: 18.sp / MediaQuery.of(context).textScaleFactor,
                 color: AppColors.secondaryHeader,
               ),
             ),
@@ -1433,7 +1509,7 @@ Widget editEducation(BuildContext context) {
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
                     fontWeight: FontWeight.bold,
-                    fontSize: 12.sp,
+                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     color: AppColors.element,
                   ),
                 ),
@@ -1477,7 +1553,7 @@ Widget education(BuildContext context, Education education) {
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     ),
                   ),
                 ),
@@ -1488,7 +1564,7 @@ Widget education(BuildContext context, Education education) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 11.sp,
+                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.textBlack,
                     ),
                   ),
@@ -1502,7 +1578,7 @@ Widget education(BuildContext context, Education education) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 10.sp,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.secondaryElementText,
                     ),
                   ),
@@ -1568,7 +1644,7 @@ Widget educationOption(BuildContext context, Education education) {
                         translate('edit_education'),
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textBlack,
                         ),
@@ -1603,7 +1679,7 @@ Widget educationOption(BuildContext context, Education education) {
                         translate('delete_education'),
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textBlack,
                         ),
@@ -1635,7 +1711,7 @@ Widget editAchievement(BuildContext context) {
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 18.sp,
+                fontSize: 18.sp / MediaQuery.of(context).textScaleFactor,
                 color: AppColors.secondaryHeader,
               ),
             ),
@@ -1683,7 +1759,7 @@ Widget editAchievement(BuildContext context) {
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
                     fontWeight: FontWeight.bold,
-                    fontSize: 12.sp,
+                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     color: AppColors.element,
                   ),
                 ),
@@ -1727,7 +1803,7 @@ Widget achievement(BuildContext context, Achievement achievement) {
                       color: AppColors.textBlack,
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     ),
                   ),
                 ),
@@ -1738,7 +1814,7 @@ Widget achievement(BuildContext context, Achievement achievement) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 11.sp,
+                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.textBlack,
                     ),
                   ),
@@ -1750,7 +1826,7 @@ Widget achievement(BuildContext context, Achievement achievement) {
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontWeight: FontWeight.normal,
-                      fontSize: 10.sp,
+                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                       color: AppColors.secondaryElementText,
                     ),
                   ),
@@ -1816,7 +1892,7 @@ Widget achievementOption(BuildContext context, Achievement achievement) {
                         translate('edit_achievement'),
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textBlack,
                         ),
@@ -1851,7 +1927,7 @@ Widget achievementOption(BuildContext context, Achievement achievement) {
                         translate('delete_achievement'),
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textBlack,
                         ),
@@ -1908,7 +1984,7 @@ Widget buildTextFieldFullName(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -1957,7 +2033,7 @@ Widget buildTextFieldPhoneNumber(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -1983,7 +2059,7 @@ Widget chooseFaculty(BuildContext context) {
                     translate('choose_faculty'),
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       fontFamily: AppFonts.Header,
                     ),
@@ -2005,7 +2081,7 @@ Widget chooseFaculty(BuildContext context) {
                             'Công nghệ thông tin',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -2046,7 +2122,7 @@ Widget chooseFaculty(BuildContext context) {
                             'Vật lý – Vật lý kỹ thuật',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -2087,7 +2163,7 @@ Widget chooseFaculty(BuildContext context) {
                             'Địa chất',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -2128,7 +2204,7 @@ Widget chooseFaculty(BuildContext context) {
                             'Toán – Tin học',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -2169,7 +2245,7 @@ Widget chooseFaculty(BuildContext context) {
                             'Điện tử - Viễn thông',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -2210,7 +2286,7 @@ Widget chooseFaculty(BuildContext context) {
                             'Khoa học & Công nghệ Vật liệu',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -2251,7 +2327,7 @@ Widget chooseFaculty(BuildContext context) {
                             'Hóa học',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -2292,7 +2368,7 @@ Widget chooseFaculty(BuildContext context) {
                             'Sinh học – Công nghệ Sinh học',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -2333,7 +2409,7 @@ Widget chooseFaculty(BuildContext context) {
                             'Môi trường',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -2386,7 +2462,7 @@ Widget chooseSex(
                     translate('choose_sex'),
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       fontFamily: AppFonts.Header,
                     ),
@@ -2408,7 +2484,7 @@ Widget chooseSex(
                             'Nam',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -2449,7 +2525,7 @@ Widget chooseSex(
                             'Nữ',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -2524,7 +2600,7 @@ Widget chooseBirthday(BuildContext context) {
                     translate('choose_birthday'),
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       fontFamily: AppFonts.Header,
                     ),
@@ -2566,7 +2642,7 @@ Widget chooseBirthday(BuildContext context) {
                           translate('choose'),
                           style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 14.sp,
+                            fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background,
                           ),
@@ -2624,7 +2700,7 @@ Widget buildTextFieldSocialLink(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -2665,7 +2741,7 @@ Widget buildTextFieldAboutMe(BuildContext context, String hintText,
         color: AppColors.textBlack,
         fontFamily: AppFonts.Header,
         fontWeight: FontWeight.normal,
-        fontSize: 12.sp,
+        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
       ),
       autocorrect: false,
     ),
@@ -2712,7 +2788,7 @@ Widget buildTextFieldStudentId(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -2761,7 +2837,7 @@ Widget buildTextFieldStartYear(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -2810,7 +2886,7 @@ Widget buildTextFieldEndYear(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -2859,7 +2935,7 @@ Widget buildTextFieldClass(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
