@@ -1,4 +1,4 @@
-package com.example.hcmus_alumni_mobile
+package com.fitus.alumverse
 
 import io.flutter.embedding.android.FlutterActivity
 
