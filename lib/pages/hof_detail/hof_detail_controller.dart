@@ -36,7 +36,6 @@ class HofDetailController {
       if (response.statusCode == 200) {
         // Convert the JSON string to a Map
         var jsonMap = json.decode(responseBody);
-
         // Pass the Map to the fromJson method
         var hallOfFame = HallOfFame.fromJson(jsonMap);
         context.read<HofDetailBloc>().add(HofEvent(hallOfFame));

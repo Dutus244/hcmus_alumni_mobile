@@ -43,11 +43,17 @@ class MyProfilePageController {
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
+        print(jsonMap);
         var user = User.fromJson(jsonMap["user"]);
         context.read<MyProfilePageBloc>().add(UserEvent(user));
         if (jsonMap["alumniVerification"] != null) {
           var alumniVerification =
               AlumniVerification.fromJson(jsonMap["alumniVerification"]);
+          context
+              .read<MyProfilePageBloc>()
+              .add(AlumniVerificationEvent(alumniVerification));
+        } else {
+          AlumniVerification alumniVerification = new AlumniVerification("PENDING", "", 0);
           context
               .read<MyProfilePageBloc>()
               .add(AlumniVerificationEvent(alumniVerification));
@@ -80,7 +86,7 @@ class MyProfilePageController {
       'Authorization': 'Bearer $token',
     };
     try {
-      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
+      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize&requestedUserId=${Global.storageService.getUserId()}');
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
@@ -387,15 +393,12 @@ class MyProfilePageController {
 
     final map = <String, dynamic>{};
     map['name'] = vote;
-    print(vote);
 
     try {
       var url = Uri.parse('$apiUrl$endpoint');
 
       var response =
           await http.post(url, headers: headers, body: json.encode(map));
-      print(response.statusCode);
-      print(response.body);
       if (response.statusCode == 201) {
         MyProfilePageController(context: context).handleLoadPostData(0);
       } else {
@@ -439,7 +442,6 @@ class MyProfilePageController {
       var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
-      print(responseBody);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var commentResponse = CommentResponse.fromJson(jsonMap);
@@ -516,7 +518,6 @@ class MyProfilePageController {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
     };
-    print(token);
     try {
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
@@ -599,7 +600,6 @@ class MyProfilePageController {
         var jsonMap = json.decode(responseBody);
         // Pass the Map to the fromJson method
         var friendResponse = FriendResponse.fromJson(jsonMap);
-        print(friendResponse.friends.length);
         context
             .read<MyProfilePageBloc>()
             .add(FriendsEvent(friendResponse.friends));

@@ -211,7 +211,7 @@
   "choose_font_size": "Chọn cở chữ",
   "error_get_related_news": "Có lỗi xảy ra khi lấy tin tức liên quan",
   "delete_comment": "Xoá bình luận",
-  "unverified_account": "Tài khoản chưa được xác thực",
+  "unverified_account": "Chưa xác thực",
   "edit_profile": "Chỉnh sửa hồ sơ",
   "view_your_referral_information": "Xem thông tin giới thiệu của bạn",
   "error_get_events_participated": "Có lỗi xảy ra khi lấy danh sách sự kiện đã tham gia",
@@ -336,7 +336,7 @@
   "working_at": "Đang làm việc tại",
   "worked_at": "Đã làm việc tại",
   "has_achieved": "Đã đạt thành tựu",
-  "verified_account": "Tài khoản đã xác thực",
+  "verified_account": "Đã xác thực",
   "accepted": "Đã được chấp thuận",
   "denied": "Bị từ chối",
   "unsent": "Chưa gửi",
@@ -348,5 +348,7 @@
   "error_create_inbox": "Có lỗi xảy ra khi tạo cuộc hội thoại",
   "cancel_invitation": "Huỷ lời mời",
   "all": "Tất cả",
-  "saved_successfully": "Lưu thành công"
+  "saved_successfully": "Lưu thành công",
+  "accept": "Chấp nhận",
+  "error_get_post": "Có lỗi xảy ra khi lấy bài viết"
 }

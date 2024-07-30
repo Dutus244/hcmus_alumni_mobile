@@ -14,16 +14,15 @@ class AdvisePageState {
   final int indexVoter;
   final bool hasReachedMaxVoter;
 
-  AdvisePageState({
-    this.statusPost = Status.loading,
-    this.posts = const [],
-    this.indexPost = 0,
-    this.hasReachedMaxPost = false,
-    this.statusVoter = Status.loading,
-    this.voters = const [],
-    this.indexVoter = 0,
-    this.hasReachedMaxVoter = false
-  });
+  AdvisePageState(
+      {this.statusPost = Status.loading,
+      this.posts = const [],
+      this.indexPost = 0,
+      this.hasReachedMaxPost = false,
+      this.statusVoter = Status.loading,
+      this.voters = const [],
+      this.indexVoter = 0,
+      this.hasReachedMaxVoter = false});
 
   AdvisePageState copyWith({
     Status? statusPost,

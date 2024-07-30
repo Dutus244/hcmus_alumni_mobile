@@ -28,7 +28,7 @@ AppBar buildAppBar(BuildContext context) {
         child: Text(
           translate('friend'),
           textAlign: TextAlign.center,
-          style: AppTextStyle.medium().wSemiBold(),
+          style: AppTextStyle.medium(context).wSemiBold(),
         ),
       ),
     ),
@@ -67,10 +67,10 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
+                hintStyle: AppTextStyle.small(context).withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               obscureText: false,
               maxLength: 50,
@@ -116,7 +116,7 @@ Widget listFriend(BuildContext context, ScrollController _scrollController, Stri
                       margin: EdgeInsets.only(left: 10.w),
                       child: Text(
                         '${BlocProvider.of<FriendListBloc>(context).state.friendCount} ${translate('friends').toLowerCase()}',
-                        style: AppTextStyle.xLarge().wSemiBold(),
+                        style: AppTextStyle.xLarge(context).wSemiBold(),
                       ),
                     ),
                     loadingWidget(),
@@ -140,7 +140,7 @@ Widget listFriend(BuildContext context, ScrollController _scrollController, Stri
                         margin: EdgeInsets.only(left: 10.w),
                         child: Text(
                           '${BlocProvider.of<FriendListBloc>(context).state.friendCount} ${translate('friends').toLowerCase()}',
-                          style: AppTextStyle.xLarge().wSemiBold(),
+                          style: AppTextStyle.xLarge(context).wSemiBold(),
                         ),
                       ),
                       Center(
@@ -148,7 +148,7 @@ Widget listFriend(BuildContext context, ScrollController _scrollController, Stri
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
                           translate('no_friends'),
-                          style: AppTextStyle.small(),
+                          style: AppTextStyle.small(context),
                         ),
                       )),
                     ],
@@ -183,7 +183,7 @@ Widget listFriend(BuildContext context, ScrollController _scrollController, Stri
                           margin: EdgeInsets.only(left: 10.w),
                           child: Text(
                             '${BlocProvider.of<FriendListBloc>(context).state.friendCount} ${translate('friends').toLowerCase()}',
-                            style: AppTextStyle.xLarge().wSemiBold(),
+                            style: AppTextStyle.xLarge(context).wSemiBold(),
                           ),
                         ),
                         Container(
@@ -246,7 +246,7 @@ Widget friend(BuildContext context, Friend friend) {
                 children: [
                   Text(
                     friend.user.fullName,
-                    style: AppTextStyle.small().wSemiBold(),
+                    style: AppTextStyle.small(context).wSemiBold(),
                   ),
                 ],
               ),
@@ -300,7 +300,7 @@ Widget friendOption(BuildContext context, Friend friend) {
             ),
             Text(
               translate('unfriend'),
-              style: AppTextStyle.medium().wSemiBold(),
+              style: AppTextStyle.medium(context).wSemiBold(),
             ),
           ],
         ),

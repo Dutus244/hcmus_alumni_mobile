@@ -30,7 +30,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -69,7 +69,7 @@ Widget buttonCreate(BuildContext context) {
               translate('create'),
               style: TextStyle(
                   fontFamily: AppFonts.Header,
-                  fontSize: 14.sp,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.bold,
                   color: (name != "")
                       ? AppColors.background
@@ -93,7 +93,7 @@ Widget buttonCreate(BuildContext context) {
   );
 }
 
-Widget buildTextFieldName(String hintText, String textType, String iconName,
+Widget buildTextFieldName(BuildContext context, String hintText, String textType, String iconName,
     void Function(String value)? func) {
   return Container(
       width: 320.w,
@@ -131,7 +131,7 @@ Widget buildTextFieldName(String hintText, String textType, String iconName,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -140,7 +140,7 @@ Widget buildTextFieldName(String hintText, String textType, String iconName,
       ));
 }
 
-Widget buildTextFieldDescription(String hintText, String textType,
+Widget buildTextFieldDescription(BuildContext context, String hintText, String textType,
     String iconName, void Function(String value)? func) {
   return Container(
       width: 320.w,
@@ -178,7 +178,7 @@ Widget buildTextFieldDescription(String hintText, String textType,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -204,7 +204,7 @@ Widget choosePrivacy(BuildContext context) {
                     translate('choose_privacy'),
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       fontFamily: AppFonts.Header,
                     ),
@@ -231,7 +231,7 @@ Widget choosePrivacy(BuildContext context) {
                             translate('public'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -242,7 +242,7 @@ Widget choosePrivacy(BuildContext context) {
                               translate('public_description'),
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 14.sp,
+                                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -288,7 +288,7 @@ Widget choosePrivacy(BuildContext context) {
                             translate('private'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -299,7 +299,7 @@ Widget choosePrivacy(BuildContext context) {
                               translate('private_description'),
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 14.sp,
+                                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -366,7 +366,7 @@ Widget buildTextFieldPrivacy(BuildContext context) {
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
             ),
             SvgPicture.asset(
@@ -486,7 +486,7 @@ Widget buildTextFieldTag(BuildContext context) {
                                       child: Text(
                                         '#$tag',
                                         style: TextStyle(
-                                            fontSize: 11.sp,
+                                            fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                             fontWeight: FontWeight.bold,
                                             fontFamily: AppFonts.Header,
                                             color: Colors.white),
@@ -518,7 +518,7 @@ Widget buildTextFieldTag(BuildContext context) {
                         : null,
                   ),
                   style: TextStyle(
-                    fontSize: 11.sp, // Adjust the font size here
+                    fontSize: 11.sp / MediaQuery.of(context).textScaleFactor, // Adjust the font size here
                   ),
                   onChanged: (value) {
                     inputFieldValues.onTagChanged(value);
@@ -551,7 +551,7 @@ Widget buildTextFieldTag(BuildContext context) {
       ));
 }
 
-Widget header() {
+Widget header(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -580,7 +580,7 @@ Widget header() {
               maxLines: 1,
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.bold,
                 fontFamily: AppFonts.Header,
               ),
@@ -601,11 +601,11 @@ Widget groupCreate(BuildContext context) {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            header(),
-            buildTextFieldName(translate('your_group_name'), 'comment', '', (value) {
+            header(context),
+            buildTextFieldName(context, translate('your_group_name'), 'comment', '', (value) {
               context.read<GroupCreateBloc>().add(NameEvent(value));
             }),
-            buildTextFieldDescription(translate('description_your_group'), 'comment', '',
+            buildTextFieldDescription(context, translate('description_your_group'), 'comment', '',
                 (value) {
               context.read<GroupCreateBloc>().add(DescriptionEvent(value));
             }),
@@ -671,7 +671,7 @@ Widget choosePicture(
                         translate('choose_cover'),
                         style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background),
                       ),

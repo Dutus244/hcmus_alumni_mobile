@@ -15,7 +15,15 @@ class Education {
       : id = json["educationId"],
         schoolName = json["schoolName"],
         degree = json["degree"],
-        startTime = json["startTime"] != null ? DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(json["startTime"]).add(Duration(days: 1))) : '',
-        endTime = json["endTime"] != null ? DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd').parse(json["endTime"]).add(Duration(days: 1))) : '',
+        startTime = json["startTime"] != null
+            ? DateFormat('MM/yyyy').format(DateFormat('yyyy-MM-dd')
+                .parse(json["startTime"])
+                .add(Duration(days: 1)))
+            : '',
+        endTime = json["endTime"] != null
+            ? DateFormat('MM/yyyy').format(DateFormat('yyyy-MM-dd')
+                .parse(json["endTime"])
+                .add(Duration(days: 1)))
+            : '',
         isLearning = json["isLearning"] != null ? json["isLearning"] : false;
 }

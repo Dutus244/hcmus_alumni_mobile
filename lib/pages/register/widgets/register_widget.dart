@@ -10,7 +10,7 @@ import '../bloc/register_blocs.dart';
 import '../bloc/register_events.dart';
 import '../register_controller.dart';
 
-Widget buildTextField(String hintText, String textType, String iconName,
+Widget buildTextField(BuildContext context, String hintText, String textType, String iconName,
     void Function(String value)? func) {
   return Container(
       width: 325.w,
@@ -47,10 +47,10 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
+                hintStyle: AppTextStyle.small(context).withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               obscureText: textType == "email" ? false : true,
               maxLength: 50,
@@ -89,7 +89,7 @@ Widget buildLogInAndRegButton(
       child: Center(
         child: Text(
           buttonName,
-          style: AppTextStyle.medium().wSemiBold().withColor(buttonType == "register"
+          style: AppTextStyle.medium(context).wSemiBold().withColor(buttonType == "register"
               ? AppColors.background
               : AppColors.element),
         ),
@@ -123,19 +123,19 @@ Widget register(BuildContext context) {
                     padding: EdgeInsets.only(bottom: 15.h),
                     child: Text(
                       translate('signup').toUpperCase(),
-                      style: AppTextStyle.large().wSemiBold(),
+                      style: AppTextStyle.large(context).wSemiBold(),
                     ),
                   )),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(translate('email*'), "email", "email", (value) {
+              buildTextField(context, translate('email*'), "email", "email", (value) {
                 context.read<RegisterBloc>().add(EmailEvent(value));
               }),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(translate('password*'), "password", "lock",
+              buildTextField(context, translate('password*'), "password", "lock",
                       (value) {
                     context
                         .read<RegisterBloc>()
@@ -145,7 +145,7 @@ Widget register(BuildContext context) {
                 height: 5.h,
               ),
               buildTextField(
-                  translate('re_password*'), "rePassword", "lock",
+                  context, translate('re_password*'), "rePassword", "lock",
                       (value) {
                     context
                         .read<RegisterBloc>()

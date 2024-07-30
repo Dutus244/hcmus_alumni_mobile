@@ -27,7 +27,6 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
-    OtherProfilePageController(context: context).handleLoadEventsData(0);
   }
 
   void _onScroll() {
@@ -40,7 +39,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
       });
 
       OtherProfilePageController(context: context).handleLoadEventsData(
-          BlocProvider.of<OtherProfilePageBloc>(context).state.indexEvent);
+          BlocProvider.of<OtherProfilePageBloc>(context).state.indexEvent, id);
     }
   }
 
@@ -56,6 +55,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
       OtherProfilePageController(context: context).handleGetAchievement(id);
       OtherProfilePageController(context: context).handleGetFriendCount(id);
       OtherProfilePageController(context: context).handleLoadFriendData(id);
+      OtherProfilePageController(context: context).handleLoadEventsData(0, id);
     }
 
     return BlocBuilder<OtherProfilePageBloc, OtherProfilePageState>(

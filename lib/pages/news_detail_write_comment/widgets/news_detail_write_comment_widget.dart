@@ -26,7 +26,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -35,7 +35,7 @@ AppBar buildAppBar(BuildContext context) {
   );
 }
 
-Widget buildTextField(String hintText, String textType, String iconName,
+Widget buildTextField(BuildContext context, String hintText, String textType, String iconName,
     void Function(String value)? func) {
   return Container(
       width: 320.w,
@@ -75,7 +75,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -84,7 +84,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
       ));
 }
 
-Widget header(News news) {
+Widget header(BuildContext context, News news) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -95,7 +95,7 @@ Widget header(News news) {
           news.title,
           style: TextStyle(
             fontFamily: AppFonts.Header,
-            fontSize: 14.sp,
+            fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
             fontWeight: FontWeight.bold,
             color: AppColors.textBlack,
           ),
@@ -107,7 +107,7 @@ Widget header(News news) {
           translate('write_comment'),
           style: TextStyle(
             fontFamily: AppFonts.Header,
-            fontSize: 20.sp,
+            fontSize: 20.sp / MediaQuery.of(context).textScaleFactor,
             fontWeight: FontWeight.bold,
             color: AppColors.textBlack,
           ),
@@ -137,7 +137,7 @@ Widget header(News news) {
               maxLines: 1,
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.bold,
                 fontFamily: AppFonts.Header,
               ),
@@ -181,7 +181,7 @@ Widget buttonSend(BuildContext context, News news) {
               translate('send'),
               style: TextStyle(
                   fontFamily: AppFonts.Header,
-                  fontSize: 14.sp,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.bold,
                   color: comment != ""
                       ? AppColors.background
@@ -214,8 +214,8 @@ Widget newsDetailWriteComment(BuildContext context, News news) {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            header(news),
-            buildTextField(translate('your_comment'), 'comment', '', (value) {
+            header(context, news),
+            buildTextField(context, translate('your_comment'), 'comment', '', (value) {
               context
                   .read<NewsDetailWriteCommentBloc>()
                   .add(CommentEvent(value));

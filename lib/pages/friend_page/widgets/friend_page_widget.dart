@@ -59,7 +59,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                 fontFamily: AppFonts.Header,
                 color: AppColors.textBlack,
                 fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
               obscureText: false,
@@ -122,7 +122,7 @@ Widget buildTextFieldUser(BuildContext context, String hintText, String textType
                 fontFamily: AppFonts.Header,
                 color: AppColors.textBlack,
                 fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
               obscureText: false,
@@ -168,7 +168,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 color: BlocProvider.of<FriendPageBloc>(context).state.page == 0
                     ? AppColors.element
                     : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(15.w),
+                borderRadius: BorderRadius.circular(5.w),
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -178,7 +178,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                   translate('all'),
                   style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       color:
                       BlocProvider.of<FriendPageBloc>(context).state.page == 0
@@ -204,7 +204,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 color: BlocProvider.of<FriendPageBloc>(context).state.page == 1
                     ? AppColors.element
                     : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(15.w),
+                borderRadius: BorderRadius.circular(5.w),
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -214,7 +214,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                   translate('suggestion'),
                   style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       color:
                           BlocProvider.of<FriendPageBloc>(context).state.page == 1
@@ -240,7 +240,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 color: BlocProvider.of<FriendPageBloc>(context).state.page == 2
                     ? AppColors.element
                     : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(15.w),
+                borderRadius: BorderRadius.circular(5.w),
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -251,7 +251,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       color:
                           BlocProvider.of<FriendPageBloc>(context).state.page == 2
@@ -262,12 +262,13 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
+            onTap: () async {
+              await Navigator.pushNamed(
                 context,
                 "/friendList",
                 arguments: { "id": Global.storageService.getUserId()}
               );
+              FriendPageController(context: context).handleLoadSuggestionData(0);
             },
             child: Container(
               width: 105.w,
@@ -277,7 +278,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 color: BlocProvider.of<FriendPageBloc>(context).state.page == 3
                     ? AppColors.element
                     : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(15.w),
+                borderRadius: BorderRadius.circular(5.w),
                 border: Border.all(
                   color: Colors.transparent,
                 ),
@@ -287,7 +288,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                   translate('friend'),
                   style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 12.sp,
+                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       color:
                           BlocProvider.of<FriendPageBloc>(context).state.page == 3
@@ -368,7 +369,7 @@ Widget listUser(
                               translate('no_data'),
                               style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 11.sp,
+                                fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -465,7 +466,7 @@ Widget user(BuildContext context, User user) {
                 children: [
                   Text(
                     user.fullName,
-                    style: AppTextStyle.small().wSemiBold(),
+                    style: AppTextStyle.small(context).wSemiBold(),
                   ),
                 ],
               ),
@@ -542,7 +543,7 @@ Widget listSuggestion(
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp,
+                            fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -647,7 +648,7 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -682,7 +683,7 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
                               translate('add_friend'),
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 11.sp,
+                                  fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.background),
                             ),
@@ -747,7 +748,7 @@ Widget listRequest(BuildContext context, ScrollController _scrollController) {
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp,
+                            fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -842,7 +843,7 @@ Widget request(BuildContext context, FriendRequest request) {
                         request.user.fullName,
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -851,7 +852,7 @@ Widget request(BuildContext context, FriendRequest request) {
                         handleTimeDifference1(request.createAt),
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -883,10 +884,10 @@ Widget request(BuildContext context, FriendRequest request) {
                           ),
                           child: Center(
                             child: Text(
-                              translate('approve'),
+                              translate('accept'),
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 11.sp,
+                                  fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.background),
                             ),
@@ -910,10 +911,10 @@ Widget request(BuildContext context, FriendRequest request) {
                           ),
                           child: Center(
                             child: Text(
-                              translate('deny'),
+                              translate('delete'),
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 11.sp,
+                                  fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.bold,
                                   color:
                                   AppColors.textBlack),

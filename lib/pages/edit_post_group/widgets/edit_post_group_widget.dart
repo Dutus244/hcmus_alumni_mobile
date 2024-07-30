@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/widgets/loading_widget.dart';
 import 'package:hcmus_alumni_mobile/model/picture.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
@@ -17,6 +18,7 @@ import '../../../common/values/fonts.dart';
 import '../../../common/values/text_style.dart';
 import '../../../common/widgets/flutter_toast.dart';
 import '../../../global.dart';
+import '../../../model/post.dart';
 import '../bloc/edit_post_group_blocs.dart';
 import '../bloc/edit_post_group_events.dart';
 import '../edit_post_group_controller.dart';
@@ -32,7 +34,7 @@ AppBar buildAppBar(BuildContext context) {
         child: Text(
           translate('edit_post'),
           textAlign: TextAlign.center,
-          style: AppTextStyle.medium().wSemiBold(),
+          style: AppTextStyle.medium(context).wSemiBold(),
         ),
       ),
     ),
@@ -74,7 +76,7 @@ Widget buttonEdit(BuildContext context, String postId, String groupId) {
               children: [
                 Text(
                   translate('save'),
-                  style: AppTextStyle.base().wSemiBold().withColor(
+                  style: AppTextStyle.base(context).wSemiBold().withColor(
                       (title != "" && content != "")
                           ? AppColors.background
                           : Colors.black.withOpacity(0.3)),
@@ -120,7 +122,7 @@ Widget buttonFinishEditPicture(BuildContext context) {
               children: [
                 Text(
                   translate('save'),
-                  style: AppTextStyle.base().wSemiBold().withColor(
+                  style: AppTextStyle.base(context).wSemiBold().withColor(
                       AppColors.background),
                 ),
                 Container(
@@ -141,12 +143,6 @@ Widget buttonFinishEditPicture(BuildContext context) {
 
 Widget buildTextFieldTitle(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider
-          .of<EditPostGroupBloc>(context)
-          .state
-          .title);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
@@ -158,12 +154,15 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
         children: [
           Container(
             width: 300.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider
+                  .of<EditPostGroupBloc>(context)
+                  .state
+                  .title,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -177,11 +176,11 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small().withColor(
+                hintStyle: AppTextStyle.small(context).withColor(
                     AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
             ),
           )
@@ -191,12 +190,6 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
 
 Widget buildTextFieldContent(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider
-          .of<EditPostGroupBloc>(context)
-          .state
-          .content);
-
   return GestureDetector(
     child: Container(
         width: 320.w,
@@ -209,12 +202,15 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
           children: [
             Container(
               width: 300.w,
-              child: TextField(
-                onTapOutside: (PointerDownEvent event) {
-                  func!(_controller.text);
+              child: TextFormField(
+                onChanged: (value) {
+                  func!(value);
                 },
-                controller: _controller,
                 keyboardType: TextInputType.multiline,
+                initialValue: BlocProvider
+                    .of<EditPostGroupBloc>(context)
+                    .state
+                    .content,
                 maxLines: null,
                 // Cho phép đa dòng
                 decoration: InputDecoration(
@@ -228,11 +224,11 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
                       borderSide: BorderSide(color: Colors.transparent)),
                   focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.transparent)),
-                  hintStyle: AppTextStyle.small().withColor(
+                  hintStyle: AppTextStyle.small(context).withColor(
                       AppColors.secondaryElementText),
                   counterText: '',
                 ),
-                style: AppTextStyle.small(),
+                style: AppTextStyle.small(context),
                 autocorrect: false,
               ),
             )
@@ -241,12 +237,10 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
   );
 }
 
-Widget writePost(BuildContext context, String id, String groupId) {
-  TextEditingController controller = TextEditingController();
-  controller.text = BlocProvider
-      .of<EditPostGroupBloc>(context)
-      .state
-      .title;
+Widget writePost(BuildContext context, Post? post, String groupId) {
+  if (post == null) {
+    return loadingWidget();
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -255,7 +249,7 @@ Widget writePost(BuildContext context, String id, String groupId) {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            header(),
+            header(context),
             buildTextFieldTag(context),
             buildTextFieldTitle(context, translate('title_post'), 'comment', '',
                     (value) {
@@ -272,7 +266,7 @@ Widget writePost(BuildContext context, String id, String groupId) {
           ],
         ),
       ),
-      buttonEdit(context, id, groupId),
+      buttonEdit(context, post.id, groupId),
     ],
   );
 }
@@ -450,7 +444,7 @@ Widget chooseEditPicture(BuildContext context,
               ),
               Text(
                 translate('add_picture'),
-                style: AppTextStyle.small().wSemiBold().withColor(
+                style: AppTextStyle.small(context).wSemiBold().withColor(
                     AppColors.element),
               ),
             ],
@@ -556,7 +550,7 @@ Widget choosePicture(BuildContext context,
                       ),
                       Text(
                         translate('choose_picture'),
-                        style: AppTextStyle.small().wSemiBold().withColor(
+                        style: AppTextStyle.small(context).wSemiBold().withColor(
                             AppColors.background),
                       ),
                     ],
@@ -1724,8 +1718,8 @@ Widget choosePicture(BuildContext context,
                               child: Center(
                                 child: Text(
                                   '+1',
-                                  style: AppTextStyle.xLarge()
-                                      .size(32.sp)
+                                  style: AppTextStyle.xLarge(context)
+                                      .size(32.sp, context)
                                       .wSemiBold(),
                                 ),
                               ),
@@ -1784,7 +1778,7 @@ Widget choosePicture(BuildContext context,
       ));
 }
 
-Widget header() {
+Widget header(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -1811,7 +1805,7 @@ Widget header() {
             Text(
               Global.storageService.getUserFullName(),
               maxLines: 1,
-              style: AppTextStyle.small().wSemiBold(),
+              style: AppTextStyle.small(context).wSemiBold(),
             ),
           ],
         ),
@@ -1936,7 +1930,7 @@ Widget buildTextFieldTag(BuildContext context) {
                                     InkWell(
                                       child: Text(
                                           '#$tag',
-                                          style: AppTextStyle.small()
+                                          style: AppTextStyle.small(context)
                                               .wSemiBold()
                                               .withColor(
                                               AppColors.background)
@@ -1968,7 +1962,7 @@ Widget buildTextFieldTag(BuildContext context) {
                         : null,
                   ),
                   style: TextStyle(
-                    fontSize: 11.sp, // Adjust the font size here
+                    fontSize: 11.sp / MediaQuery.of(context).textScaleFactor, // Adjust the font size here
                   ),
                   onChanged: (value) {
                     inputFieldValues.onTagChanged(value);

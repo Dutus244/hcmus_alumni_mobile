@@ -24,7 +24,7 @@ Future<void> main() async {
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   await Global.init();
-  await dotenv.load(fileName: '.env');
+  await dotenv.load(fileName: '.env.dev.ios');
   var delegate = await LocalizationDelegate.create(
     fallbackLocale: 'vi',
     supportedLocales: ['vi'],

@@ -31,7 +31,7 @@ class MyProfileAddAchievementController {
     var endpoint = '/user/profile/achievement';
     var token = Global.storageService.getUserAuthToken();
 
-    String time = state.time;
+    String time = "01/" + state.time;
     if (!isValidDate(time)) {
       toastInfo(msg: "Ngày nhập không hợp lệ");
       return;
@@ -45,9 +45,9 @@ class MyProfileAddAchievementController {
     var body = json.encode({
       'achievementName': state.name,
       'achievementType': state.type,
-      'achievementTime': state.time != ""
+      'achievementTime': time != ""
           ? DateFormat('yyyy-MM-dd')
-              .format(DateFormat('dd/MM/yyyy').parse(state.time))
+              .format(DateFormat('dd/MM/yyyy').parse(time))
           : "",
       'privacy': 'PUBLIC',
     });
@@ -78,7 +78,7 @@ class MyProfileAddAchievementController {
     var endpoint = '/user/profile/achievement/$id';
     var token = Global.storageService.getUserAuthToken();
 
-    String time = state.time;
+    String time = "01/" + state.time;
     if (!isValidDate(time)) {
       toastInfo(msg: "Ngày nhập không hợp lệ");
       return;
@@ -92,9 +92,9 @@ class MyProfileAddAchievementController {
     var body = json.encode({
       'achievementName': state.name,
       'achievementType': state.type,
-      'achievementTime': state.time != ""
+      'achievementTime': time != ""
           ? DateFormat('yyyy-MM-dd')
-              .format(DateFormat('dd/MM/yyyy').parse(state.time))
+              .format(DateFormat('dd/MM/yyyy').parse(time))
           : "",
       'privacy': 'PUBLIC',
     });

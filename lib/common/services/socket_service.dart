@@ -7,7 +7,8 @@ import 'package:stomp_dart_client/stomp_dart_client.dart';
 
 class SocketService extends WidgetsBindingObserver {
   StompClient? stompClient;
-  final StreamController<String> _messageController = StreamController<String>.broadcast();
+  final StreamController<String> _messageController =
+      StreamController<String>.broadcast();
 
   Stream<String> get messages => _messageController.stream;
 
@@ -21,7 +22,8 @@ class SocketService extends WidgetsBindingObserver {
             destination: '/user/$userId/queue/messages',
             callback: (StompFrame frame) {
               if (frame.body != null) {
-                _messageController.add(frame.body!); // Gửi tin nhắn mới vào stream
+                _messageController
+                    .add(frame.body!); // Gửi tin nhắn mới vào stream
               }
             },
           );

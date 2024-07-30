@@ -348,5 +348,7 @@
   "error_create_inbox": "An error occurred while creating inbox",
   "cancel_invitation": "Cancel invitation",
   "all": "All",
-  "saved_successfully": "Saved successfully"
+  "saved_successfully": "Saved successfully",
+  "accept": "Accept",
+  "error_get_post": "An error occurred while getting post"
 }

@@ -65,7 +65,6 @@ class ChatPageController {
       if (response.statusCode == 200) {
         // Convert the JSON string to a Map
         var jsonMap = json.decode(responseBody);
-        print(jsonMap);
         // Pass the Map to the fromJson method
         var inboxResponse = InboxResponse.fromJson(jsonMap);
         if (inboxResponse.inboxes.isEmpty) {

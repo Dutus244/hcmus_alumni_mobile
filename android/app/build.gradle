@@ -25,7 +25,7 @@ if (flutterVersionName == null) {
 
 android {
     compileSdkVersion 34
-    namespace "com.example.hcmus_alumni_mobile"
+    namespace "com.fitus.alumverse"
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -42,16 +42,25 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.hcmus_alumni_mobile"
+        applicationId "com.fitus.alumverse"
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 3
+        versionName '1.0'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("/Users/duynguyen/alumverse-hcmus-key.jks")
+            storePassword "alumversehcmus"
+            keyAlias "alumverse-hcmus-key"
+            keyPassword "alumversehcmus"
+        }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }

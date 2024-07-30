@@ -49,7 +49,6 @@ class NotificationPageController {
       var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
-      print(token);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var notificationResponse = NotificationResponse.fromJson(jsonMap);
@@ -96,8 +95,9 @@ class NotificationPageController {
         toastInfo(msg: translate('error_get_notification'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_notification'));
-      print(error);
+      if (error.toString() != "Looking up a deactivated widget's ancestor is unsafe.\nAt this point the state of the widget's element tree is no longer stable.\nTo safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.") {
+        toastInfo(msg: translate('error_get_notification'));
+      }
     }
   }
 

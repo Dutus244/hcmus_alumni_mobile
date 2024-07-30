@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:436562093949:android:a411ef450c3297a50a4e14",
+        "mobilesdk_app_id": "1:436562093949:android:21ee6765458b616b0a4e14",
         "android_client_info": {
-          "package_name": "com.example.hcmus_alumni_mobile"
+          "package_name": "com.fitus.alumverse"
         }
       },
       "oauth_client": [],

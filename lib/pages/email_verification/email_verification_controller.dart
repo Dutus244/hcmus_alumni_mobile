@@ -88,12 +88,8 @@ class EmailVerificationController {
 
       final password = Global.storageService.getUserPassword();
 
-      print(email);
-      print(password);
-
       try {
         var response = await http.post(url, body: map);
-        print(response.statusCode);
         if (response.statusCode == 200) {
           var url = Uri.parse('${dotenv.env['API_URL']}/auth/signup');
           final map = <String, dynamic>{};
@@ -103,7 +99,6 @@ class EmailVerificationController {
           try {
             var response = await http.post(url, body: map);
             if (response.statusCode == 200) {
-              print("hi");
               var url = Uri.parse('${dotenv.env['API_URL']}/auth/login');
               final map = <String, dynamic>{};
               map['email'] = email;
@@ -112,7 +107,6 @@ class EmailVerificationController {
               try {
                 var response = await http.post(url, body: map);
                 if (response.statusCode == 200) {
-                  print("hello");
                   Map<String, dynamic> jsonMap = json.decode(response.body);
                   String jwtToken = jsonMap['jwt'];
                   Global.storageService.setString(

@@ -24,7 +24,7 @@ class OtherProfilePageController {
 
   const OtherProfilePageController({required this.context});
 
-  Future<void> handleLoadEventsData(int page) async {
+  Future<void> handleLoadEventsData(int page, String userId) async {
     if (page == 0) {
       context.read<OtherProfilePageBloc>().add(HasReachedMaxEventEvent(false));
       context.read<OtherProfilePageBloc>().add(IndexEventEvent(1));
@@ -45,8 +45,10 @@ class OtherProfilePageController {
     var headers = <String, String>{
       'Authorization': 'Bearer $token',
     };
+
     try {
-      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize');
+      var url = Uri.parse('$apiUrl$endpoint?page=$page&pageSize=$pageSize&requestedUserId=$userId');
+      print('$apiUrl$endpoint?page=$page&pageSize=$pageSize&requestedUserId=$userId');
       var response = await http.get(url, headers: headers);
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
@@ -98,7 +100,6 @@ class OtherProfilePageController {
   }
 
   Future<void> handleGetProfile(String id) async {
-    print(id);
     var token = Global.storageService.getUserAuthToken();
     var url = Uri.parse(
         '${dotenv.env['API_URL']}/user/$id/profile');
@@ -281,7 +282,6 @@ class OtherProfilePageController {
       } else {
         // Handle other status codes if needed
         toastInfo(msg: translate('error_create_inbox'));
-        print(response.body);
       }
     } catch (error) {
       // Handle errors
@@ -315,7 +315,6 @@ class OtherProfilePageController {
         handleGetProfile(id);
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
-        print(jsonMap);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 23203) {
           handleGetProfile(id);

@@ -10,7 +10,7 @@ import '../../../common/values/fonts.dart';
 import '../sign_in_controller.dart';
 import "../bloc/sign_in_events.dart";
 
-Widget buildTextField(String hintText, String textType, String iconName,
+Widget buildTextField(BuildContext context, String hintText, String textType, String iconName,
     void Function(String value)? func) {
   return Container(
       width: 325.w,
@@ -49,10 +49,10 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
+                hintStyle: AppTextStyle.small(context).withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               obscureText: textType == "password" ? true : false,
               maxLength: 50,
@@ -73,7 +73,7 @@ Widget forgotPassword(BuildContext context) {
         },
         child: Text(
           translate('forgot_password'),
-          style: AppTextStyle.xSmall().underline(),
+          style: AppTextStyle.xSmall(context).underline(),
         )),
   );
 }
@@ -105,7 +105,7 @@ Widget rememberLogin(BuildContext context, void Function(bool value)? func) {
         Container(
           child: Text(
             translate('remember_login'),
-            style: AppTextStyle.xSmall().underline(),
+            style: AppTextStyle.xSmall(context).underline(),
           ),
         )
       ],
@@ -142,7 +142,7 @@ Widget buildLogInAndRegButton(
       child: Center(
         child: Text(
           buttonName,
-          style: AppTextStyle.medium().wSemiBold().withColor(buttonType == "login"
+          style: AppTextStyle.medium(context).wSemiBold().withColor(buttonType == "login"
               ? AppColors.background
               : AppColors.element),
         ),
@@ -176,19 +176,19 @@ Widget signIn(BuildContext context) {
                     padding: EdgeInsets.only(bottom: 15.h),
                     child: Text(
                       translate('signin').toUpperCase(),
-                      style: AppTextStyle.large().wSemiBold(),
+                      style: AppTextStyle.large(context).wSemiBold(),
                     ),
                   )),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(translate('email*'), "email", "email", (value) {
+              buildTextField(context, translate('email*'), "email", "email", (value) {
                 context.read<SignInBloc>().add(EmailEvent(value));
               }),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(translate('password*'), "password", "lock",
+              buildTextField(context, translate('password*'), "password", "lock",
                       (value) {
                     context.read<SignInBloc>().add(PasswordEvent(value));
                   }),

@@ -19,9 +19,11 @@ Future<void> handleSavePermission(List<String> permissions) async {
   }
 
   if (hasPermission(permissions, AppPermissions.EVENT_PARTICIPANT_CREATE)) {
-    Global.storageService.setBool(AppPermissions.EVENT_PARTICIPANT_CREATE, true);
+    Global.storageService
+        .setBool(AppPermissions.EVENT_PARTICIPANT_CREATE, true);
   } else {
-    Global.storageService.setBool(AppPermissions.EVENT_PARTICIPANT_CREATE, false);
+    Global.storageService
+        .setBool(AppPermissions.EVENT_PARTICIPANT_CREATE, false);
   }
 
   if (hasPermission(permissions, AppPermissions.COUNSEL_CREATE)) {
@@ -33,7 +35,8 @@ Future<void> handleSavePermission(List<String> permissions) async {
   if (hasPermission(permissions, AppPermissions.COUNSEL_REACTION_CREATE)) {
     Global.storageService.setBool(AppPermissions.COUNSEL_REACTION_CREATE, true);
   } else {
-    Global.storageService.setBool(AppPermissions.COUNSEL_REACTION_CREATE, false);
+    Global.storageService
+        .setBool(AppPermissions.COUNSEL_REACTION_CREATE, false);
   }
 
   if (hasPermission(permissions, AppPermissions.COUNSEL_COMMENT_CREATE)) {

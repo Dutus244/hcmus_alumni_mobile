@@ -12,7 +12,7 @@ import '../bloc/email_verification_blocs.dart';
 import '../bloc/email_verification_events.dart';
 import '../email_verification_controller.dart';
 
-Widget buildTextField(String hintText, String textType, String iconName,
+Widget buildTextField(BuildContext context, String hintText, String textType, String iconName,
     void Function(String value)? func1, void Function()? func2) {
   return Container(
       width: 325.w,
@@ -43,11 +43,11 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small()
+                hintStyle: AppTextStyle.small(context)
                     .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               obscureText: false,
               maxLength: 10,
@@ -69,7 +69,7 @@ Widget buildTextField(String hintText, String textType, String iconName,
                   ),
                   Text(
                     translate('send_again'),
-                    style: AppTextStyle.small().underline(),
+                    style: AppTextStyle.small(context).underline(),
                   )
                 ],
               ),
@@ -108,7 +108,7 @@ Widget buildVerifyAndBackButton(
       child: Center(
         child: Text(
           buttonName,
-          style: AppTextStyle.medium().wSemiBold().withColor(
+          style: AppTextStyle.medium(context).wSemiBold().withColor(
               buttonType == "verify"
                   ? AppColors.background
                   : AppColors.element),
@@ -143,7 +143,7 @@ Widget emailVerification(BuildContext context) {
                 padding: EdgeInsets.only(bottom: 5.h),
                 child: Text(
                   translate('user_authentication').toUpperCase(),
-                  style: AppTextStyle.medium().wSemiBold(),
+                  style: AppTextStyle.medium(context).wSemiBold(),
                 ),
               )),
               Center(
@@ -152,13 +152,13 @@ Widget emailVerification(BuildContext context) {
                 child: Text(
                   "${translate('authentication_code_sent')} ${Global.storageService.getUserEmail()}",
                   textAlign: TextAlign.center,
-                  style: AppTextStyle.small().italic().withColor(AppColors.element),
+                  style: AppTextStyle.small(context).italic().withColor(AppColors.element),
                 ),
               )),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(translate('authentication_code*'), "code", AppAssets.sendIconP, (value) {
+              buildTextField(context, translate('authentication_code*'), "code", AppAssets.sendIconP, (value) {
                 context.read<EmailVerificationBloc>().add(CodeEvent(value));
               }, () {
                 EmailVerificationController(context: context)

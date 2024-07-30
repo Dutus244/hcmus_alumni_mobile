@@ -20,6 +20,7 @@ class AlumniVerification extends StatefulWidget {
 class _AlumniVerificationState extends State<AlumniVerification> {
   String fullName = "";
   File? avatar;
+
   @override
   void initState() {
     super.initState();
@@ -29,7 +30,7 @@ class _AlumniVerificationState extends State<AlumniVerification> {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic>? args =
-    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       fullName = args["fullName"];
       avatar = args["avatar"];

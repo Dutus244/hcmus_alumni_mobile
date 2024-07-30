@@ -1,5 +1,6 @@
 import 'package:hcmus_alumni_mobile/model/faculty.dart';
 import 'package:hcmus_alumni_mobile/model/sex.dart';
+import 'package:intl/intl.dart';
 
 class User {
   final String id;
@@ -35,7 +36,11 @@ class User {
         fullName = json["fullName"] ?? "",
         phone = json["phone"] ?? "",
         sex = json["sex"] != null ? Sex.fromJson(json["sex"]) : null,
-        dob = json["dob"] ?? "",
+        dob = json["dob"] != null
+            ? DateFormat('dd/MM/yyyy').format(DateFormat('yyyy-MM-dd')
+                .parse(json["dob"])
+                .add(Duration(days: 1)))
+            : '',
         socialMediaLink = json["socialMediaLink"] ?? "",
         faculty =
             json["faculty"] != null ? Faculty.fromJson(json["faculty"]) : null,

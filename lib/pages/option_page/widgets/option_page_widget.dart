@@ -31,7 +31,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -58,7 +58,7 @@ Widget optionPage(BuildContext context) {
                 translate('account'),
                 style: TextStyle(
                   color: AppColors.textBlack,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.bold,
                   fontFamily: AppFonts.Header,
                 ),
@@ -90,7 +90,7 @@ Widget optionPage(BuildContext context) {
                         translate('change_password'),
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -107,23 +107,23 @@ Widget optionPage(BuildContext context) {
               ),
             ),
           ),
-          Container(
-            height: 24.h,
-            margin: EdgeInsets.only(top: 10.h),
-            color: AppColors.elementLight,
-            child: Container(
-              margin: EdgeInsets.only(left: 10.w, top: 3.h, bottom: 3.h),
-              child: Text(
-                translate('option'),
-                style: TextStyle(
-                  color: AppColors.textBlack,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: AppFonts.Header,
-                ),
-              ),
-            ),
-          ),
+          // Container(
+          //   height: 24.h,
+          //   margin: EdgeInsets.only(top: 10.h),
+          //   color: AppColors.elementLight,
+          //   child: Container(
+          //     margin: EdgeInsets.only(left: 10.w, top: 3.h, bottom: 3.h),
+          //     child: Text(
+          //       translate('option'),
+          //       style: TextStyle(
+          //         color: AppColors.textBlack,
+          //         fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+          //         fontWeight: FontWeight.bold,
+          //         fontFamily: AppFonts.Header,
+          //       ),
+          //     ),
+          //   ),
+          // ),
           // GestureDetector(
           //   onTap: () {},
           //   child: Container(
@@ -147,7 +147,7 @@ Widget optionPage(BuildContext context) {
           //               translate('notification_setting'),
           //               style: TextStyle(
           //                 color: AppColors.textBlack,
-          //                 fontSize: 16.sp,
+          //                 fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
           //                 fontWeight: FontWeight.w900,
           //                 fontFamily: AppFonts.Header,
           //               ),
@@ -164,117 +164,117 @@ Widget optionPage(BuildContext context) {
           //     ),
           //   ),
           // ),
-          GestureDetector(
-            onTap: () {
-              showModalBottomSheet(
-                isScrollControlled: true,
-                context: context,
-                builder: (ctx) => chooseLanguage(context),
-              );
-            },
-            child: Container(
-              color: Colors.transparent,
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/earth.svg",
-                        width: 16.w,
-                        height: 16.h,
-                        color: Colors.black,
-                      ),
-                      Container(
-                        width: 10.h,
-                      ),
-                      Text(
-                        translate('language_setting'),
-                        style: TextStyle(
-                          color: AppColors.textBlack,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    BlocProvider.of<OptionPageBloc>(context).state.locale ==
-                            "vi"
-                        ? translate('vietnamese')
-                        : translate('english'),
-                    style: TextStyle(
-                      color: AppColors.textBlack,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.normal,
-                      fontFamily: AppFonts.Header,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Container(
-            height: 24.h,
-            margin: EdgeInsets.only(top: 10.h),
-            color: AppColors.elementLight,
-            child: Container(
-              margin: EdgeInsets.only(left: 10.w, top: 3.h, bottom: 3.h),
-              child: Text(
-                translate('rule'),
-                style: TextStyle(
-                  color: AppColors.textBlack,
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: AppFonts.Header,
-                ),
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, '/termOfService');
-            },
-            child: Container(
-              color: Colors.transparent,
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/term_of_service.svg",
-                        width: 16.w,
-                        height: 16.h,
-                        color: Colors.black,
-                      ),
-                      Container(
-                        width: 10.h,
-                      ),
-                      Text(
-                        translate('terms_of_service'),
-                        style: TextStyle(
-                          color: AppColors.textBlack,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SvgPicture.asset(
-                    "assets/icons/arrow_next.svg",
-                    width: 16.w,
-                    height: 16.h,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () {
+          //     showModalBottomSheet(
+          //       isScrollControlled: true,
+          //       context: context,
+          //       builder: (ctx) => chooseLanguage(context),
+          //     );
+          //   },
+          //   child: Container(
+          //     color: Colors.transparent,
+          //     margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //       children: [
+          //         Row(
+          //           children: [
+          //             SvgPicture.asset(
+          //               "assets/icons/earth.svg",
+          //               width: 16.w,
+          //               height: 16.h,
+          //               color: Colors.black,
+          //             ),
+          //             Container(
+          //               width: 10.h,
+          //             ),
+          //             Text(
+          //               translate('language_setting'),
+          //               style: TextStyle(
+          //                 color: AppColors.textBlack,
+          //                 fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
+          //                 fontWeight: FontWeight.w900,
+          //                 fontFamily: AppFonts.Header,
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //         Text(
+          //           BlocProvider.of<OptionPageBloc>(context).state.locale ==
+          //                   "vi"
+          //               ? translate('vietnamese')
+          //               : translate('english'),
+          //           style: TextStyle(
+          //             color: AppColors.textBlack,
+          //             fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+          //             fontWeight: FontWeight.normal,
+          //             fontFamily: AppFonts.Header,
+          //           ),
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // Container(
+          //   height: 24.h,
+          //   margin: EdgeInsets.only(top: 10.h),
+          //   color: AppColors.elementLight,
+          //   child: Container(
+          //     margin: EdgeInsets.only(left: 10.w, top: 3.h, bottom: 3.h),
+          //     child: Text(
+          //       translate('rule'),
+          //       style: TextStyle(
+          //         color: AppColors.textBlack,
+          //         fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+          //         fontWeight: FontWeight.bold,
+          //         fontFamily: AppFonts.Header,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          // GestureDetector(
+          //   onTap: () {
+          //     Navigator.pushNamed(context, '/termOfService');
+          //   },
+          //   child: Container(
+          //     color: Colors.transparent,
+          //     margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //       children: [
+          //         Row(
+          //           children: [
+          //             SvgPicture.asset(
+          //               "assets/icons/term_of_service.svg",
+          //               width: 16.w,
+          //               height: 16.h,
+          //               color: Colors.black,
+          //             ),
+          //             Container(
+          //               width: 10.h,
+          //             ),
+          //             Text(
+          //               translate('terms_of_service'),
+          //               style: TextStyle(
+          //                 color: AppColors.textBlack,
+          //                 fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
+          //                 fontWeight: FontWeight.w900,
+          //                 fontFamily: AppFonts.Header,
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //         SvgPicture.asset(
+          //           "assets/icons/arrow_next.svg",
+          //           width: 16.w,
+          //           height: 16.h,
+          //           color: Colors.black,
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           GestureDetector(
             onTap: () {
               OptionPageController(context: context).handleSignOut();
@@ -300,7 +300,7 @@ Widget optionPage(BuildContext context) {
                         translate('sign_out'),
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 16.sp,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -328,7 +328,7 @@ Widget optionPage(BuildContext context) {
                   'Alumverse HCMUS',
                   style: TextStyle(
                     color: AppColors.textBlack,
-                    fontSize: 12.sp,
+                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     fontFamily: AppFonts.Header,
                   ),
@@ -361,7 +361,7 @@ Widget chooseLanguage(
                     translate('choose_language'),
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       fontFamily: AppFonts.Header,
                     ),
@@ -383,7 +383,7 @@ Widget chooseLanguage(
                             translate('vietnamese'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -427,7 +427,7 @@ Widget chooseLanguage(
                             translate('english'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),

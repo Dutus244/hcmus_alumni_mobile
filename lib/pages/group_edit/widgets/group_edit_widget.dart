@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/widgets/loading_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:textfield_tags/textfield_tags.dart';
 
@@ -31,7 +32,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -70,7 +71,7 @@ Widget buttonEdit(BuildContext context, Group group) {
                   translate('save'),
                   style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       color: (name != "")
                           ? AppColors.background
@@ -96,13 +97,6 @@ Widget buttonEdit(BuildContext context, Group group) {
 
 Widget buildTextFieldName(BuildContext context, String hintText, String textType, String iconName,
     void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider
-          .of<GroupEditBloc>(context)
-          .state
-          .name);
-
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
@@ -114,12 +108,15 @@ Widget buildTextFieldName(BuildContext context, String hintText, String textType
         children: [
           Container(
             width: 300.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider
+                      .of<GroupEditBloc>(context)
+                      .state
+                      .name,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -142,7 +139,7 @@ Widget buildTextFieldName(BuildContext context, String hintText, String textType
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -153,12 +150,6 @@ Widget buildTextFieldName(BuildContext context, String hintText, String textType
 
 Widget buildTextFieldDescription(BuildContext context, String hintText, String textType,
     String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider
-          .of<GroupEditBloc>(context)
-          .state
-          .description);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 10.w, bottom: 2.h),
@@ -170,13 +161,16 @@ Widget buildTextFieldDescription(BuildContext context, String hintText, String t
         children: [
           Container(
             width: 300.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
               maxLines: null,
+              initialValue: BlocProvider
+                  .of<GroupEditBloc>(context)
+                  .state
+                  .description,
               // Cho phép đa dòng
               decoration: InputDecoration(
                 hintText: hintText,
@@ -198,7 +192,7 @@ Widget buildTextFieldDescription(BuildContext context, String hintText, String t
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -224,7 +218,7 @@ Widget choosePrivacy(BuildContext context) {
                     translate('choose_privacy'),
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       fontFamily: AppFonts.Header,
                     ),
@@ -251,7 +245,7 @@ Widget choosePrivacy(BuildContext context) {
                             translate('public'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -262,7 +256,7 @@ Widget choosePrivacy(BuildContext context) {
                               translate('public_description'),
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 14.sp,
+                                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -308,7 +302,7 @@ Widget choosePrivacy(BuildContext context) {
                             translate('private'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp,
+                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -319,7 +313,7 @@ Widget choosePrivacy(BuildContext context) {
                               translate('private_description'),
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 14.sp,
+                                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -386,7 +380,7 @@ Widget buildTextFieldPrivacy(BuildContext context) {
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
             ),
             SvgPicture.asset(
@@ -402,7 +396,7 @@ Widget buildTextFieldPrivacy(BuildContext context) {
   );
 }
 
-Widget header() {
+Widget header(BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -431,7 +425,7 @@ Widget header() {
               maxLines: 1,
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.bold,
                 fontFamily: AppFonts.Header,
               ),
@@ -443,7 +437,10 @@ Widget header() {
   );
 }
 
-Widget groupEdit(BuildContext context, Group group) {
+Widget groupEdit(BuildContext context, Group? group) {
+  if (group == null) {
+    return loadingWidget();
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -452,7 +449,7 @@ Widget groupEdit(BuildContext context, Group group) {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            header(),
+            header(context),
             buildTextFieldName(context, translate('your_group_name'), 'comment', '', (value) {
               context.read<GroupEditBloc>().add(NameEvent(value));
             }),
@@ -528,7 +525,7 @@ Widget choosePicture(
                         translate('choose_cover'),
                         style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background),
                       ),
@@ -688,7 +685,7 @@ Widget buildTextFieldTag(BuildContext context) {
                                       child: Text(
                                         '#$tag',
                                         style: TextStyle(
-                                            fontSize: 11.sp,
+                                            fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                             fontWeight: FontWeight.bold,
                                             fontFamily: AppFonts.Header,
                                             color: Colors.white),
@@ -720,7 +717,7 @@ Widget buildTextFieldTag(BuildContext context) {
                         : null,
                   ),
                   style: TextStyle(
-                    fontSize: 11.sp, // Adjust the font size here
+                    fontSize: 11.sp / MediaQuery.of(context).textScaleFactor, // Adjust the font size here
                   ),
                   onChanged: (value) {
                     inputFieldValues.onTagChanged(value);

@@ -35,7 +35,7 @@ AppBar buildAppBar(BuildContext context) {
         child: Text(
           translate('post1'),
           textAlign: TextAlign.center,
-          style: AppTextStyle.medium().wSemiBold(),
+          style: AppTextStyle.medium(context).wSemiBold(),
         ),
       ),
     ),
@@ -98,7 +98,7 @@ Widget listComment(
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp,
+                            fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -230,7 +230,7 @@ Widget buildCommentWidget(
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: AppColors.textBlack,
-                                  fontSize: 12.sp,
+                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.w900,
                                   fontFamily: AppFonts.Header,
                                 ),
@@ -242,7 +242,7 @@ Widget buildCommentWidget(
                               comment.content,
                               style: TextStyle(
                                 color: AppColors.textBlack,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -266,7 +266,7 @@ Widget buildCommentWidget(
                               maxLines: 1,
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -285,16 +285,13 @@ Widget buildCommentWidget(
                                       .add(ChildrenEvent(comment));
                                   context
                                       .read<PostAdviseDetailBloc>()
-                                      .add(ContentEvent(comment.content));
-                                  context
-                                      .read<PostAdviseDetailBloc>()
                                       .add(ReplyEvent(1));
                                 },
                                 child: Text(
                                   translate('reply'),
                                   style: TextStyle(
                                     color: Colors.black.withOpacity(0.8),
-                                    fontSize: 11.sp,
+                                    fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                     fontWeight: FontWeight.normal,
                                     fontFamily: AppFonts.Header,
                                   ),
@@ -324,7 +321,7 @@ Widget buildCommentWidget(
                                     translate('edit'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -347,7 +344,7 @@ Widget buildCommentWidget(
                                     translate('delete'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -373,7 +370,7 @@ Widget buildCommentWidget(
                               maxLines: 1,
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -401,7 +398,7 @@ Widget buildCommentWidget(
                                     translate('edit'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -424,7 +421,7 @@ Widget buildCommentWidget(
                                     translate('delete'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -475,7 +472,7 @@ Widget buildCommentWidget(
                 '${translate('see')} ${comment.childrenCommentNumber - comment.childrenComments.length} ${translate('comments').toLowerCase()}',
                 style: TextStyle(
                   color: AppColors.textGrey,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.normal,
                   fontFamily: AppFonts.Header,
                 ),
@@ -489,9 +486,6 @@ Widget buildCommentWidget(
 
 Widget buildTextFieldContent(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<PostAdviseDetailBloc>(context).state.content);
-
   return Container(
       width: 290.w,
       margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 5.w, bottom: 2.h),
@@ -507,12 +501,12 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
           Container(
             margin: EdgeInsets.only(left: 10.w),
             width: 260.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<PostAdviseDetailBloc>(context).state.content,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -535,7 +529,7 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -594,7 +588,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
                           fontWeight: FontWeight.normal,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           color: AppColors.secondaryHeader,
                         ),
                       ),
@@ -607,7 +601,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
                         fontWeight: FontWeight.bold,
-                        fontSize: 12.sp,
+                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                         color: AppColors.secondaryHeader,
                       ),
                     ),
@@ -629,7 +623,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
                           fontWeight: FontWeight.bold,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           color: AppColors.textGrey,
                         ),
                       ),
@@ -688,7 +682,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
                           fontWeight: FontWeight.normal,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           color: AppColors.secondaryHeader,
                         ),
                       ),
@@ -711,7 +705,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
                           fontWeight: FontWeight.bold,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           color: AppColors.textGrey,
                         ),
                       ),
@@ -778,7 +772,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
 
 Widget postOption(BuildContext context, Post post) {
   return Container(
-    height: post.votes.length == 0 ? 90.h : 50.h,
+    height: (post.votes.length == 0 && post.permissions.edit) ? 90.h : 50.h,
     child: Stack(
       children: [
         SingleChildScrollView(
@@ -786,7 +780,7 @@ Widget postOption(BuildContext context, Post post) {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              if (post.votes.length == 0)
+              if (post.votes.length == 0 && post.permissions.edit)
                 GestureDetector(
                   onTap: () async {
                     await Navigator.pushNamed(
@@ -815,7 +809,7 @@ Widget postOption(BuildContext context, Post post) {
                         ),
                         Text(
                           translate('edit_post'),
-                          style: AppTextStyle.medium().wMedium(),
+                          style: AppTextStyle.medium(context).wSemiBold(),
                         ),
                       ],
                     ),
@@ -846,7 +840,7 @@ Widget postOption(BuildContext context, Post post) {
                       ),
                       Text(
                         translate('delete_post'),
-                        style: AppTextStyle.medium().wMedium(),
+                        style: AppTextStyle.medium(context).wSemiBold(),
                       ),
                     ],
                   ),
@@ -911,14 +905,14 @@ Widget post(BuildContext context, Post? post) {
                     Text(
                       post.creator.fullName,
                       maxLines: 1,
-                      style: AppTextStyle.small().wSemiBold(),
+                      style: AppTextStyle.small(context).wSemiBold(),
                     ),
                     Row(
                       children: [
                         Text(
                           handleTimeDifference2(post.publishedAt),
                           maxLines: 1,
-                          style: AppTextStyle.xSmall()
+                          style: AppTextStyle.xSmall(context)
                               .withColor(AppColors.textGrey),
                         ),
                       ],
@@ -951,7 +945,7 @@ Widget post(BuildContext context, Post? post) {
           child: Text(
             post.title,
             textAlign: TextAlign.left,
-            style: AppTextStyle.small().wSemiBold(),
+            style: AppTextStyle.small(context).wSemiBold(),
           ),
         ),
         Container(
@@ -971,7 +965,7 @@ Widget post(BuildContext context, Post? post) {
                   post.tags.map((tag) => tag.name).join(' '),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyle.xSmall().withColor(AppColors.tag),
+                  style: AppTextStyle.xSmall(context).withColor(AppColors.tag),
                 ),
               ),
             ],
@@ -985,7 +979,7 @@ Widget post(BuildContext context, Post? post) {
             maxLines: 4,
             expandText: translate('see_more'),
             collapseText: translate('collapse'),
-            style: AppTextStyle.small(),
+            style: AppTextStyle.small(context),
           ),
         ),
         if (!post.allowMultipleVotes)
@@ -1035,7 +1029,7 @@ Widget post(BuildContext context, Post? post) {
                             post.votes[i].name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyle.small()
+                            style: AppTextStyle.small(context)
                                 .withColor(AppColors.textGrey),
                           ),
                         ),
@@ -1056,7 +1050,7 @@ Widget post(BuildContext context, Post? post) {
                         children: [
                           Text(
                             '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
-                            style: AppTextStyle.small()
+                            style: AppTextStyle.small(context)
                                 .withColor(AppColors.element),
                           ),
                           Container(
@@ -1126,7 +1120,7 @@ Widget post(BuildContext context, Post? post) {
                             post.votes[i].name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: AppTextStyle.small()
+                            style: AppTextStyle.small(context)
                                 .withColor(AppColors.textGrey),
                           ),
                         ),
@@ -1147,7 +1141,7 @@ Widget post(BuildContext context, Post? post) {
                         children: [
                           Text(
                             '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
-                            style: AppTextStyle.small()
+                            style: AppTextStyle.small(context)
                                 .withColor(AppColors.element),
                           ),
                           Container(
@@ -1238,7 +1232,7 @@ Widget post(BuildContext context, Post? post) {
                     ),
                     Text(
                       translate('add_option'),
-                      style: AppTextStyle.small(),
+                      style: AppTextStyle.small(context),
                     ),
                   ],
                 ),
@@ -1532,8 +1526,8 @@ Widget post(BuildContext context, Post? post) {
                                 child: Center(
                                   child: Text(
                                     '+1',
-                                    style: AppTextStyle.xLarge()
-                                        .size(32.sp)
+                                    style: AppTextStyle.xLarge(context)
+                                        .size(32.sp / MediaQuery.of(context).textScaleFactor, context)
                                         .wSemiBold(),
                                   ),
                                 ),
@@ -1580,7 +1574,7 @@ Widget post(BuildContext context, Post? post) {
                       padding: EdgeInsets.only(left: 5.w),
                       child: Text(
                         post.reactionCount.toString(),
-                        style: AppTextStyle.xSmall(),
+                        style: AppTextStyle.xSmall(context),
                       ),
                     ),
                   ],
@@ -1602,7 +1596,7 @@ Widget post(BuildContext context, Post? post) {
                   padding: EdgeInsets.only(right: 10.w),
                   child: Text(
                     '${post.childrenCommentNumber} ${translate('comments').toLowerCase()}',
-                    style: AppTextStyle.xSmall(),
+                    style: AppTextStyle.xSmall(context),
                   ),
                 ),
               )
@@ -1647,7 +1641,7 @@ Widget post(BuildContext context, Post? post) {
                                         padding: EdgeInsets.only(left: 5.w),
                                         child: Text(
                                           translate('like'),
-                                          style: AppTextStyle.xSmall()
+                                          style: AppTextStyle.xSmall(context)
                                               .withColor(AppColors.element),
                                         ),
                                       ),
@@ -1667,7 +1661,7 @@ Widget post(BuildContext context, Post? post) {
                                       Container(
                                         padding: EdgeInsets.only(left: 5.w),
                                         child: Text(translate('like'),
-                                            style: AppTextStyle.xSmall()),
+                                            style: AppTextStyle.xSmall(context)),
                                       ),
                                     ],
                                   ),
@@ -1701,7 +1695,7 @@ Widget post(BuildContext context, Post? post) {
                                 Container(
                                   padding: EdgeInsets.only(left: 5.w),
                                   child: Text(translate('comment'),
-                                      style: AppTextStyle.xSmall()),
+                                      style: AppTextStyle.xSmall(context)),
                                 ),
                               ],
                             ),

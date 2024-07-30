@@ -31,13 +31,13 @@ class MyProfileAddEducationController {
     var endpoint = '/user/profile/education';
     var token = Global.storageService.getUserAuthToken();
 
-    String startTime = state.startTime;
+    String startTime = "01/" + state.startTime;
     if (!isValidDate(startTime)) {
       toastInfo(msg: "Ngày nhập không hợp lệ");
       return;
     }
 
-    String endTime = state.endTime;
+    String endTime = "01/" + state.endTime;
     if (endTime != "" && !isValidDate(endTime)) {
       toastInfo(msg: "Ngày nhập không hợp lệ");
       return;
@@ -51,21 +51,17 @@ class MyProfileAddEducationController {
     var body = json.encode({
       'schoolName': state.schoolName,
       'degree': state.degree,
-      'startTime': state.startTime != ""
+      'startTime': startTime != ""
           ? DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy')
-              .parse(state.startTime)
-              .add(Duration(days: 1)))
+              .parse(startTime))
           : "",
-      'endTime': state.endTime != ""
+      'endTime': endTime != ""
           ? DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy')
-              .parse(state.endTime)
-              .add(Duration(days: 1)))
+              .parse(endTime))
           : "",
       'isLearning': state.isStudying,
       'privacy': 'PUBLIC',
     });
-
-    print(body);
 
     try {
       // Send the request
@@ -74,8 +70,6 @@ class MyProfileAddEducationController {
         headers: headers,
         body: body,
       );
-      print(response.statusCode);
-      print(response.body);
       if (response.statusCode == 201) {
         Navigator.pop(context);
       } else {
@@ -95,13 +89,13 @@ class MyProfileAddEducationController {
     var endpoint = '/user/profile/education/$id';
     var token = Global.storageService.getUserAuthToken();
 
-    String startTime = state.startTime;
+    String startTime = "01/" + state.startTime;
     if (!isValidDate(startTime)) {
       toastInfo(msg: "Ngày nhập không hợp lệ");
       return;
     }
 
-    String endTime = state.endTime;
+    String endTime = "01/" + state.endTime;
     if (endTime != "" && !isValidDate(endTime)) {
       toastInfo(msg: "Ngày nhập không hợp lệ");
       return;
@@ -115,14 +109,14 @@ class MyProfileAddEducationController {
     var body = json.encode({
       'schoolName': state.schoolName,
       'degree': state.degree,
-      'startTime': state.startTime != ""
+      'startTime': startTime != ""
           ? DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy')
-              .parse(state.startTime).add(Duration(days: 1))
+              .parse(startTime)
               )
           : "",
-      'endTime': state.endTime != ""
+      'endTime': endTime != ""
           ? DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy')
-              .parse(state.endTime).add(Duration(days: 1))
+              .parse(endTime)
               )
           : "",
       'isLearning': state.isStudying,

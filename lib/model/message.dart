@@ -17,7 +17,9 @@ class Message {
         content = json["content"],
         sender = User.fromJson(json["sender"]),
         messageType = json["messageType"],
-        parentMessage = json["parentMessage"] != null ? Message.fromJson(json["parentMessage"]) : null,
+        parentMessage = json["parentMessage"] != null
+            ? Message.fromJson(json["parentMessage"])
+            : null,
         createAt = json["createAt"],
         updateAt = json["updateAt"];
 }

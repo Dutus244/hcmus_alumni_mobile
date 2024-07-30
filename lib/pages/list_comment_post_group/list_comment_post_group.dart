@@ -25,6 +25,7 @@ class _ListCommentPostGroupState extends State<ListCommentPostGroup> {
   final _scrollController = ScrollController();
   bool _isFetchingData = false;
   late String id;
+  bool isJoined = false;
 
   @override
   void initState() {
@@ -56,6 +57,7 @@ class _ListCommentPostGroupState extends State<ListCommentPostGroup> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       id = args["id"];
+      isJoined = args["isJoined"];
       ListCommentPostGroupController(context: context).handleGetComment(id, 0);
     }
 
@@ -64,7 +66,7 @@ class _ListCommentPostGroupState extends State<ListCommentPostGroup> {
           return Scaffold(
             appBar: buildAppBar(context),
             backgroundColor: AppColors.background,
-            body: listComment(context, _scrollController, id),
+            body: listComment(context, _scrollController, id, isJoined),
           );
         });
   }

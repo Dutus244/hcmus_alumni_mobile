@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/values/assets.dart';
+import 'package:hcmus_alumni_mobile/common/widgets/loading_widget.dart';
 import 'package:hcmus_alumni_mobile/model/comment.dart';
 
 import '../../../common/values/colors.dart';
@@ -26,7 +27,7 @@ AppBar buildAppBar(BuildContext context) {
         child: Text(
           translate('event'),
           textAlign: TextAlign.center,
-          style: AppTextStyle.medium().wSemiBold(),
+          style: AppTextStyle.medium(context).wSemiBold(),
         ),
       ),
     ),
@@ -35,9 +36,6 @@ AppBar buildAppBar(BuildContext context) {
 
 Widget buildTextField(BuildContext context, String hintText, String textType,
     String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<EventDetailEditCommentBloc>(context).state.comment);
-
   return Container(
       width: 320.w,
       height: 400.h,
@@ -51,12 +49,12 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
           Container(
             width: 300.w,
             height: 400.h,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<EventDetailEditCommentBloc>(context).state.comment,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -70,10 +68,10 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small().withColor(AppColors.secondaryElementText),
+                hintStyle: AppTextStyle.small(context).withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
             ),
           )
@@ -81,7 +79,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
       ));
 }
 
-Widget header(Event event) {
+Widget header(BuildContext context, Event event) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -90,14 +88,14 @@ Widget header(Event event) {
         margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 5.h),
         child: Text(
           event.title,
-          style: AppTextStyle.base().wSemiBold(),
+          style: AppTextStyle.base(context).wSemiBold(),
         ),
       ),
       Container(
         margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
         child: Text(
           translate('edit_comment'),
-          style: AppTextStyle.xxLarge().wSemiBold(),
+          style: AppTextStyle.xxLarge(context).wSemiBold(),
         ),
       ),
       Container(
@@ -122,7 +120,7 @@ Widget header(Event event) {
             Text(
               Global.storageService.getUserFullName(),
               maxLines: 1,
-              style: AppTextStyle.small().wSemiBold(),
+              style: AppTextStyle.small(context).wSemiBold(),
             ),
           ],
         ),
@@ -161,7 +159,7 @@ Widget buttonEdit(BuildContext context, Event event, Comment Comment) {
           children: [
             Text(
               translate('save'),
-              style: AppTextStyle.base().wSemiBold().withColor(comment != ""
+              style: AppTextStyle.base(context).wSemiBold().withColor(comment != ""
                   ? AppColors.background
                   : AppColors.textBlack.withOpacity(0.3)),
             ),
@@ -183,7 +181,10 @@ Widget buttonEdit(BuildContext context, Event event, Comment Comment) {
   );
 }
 
-Widget eventDetailEditComment(BuildContext context, Event event, Comment comment) {
+Widget eventDetailEditComment(BuildContext context, Event? event, Comment? comment) {
+  if (event == null || comment == null) {
+    return loadingWidget();
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -192,7 +193,7 @@ Widget eventDetailEditComment(BuildContext context, Event event, Comment comment
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            header(event),
+            header(context, event),
             buildTextField(context, translate('your_comment'), 'comment', '',
                 (value) {
               context

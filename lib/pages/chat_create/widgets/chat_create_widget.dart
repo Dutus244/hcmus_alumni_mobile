@@ -27,7 +27,7 @@ AppBar buildAppBar(BuildContext context) {
         child: Text(
           translate('create_chat'),
           textAlign: TextAlign.center,
-          style: AppTextStyle.medium().wSemiBold(),
+          style: AppTextStyle.medium(context).wSemiBold(),
         ),
       ),
     ),
@@ -66,11 +66,11 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small()
+                hintStyle: AppTextStyle.small(context)
                     .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               obscureText: false,
               maxLength: 50,
@@ -137,7 +137,7 @@ Widget listUser(BuildContext context, ScrollController _scrollController) {
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
                           translate('no_users'),
-                          style: AppTextStyle.small(),
+                          style: AppTextStyle.small(context),
                         ),
                       )),
                     ],
@@ -227,7 +227,7 @@ Widget user(BuildContext context, User user) {
                 children: [
                   Text(
                     user.fullName,
-                    style: AppTextStyle.small().wSemiBold(),
+                    style: AppTextStyle.small(context).wSemiBold(),
                   ),
                 ],
               ),

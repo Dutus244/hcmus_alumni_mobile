@@ -18,7 +18,9 @@ String handleDateTime3(String data) {
   DateTime now = DateTime.now();
   DateTime dateTime = DateTime.parse(data);
   dateTime = dateTime.toLocal();
-  if (now.year == dateTime.year && now.month == dateTime.month && now.day == dateTime.day) {
+  if (now.year == dateTime.year &&
+      now.month == dateTime.month &&
+      now.day == dateTime.day) {
     return '${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
   }
   if (now.year == dateTime.year) {

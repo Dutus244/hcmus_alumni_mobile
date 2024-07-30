@@ -28,7 +28,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -141,7 +141,7 @@ Widget buildTextFieldSchoolName1(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -152,9 +152,6 @@ Widget buildTextFieldSchoolName1(BuildContext context, String hintText,
 
 Widget buildTextFieldSchoolName2(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddEducationBloc>(context).state.schoolName);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
@@ -178,12 +175,12 @@ Widget buildTextFieldSchoolName2(BuildContext context, String hintText,
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<MyProfileAddEducationBloc>(context).state.schoolName,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -206,7 +203,7 @@ Widget buildTextFieldSchoolName2(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -266,7 +263,7 @@ Widget buildTextFieldDegree1(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -277,9 +274,6 @@ Widget buildTextFieldDegree1(BuildContext context, String hintText,
 
 Widget buildTextFieldDegree2(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddEducationBloc>(context).state.degree);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
@@ -303,12 +297,12 @@ Widget buildTextFieldDegree2(BuildContext context, String hintText,
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<MyProfileAddEducationBloc>(context).state.degree,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -331,7 +325,7 @@ Widget buildTextFieldDegree2(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -349,12 +343,14 @@ class DateInputFormatter extends TextInputFormatter {
     // Only allow digits
     newText = newText.replaceAll(RegExp(r'[^0-9]'), '');
 
-    // Insert slashes at the correct positions
+    // Insert slash at the correct position for MM/yyyy format
     if (newText.length >= 3) {
       newText = '${newText.substring(0, 2)}/${newText.substring(2)}';
     }
-    if (newText.length >= 6) {
-      newText = '${newText.substring(0, 5)}/${newText.substring(5)}';
+
+    // Limit to 7 characters (MM/yyyy)
+    if (newText.length > 7) {
+      newText = newText.substring(0, 7);
     }
 
     return TextEditingValue(
@@ -420,7 +416,7 @@ Widget buildTextFieldStartTime1(BuildContext context, String hintText, void Func
               color: AppColors.textBlack,
               fontFamily: AppFonts.Header,
               fontWeight: FontWeight.bold,
-              fontSize: 12.sp,
+              fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
             ),
             autocorrect: false,
           ),
@@ -457,16 +453,16 @@ Widget buildTextFieldStartTime2(BuildContext context, String hintText, void Func
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
+              initialValue: BlocProvider.of<MyProfileAddEducationBloc>(context).state.startTime,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(10), // Limit length to 10 characters
                 DateInputFormatter(), // Custom date formatter
               ],
               keyboardType: TextInputType.datetime,
-              controller: _controller,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -489,7 +485,7 @@ Widget buildTextFieldStartTime2(BuildContext context, String hintText, void Func
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -554,7 +550,7 @@ Widget buildTextFieldEndTime1(BuildContext context, String hintText, void Functi
               color: AppColors.textBlack,
               fontFamily: AppFonts.Header,
               fontWeight: FontWeight.bold,
-              fontSize: 12.sp,
+              fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
             ),
             autocorrect: false,
           ),
@@ -565,9 +561,6 @@ Widget buildTextFieldEndTime1(BuildContext context, String hintText, void Functi
 }
 
 Widget buildTextFieldEndTime2(BuildContext context, String hintText, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<MyProfileAddEducationBloc>(context).state.endTime);
-
   return Container(
       width: 320.w,
       margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
@@ -591,16 +584,16 @@ Widget buildTextFieldEndTime2(BuildContext context, String hintText, void Functi
             width: 270.w,
             height: 40.h,
             padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
+              initialValue: BlocProvider.of<MyProfileAddEducationBloc>(context).state.endTime,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(10), // Limit length to 10 characters
                 DateInputFormatter(), // Custom date formatter
               ],
               keyboardType: TextInputType.datetime,
-              controller: _controller,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -623,7 +616,7 @@ Widget buildTextFieldEndTime2(BuildContext context, String hintText, void Functi
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.bold,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -676,7 +669,7 @@ Widget buildTextFieldStartTime(
                   color: AppColors.textBlack,
                   fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                 ),
               ),
             )
@@ -726,7 +719,7 @@ Widget chooseStartTime(BuildContext context) {
                     translate('choose_start_time'),
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       fontFamily: AppFonts.Header,
                     ),
@@ -768,7 +761,7 @@ Widget chooseStartTime(BuildContext context) {
                           translate('choose'),
                           style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 14.sp,
+                            fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background,
                           ),
@@ -818,7 +811,7 @@ Widget isWorking(BuildContext context, void Function(bool value)? func) {
               fontFamily: AppFonts.Header,
               color: Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 12.sp,
+              fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
             ),
           ),
         )
@@ -871,7 +864,7 @@ Widget buildTextFieldEndTime(
                   color: AppColors.textBlack,
                   fontFamily: AppFonts.Header,
                   fontWeight: FontWeight.bold,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                 ),
               ),
             )
@@ -906,7 +899,7 @@ Widget chooseEndTime(BuildContext context) {
                     translate('choose_end_time'),
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       fontFamily: AppFonts.Header,
                     ),
@@ -948,7 +941,7 @@ Widget chooseEndTime(BuildContext context) {
                           translate('choose'),
                           style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 14.sp,
+                            fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background,
                           ),
@@ -1001,7 +994,7 @@ Widget buttonAdd(BuildContext context, int option, String id) {
                   translate('save'),
                   style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       color: (schoolName != "")
                           ? AppColors.background

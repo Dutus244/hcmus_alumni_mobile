@@ -147,7 +147,6 @@ class ChatCreateController {
       } else {
         // Handle other status codes if needed
         toastInfo(msg: "Có lỗi xả ra khi tạo cuộc hội thoại");
-        print(response.body);
       }
     } catch (error) {
       // Handle errors

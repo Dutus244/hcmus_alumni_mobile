@@ -64,7 +64,7 @@ AppBar buildAppBar(BuildContext context) {
             style: TextStyle(
               fontFamily: AppFonts.Header,
               fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
+              fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
               color: AppColors.secondaryHeader,
             ),
           ),
@@ -186,7 +186,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
               color: BlocProvider.of<GroupPageBloc>(context).state.page == 1
                   ? AppColors.elementLight
                   : AppColors.element,
-              borderRadius: BorderRadius.circular(15.w),
+              borderRadius: BorderRadius.circular(5.w),
               border: Border.all(
                 color: Colors.transparent,
               ),
@@ -196,7 +196,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 translate('discover'),
                 style: TextStyle(
                     fontFamily: AppFonts.Header,
-                    fontSize: 12.sp,
+                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     color:
                         BlocProvider.of<GroupPageBloc>(context).state.page == 1
@@ -222,7 +222,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
               color: BlocProvider.of<GroupPageBloc>(context).state.page == 1
                   ? AppColors.element
                   : AppColors.elementLight,
-              borderRadius: BorderRadius.circular(15.w),
+              borderRadius: BorderRadius.circular(5.w),
               border: Border.all(
                 color: Colors.transparent,
               ),
@@ -232,7 +232,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 translate('your_group'),
                 style: TextStyle(
                     fontFamily: AppFonts.Header,
-                    fontSize: 12.sp,
+                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     color:
                         BlocProvider.of<GroupPageBloc>(context).state.page == 1
@@ -295,7 +295,7 @@ Widget listGroupDiscover(
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp,
+                            fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -445,7 +445,7 @@ Widget groupDiscover(BuildContext context, Group group) {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 13.sp,
+                    fontSize: 13.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     fontFamily: AppFonts.Header,
                   ),
@@ -459,7 +459,7 @@ Widget groupDiscover(BuildContext context, Group group) {
                   maxLines: 2,
                   style: TextStyle(
                     color: AppColors.textBlack,
-                    fontSize: 11.sp,
+                    fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.normal,
                     fontFamily: AppFonts.Header,
                   ),
@@ -484,7 +484,7 @@ Widget groupDiscover(BuildContext context, Group group) {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 10.sp,
+                          fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.normal,
                           color: Color.fromARGB(255, 5, 90, 188),
                         ),
@@ -524,7 +524,7 @@ Widget groupDiscover(BuildContext context, Group group) {
               //             overflow: TextOverflow.ellipsis,
               //             style: TextStyle(
               //               color: AppColors.textGrey,
-              //               fontSize: 11.sp,
+              //               fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
               //               fontWeight: FontWeight.normal,
               //               fontFamily: AppFonts.Header,
               //             ),
@@ -561,7 +561,7 @@ Widget groupDiscover(BuildContext context, Group group) {
                           translate('waiting_approval'),
                           style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: AppColors.textBlack,
                           ),
@@ -583,7 +583,7 @@ Widget groupDiscover(BuildContext context, Group group) {
                           translate('join'),
                           style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background,
                           ),
@@ -648,7 +648,7 @@ Widget infoGroup(BuildContext context, Group group) {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 20.sp,
+                    fontSize: 20.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     fontFamily: AppFonts.Header,
                   ),
@@ -662,7 +662,7 @@ Widget infoGroup(BuildContext context, Group group) {
                   maxLines: 2,
                   style: TextStyle(
                     color: AppColors.textBlack,
-                    fontSize: 12.sp,
+                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.normal,
                     fontFamily: AppFonts.Header,
                   ),
@@ -685,7 +685,7 @@ Widget infoGroup(BuildContext context, Group group) {
                         group.tags.map((tag) => tag.name).join(' '),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyle.xSmall().withColor(AppColors.tag),
+                        style: AppTextStyle.xSmall(context).withColor(AppColors.tag),
                       ),
                     ),
                   ],
@@ -702,7 +702,7 @@ Widget infoGroup(BuildContext context, Group group) {
                   translate('introduce'),
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp,
+                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     fontFamily: AppFonts.Header,
                   ),
@@ -715,10 +715,10 @@ Widget infoGroup(BuildContext context, Group group) {
                   group.description,
                   maxLines: 3,
                   expandText: translate('see_more'),
-                  collapseText: translate('colllapse'),
+                  collapseText: translate('collapse'),
                   style: TextStyle(
                     fontFamily: AppFonts.Header,
-                    fontSize: 12.sp,
+                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.normal,
                     color: AppColors.textBlack,
                   ),
@@ -735,7 +735,7 @@ Widget infoGroup(BuildContext context, Group group) {
               //           translate('member'),
               //           style: TextStyle(
               //             color: Colors.black,
-              //             fontSize: 14.sp,
+              //             fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
               //             fontWeight: FontWeight.bold,
               //             fontFamily: AppFonts.Header,
               //           ),
@@ -764,7 +764,7 @@ Widget infoGroup(BuildContext context, Group group) {
               //           'Nguyễn Đinh Quang Khánh. Minh Phúc và 9 người bạn khác đã tham gia',
               //           style: TextStyle(
               //             color: Colors.black,
-              //             fontSize: 12.sp,
+              //             fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               //             fontWeight: FontWeight.normal,
               //             fontFamily: AppFonts.Header,
               //           ),
@@ -778,7 +778,7 @@ Widget infoGroup(BuildContext context, Group group) {
                   translate('group_activities'),
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 14.sp,
+                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     fontFamily: AppFonts.Header,
                   ),
@@ -801,7 +801,7 @@ Widget infoGroup(BuildContext context, Group group) {
                       '${translate('total')} ${handleParticipantCount(group.participantCount)} ${translate('members').toLowerCase()}',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 12.sp,
+                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header,
                       ),
@@ -826,7 +826,7 @@ Widget infoGroup(BuildContext context, Group group) {
                       '${translate('created_about')} ${handleTimeDifference1(group.createAt)}',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 12.sp,
+                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header,
                       ),
@@ -870,7 +870,7 @@ Widget infoGroup(BuildContext context, Group group) {
                           translate('waiting_approval'),
                           style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: AppColors.textBlack,
                           ),
@@ -893,7 +893,7 @@ Widget infoGroup(BuildContext context, Group group) {
                           translate('join'),
                           style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.bold,
                             color: AppColors.background,
                           ),
@@ -956,7 +956,7 @@ Widget listGroupJoined(
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp,
+                            fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -1111,7 +1111,7 @@ Widget groupJoined(BuildContext context, Group group) {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 13.sp,
+                    fontSize: 13.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.bold,
                     fontFamily: AppFonts.Header,
                   ),
@@ -1125,7 +1125,7 @@ Widget groupJoined(BuildContext context, Group group) {
                   maxLines: 2,
                   style: TextStyle(
                     color: AppColors.textBlack,
-                    fontSize: 11.sp,
+                    fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                     fontWeight: FontWeight.normal,
                     fontFamily: AppFonts.Header,
                   ),
@@ -1148,7 +1148,7 @@ Widget groupJoined(BuildContext context, Group group) {
                         group.tags.map((tag) => tag.name).join(' '),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyle.xSmall().withColor(AppColors.tag),
+                        style: AppTextStyle.xSmall(context).withColor(AppColors.tag),
                       ),
                     ),
                   ],
@@ -1185,7 +1185,7 @@ Widget groupJoined(BuildContext context, Group group) {
               //             overflow: TextOverflow.ellipsis,
               //             style: TextStyle(
               //               color: AppColors.textGrey,
-              //               fontSize: 11.sp,
+              //               fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
               //               fontWeight: FontWeight.normal,
               //               fontFamily: AppFonts.Header,
               //             ),

@@ -42,7 +42,6 @@ class MyProfileEditController {
       var responseBody = utf8.decode(response.bodyBytes);
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
-        print(jsonMap);
         var user = User.fromJson(jsonMap["user"]);
         context.read<MyProfileEditBloc>().add(UpdateProfileEvent(user));
         if (jsonMap["alumniVerification"] != null) {
@@ -218,6 +217,7 @@ class MyProfileEditController {
     String aboutMe = state.aboutMe;
     String classs = state.classs;
     String graduationYear = state.endYear;
+    String dob = state.dob;
 
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/profile';
@@ -235,7 +235,9 @@ class MyProfileEditController {
         'sexId': sexId,
         'socialMediaLink': socialMediaLink,
         'phone': phone,
-        'aboutMe': aboutMe
+        'aboutMe': aboutMe,
+        'dob': dob == "" ? "" : DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy')
+            .parse(dob))
       },
       'alumni': {
         'alumClass': classs,
@@ -255,6 +257,56 @@ class MyProfileEditController {
         toastInfo(msg: translate('saved_successfully'));
       } else {
         toastInfo(msg: translate('error_verify_alumni'));
+      }
+    } catch (e) {
+      // Exception occurred
+      print(e);
+      toastInfo(msg: translate('error_verify_alumni'));
+      return;
+    }
+  }
+
+  Future<void> handleEditAlumniVerification() async {
+    final state = context.read<MyProfileEditBloc>().state;
+    String studentId = state.studentId;
+    int beginningYear = state.startYear != "" ? int.parse(state.startYear) : 0;
+    String socialMediaLink = state.socialLink;
+    int facultyId = state.facultyId;
+    String fullName = state.fullName;
+
+    if (fullName.isEmpty) {
+      toastInfo(msg: translate('must_fill_full_name'));
+      return;
+    }
+
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/user/alumni-verification';
+
+    var token = Global.storageService.getUserAuthToken();
+
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      "Content-Type": "application/json" // Include bearer token in the headers
+    };
+
+    var request = http.MultipartRequest('PUT', Uri.parse('$apiUrl$endpoint'));
+    request.headers.addAll(headers);
+    request.fields['fullName'] = fullName;
+    request.fields['facultyId'] = facultyId.toString();
+    request.fields['studentId'] = studentId;
+    request.fields['beginningYear'] = beginningYear.toString();
+    request.fields['socialMediaLink'] = socialMediaLink;
+
+    try {
+      // Send the request
+      var streamedResponse = await request.send();
+
+      // Convert the streamed response to a regular HTTP response
+      var response = await http.Response.fromStream(streamedResponse);
+      if (response.statusCode == 201) {
+        handleGetProfile();
+      } else {
+
       }
     } catch (e) {
       // Exception occurred

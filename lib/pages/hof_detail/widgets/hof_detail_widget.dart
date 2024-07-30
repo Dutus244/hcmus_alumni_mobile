@@ -27,7 +27,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -48,16 +48,26 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(
-          margin: EdgeInsets.only(left: 10.w, right: 10.w),
-          width: 340.w,
-          height: 150.h,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.w),
-            shape: BoxShape.rectangle,
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: NetworkImage(hallOfFame.thumbnail),
+        GestureDetector(
+          onTap: () {
+            if (hallOfFame.linkerUser != null) {
+              Navigator.pushNamed(context, "/otherProfilePage",
+                  arguments: {
+                    "id": hallOfFame.linkerUser!.id,
+                  });
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.only(left: 10.w, right: 10.w),
+            width: 340.w,
+            height: 150.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.w),
+              shape: BoxShape.rectangle,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(hallOfFame.thumbnail),
+              ),
             ),
           ),
         ),
@@ -69,7 +79,7 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
               fontFamily: AppFonts.Header,
               color: Color.fromARGB(255, 51, 58, 73),
               fontWeight: FontWeight.w500,
-              fontSize: 12.sp,
+              fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
             ),
           ),
         ),
@@ -81,7 +91,7 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
               fontFamily: AppFonts.Header,
               color: Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 18.sp,
+              fontSize: 18.sp / MediaQuery.of(context).textScaleFactor,
             ),
           ),
         ),
@@ -106,7 +116,7 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
                       fontFamily: AppFonts.Header,
                       color: Colors.black,
                       fontWeight: FontWeight.normal,
-                      fontSize: 11.sp,
+                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                     ),
                   ),
                 ],
@@ -130,7 +140,7 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
                     maxLines: 2,
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 11.sp,
+                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.normal,
                       color: Colors.black,
                     ),
@@ -163,7 +173,7 @@ Widget hofContent(BuildContext context, HallOfFame? hallOfFame) {
                   fontFamily: AppFonts.Header,
                   color: Color.fromARGB(255, 51, 58, 73),
                   fontWeight: FontWeight.bold,
-                  fontSize: 14.sp,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                 ),
               ),
             ],

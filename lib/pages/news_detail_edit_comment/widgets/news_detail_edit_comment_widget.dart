@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:hcmus_alumni_mobile/common/widgets/loading_widget.dart';
 import 'package:hcmus_alumni_mobile/model/comment.dart';
 import 'package:hcmus_alumni_mobile/pages/news_detail_edit_comment/bloc/news_detail_edit_comment_blocs.dart';
 
@@ -27,7 +28,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -38,9 +39,6 @@ AppBar buildAppBar(BuildContext context) {
 
 Widget buildTextField(BuildContext context, String hintText, String textType,
     String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<NewsDetailEditCommentBloc>(context).state.comment);
-
   return Container(
       width: 320.w,
       height: 350.h,
@@ -54,12 +52,12 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
           Container(
             width: 300.w,
             height: 350.h,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<NewsDetailEditCommentBloc>(context).state.comment,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -82,7 +80,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -91,7 +89,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
       ));
 }
 
-Widget header(News news) {
+Widget header(BuildContext context, News news) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -102,7 +100,7 @@ Widget header(News news) {
           news.title,
           style: TextStyle(
             fontFamily: AppFonts.Header,
-            fontSize: 14.sp,
+            fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
             fontWeight: FontWeight.bold,
             color: AppColors.textBlack,
           ),
@@ -114,7 +112,7 @@ Widget header(News news) {
           translate('edit_comment'),
           style: TextStyle(
             fontFamily: AppFonts.Header,
-            fontSize: 20.sp,
+            fontSize: 20.sp / MediaQuery.of(context).textScaleFactor,
             fontWeight: FontWeight.bold,
             color: AppColors.textBlack,
           ),
@@ -144,7 +142,7 @@ Widget header(News news) {
               maxLines: 1,
               style: TextStyle(
                 color: AppColors.textBlack,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                 fontWeight: FontWeight.bold,
                 fontFamily: AppFonts.Header,
               ),
@@ -189,7 +187,7 @@ Widget buttonEdit(BuildContext context, News news, Comment Comment) {
                   translate('save'),
                   style: TextStyle(
                       fontFamily: AppFonts.Header,
-                      fontSize: 14.sp,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.bold,
                       color: comment != ""
                           ? AppColors.background
@@ -213,7 +211,10 @@ Widget buttonEdit(BuildContext context, News news, Comment Comment) {
   );
 }
 
-Widget newsDetailEditComment(BuildContext context, News news, Comment comment) {
+Widget newsDetailEditComment(BuildContext context, News? news, Comment? comment) {
+  if (news == null || comment == null) {
+    return loadingWidget();
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -222,7 +223,7 @@ Widget newsDetailEditComment(BuildContext context, News news, Comment comment) {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            header(news),
+            header(context, news),
             buildTextField(context, translate('your_comment'), 'comment', '',
                     (value) {
                   context

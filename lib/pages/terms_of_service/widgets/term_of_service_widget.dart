@@ -17,7 +17,7 @@ AppBar buildAppBar(BuildContext context) {
         child: Text(
           translate('term_of_service'),
           textAlign: TextAlign.center,
-          style: AppTextStyle.medium().wSemiBold(),
+          style: AppTextStyle.medium(context).wSemiBold(),
         ),
       ),
     ),

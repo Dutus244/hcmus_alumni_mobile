@@ -28,7 +28,7 @@ AppBar buildAppBar(BuildContext context) {
           style: TextStyle(
             fontFamily: AppFonts.Header,
             fontWeight: FontWeight.bold,
-            fontSize: 16.sp,
+            fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
             color: AppColors.secondaryHeader,
           ),
         ),
@@ -73,7 +73,7 @@ Widget listRequest(
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12.sp,
+                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -170,7 +170,7 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
                         request.user.fullName,
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -205,7 +205,7 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
                               translate('approve'),
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 11.sp,
+                                  fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.bold,
                                   color: AppColors.background),
                             ),
@@ -232,7 +232,7 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
                               translate('deny'),
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 11.sp,
+                                  fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.bold,
                                   color:
                                   AppColors.textBlack),

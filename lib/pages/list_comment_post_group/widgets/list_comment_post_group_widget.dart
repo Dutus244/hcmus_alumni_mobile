@@ -20,7 +20,7 @@ import '../bloc/list_comment_post_group_states.dart';
 import '../list_comment_post_group_controller.dart';
 
 Widget listComment(BuildContext context, ScrollController _scrollController,
-    String id) {
+    String id, bool isJoined) {
   String content =
       BlocProvider.of<ListCommentPostGroupBloc>(context).state.content;
   Comment? comment =
@@ -73,7 +73,7 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp,
+                            fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -111,7 +111,7 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
                                 .state
                                 .comments[index],
                             0,
-                            id),
+                            id, isJoined),
                       ],
                     );
                   } else {
@@ -121,22 +121,23 @@ Widget listComment(BuildContext context, ScrollController _scrollController,
                             .state
                             .comments[index],
                         0,
-                        id);
+                        id, isJoined);
                   }
                 }
             }
           },
         ),
       ),
-      navigation(context, content, comment, id, (value) {
-        context.read<ListCommentPostGroupBloc>().add(ContentEvent(value));
-      })
+      if (isJoined)
+        navigation(context, content, comment, id, (value) {
+          context.read<ListCommentPostGroupBloc>().add(ContentEvent(value));
+        })
     ],
   );
 }
 
 Widget buildCommentWidget(
-    BuildContext context, Comment comment, int index, String id) {
+    BuildContext context, Comment comment, int index, String id, bool isJoined) {
   return Container(
     margin: EdgeInsets.only(bottom: 10.h),
     child: Column(
@@ -203,7 +204,7 @@ Widget buildCommentWidget(
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: AppColors.textBlack,
-                                  fontSize: 12.sp,
+                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.w900,
                                   fontFamily: AppFonts.Header,
                                 ),
@@ -215,7 +216,7 @@ Widget buildCommentWidget(
                               comment.content,
                               style: TextStyle(
                                 color: AppColors.textBlack,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -225,7 +226,7 @@ Widget buildCommentWidget(
                       ),
                     ),
                   ),
-                  if (index <= 1)
+                  if (index <= 1 && isJoined)
                     Container(
                       margin: EdgeInsets.only(top: 4.h),
                       child: Row(
@@ -239,7 +240,7 @@ Widget buildCommentWidget(
                               maxLines: 1,
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -255,16 +256,13 @@ Widget buildCommentWidget(
                                   .add(ChildrenEvent(comment));
                               context
                                   .read<ListCommentPostGroupBloc>()
-                                  .add(ContentEvent(comment.content));
-                              context
-                                  .read<ListCommentPostGroupBloc>()
                                   .add(ReplyEvent(1));
                             },
                             child: Text(
                               translate('reply'),
                               style: TextStyle(
                                 color: Colors.black.withOpacity(0.8),
-                                fontSize: 11.sp,
+                                fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -292,7 +290,7 @@ Widget buildCommentWidget(
                                     translate('edit'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -315,7 +313,7 @@ Widget buildCommentWidget(
                                     translate('delete'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -327,7 +325,7 @@ Widget buildCommentWidget(
                       ),
                     ),
                   if (index > 1 &&
-                      (comment.permissions.edit || comment.permissions.delete))
+                      (comment.permissions.edit || comment.permissions.delete) )
                     Container(
                       margin: EdgeInsets.only(top: 2.h),
                       child: Row(
@@ -341,7 +339,7 @@ Widget buildCommentWidget(
                               maxLines: 1,
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -369,7 +367,7 @@ Widget buildCommentWidget(
                                     translate('edit'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -392,7 +390,7 @@ Widget buildCommentWidget(
                                     translate('delete'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -424,7 +422,7 @@ Widget buildCommentWidget(
                           // This is divider
                           Container(
                               child: buildCommentWidget(context,
-                                  comment.childrenComments[i], index + 1, id)),
+                                  comment.childrenComments[i], index + 1, id, isJoined)),
                         ],
                       ))
               ],
@@ -443,7 +441,7 @@ Widget buildCommentWidget(
                 '${translate('see')} ${comment.childrenCommentNumber - comment.childrenComments.length} ${translate('comments').toLowerCase()}',
                 style: TextStyle(
                   color: AppColors.textGrey,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.normal,
                   fontFamily: AppFonts.Header,
                 ),
@@ -457,11 +455,6 @@ Widget buildCommentWidget(
 
 Widget buildTextFieldContent(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  TextEditingController _controller = TextEditingController(
-      text: BlocProvider.of<ListCommentPostGroupBloc>(context)
-          .state
-          .content);
-
   return Container(
       width: 290.w,
       margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 5.w, bottom: 2.h),
@@ -477,12 +470,14 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
           Container(
             margin: EdgeInsets.only(left: 10.w),
             width: 260.w,
-            child: TextField(
-              onTapOutside: (PointerDownEvent event) {
-                func!(_controller.text);
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
               },
               keyboardType: TextInputType.multiline,
-              controller: _controller,
+              initialValue: BlocProvider.of<ListCommentPostGroupBloc>(context)
+                  .state
+                  .content,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -505,7 +500,7 @@ Widget buildTextFieldContent(BuildContext context, String hintText,
                 color: AppColors.textBlack,
                 fontFamily: AppFonts.Header,
                 fontWeight: FontWeight.normal,
-                fontSize: 12.sp,
+                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
               ),
               autocorrect: false,
             ),
@@ -566,7 +561,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
                           fontWeight: FontWeight.normal,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           color: AppColors.secondaryHeader,
                         ),
                       ),
@@ -579,7 +574,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
                         fontWeight: FontWeight.bold,
-                        fontSize: 12.sp,
+                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                         color: AppColors.secondaryHeader,
                       ),
                     ),
@@ -600,7 +595,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
                           fontWeight: FontWeight.bold,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           color: AppColors.textGrey,
                         ),
                       ),
@@ -658,7 +653,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
                           fontWeight: FontWeight.normal,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           color: AppColors.secondaryHeader,
                         ),
                       ),
@@ -680,7 +675,7 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
                           fontWeight: FontWeight.bold,
-                          fontSize: 12.sp,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                           color: AppColors.textGrey,
                         ),
                       ),
@@ -764,7 +759,7 @@ AppBar buildAppBar(BuildContext context) {
             style: TextStyle(
               fontFamily: AppFonts.Header,
               fontWeight: FontWeight.bold,
-              fontSize: 16.sp,
+              fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
               color: AppColors.secondaryHeader,
             ),
           ),

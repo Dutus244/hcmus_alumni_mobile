@@ -77,7 +77,9 @@ class NewsEventPageController {
         toastInfo(msg: translate('error_get_news'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_news'));
+      if (error.toString() != "Looking up a deactivated widget's ancestor is unsafe.\nAt this point the state of the widget's element tree is no longer stable.\nTo safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.") {
+        toastInfo(msg: translate('error_get_news'));
+      }
     }
   }
 
@@ -109,7 +111,6 @@ class NewsEventPageController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var eventResponse = EventResponse.fromJson(jsonMap);
-        print(eventResponse.events.length);
 
         if (eventResponse.events.isEmpty) {
           if (page == 0) {
@@ -143,7 +144,9 @@ class NewsEventPageController {
         toastInfo(msg: translate('error_get_event'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_event'));
+      if (error.toString() != "Looking up a deactivated widget's ancestor is unsafe.\nAt this point the state of the widget's element tree is no longer stable.\nTo safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.") {
+        toastInfo(msg: translate('error_get_event'));
+      }
     }
   }
 }

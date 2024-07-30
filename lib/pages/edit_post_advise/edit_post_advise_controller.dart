@@ -24,12 +24,33 @@ class EditPostAdviseController {
     return tags.map((tag) => {'name': tag}).toList();
   }
 
-  Future<void> handleLoad(Post post) async {
-    List<String> tags = post.tags.map((tag) => tag.name.toString()).toList();
-    context.read<EditPostAdviseBloc>().add(TagsEvent(tags));
-    context.read<EditPostAdviseBloc>().add(TitleEvent(post.title));
-    context.read<EditPostAdviseBloc>().add(ContentEvent(post.content));
-    context.read<EditPostAdviseBloc>().add(PictureNetworksEvent(post.pictures));
+  Future<void> handleLoad(String id) async {
+    var apiUrl = dotenv.env['API_URL'];
+    var endpoint = '/counsel/$id';
+    var token = Global.storageService.getUserAuthToken();
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+    };
+
+    try {
+      var url = Uri.parse('$apiUrl$endpoint');
+      var response = await http.get(url, headers: headers);
+      var responseBody = utf8.decode(response.bodyBytes);
+      if (response.statusCode == 200) {
+        var jsonMap = json.decode(responseBody);
+        var post = Post.fromJson(jsonMap);
+        context.read<EditPostAdviseBloc>().add(EditPostAdviseResetEvent());
+        List<String> tags = post.tags.map((tag) => tag.name.toString()).toList();
+        context.read<EditPostAdviseBloc>().add(TagsEvent(tags));
+        context.read<EditPostAdviseBloc>().add(TitleEvent(post.title));
+        context.read<EditPostAdviseBloc>().add(ContentEvent(post.content));
+        context.read<EditPostAdviseBloc>().add(PictureNetworksEvent(post.pictures));
+      } else {
+        toastInfo(msg: translate('error_get_post'));
+      }
+    } catch (error) {
+      toastInfo(msg: translate('error_get_post'));
+    }
   }
 
   Future<void> handlePost(String id) async {

@@ -18,28 +18,35 @@ class EditPostAdvise extends StatefulWidget {
 }
 
 class _EditPostAdviseState extends State<EditPostAdvise> {
-  late Post post;
+  Post? post;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      handleNavigation();
+    });
+  }
+
+  void handleNavigation() {
     Map<String, dynamic>? args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       post = args["post"];
       // Now you can use the passedValue in your widget
-      context
-          .read<EditPostAdviseBloc>()
-          .add(EditPostAdviseResetEvent());
-      EditPostAdviseController(context: context).handleLoad(post);
+      EditPostAdviseController(context: context).handleLoad(post!.id);
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<EditPostAdviseBloc, EditPostAdviseState>(
         builder: (context, state) {
           return Scaffold(
               appBar: buildAppBar(context),
               backgroundColor: AppColors.background,
               body: BlocProvider.of<EditPostAdviseBloc>(context).state.page == 0
-                  ? writePost(context, post.id)
+                  ? writePost(context, post)
                   : editPicture(context));
         });
   }

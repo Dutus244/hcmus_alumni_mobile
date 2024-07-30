@@ -10,7 +10,7 @@ import '../bloc/change_password_forgot_blocs.dart';
 import '../bloc/change_password_forgot_events.dart';
 import '../change_password_forgot_controller.dart';
 
-Widget buildTextField(String hintText, String textType, String iconName,
+Widget buildTextField(BuildContext context, String hintText, String textType, String iconName,
     void Function(String value)? func) {
   return Container(
       width: 325.w,
@@ -47,11 +47,11 @@ Widget buildTextField(String hintText, String textType, String iconName,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small()
+                hintStyle: AppTextStyle.small(context)
                     .withColor(AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
               obscureText: textType == "email" ? false : true,
               maxLength: 30,
@@ -90,7 +90,7 @@ Widget buildLogInAndRegButton(
       child: Center(
         child: Text(
           buttonName,
-          style: AppTextStyle.medium().wSemiBold().withColor(
+          style: AppTextStyle.medium(context).wSemiBold().withColor(
               buttonType == "change"
                   ? AppColors.background
                   : AppColors.element),
@@ -125,13 +125,13 @@ Widget changePassword(BuildContext context) {
                 padding: EdgeInsets.only(bottom: 15.h),
                 child: Text(
                   translate('change_password').toUpperCase(),
-                  style: AppTextStyle.medium().wSemiBold(),
+                  style: AppTextStyle.medium(context).wSemiBold(),
                 ),
               )),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(translate('new_password*'), "password", AppAssets.lockIconP, (value) {
+              buildTextField(context, translate('new_password*'), "password", AppAssets.lockIconP, (value) {
                 context
                     .read<ChangePasswordForgotBloc>()
                     .add(PasswordEvent(value));
@@ -139,7 +139,7 @@ Widget changePassword(BuildContext context) {
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(translate('re_new_password*'), "password", AppAssets.lockIconP,
+              buildTextField(context, translate('re_new_password*'), "password", AppAssets.lockIconP,
                   (value) {
                 context
                     .read<ChangePasswordForgotBloc>()

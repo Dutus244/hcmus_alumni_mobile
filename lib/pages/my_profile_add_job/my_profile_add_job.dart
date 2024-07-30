@@ -18,10 +18,18 @@ class MyProfileAddJob extends StatefulWidget {
 class _MyProfileAddJobState extends State<MyProfileAddJob> {
   int option = 0;
   Job? job;
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      handleNavigation();
+    });
+  }
+
+  void handleNavigation() {
     Map<String, dynamic>? args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       option = args["option"];
       context.read<MyProfileAddJobBloc>().add(MyProfileAddJobResetEvent());
@@ -34,7 +42,10 @@ class _MyProfileAddJobState extends State<MyProfileAddJob> {
         context.read<MyProfileAddJobBloc>().add(IsWorkingEvent(job!.isWorking));
       }
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<MyProfileAddJobBloc, MyProfileAddJobState>(
         builder: (context, state) {
           return Scaffold(

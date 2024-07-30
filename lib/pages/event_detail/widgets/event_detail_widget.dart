@@ -34,7 +34,7 @@ AppBar buildAppBar(BuildContext context) {
         child: Text(
           translate('event'),
           textAlign: TextAlign.center,
-          style: AppTextStyle.medium().wSemiBold(),
+          style: AppTextStyle.medium(context).wSemiBold(),
         ),
       ),
     ),
@@ -58,7 +58,7 @@ Widget buildButtonChooseInfoOrParticipant(
               color: BlocProvider.of<EventDetailBloc>(context).state.page == 1
                   ? AppColors.elementLight
                   : AppColors.element,
-              borderRadius: BorderRadius.circular(15.w),
+              borderRadius: BorderRadius.circular(5.w),
               border: Border.all(
                 color: Colors.transparent,
               ),
@@ -66,7 +66,7 @@ Widget buildButtonChooseInfoOrParticipant(
             child: Center(
               child: Text(
                 translate('information'),
-                style: AppTextStyle.small().wSemiBold().withColor(
+                style: AppTextStyle.small(context).wSemiBold().withColor(
                     BlocProvider.of<EventDetailBloc>(context).state.page == 1
                         ? AppColors.element
                         : AppColors.background),
@@ -84,7 +84,7 @@ Widget buildButtonChooseInfoOrParticipant(
               color: BlocProvider.of<EventDetailBloc>(context).state.page == 1
                   ? AppColors.element
                   : AppColors.elementLight,
-              borderRadius: BorderRadius.circular(15.w),
+              borderRadius: BorderRadius.circular(5.w),
               border: Border.all(
                 color: Colors.transparent,
               ),
@@ -92,7 +92,7 @@ Widget buildButtonChooseInfoOrParticipant(
             child: Center(
               child: Text(
                 translate('participants'),
-                style: AppTextStyle.small().wSemiBold().withColor(
+                style: AppTextStyle.small(context).wSemiBold().withColor(
                     BlocProvider.of<EventDetailBloc>(context).state.page == 1
                         ? AppColors.background
                         : AppColors.element),
@@ -131,14 +131,14 @@ Widget eventContent(BuildContext context, Event event) {
         padding: EdgeInsets.only(top: 5.h, left: 10.w),
         child: Text(
           "${translate('faculty_of')} " + event.faculty.name,
-          style: AppTextStyle.small().withColor(AppColors.textGrey),
+          style: AppTextStyle.small(context).withColor(AppColors.textGrey),
         ),
       ),
       Container(
         padding: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
         child: Text(
           event.title,
-          style: AppTextStyle.large().wSemiBold(),
+          style: AppTextStyle.large(context).wSemiBold(),
         ),
       ),
       Container(
@@ -158,7 +158,7 @@ Widget eventContent(BuildContext context, Event event) {
                 ),
                 Text(
                   handleDateTime1(event.publishedAt),
-                  style: AppTextStyle.small(),
+                  style: AppTextStyle.small(context),
                 ),
               ],
             ),
@@ -179,7 +179,7 @@ Widget eventContent(BuildContext context, Event event) {
                 Text(
                   event.views.toString(),
                   maxLines: 2,
-                  style: AppTextStyle.small(),
+                  style: AppTextStyle.small(context),
                 ),
               ],
             ),
@@ -206,13 +206,13 @@ Widget eventContent(BuildContext context, Event event) {
                         width: 65.w, // Đặt chiều rộng cụ thể tại đây
                         child: Text(
                           '${translate('location')}: ',
-                          style: AppTextStyle.small(),
+                          style: AppTextStyle.small(context),
                         ),
                       ),
                     ),
                     TextSpan(
                       text: event.organizationLocation,
-                      style: AppTextStyle.small(),
+                      style: AppTextStyle.small(context),
                     ),
                   ],
                 ),
@@ -239,7 +239,7 @@ Widget eventContent(BuildContext context, Event event) {
                 child: Text(
                   '${translate('time')}:',
                   maxLines: 1,
-                  style: AppTextStyle.small(),
+                  style: AppTextStyle.small(context),
                 ),
               ),
               Container(
@@ -248,7 +248,7 @@ Widget eventContent(BuildContext context, Event event) {
               Text(
                 handleDateTime1(event.organizationTime),
                 maxLines: 1,
-                style: AppTextStyle.small(),
+                style: AppTextStyle.small(context),
               ),
             ],
           )),
@@ -271,13 +271,13 @@ Widget eventContent(BuildContext context, Event event) {
               children: [
                 Text(
                   event.participants.toString(),
-                  style: AppTextStyle.base()
+                  style: AppTextStyle.base(context)
                       .wSemiBold()
                       .withColor(AppColors.element),
                 ),
                 Text(
                   translate('participants'),
-                  style: AppTextStyle.base()
+                  style: AppTextStyle.base(context)
                       .wSemiBold()
                       .withColor(AppColors.textGrey),
                 ),
@@ -308,7 +308,7 @@ Widget eventContent(BuildContext context, Event event) {
                     child: Center(
                       child: Text(
                         translate('cancel'),
-                        style: AppTextStyle.small()
+                        style: AppTextStyle.small(context)
                             .wSemiBold()
                             .withColor(AppColors.element),
                       ),
@@ -334,7 +334,7 @@ Widget eventContent(BuildContext context, Event event) {
                     child: Center(
                       child: Text(
                         translate('join'),
-                        style: AppTextStyle.small()
+                        style: AppTextStyle.small(context)
                             .wSemiBold()
                             .withColor(AppColors.background),
                       ),
@@ -346,13 +346,13 @@ Widget eventContent(BuildContext context, Event event) {
         padding: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
         child: Text(
           translate('detail'),
-          style: AppTextStyle.medium().wSemiBold(),
+          style: AppTextStyle.medium(context).wSemiBold(),
         ),
       ),
       Container(
         margin: EdgeInsets.only(top: 10.h),
         padding: EdgeInsets.only(top: 0.h, left: 5.w, right: 5.w),
-        child: Text(event.content, style: AppTextStyle.small(),),
+        child: Text(event.content, style: AppTextStyle.small(context),),
       ),
       Container(
         padding: EdgeInsets.only(top: 5.h, left: 20.w, right: 20.w),
@@ -364,7 +364,7 @@ Widget eventContent(BuildContext context, Event event) {
             ),
             Text(
               event.creator.fullName,
-              style: AppTextStyle.base(),
+              style: AppTextStyle.base(context),
             ),
           ],
         ),
@@ -386,7 +386,7 @@ Widget eventContent(BuildContext context, Event event) {
                 event.tags.map((tag) => tag.name).join(' '),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyle.xSmall().withColor(AppColors.tag),
+                style: AppTextStyle.small(context).withColor(AppColors.tag),
               ),
             ),
           ],
@@ -474,7 +474,7 @@ Widget listComment(
                     children: [
                       Text(
                         translate('write_comment'),
-                        style: AppTextStyle.base().wMedium().withColor(AppColors.textBlack.withOpacity(0.5)),
+                        style: AppTextStyle.base(context).wMedium().withColor(AppColors.textBlack.withOpacity(0.5)),
                       ),
                       SvgPicture.asset(
                         AppAssets.sendIconS,
@@ -490,7 +490,7 @@ Widget listComment(
           padding: EdgeInsets.only(top: 20.h, left: 10.w, bottom: 10.h),
           child: Text(
             "${translate('comment')} (${event.childrenCommentNumber})",
-            style: AppTextStyle.large().wSemiBold(),
+            style: AppTextStyle.large(context).wSemiBold(),
           ),
         ),
         Column(
@@ -524,7 +524,7 @@ Widget listComment(
               child: Center(
                 child: Text(
                   translate('more_comment'),
-                  style: AppTextStyle.base().wSemiBold().withColor(AppColors.element),
+                  style: AppTextStyle.base(context).wSemiBold().withColor(AppColors.element),
                 ),
               ),
             ),
@@ -602,7 +602,7 @@ Widget buildCommentWidget(
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: AppColors.textBlack,
-                                  fontSize: 12.sp,
+                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.w900,
                                   fontFamily: AppFonts.Header,
                                 ),
@@ -614,7 +614,7 @@ Widget buildCommentWidget(
                               comment.content,
                               style: TextStyle(
                                 color: AppColors.textBlack,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -638,7 +638,7 @@ Widget buildCommentWidget(
                               maxLines: 1,
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -667,7 +667,7 @@ Widget buildCommentWidget(
                                     translate('reply'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -698,7 +698,7 @@ Widget buildCommentWidget(
                                     translate('edit'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -721,7 +721,7 @@ Widget buildCommentWidget(
                                     translate('delete'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -747,7 +747,7 @@ Widget buildCommentWidget(
                               maxLines: 1,
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 12.sp,
+                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -776,7 +776,7 @@ Widget buildCommentWidget(
                                     translate('edit'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -799,7 +799,7 @@ Widget buildCommentWidget(
                                     translate('delete'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp,
+                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -850,7 +850,7 @@ Widget buildCommentWidget(
                 '${translate('see')} ${comment.childrenCommentNumber - comment.childrenComments.length} ${translate('comments').toLowerCase()}',
                 style: TextStyle(
                   color: AppColors.textGrey,
-                  fontSize: 12.sp,
+                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                   fontWeight: FontWeight.normal,
                   fontFamily: AppFonts.Header,
                 ),
@@ -903,7 +903,7 @@ Widget listParticipant(
                         margin: EdgeInsets.only(top: 20.h),
                         child: Text(
                           translate('no_participants'),
-                          style: AppTextStyle.small(),
+                          style: AppTextStyle.small(context),
                         ),
                       )),
                     ],
@@ -991,7 +991,7 @@ Widget participant(BuildContext context, Participant participant) {
               ),
               Text(
                 participant.user.fullName,
-                style: AppTextStyle.small().wSemiBold(),
+                style: AppTextStyle.small(context).wSemiBold(),
               )
             ],
           ),

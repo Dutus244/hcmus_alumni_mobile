@@ -24,7 +24,9 @@ class Comment {
         createAt = json["createAt"],
         updateAt = json["updateAt"],
         permissions = Permissions.fromJson(json["permissions"]),
-        post = json["postAdvise"] != null ? PostV2.fromJson(json["postAdvise"]) : null;
+        post = json["postAdvise"] != null
+            ? PostV2.fromJson(json["postAdvise"])
+            : null;
 
   Future<void> fetchChildrenComments(Map<String, dynamic> json) async {
     final newComments =
