@@ -632,7 +632,7 @@ Widget post(BuildContext context, Post post) {
                   ),
                 ),
               ),
-          if (post.votes.length > 0 && post.allowAddOptions)
+          if (post.votes.length > 0 && post.allowAddOptions && Global.storageService.permissionCounselVote())
             GestureDetector(
               onTap: () {
                 if (post.votes.length >= 10) {

@@ -967,7 +967,8 @@ Widget post(BuildContext context, Post post, Group group) {
                     children: [
                       Row(
                         children: [
-                          Radio(
+                          if (group.isJoined)
+                            Radio(
                               value: post.votes[i].name,
                               groupValue: post.voteSelectedOne,
                               onChanged: (value) {
@@ -1057,7 +1058,8 @@ Widget post(BuildContext context, Post post, Group group) {
                     children: [
                       Row(
                         children: [
-                          Checkbox(
+                          if (group.isJoined)
+                            Checkbox(
                               checkColor: AppColors.background,
                               fillColor: MaterialStateProperty.resolveWith<Color?>(
                                     (Set<MaterialState> states) {
@@ -1130,7 +1132,7 @@ Widget post(BuildContext context, Post post, Group group) {
                   ),
                 ),
               ),
-          if (post.votes.length > 0 && post.allowAddOptions)
+          if (post.votes.length > 0 && post.allowAddOptions && group.isJoined)
             GestureDetector(
               onTap: () {
                 if (post
