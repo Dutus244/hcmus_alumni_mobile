@@ -600,12 +600,12 @@ Widget listFriend(BuildContext context) {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        height: 100.h,
-                        width: 100.h,
+                        height: 95.h,
+                        width: 95.h,
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
-                        width: 100.w,
+                        width: 95.w,
                         height: 40.h,
                         child: Text(
                           BlocProvider.of<MyProfilePageBloc>(context)
@@ -671,12 +671,12 @@ Widget listFriend(BuildContext context) {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          height: 100.h,
-                          width: 100.h,
+                          height: 95.h,
+                          width: 95.h,
                         ),
                         Container(
                           margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
-                          width: 100.w,
+                          width: 95.w,
                           height: 40.h,
                           child: Text(
                             BlocProvider.of<MyProfilePageBloc>(context)
