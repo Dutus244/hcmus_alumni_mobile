@@ -1,21 +1,3 @@
-# Ignore everything
-*
-
-# Allow certain files and directories
-!.gitignore
-!Podfile
-!Podfile.lock
-
-# Allow Pods directory and specific files within it
-!Pods/
-!Pods/*
-!Pods/**
-!Pods/**/*.podspec
-!Pods/**/*.xcscheme
-
-# Ignore specific files and folders inside Pods
-
-# Ignore all other generated files and directories
 **/dgph
 *.mode1v3
 *.mode2v3
@@ -28,6 +10,7 @@
 **/.vagrant/
 **/DerivedData/
 Icon?
+**/Pods/
 **/.symlinks/
 profile
 xcuserdata
@@ -44,7 +27,7 @@ Flutter/flutter_export_environment.sh
 ServiceDefinitions.json
 Runner/GeneratedPluginRegistrant.*
 
-# Exceptions to above rules
+# Exceptions to above rules.
 !default.mode1v3
 !default.mode2v3
 !default.pbxuser
