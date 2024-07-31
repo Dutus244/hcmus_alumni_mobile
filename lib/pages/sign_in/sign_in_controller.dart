@@ -104,7 +104,7 @@ class SignInController {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
         if (errorCode == 10100) {
-          toastInfo(msg: translate('email_password_invalid'));
+          toastInfo(msg: 'Tài khoản đã bị khoá hoặc xoá');
           return;
         }
         if (errorCode == 10101) {
@@ -112,7 +112,7 @@ class SignInController {
           return;
         }
         if (errorCode == 10102) {
-          toastInfo(msg: translate('error_login'));
+          toastInfo(msg: translate('email_password_invalid'));
           return;
         }
       }

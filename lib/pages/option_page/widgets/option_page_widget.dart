@@ -277,6 +277,48 @@ Widget optionPage(BuildContext context) {
           // ),
           GestureDetector(
             onTap: () {
+              OptionPageController(context: context).handleDeleteUser();
+            },
+            child: Container(
+              color: Colors.transparent,
+              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/delete_user.svg",
+                        width: 16.w,
+                        height: 16.h,
+                        color: Colors.black,
+                      ),
+                      Container(
+                        width: 10.h,
+                      ),
+                      Text(
+                        'Xoá tài khoản',
+                        style: TextStyle(
+                          color: AppColors.textBlack,
+                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
+                          fontWeight: FontWeight.w900,
+                          fontFamily: AppFonts.Header,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SvgPicture.asset(
+                    "assets/icons/arrow_next.svg",
+                    width: 16.w,
+                    height: 16.h,
+                    color: Colors.black,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
               OptionPageController(context: context).handleSignOut();
             },
             child: Container(

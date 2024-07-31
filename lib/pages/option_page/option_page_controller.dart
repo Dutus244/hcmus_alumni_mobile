@@ -41,4 +41,28 @@ class OptionPageController {
     Navigator.of(context)
         .pushNamedAndRemoveUntil("/signIn", (route) => false);
   }
+
+  Future<void> handleDeleteUser() async {
+    var token = Global.storageService.getUserAuthToken();
+    var url =
+    Uri.parse('${dotenv.env['API_URL']}/user/self');
+    var headers = <String, String>{
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+    try {
+      var response = await http.delete(url, headers: headers);
+      print(response.body);
+    } catch (error) {
+      print(error);
+    }
+    Global.storageService.setString(AppConstants.USER_AUTH_TOKEN, '');
+    Global.storageService
+        .setBool(AppConstants.USER_REMEMBER_LOGIN, false);
+    Global.storageService.setString(AppConstants.USER_EMAIL, '');
+    Global.storageService.setString(AppConstants.USER_PASSWORD, '');
+    socketService.disconnect();
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil("/signIn", (route) => false);
+  }
 }
