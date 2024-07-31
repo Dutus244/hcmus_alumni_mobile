@@ -495,7 +495,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = S466HT9VB4;
 				ENABLE_BITCODE = NO;
-				FLUTTER_TARGET = /Users/duynguyen/Developer/FinalProject/hcmus_alumni_mobile/lib/main_product.dart;
+				FLUTTER_TARGET = lib/main_product.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -681,7 +681,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = S466HT9VB4;
 				ENABLE_BITCODE = NO;
-				FLUTTER_TARGET = /Users/duynguyen/Developer/FinalProject/hcmus_alumni_mobile/lib/main_product.dart;
+				FLUTTER_TARGET = lib/main_product.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -711,7 +711,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = S466HT9VB4;
 				ENABLE_BITCODE = NO;
-				FLUTTER_TARGET = /Users/duynguyen/Developer/FinalProject/hcmus_alumni_mobile/lib/main_product.dart;
+				FLUTTER_TARGET = lib/main_product.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
