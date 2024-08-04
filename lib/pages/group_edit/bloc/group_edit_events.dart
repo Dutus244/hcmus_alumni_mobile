@@ -40,4 +40,10 @@ class TagsEvent extends GroupEditEvent {
   const TagsEvent(this.tags);
 }
 
+class IsLoadingEvent extends GroupEditEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class GroupEditResetEvent extends GroupEditEvent {}

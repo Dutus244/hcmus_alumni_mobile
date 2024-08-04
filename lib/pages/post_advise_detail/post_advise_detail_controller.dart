@@ -45,7 +45,7 @@ class PostAdviseDetailController {
         }
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_news'));
+      // toastInfo(msg: translate('error_get_news'));
     }
   }
 
@@ -161,7 +161,7 @@ class PostAdviseDetailController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_choose_option'));
+      // toastInfo(msg: translate('error_choose_option'));
       return;
     }
   }
@@ -190,7 +190,7 @@ class PostAdviseDetailController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_not_choose_option'));
+      // toastInfo(msg: translate('error_not_choose_option'));
       return;
     }
   }
@@ -223,7 +223,7 @@ class PostAdviseDetailController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_change_option'));
+      // toastInfo(msg: translate('error_change_option'));
       return;
     }
   }
@@ -256,7 +256,7 @@ class PostAdviseDetailController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_add_option'));
+      // toastInfo(msg: translate('error_add_option'));
       return;
     }
   }
@@ -332,7 +332,7 @@ class PostAdviseDetailController {
         toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_comment'));
+      // toastInfo(msg: translate('error_get_comment'));
     }
   }
 
@@ -370,7 +370,7 @@ class PostAdviseDetailController {
         toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_comment'));
+      // toastInfo(msg: translate('error_get_comment'));
     }
   }
 
@@ -422,7 +422,7 @@ class PostAdviseDetailController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_send_comment'));
+      // toastInfo(msg: translate('error_send_comment'));
     }
   }
 
@@ -459,7 +459,7 @@ class PostAdviseDetailController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_send_comment'));
+      // toastInfo(msg: translate('error_send_comment'));
     }
   }
 
@@ -496,7 +496,7 @@ class PostAdviseDetailController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_edit_comment'));
+      // toastInfo(msg: translate('error_edit_comment'));
     }
   }
 

@@ -28,54 +28,73 @@ AppBar buildAppBar(BuildContext context) {
   );
 }
 
-Widget buildTextField(BuildContext context, String hintText, String textType, String iconName,
-    void Function(String value)? func) {
+Widget buildTextField(BuildContext context, String hintText,
+    String textType, String iconName, void Function(String value)? func) {
   return Container(
-      width: 325.w,
-      height: 40.h,
-      margin: EdgeInsets.only(bottom: 20.h, left: 10.w, right: 10.w),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.all(Radius.circular(15.w)),
-        border: Border.all(color: AppColors.primaryFourthElementText),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 16.w,
-            height: 16.w,
-            margin: EdgeInsets.only(left: 17.w),
-            child: Image.asset(iconName),
-          ),
-          Container(
-            width: 270.w,
-            height: 40.h,
-            padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onChanged: (value) => func!(value),
-              keyboardType: TextInputType.multiline,
-              decoration: InputDecoration(
-                hintText: hintText,
-                contentPadding: EdgeInsets.zero,
-                border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                disabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small(context).withColor(AppColors.secondaryElementText),
-                counterText: '',
-              ),
-              style: AppTextStyle.small(context),
-              autocorrect: false,
-              obscureText: textType == "email" ? false : true,
-              maxLength: 30,
+    width: 325.w,
+    height: 40.h,
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 20.h),
+    decoration: BoxDecoration(
+      color: AppColors.background,
+      borderRadius: BorderRadius.all(Radius.circular(15.w)),
+      border: Border.all(color: AppColors.primaryFourthElementText),
+    ),
+    child: Row(
+      children: [
+        Container(
+          width: 16.w,
+          height: 16.w,
+          margin: EdgeInsets.only(left: 17.w),
+          child: Image.asset("assets/icons/${iconName}.png"),
+        ),
+        Container(
+          width: 250.w,
+          height: 40.h,
+          padding: EdgeInsets.only(top: 2.h, left: 10.w),
+          child: TextField(
+            onChanged: (value) => func!(value),
+            keyboardType: TextInputType.multiline,
+            decoration: InputDecoration(
+              hintText: hintText,
+              contentPadding: EdgeInsets.zero,
+              border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent)),
+              enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent)),
+              disabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent)),
+              focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent)),
+              hintStyle: AppTextStyle.small(context)
+                  .withColor(AppColors.secondaryElementText),
+              counterText: '',
             ),
-          )
-        ],
-      ));
+            style: AppTextStyle.small(context),
+            autocorrect: false,
+            obscureText: !BlocProvider.of<ChangePasswordBloc>(context)
+                .state
+                .showPass,
+            maxLength: 20,
+          ),
+        ),
+        IconButton(
+          icon: Icon(
+            BlocProvider.of<ChangePasswordBloc>(context).state.showPass
+                ? Icons.visibility
+                : Icons.visibility_off,
+            color: AppColors.primaryFourthElementText,
+            size: 20.w,
+          ),
+          onPressed: () {
+            context.read<ChangePasswordBloc>().add(ShowPassEvent(
+                !BlocProvider.of<ChangePasswordBloc>(context)
+                    .state
+                    .showPass));
+          },
+        ),
+      ],
+    ),
+  );
 }
 
 Widget changePassword(BuildContext context) {
@@ -88,7 +107,7 @@ Widget changePassword(BuildContext context) {
           scrollDirection: Axis.vertical,
           children: [
             Container(height: 10.h,),
-            buildTextField(context, translate('new_password*'), "password", AppAssets.lockIconP, (value) {
+            buildTextField(context, translate('new_password*'), "password", 'lock', (value) {
               context
                   .read<ChangePasswordBloc>()
                   .add(PasswordEvent(value));
@@ -96,7 +115,7 @@ Widget changePassword(BuildContext context) {
             SizedBox(
               height: 5.h,
             ),
-            buildTextField(context, translate('re_new_password*'), "password", AppAssets.lockIconP,
+            buildTextField(context, translate('re_new_password*'), "password",'lock',
                     (value) {
                   context
                       .read<ChangePasswordBloc>()
@@ -109,53 +128,34 @@ Widget changePassword(BuildContext context) {
   );
 }
 
-Widget buttonChange(BuildContext context) {
-  String password = BlocProvider.of<ChangePasswordBloc>(context).state.password;
-  String rePassword = BlocProvider.of<ChangePasswordBloc>(context).state.rePassword;
-  return GestureDetector(
-    onTap: () {
-      if (password != "" && rePassword != "") {
-        ChangePasswordController(context: context).handleChangePassword();
-      }
-    },
-    child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: (password != "" && rePassword != "")
-            ? AppColors.element
-            : AppColors.background,
-        borderRadius: BorderRadius.circular(10.w),
-        border: Border.all(
-          color: AppColors.elementLight,
+Widget buttonChange(
+    BuildContext context) {
+  return Container(
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+    height: 40.h,
+    child: ElevatedButton(
+      onPressed: () {
+        if (!BlocProvider.of<ChangePasswordBloc>(context)
+            .state
+            .isLoading) {
+          ChangePasswordController(context: context).handleChangePassword();
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: AppColors.background,
+        backgroundColor: AppColors.element,
+        minimumSize: Size(325.w, 50.h),
+        padding: EdgeInsets.symmetric(horizontal: 25.w),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.w),
+          side: BorderSide(color: Colors.transparent),
         ),
       ),
-      child: Center(
-          child: Container(
-            margin: EdgeInsets.only(left: 12.w, right: 12.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  translate('save'),
-                  style: AppTextStyle.base(context).wSemiBold().withColor((password != "" && rePassword != "")
-                      ? AppColors.background
-                      : Colors.black.withOpacity(0.3)),
-                ),
-                Container(
-                  width: 6.w,
-                ),
-                SvgPicture.asset(
-                  AppAssets.sendIconS,
-                  width: 15.w,
-                  height: 15.h,
-                  color: (password != "" && rePassword != "")
-                      ? AppColors.background
-                      : Colors.black.withOpacity(0.5),
-                ),
-              ],
-            ),
-          )),
+      child: Text(
+        translate('save'),
+        style: AppTextStyle.medium(context).wSemiBold().withColor(
+            AppColors.background),
+      ),
     ),
   );
 }

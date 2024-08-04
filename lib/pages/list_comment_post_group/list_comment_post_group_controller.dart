@@ -18,8 +18,40 @@ import 'bloc/list_comment_post_group_states.dart';
 
 class ListCommentPostGroupController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const ListCommentPostGroupController({required this.context});
+  ListCommentPostGroupController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleGetComment(String id, int page) async {
     if (page == 0) {
@@ -92,11 +124,13 @@ class ListCommentPostGroupController {
         toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_comment'));
+      // toastInfo(msg: translate('error_get_comment'));
     }
   }
 
   Future<void> handleGetChildrenComment(Comment comment) async {
+    context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/comments/${comment.id}/children';
     var pageSize = 10;
@@ -122,15 +156,19 @@ class ListCommentPostGroupController {
         if (parentComment != null) {
           await parentComment.fetchChildrenComments(jsonMap);
         }
-
+        context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         context
             .read<ListCommentPostGroupBloc>()
             .add(CommentsEvent(currentList));
       } else {
+        context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_comment'));
+      hideLoadingIndicator();
+      // toastInfo(msg: translate('error_get_comment'));
     }
   }
 
@@ -150,6 +188,8 @@ class ListCommentPostGroupController {
   }
 
   Future<void> handleLoadWriteComment(String id) async {
+    context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<ListCommentPostGroupBloc>().state;
     String comment = state.content;
 
@@ -172,20 +212,27 @@ class ListCommentPostGroupController {
 
       var response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 201) {
-        ListCommentPostGroupController(context: context)
-            .handleGetComment(id, 0);
+        await handleGetComment(id, 0);
+        context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Bình luận thành công');
       } else {
         // Handle other status codes if needed
+        context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_send_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_send_comment'));
+      // toastInfo(msg: translate('error_send_comment'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleLoadWriteChildrenComment(
       String id, String commentId) async {
+    context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<ListCommentPostGroupBloc>().state;
     String comment = state.content;
 
@@ -207,19 +254,26 @@ class ListCommentPostGroupController {
 
       var response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 201) {
-        ListCommentPostGroupController(context: context)
-            .handleGetComment(id, 0);
+         await handleGetComment(id, 0);
+         context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(false));
+         hideLoadingIndicator();
+         toastInfo(msg: 'Bình luận thành công');
       } else {
         // Handle other status codes if needed
+        context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_send_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_send_comment'));
+      // toastInfo(msg: translate('error_send_comment'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleEditComment(String id, String commentId) async {
+    context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<ListCommentPostGroupBloc>().state;
     String comment = state.content;
 
@@ -242,15 +296,20 @@ class ListCommentPostGroupController {
       var response = await http.put(url, headers: headers, body: body);
 
       if (response.statusCode == 200) {
-        ListCommentPostGroupController(context: context)
-            .handleGetComment(id, 0);
+        await handleGetComment(id, 0);
+        context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Sửa bình luận thành công');
       } else {
         // Handle other status codes if needed
+        context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_edit_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_edit_comment'));
+      // toastInfo(msg: translate('error_edit_comment'));
+      hideLoadingIndicator();
     }
   }
 
@@ -273,6 +332,8 @@ class ListCommentPostGroupController {
       ),
     );
     if (shouldDelte != null && shouldDelte) {
+      context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/groups/comments/$commentId';
 
@@ -289,15 +350,20 @@ class ListCommentPostGroupController {
         var response = await http.delete(url, headers: headers);
 
         if (response.statusCode == 200) {
-          ListCommentPostGroupController(context: context)
-              .handleGetComment(id, 0);
+          await handleGetComment(id, 0);
+          context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
+          toastInfo(msg: 'Xoá bình luận thành công');
         } else {
           // Handle other status codes if needed
+          context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           toastInfo(msg: translate('error_delete_comment'));
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: translate('error_delete_comment'));
+        // toastInfo(msg: translate('error_delete_comment'));
+        hideLoadingIndicator();
       }
     }
     return shouldDelte ?? false;

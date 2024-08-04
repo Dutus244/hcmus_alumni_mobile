@@ -13,34 +13,35 @@ class GroupMemberState {
   final int indexAdmin;
   final bool hasReachedMaxAdmin;
 
+  final isLoading;
+
   GroupMemberState(
-      {
-        this.status = Status.loading,
-        this.members = const [],
-        this.indexMember = 0,
-        this.hasReachedMaxMember = false,
-        this.admins = const [],
-        this.indexAdmin = 0,
-        this.hasReachedMaxAdmin = false});
+      {this.status = Status.loading,
+      this.members = const [],
+      this.indexMember = 0,
+      this.hasReachedMaxMember = false,
+      this.admins = const [],
+      this.indexAdmin = 0,
+      this.hasReachedMaxAdmin = false,
+      this.isLoading = false});
 
   GroupMemberState copyWith(
       {Status? status,
-        List<Member>? members,
-        int? indexMember,
-        bool? hasReachedMaxMember,
-        List<Member>? admins,
-        int? indexAdmin,
-        bool? hasReachedMaxAdmin}) {
+      List<Member>? members,
+      int? indexMember,
+      bool? hasReachedMaxMember,
+      List<Member>? admins,
+      int? indexAdmin,
+      bool? hasReachedMaxAdmin,
+      bool? isLoading}) {
     return GroupMemberState(
-      status: status ?? this.status,
-      members: members ?? this.members,
-      indexMember: indexMember ?? this.indexMember,
-      hasReachedMaxMember:
-      hasReachedMaxMember ?? this.hasReachedMaxMember,
-      indexAdmin: indexAdmin ?? this.indexAdmin,
-      admins: admins ?? this.admins,
-      hasReachedMaxAdmin:
-      hasReachedMaxAdmin ?? this.hasReachedMaxAdmin,
-    );
+        status: status ?? this.status,
+        members: members ?? this.members,
+        indexMember: indexMember ?? this.indexMember,
+        hasReachedMaxMember: hasReachedMaxMember ?? this.hasReachedMaxMember,
+        indexAdmin: indexAdmin ?? this.indexAdmin,
+        admins: admins ?? this.admins,
+        hasReachedMaxAdmin: hasReachedMaxAdmin ?? this.hasReachedMaxAdmin,
+        isLoading: isLoading ?? this.isLoading);
   }
 }

@@ -48,7 +48,7 @@ class EditPostGroupController {
         toastInfo(msg: translate('error_get_post'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_post'));
+      // toastInfo(msg: translate('error_get_post'));
     }
   }
 
@@ -130,7 +130,7 @@ class EditPostGroupController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_edit_post'));
+      // toastInfo(msg: translate('error_edit_post'));
       return;
     }
   }

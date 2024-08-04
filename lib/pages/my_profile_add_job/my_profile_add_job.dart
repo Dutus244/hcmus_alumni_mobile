@@ -33,6 +33,7 @@ class _MyProfileAddJobState extends State<MyProfileAddJob> {
     if (args != null) {
       option = args["option"];
       context.read<MyProfileAddJobBloc>().add(MyProfileAddJobResetEvent());
+      context.read<MyProfileAddJobBloc>().add(IsLoadingEvent(false));
       if (option == 1) {
         job = args["job"];
         context.read<MyProfileAddJobBloc>().add(CompanyNameEvent(job!.companyName));

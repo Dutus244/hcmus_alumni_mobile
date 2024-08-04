@@ -7,3 +7,9 @@ class LocaleEvent extends OptionPageEvent {
 
   const LocaleEvent(this.locale);
 }
+
+class IsLoadingEvent extends OptionPageEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

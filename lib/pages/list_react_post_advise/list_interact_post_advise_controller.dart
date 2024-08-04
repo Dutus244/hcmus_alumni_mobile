@@ -95,7 +95,7 @@ class ListInteractPostAdviseController {
         toastInfo(msg: translate('error_get_interact'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_interact'));
+      // toastInfo(msg: translate('error_get_interact'));
     }
   }
 }

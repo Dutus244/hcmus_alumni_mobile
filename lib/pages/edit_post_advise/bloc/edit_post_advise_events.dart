@@ -49,4 +49,10 @@ class PageEvent extends EditPostAdviseEvent {
   const PageEvent(this.page);
 }
 
+class IsLoadingEvent extends EditPostAdviseEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class EditPostAdviseResetEvent extends EditPostAdviseEvent {}

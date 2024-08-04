@@ -20,4 +20,16 @@ class RePasswordEvent extends RegisterEvent {
   const RePasswordEvent(this.rePassword);
 }
 
+class IsLoadingEvent extends RegisterEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
+class ShowPassEvent extends RegisterEvent {
+  final bool showPass;
+
+  const ShowPassEvent(this.showPass);
+}
+
 class RegisterResetEvent extends RegisterEvent {}

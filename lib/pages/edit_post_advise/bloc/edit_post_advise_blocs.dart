@@ -12,6 +12,7 @@ class EditPostAdviseBloc
     on<PicturesEvent>(_picturesEvent);
     on<DeletePicturesEvent>(_deletePicturesEvent);
     on<PageEvent>(_pageEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<EditPostAdviseResetEvent>(_editPostAdviseResetEvent);
   }
 
@@ -43,6 +44,10 @@ class EditPostAdviseBloc
 
   void _pageEvent(PageEvent event, Emitter<EditPostAdviseState> emit) {
     emit(state.copyWith(page: event.page));
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<EditPostAdviseState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _editPostAdviseResetEvent(

@@ -14,4 +14,16 @@ class RePasswordEvent extends ChangePasswordEvent {
   const RePasswordEvent(this.rePassword);
 }
 
+class IsLoadingEvent extends ChangePasswordEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
+class ShowPassEvent extends ChangePasswordEvent {
+  final bool showPass;
+
+  const ShowPassEvent(this.showPass);
+}
+
 class ChangePasswordResetEvent extends ChangePasswordEvent {}

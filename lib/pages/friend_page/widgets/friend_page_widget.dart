@@ -81,8 +81,8 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
       ));
 }
 
-Widget buildTextFieldUser(BuildContext context, String hintText, String textType,
-    String iconName, void Function(String value)? func) {
+Widget buildTextFieldUser(BuildContext context, String hintText,
+    String textType, String iconName, void Function(String value)? func) {
   return Container(
       width: 340.w,
       height: 40.h,
@@ -145,182 +145,139 @@ Widget buildTextFieldUser(BuildContext context, String hintText, String textType
 }
 
 Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
-  return Container(
-    margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
-    child: SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          GestureDetector(
-            onTap: () {
-              if (BlocProvider.of<FriendPageBloc>(context).state.page != 0) {
-                if (func != null) {
-                  func(0);
-                }
-              }
-            },
-            child: Container(
-              width: 105.w,
-              height: 35.h,
-              margin: EdgeInsets.only(left: 10.w),
-              decoration: BoxDecoration(
-                color: BlocProvider.of<FriendPageBloc>(context).state.page == 0
-                    ? AppColors.element
-                    : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  translate('all'),
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color:
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        TextButton(
+          onPressed: () => func!(0),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Column(
+            children: [
+              Text(
+                translate('all'),
+                style: AppTextStyle.small(context).wSemiBold().withColor(
                       BlocProvider.of<FriendPageBloc>(context).state.page == 0
-                          ? AppColors.background
-                          : AppColors.element),
-                ),
+                          ? AppColors.element
+                          : AppColors.textGrey,
+                    ),
               ),
-            ),
+              if (BlocProvider.of<FriendPageBloc>(context).state.page == 0)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
+                ),
+            ],
           ),
-          GestureDetector(
-            onTap: () {
-              if (BlocProvider.of<FriendPageBloc>(context).state.page != 1) {
-                if (func != null) {
-                  func(1);
-                }
-              }
-            },
-            child: Container(
-              width: 105.w,
-              height: 35.h,
-              margin: EdgeInsets.only(left: 10.w),
-              decoration: BoxDecoration(
-                color: BlocProvider.of<FriendPageBloc>(context).state.page == 1
-                    ? AppColors.element
-                    : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  translate('suggestion'),
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color:
-                          BlocProvider.of<FriendPageBloc>(context).state.page == 1
-                              ? AppColors.background
-                              : AppColors.element),
-                ),
-              ),
-            ),
+        ),
+        TextButton(
+          onPressed: () => func!(1),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
-          GestureDetector(
-            onTap: () {
-              if (BlocProvider.of<FriendPageBloc>(context).state.page != 2) {
-                if (func != null) {
-                  func(2);
-                }
-              }
-            },
-            child: Container(
-              width: 105.w,
-              height: 35.h,
-              margin: EdgeInsets.only(left: 10.w),
-              decoration: BoxDecoration(
-                color: BlocProvider.of<FriendPageBloc>(context).state.page == 2
-                    ? AppColors.element
-                    : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
-                ),
+          child: Column(
+            children: [
+              Text(
+                translate('suggestion'),
+                style: AppTextStyle.small(context).wSemiBold().withColor(
+                      BlocProvider.of<FriendPageBloc>(context).state.page == 1
+                          ? AppColors.element
+                          : AppColors.textGrey,
+                    ),
               ),
-              child: Center(
-                child: Text(
-                  translate('request'),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color:
-                          BlocProvider.of<FriendPageBloc>(context).state.page == 2
-                              ? AppColors.background
-                              : AppColors.element),
+              if (BlocProvider.of<FriendPageBloc>(context).state.page == 1)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
                 ),
-              ),
-            ),
+            ],
           ),
-          GestureDetector(
-            onTap: () async {
-              await Navigator.pushNamed(
-                context,
-                "/friendList",
-                arguments: { "id": Global.storageService.getUserId()}
-              );
-              FriendPageController(context: context).handleLoadSuggestionData(0);
-            },
-            child: Container(
-              width: 105.w,
-              height: 35.h,
-              margin: EdgeInsets.only(left: 10.w),
-              decoration: BoxDecoration(
-                color: BlocProvider.of<FriendPageBloc>(context).state.page == 3
-                    ? AppColors.element
-                    : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  translate('friend'),
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color:
-                          BlocProvider.of<FriendPageBloc>(context).state.page == 3
-                              ? AppColors.background
-                              : AppColors.element),
-                ),
-              ),
-            ),
+        ),
+        TextButton(
+          onPressed: () => func!(2),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
-        ],
-      ),
+          child: Column(
+            children: [
+              Text(
+                translate('request'),
+                style: AppTextStyle.small(context).wSemiBold().withColor(
+                      BlocProvider.of<FriendPageBloc>(context).state.page == 2
+                          ? AppColors.element
+                          : AppColors.textGrey,
+                    ),
+              ),
+              if (BlocProvider.of<FriendPageBloc>(context).state.page == 2)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
+                ),
+            ],
+          ),
+        ),
+        TextButton(
+          onPressed: () async {
+            await Navigator.pushNamed(context, "/friendList",
+                arguments: {"id": Global.storageService.getUserId()});
+            FriendPageController(context: context).handleLoadSuggestionData(0);
+          },
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Column(
+            children: [
+              Text(
+                translate('friend'),
+                style: AppTextStyle.small(context).wSemiBold().withColor(
+                      BlocProvider.of<FriendPageBloc>(context).state.page == 3
+                          ? AppColors.element
+                          : AppColors.textGrey,
+                    ),
+              ),
+              if (BlocProvider.of<FriendPageBloc>(context).state.page == 3)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
+                ),
+            ],
+          ),
+        ),
+      ],
     ),
   );
 }
 
-Widget listUser(
-    BuildContext context, ScrollController _scrollController) {
+Widget listUser(BuildContext context, ScrollController _scrollController) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       Expanded(
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: BlocProvider.of<FriendPageBloc>(context)
-              .state
-              .users
-              .length +
-              1,
+          itemCount:
+              BlocProvider.of<FriendPageBloc>(context).state.users.length + 1,
           itemBuilder: (BuildContext context, int index) {
-            switch (BlocProvider.of<FriendPageBloc>(context)
-                .state
-                .status) {
+            switch (BlocProvider.of<FriendPageBloc>(context).state.status) {
               case Status.loading:
                 return Column(
                   children: [
@@ -332,9 +289,12 @@ Widget listUser(
                     ),
                     Center(
                         child: buildTextFieldUser(
-                            context, translate('search_user'), 'search', 'search', (value) {
-                          context.read<FriendPageBloc>().add(NameUserEvent(value));
-                        })),
+                            context,
+                            translate('search_user'),
+                            'search',
+                            'search', (value) {
+                      context.read<FriendPageBloc>().add(NameUserEvent(value));
+                    })),
                     Container(
                       height: 5.h,
                     ),
@@ -356,25 +316,31 @@ Widget listUser(
                       ),
                       Center(
                           child: buildTextFieldUser(
-                              context, translate('search_user'), 'search', 'search', (value) {
-                            context.read<FriendPageBloc>().add(NameUserEvent(value));
-                          })),
+                              context,
+                              translate('search_user'),
+                              'search',
+                              'search', (value) {
+                        context
+                            .read<FriendPageBloc>()
+                            .add(NameUserEvent(value));
+                      })),
                       Container(
                         height: 5.h,
                       ),
                       Center(
                           child: Container(
-                            margin: EdgeInsets.only(top: 20.h),
-                            child: Text(
-                              translate('no_data'),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: AppFonts.Header,
-                              ),
-                            ),
-                          )),
+                        margin: EdgeInsets.only(top: 20.h),
+                        child: Text(
+                          translate('no_data'),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize:
+                                11.sp / MediaQuery.of(context).textScaleFactor,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: AppFonts.Header,
+                          ),
+                        ),
+                      )),
                     ],
                   );
                 }
@@ -403,9 +369,14 @@ Widget listUser(
                         ),
                         Center(
                             child: buildTextFieldUser(
-                                context, translate('search_user'), 'search', 'search', (value) {
-                              context.read<FriendPageBloc>().add(NameUserEvent(value));
-                            })),
+                                context,
+                                translate('search_user'),
+                                'search',
+                                'search', (value) {
+                          context
+                              .read<FriendPageBloc>()
+                              .add(NameUserEvent(value));
+                        })),
                         Container(
                           height: 5.h,
                         ),
@@ -435,10 +406,9 @@ Widget listUser(
 Widget user(BuildContext context, User user) {
   return GestureDetector(
     onTap: () {
-      Navigator.pushNamed(context, "/otherProfilePage",
-          arguments: {
-            "id": user.id,
-          });
+      Navigator.pushNamed(context, "/otherProfilePage", arguments: {
+        "id": user.id,
+      });
     },
     child: Container(
       margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
@@ -505,10 +475,10 @@ Widget listSuggestion(
                       height: 15.h,
                     ),
                     Center(
-                        child: buildTextField(
-                            context, translate('search_user'), 'search', 'search', (value) {
-                          context.read<FriendPageBloc>().add(NameEvent(value));
-                        })),
+                        child: buildTextField(context, translate('search_user'),
+                            'search', 'search', (value) {
+                      context.read<FriendPageBloc>().add(NameEvent(value));
+                    })),
                     Container(
                       height: 5.h,
                     ),
@@ -530,9 +500,12 @@ Widget listSuggestion(
                       ),
                       Center(
                           child: buildTextField(
-                              context, translate('search_user'), 'search', 'search', (value) {
-                            context.read<FriendPageBloc>().add(NameEvent(value));
-                          })),
+                              context,
+                              translate('search_user'),
+                              'search',
+                              'search', (value) {
+                        context.read<FriendPageBloc>().add(NameEvent(value));
+                      })),
                       Container(
                         height: 5.h,
                       ),
@@ -543,7 +516,8 @@ Widget listSuggestion(
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                            fontSize:
+                                11.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -577,9 +551,12 @@ Widget listSuggestion(
                         ),
                         Center(
                             child: buildTextField(
-                                context, translate('search_user'), 'search', 'search', (value) {
-                              context.read<FriendPageBloc>().add(NameEvent(value));
-                            })),
+                                context,
+                                translate('search_user'),
+                                'search',
+                                'search', (value) {
+                          context.read<FriendPageBloc>().add(NameEvent(value));
+                        })),
                         Container(
                           height: 5.h,
                         ),
@@ -609,10 +586,9 @@ Widget listSuggestion(
 Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
   return GestureDetector(
     onTap: () {
-      Navigator.pushNamed(context, "/otherProfilePage",
-          arguments: {
-            "id": suggestion.user.id,
-          });
+      Navigator.pushNamed(context, "/otherProfilePage", arguments: {
+        "id": suggestion.user.id,
+      });
     },
     child: Container(
         margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 15.h),
@@ -625,8 +601,7 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
               child: CircleAvatar(
                 radius: 40,
                 child: null,
-                backgroundImage:
-                NetworkImage(suggestion.user.avatarUrl),
+                backgroundImage: NetworkImage(suggestion.user.avatarUrl),
               ),
             ),
             Container(
@@ -648,7 +623,8 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                          fontSize:
+                              12.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -664,17 +640,23 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          FriendPageController(context: context).handleSendRequest(suggestion.user.id);
-                        },
-                        child: Container(
-                          width: 255.w,
-                          height: 30.h,
-                          decoration: BoxDecoration(
-                            color: AppColors.element,
-                            borderRadius: BorderRadius.circular(5.w),
-                            border: Border.all(
+                      Container(
+                        width: 255.w,
+                        height: 30.h,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (BlocProvider.of<FriendPageBloc>(context).state.isLoading) {
+                              return;
+                            }
+                            FriendPageController(context: context).handleSendRequest(suggestion.user.id);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: AppColors.background, backgroundColor: AppColors.element,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.w),
+                            ),
+                            minimumSize: Size(255.w, 30.h),
+                            side: BorderSide(
                               color: Colors.transparent,
                             ),
                           ),
@@ -682,10 +664,10 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
                             child: Text(
                               translate('add_friend'),
                               style: TextStyle(
-                                  fontFamily: AppFonts.Header,
-                                  fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.background),
+                                fontFamily: AppFonts.Header,
+                                fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -696,8 +678,7 @@ Widget suggestion(BuildContext context, FriendSuggestion suggestion) {
               ],
             )
           ],
-        )
-    ),
+        )),
   );
 }
 
@@ -748,7 +729,8 @@ Widget listRequest(BuildContext context, ScrollController _scrollController) {
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                            fontSize:
+                                11.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -806,10 +788,9 @@ Widget listRequest(BuildContext context, ScrollController _scrollController) {
 Widget request(BuildContext context, FriendRequest request) {
   return GestureDetector(
     onTap: () {
-      Navigator.pushNamed(context, "/otherProfilePage",
-          arguments: {
-            "id": request.user.id,
-          });
+      Navigator.pushNamed(context, "/otherProfilePage", arguments: {
+        "id": request.user.id,
+      });
     },
     child: Container(
         margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 15.h),
@@ -822,8 +803,7 @@ Widget request(BuildContext context, FriendRequest request) {
               child: CircleAvatar(
                 radius: 40,
                 child: null,
-                backgroundImage:
-                NetworkImage(request.user.avatarUrl),
+                backgroundImage: NetworkImage(request.user.avatarUrl),
               ),
             ),
             Container(
@@ -843,7 +823,8 @@ Widget request(BuildContext context, FriendRequest request) {
                         request.user.fullName,
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                          fontSize:
+                              12.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -852,7 +833,8 @@ Widget request(BuildContext context, FriendRequest request) {
                         handleTimeDifference1(request.createAt),
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                          fontSize:
+                              12.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -868,17 +850,23 @@ Widget request(BuildContext context, FriendRequest request) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          FriendPageController(context: context).handleApprovedRequest(request.user.id);
-                        },
-                        child: Container(
-                          width: 120.w,
-                          height: 30.h,
-                          decoration: BoxDecoration(
-                            color: AppColors.element,
-                            borderRadius: BorderRadius.circular(5.w),
-                            border: Border.all(
+                      Container(
+                        width: 120.w,
+                        height: 30.h,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (BlocProvider.of<FriendPageBloc>(context).state.isLoading) {
+                              return;
+                            }
+                            FriendPageController(context: context).handleApprovedRequest(request.user.id);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: AppColors.background, backgroundColor: AppColors.element,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.w),
+                            ),
+                            minimumSize: Size(120.w, 30.h),
+                            side: BorderSide(
                               color: Colors.transparent,
                             ),
                           ),
@@ -886,26 +874,31 @@ Widget request(BuildContext context, FriendRequest request) {
                             child: Text(
                               translate('accept'),
                               style: TextStyle(
-                                  fontFamily: AppFonts.Header,
-                                  fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.background),
+                                fontFamily: AppFonts.Header,
+                                fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          FriendPageController(context: context).handleDeniedRequest(request.user.id);
-                        },
-                        child: Container(
-                          width: 120.w,
-                          height: 30.h,
-                          margin: EdgeInsets.only(left: 10.w),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 230, 230, 230),
-                            borderRadius: BorderRadius.circular(5.w),
-                            border: Border.all(
+                      Container(
+                        width: 120.w,
+                        height: 30.h,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (BlocProvider.of<FriendPageBloc>(context).state.isLoading) {
+                              return;
+                            }
+                            FriendPageController(context: context).handleDeniedRequest(request.user.id);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: AppColors.textBlack, backgroundColor: Color.fromARGB(255, 230, 230, 230),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.w),
+                            ),
+                            minimumSize: Size(120.w, 30.h),
+                            side: BorderSide(
                               color: Colors.transparent,
                             ),
                           ),
@@ -913,11 +906,10 @@ Widget request(BuildContext context, FriendRequest request) {
                             child: Text(
                               translate('delete'),
                               style: TextStyle(
-                                  fontFamily: AppFonts.Header,
-                                  fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                  AppColors.textBlack),
+                                fontFamily: AppFonts.Header,
+                                fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -928,7 +920,6 @@ Widget request(BuildContext context, FriendRequest request) {
               ],
             )
           ],
-        )
-    ),
+        )),
   );
 }

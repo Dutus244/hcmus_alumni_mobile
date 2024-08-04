@@ -34,6 +34,7 @@ class _MyProfileAddEducationState extends State<MyProfileAddEducation> {
     if (args != null) {
       option = args["option"];
       context.read<MyProfileAddEducationBloc>().add(MyProfileAddEducationResetEvent());
+      context.read<MyProfileAddEducationBloc>().add(IsLoadingEvent(false));
       if (option == 1) {
         education = args["education"];
         context.read<MyProfileAddEducationBloc>().add(SchoolNameEvent(education!.schoolName));

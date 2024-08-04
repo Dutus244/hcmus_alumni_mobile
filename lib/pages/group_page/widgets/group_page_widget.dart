@@ -150,7 +150,8 @@ AppBar buildAppBar(BuildContext context) {
                       child: CircleAvatar(
                         radius: 10,
                         child: null,
-                        backgroundImage: NetworkImage(Global.storageService.getUserAvatarUrl()),
+                        backgroundImage: NetworkImage(
+                            Global.storageService.getUserAvatarUrl()),
                       )),
                 ),
                 SizedBox(width: 10.w),
@@ -166,82 +167,69 @@ AppBar buildAppBar(BuildContext context) {
 
 Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
   return Container(
-    margin: EdgeInsets.only(top: 5.h),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        GestureDetector(
-          onTap: () {
-            if (BlocProvider.of<GroupPageBloc>(context).state.page != 0) {
-              if (func != null) {
-                func(0);
-              }
-            }
+        TextButton(
+          onPressed: () => {
+            if (BlocProvider.of<GroupPageBloc>(context).state.page != 0)
+              {func!(0)}
           },
-          child: Container(
-            width: 165.w,
-            height: 30.h,
-            margin: EdgeInsets.only(left: 10.w),
-            decoration: BoxDecoration(
-              color: BlocProvider.of<GroupPageBloc>(context).state.page == 1
-                  ? AppColors.elementLight
-                  : AppColors.element,
-              borderRadius: BorderRadius.circular(5.w),
-              border: Border.all(
-                color: Colors.transparent,
-              ),
-            ),
-            child: Center(
-              child: Text(
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Column(
+            children: [
+              Text(
                 translate('discover'),
-                style: TextStyle(
-                    fontFamily: AppFonts.Header,
-                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                    fontWeight: FontWeight.bold,
-                    color:
-                        BlocProvider.of<GroupPageBloc>(context).state.page == 1
-                            ? AppColors.element
-                            : AppColors.background),
+                style: AppTextStyle.small(context).wSemiBold().withColor(
+                      BlocProvider.of<GroupPageBloc>(context).state.page == 0
+                          ? AppColors.element
+                          : AppColors.textGrey,
+                    ),
               ),
-            ),
+              if (BlocProvider.of<GroupPageBloc>(context).state.page == 0)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
+                ),
+            ],
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            if (BlocProvider.of<GroupPageBloc>(context).state.page != 1) {
-              if (func != null) {
-                func(1);
-              }
-            }
+        TextButton(
+          onPressed: () => {
+            if (BlocProvider.of<GroupPageBloc>(context).state.page != 1)
+              {func!(1)}
           },
-          child: Container(
-            width: 165.w,
-            height: 30.h,
-            margin: EdgeInsets.only(right: 10.w),
-            decoration: BoxDecoration(
-              color: BlocProvider.of<GroupPageBloc>(context).state.page == 1
-                  ? AppColors.element
-                  : AppColors.elementLight,
-              borderRadius: BorderRadius.circular(5.w),
-              border: Border.all(
-                color: Colors.transparent,
-              ),
-            ),
-            child: Center(
-              child: Text(
-                translate('your_group'),
-                style: TextStyle(
-                    fontFamily: AppFonts.Header,
-                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                    fontWeight: FontWeight.bold,
-                    color:
-                        BlocProvider.of<GroupPageBloc>(context).state.page == 1
-                            ? AppColors.background
-                            : AppColors.element),
-              ),
-            ),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
-        )
+          child: Column(
+            children: [
+              Text(
+                translate('your_group'),
+                style: AppTextStyle.small(context).wSemiBold().withColor(
+                      BlocProvider.of<GroupPageBloc>(context).state.page == 1
+                          ? AppColors.element
+                          : AppColors.textGrey,
+                    ),
+              ),
+              if (BlocProvider.of<GroupPageBloc>(context).state.page == 1)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
+                ),
+            ],
+          ),
+        ),
       ],
     ),
   );
@@ -295,7 +283,8 @@ Widget listGroupDiscover(
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                            fontSize:
+                                11.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -484,7 +473,8 @@ Widget groupDiscover(BuildContext context, Group group) {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                          fontSize:
+                              10.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.normal,
                           color: Color.fromARGB(255, 5, 90, 188),
                         ),
@@ -537,61 +527,54 @@ Widget groupDiscover(BuildContext context, Group group) {
           ),
           if (Global.storageService.permissionGroupJoin())
             Positioned(
-            bottom: 5.h,
-            left: 10.w,
-            right: 10.w,
-            child: GestureDetector(
-              onTap: () {
-                GroupPageController(context: context)
-                    .handleRequestJoinGroup(group);
-              },
-              child: group.isRequestPending
-                  ? Container(
-                      width: 145.w,
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 230, 230, 230),
-                        borderRadius: BorderRadius.circular(5.w),
-                        border: Border.all(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          translate('waiting_approval'),
-                          style: TextStyle(
-                            fontFamily: AppFonts.Header,
-                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textBlack,
-                          ),
-                        ),
-                      ),
-                    )
-                  : Container(
-                      width: 145.w,
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.element,
-                        borderRadius: BorderRadius.circular(5.w),
-                        border: Border.all(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          translate('join'),
-                          style: TextStyle(
-                            fontFamily: AppFonts.Header,
-                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.background,
-                          ),
-                        ),
+              bottom: 5.h,
+              left: 10.w,
+              right: 10.w,
+              child: Container(
+                width: 145.w,
+                height: 30.h,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (BlocProvider.of<GroupPageBloc>(context)
+                        .state
+                        .isLoading) {
+                      return;
+                    }
+                    if (group.isRequestPending) {
+                      return;
+                    }
+                    GroupPageController(context: context)
+                        .handleRequestJoinGroup(group);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: group.isRequestPending
+                        ? Color.fromARGB(255, 230, 230, 230)
+                        : AppColors.element,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.w),
+                    ),
+                    padding: EdgeInsets.zero, // Remove default padding
+                    minimumSize: Size(145.w, 30.h), // Set button size
+                  ),
+                  child: Center(
+                    child: Text(
+                      group.isRequestPending
+                          ? translate('waiting_approval')
+                          : translate('join'),
+                      style: TextStyle(
+                        fontFamily: AppFonts.Header,
+                        fontSize:
+                            12.sp / MediaQuery.of(context).textScaleFactor,
+                        fontWeight: FontWeight.bold,
+                        color: group.isRequestPending
+                            ? AppColors.textBlack
+                            : AppColors.background,
                       ),
                     ),
+                  ),
+                ),
+              ),
             ),
-          ),
         ],
       ),
     ),
@@ -685,7 +668,8 @@ Widget infoGroup(BuildContext context, Group group) {
                         group.tags.map((tag) => tag.name).join(' '),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyle.xSmall(context).withColor(AppColors.tag),
+                        style: AppTextStyle.xSmall(context)
+                            .withColor(AppColors.tag),
                       ),
                     ),
                   ],
@@ -801,7 +785,8 @@ Widget infoGroup(BuildContext context, Group group) {
                       '${translate('total')} ${handleParticipantCount(group.participantCount)} ${translate('members').toLowerCase()}',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header,
                       ),
@@ -826,7 +811,8 @@ Widget infoGroup(BuildContext context, Group group) {
                       '${translate('created_about')} ${handleTimeDifference1(group.createAt)}',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header,
                       ),
@@ -842,67 +828,56 @@ Widget infoGroup(BuildContext context, Group group) {
         ),
         if (Global.storageService.permissionGroupJoin())
           Positioned(
-          bottom: 0.h,
-          left: 0.w,
-          right: 0.w,
-          child: Container(
-            height: 60.h,
-            color: AppColors.background,
-            child: GestureDetector(
-              onTap: () {
-                GroupPageController(context: context)
-                    .handleRequestJoinGroup(group);
-              },
-              child: group.isRequestPending
-                  ? Container(
-                      margin: EdgeInsets.only(
-                          left: 10.w, right: 10.w, bottom: 20.h),
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 230, 230, 230),
-                        borderRadius: BorderRadius.circular(5.w),
-                        border: Border.all(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          translate('waiting_approval'),
-                          style: TextStyle(
-                            fontFamily: AppFonts.Header,
-                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textBlack,
-                          ),
-                        ),
-                      ),
-                    )
-                  : Container(
-                      margin: EdgeInsets.only(
-                          left: 10.w, right: 10.w, bottom: 20.h),
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.element,
-                        borderRadius: BorderRadius.circular(5.w),
-                        border: Border.all(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          translate('join'),
-                          style: TextStyle(
-                            fontFamily: AppFonts.Header,
-                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.background,
-                          ),
+            bottom: 0.h,
+            left: 0.w,
+            right: 0.w,
+            child: Container(
+              height: 60.h,
+              color: AppColors.background,
+              child: Container(
+                margin: EdgeInsets.only(
+                    left: 10.w, right: 10.w, bottom: 20.h),
+                height: 30.h,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (BlocProvider.of<GroupPageBloc>(context)
+                        .state
+                        .isLoading) {
+                      return;
+                    }
+                    if (group.isRequestPending) {
+                      return;
+                    }
+                    GroupPageController(context: context).handleRequestJoinGroup(group);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: group.isRequestPending
+                        ? Color.fromARGB(255, 230, 230, 230)
+                        : AppColors.element,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.w),
+                    ),
+                    padding: EdgeInsets.zero, // Remove default padding
+                    minimumSize: Size(double.infinity, 30.h), // Set button height
+                  ),
+                  child: Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h, top: 10.h),
+                    child: Center(
+                      child: Text(
+                        group.isRequestPending ? translate('waiting_approval') : translate('join'),
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header,
+                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                          fontWeight: FontWeight.bold,
+                          color: group.isRequestPending ? AppColors.textBlack : AppColors.background,
                         ),
                       ),
                     ),
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
       ],
     ),
   );
@@ -956,7 +931,8 @@ Widget listGroupJoined(
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                            fontSize:
+                                11.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -1148,7 +1124,8 @@ Widget groupJoined(BuildContext context, Group group) {
                         group.tags.map((tag) => tag.name).join(' '),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyle.xSmall(context).withColor(AppColors.tag),
+                        style: AppTextStyle.xSmall(context)
+                            .withColor(AppColors.tag),
                       ),
                     ),
                   ],

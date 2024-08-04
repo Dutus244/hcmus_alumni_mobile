@@ -99,56 +99,92 @@ AppBar buildAppBar(BuildContext context) {
 }
 
 Widget buildCreatePostButton(BuildContext context) {
-  return GestureDetector(
-    onTap: () async {
-      await Navigator.pushNamed(
-        context,
-        "/writePostAdvise",
-      );
-      AdvisePageController(context: context).handleLoadPostData(0);
-    },
-    child: Container(
-      height: 40.h,
-      padding: EdgeInsets.only(top: 0.h, bottom: 5.h, left: 10.w),
+  return Container(
+    height: 40.h,
+    padding: EdgeInsets.only(top: 0.h, bottom: 5.h, left: 10.w, right: 10.w),
+    child: ElevatedButton(
+      onPressed: () async {
+        await Navigator.pushNamed(
+          context,
+          "/writePostAdvise",
+        );
+        AdvisePageController(context: context).handleLoadPostData(0);
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.black, backgroundColor: Colors.white, padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w), // Text color
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.w),
+          side: BorderSide(color: Colors.grey.withOpacity(0.5)),
+        ),
+      ),
       child: Row(
         children: [
-          GestureDetector(
+          Expanded(
             child: Container(
-              width: 300.w,
-              height: 30.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.w),
-                border: Border.all(
-                  color: Colors.grey.withOpacity(0.5),
-                ),
-              ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  padding: EdgeInsets.only(left: 10.w),
-                  child: Text(
-                    translate('what_advise_do_you_want'),
-                    style: AppTextStyle.small(context),
-                  ),
-                ),
+              padding: EdgeInsets.only(left: 10.w),
+              child: Text(
+                translate('what_advise_do_you_want'),
+                style: AppTextStyle.small(context),
               ),
             ),
           ),
-          GestureDetector(
-            child: Container(
-              height: 40.h,
-              width: 40.w,
-              padding: EdgeInsets.only(left: 10.w),
-              child: Image.asset(
-                AppAssets.imageIconP,
-              ),
+          Container(
+            height: 40.h,
+            width: 40.w,
+            padding: EdgeInsets.only(left: 10.w),
+            child: Image.asset(
+              AppAssets.imageIconP,
             ),
-          )
+          ),
         ],
       ),
     ),
   );
 }
+
+Widget buildCreatePostButtonNot(BuildContext context) {
+  return Container(
+    height: 40.h,
+    padding: EdgeInsets.only(top: 0.h, bottom: 5.h, left: 10.w, right: 10.w),
+    child: ElevatedButton(
+      onPressed: () async {
+        Navigator.pushNamed(
+          context,
+          "/myProfileEdit",
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.black, backgroundColor: Colors.white, padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w), // Text color
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.w),
+          side: BorderSide(color: Colors.grey.withOpacity(0.5)),
+        ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(left: 10.w),
+              child: Text(
+                'Cần xét duyệt để đăng bài tư vấn',
+                style: AppTextStyle.small(context).withColor(AppColors.textBlack.withOpacity(0.5)),
+              ),
+            ),
+          ),
+          Container(
+            height: 40.h,
+            width: 40.w,
+            padding: EdgeInsets.only(left: 10.w),
+            child: Image.asset(
+              AppAssets.imageIconP,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 
 Widget listPost(BuildContext context, ScrollController _scrollController) {
   return Column(
@@ -166,6 +202,8 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
                   children: [
                     if (Global.storageService.permissionCounselCreate())
                       buildCreatePostButton(context),
+                    if (!Global.storageService.permissionCounselCreate())
+                      buildCreatePostButtonNot(context),
                     loadingWidget(),
                   ],
                 );
@@ -178,6 +216,8 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
                     children: [
                       if (Global.storageService.permissionCounselCreate())
                         buildCreatePostButton(context),
+                      if (!Global.storageService.permissionCounselCreate())
+                        buildCreatePostButtonNot(context),
                       Center(
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
@@ -208,6 +248,8 @@ Widget listPost(BuildContext context, ScrollController _scrollController) {
                       children: [
                         if (Global.storageService.permissionCounselCreate())
                           buildCreatePostButton(context),
+                        if (!Global.storageService.permissionCounselCreate())
+                          buildCreatePostButtonNot(context),
                         post(
                             context,
                             BlocProvider.of<AdvisePageBloc>(context)
@@ -391,11 +433,13 @@ Widget post(BuildContext context, Post post) {
                 if (post.permissions.edit || post.permissions.delete)
                   GestureDetector(
                     onTap: () {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (ctx) => postOption(context, post),
-                      );
+                      if (!BlocProvider.of<AdvisePageBloc>(context).state.isLoading) {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (ctx) => postOption(context, post),
+                        );
+                      }
                     },
                     child: Container(
                       width: 17.w,
@@ -477,6 +521,9 @@ Widget post(BuildContext context, Post post) {
                               value: post.votes[i].name,
                               groupValue: post.voteSelectedOne,
                               onChanged: (value) {
+                                if (BlocProvider.of<AdvisePageBloc>(context).state.isLoading) {
+                                  return;
+                                }
                                 if (post.voteSelectedOne == "") {
                                   AdvisePageController(context: context)
                                       .handleVote(post.id, post.votes[i].id);
@@ -575,6 +622,9 @@ Widget post(BuildContext context, Post post) {
                                 },
                               ),
                               onChanged: (value) {
+                                if (BlocProvider.of<AdvisePageBloc>(context).state.isLoading) {
+                                  return;
+                                }
                                 if (value! == true) {
                                   AdvisePageController(context: context)
                                       .handleVote(post.id, post.votes[i].id);
@@ -633,85 +683,94 @@ Widget post(BuildContext context, Post post) {
                 ),
               ),
           if (post.votes.length > 0 && post.allowAddOptions && Global.storageService.permissionCounselVote())
-            GestureDetector(
-              onTap: () {
-                if (post.votes.length >= 10) {
-                  toastInfo(msg: translate("option_above_10"));
-                  return;
-                }
-                TextEditingController textController = TextEditingController();
-
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text(translate('add_option')),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextField(
-                          controller: textController,
-                          decoration: InputDecoration(
-                            hintText: translate('add_option'),
-                          ),
-                        ),
-                      ],
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: Text(translate('cancel')),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, {
-                          'confirmed': true,
-                          'vote': textController.text,
-                        }),
-                        child: Text(translate('add')),
-                      ),
-                    ],
-                  ),
-                ).then((result) {
-                  if (result != null && result['confirmed'] == true) {
-                    String vote = result['vote'];
-                    AdvisePageController(context: context)
-                        .handleAddVote(post.id, vote);
-                  } else {}
-                });
-              },
+            Center(
               child: Container(
                 width: 350.w,
                 height: 35.h,
                 margin: EdgeInsets.only(
                     top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(10.w),
-                  border: Border.all(
-                    color: AppColors.primaryFourthElementText,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (post.votes.length >= 10) {
+                      toastInfo(msg: translate("option_above_10"));
+                      return;
+                    }
+                    if (BlocProvider.of<AdvisePageBloc>(context).state.isLoading) {
+                      return;
+                    }
+                    TextEditingController textController = TextEditingController();
+
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text(translate('add_option')),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextField(
+                              controller: textController,
+                              decoration: InputDecoration(
+                                hintText: translate('add_option'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: Text(translate('cancel')),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, {
+                              'confirmed': true,
+                              'vote': textController.text,
+                            }),
+                            child: Text(translate('add')),
+                          ),
+                        ],
+                      ),
+                    ).then((result) {
+                      if (result != null && result['confirmed'] == true) {
+                        String vote = result['vote'];
+                        AdvisePageController(context: context).handleAddVote(post.id, vote);
+                      }
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.transparent, backgroundColor: Colors.transparent, // Transparent background for pressed state
+                    shadowColor: Colors.transparent, // Remove shadow
+                    padding: EdgeInsets.zero, // Remove default padding
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.w),
+                      side: BorderSide(
+                        color: AppColors.primaryFourthElementText,
+                      ),
+                    ),
                   ),
-                ),
-                child: Container(
-                  margin: EdgeInsets.only(left: 10.w),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        AppAssets.addIconS,
-                        width: 14.w,
-                        height: 14.h,
-                        color: AppColors.textGrey,
-                      ),
-                      Container(
-                        width: 5.w,
-                      ),
-                      Text(
-                        translate('add_option'),
-                        style: AppTextStyle.small(context),
-                      ),
-                    ],
+                  child: Container(
+                    width: 350.w,
+                    height: 35.h,
+                    margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          AppAssets.addIconS,
+                          width: 14.w,
+                          height: 14.h,
+                          color: AppColors.textGrey,
+                        ),
+                        SizedBox(width: 5.w),
+                        Text(
+                          translate('add_option'),
+                          style: AppTextStyle.small(context),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
+
           Container(
             height: 5.h,
           ),
@@ -1106,8 +1165,10 @@ Widget post(BuildContext context, Post post) {
                         Center(
                           child: GestureDetector(
                             onTap: () {
-                              AdvisePageController(context: context)
-                                  .handleLikePost(post.id);
+                              if (!BlocProvider.of<AdvisePageBloc>(context).state.isLoading) {
+                                AdvisePageController(context: context)
+                                    .handleLikePost(post.id);
+                              }
                             },
                             child: post.isReacted
                                 ? Container(

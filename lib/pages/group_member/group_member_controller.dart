@@ -17,8 +17,40 @@ import 'bloc/group_member_states.dart';
 
 class GroupMemberController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const GroupMemberController({required this.context});
+  GroupMemberController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleGetMember(String id, int page) async {
     if (page == 0) {
@@ -77,7 +109,7 @@ class GroupMemberController {
         toastInfo(msg: translate('error_get_member'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_member'));
+      // toastInfo(msg: translate('error_get_member'));
     }
   }
 
@@ -103,7 +135,7 @@ class GroupMemberController {
         toastInfo(msg: translate('error_get_member'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_member'));
+      // toastInfo(msg: translate('error_get_member'));
     }
     return creatorList;
   }
@@ -166,11 +198,13 @@ class GroupMemberController {
         toastInfo(msg: translate('error_get_member'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_member'));
+      // toastInfo(msg: translate('error_get_member'));
     }
   }
 
   Future<void> handleDeleteMemeber(String groupId, String userId) async {
+    context.read<GroupMemberBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$groupId/members/$userId';
 
@@ -186,18 +220,26 @@ class GroupMemberController {
 
       var response = await http.delete(url, headers: headers);
       if (response.statusCode == 200) {
-        GroupMemberController(context: context).handleGetAdmin(groupId, 0);
+        await handleGetAdmin(groupId, 0);
+        context.read<GroupMemberBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã xoá thành viên thành công');
       } else {
         // Handle other status codes if needed
+        context.read<GroupMemberBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_delete_member'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_delete_member'));
+      // toastInfo(msg: translate('error_delete_member'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleChangeRole(String groupId, String userId, String role) async {
+    context.read<GroupMemberBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$groupId/members/$userId';
 
@@ -216,14 +258,20 @@ class GroupMemberController {
 
       var response = await http.put(url, headers: headers, body: body);
       if (response.statusCode == 200) {
-        GroupMemberController(context: context).handleGetAdmin(groupId, 0);
+        await handleGetAdmin(groupId, 0);
+        context.read<GroupMemberBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã thay đổi vai trò thành công');
       } else {
         // Handle other status codes if needed
+        context.read<GroupMemberBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_change_role'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_change_role'));
+      // toastInfo(msg: translate('error_change_role'));
+      hideLoadingIndicator();
     }
   }
 }

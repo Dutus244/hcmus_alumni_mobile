@@ -24,6 +24,7 @@ class _EventDetailWriteCommentState extends State<EventDetailWriteComment> {
     context
         .read<EventDetailWriteCommentBloc>()
         .add(EventDetailWriteCommentResetEvent());
+    context.read<EventDetailWriteCommentBloc>().add(IsLoadingEvent(false));
   }
 
   late Event event;

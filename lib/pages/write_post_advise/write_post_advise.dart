@@ -20,21 +20,20 @@ class _WritePostAdviseState extends State<WritePostAdvise> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<WritePostAdviseBloc>()
-        .add(WritePostAdviseResetEvent());
+    context.read<WritePostAdviseBloc>().add(WritePostAdviseResetEvent());
+    context.read<WritePostAdviseBloc>().add(IsLoadingEvent(false));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WritePostAdviseBloc, WritePostAdviseState>(
         builder: (context, state) {
-          return Scaffold(
-              appBar: buildAppBar(context),
-              backgroundColor: AppColors.background,
-              body: BlocProvider.of<WritePostAdviseBloc>(context)
-                  .state.page == 0 ? writePost(context) : editPicture(context)
-          );
-        });
+      return Scaffold(
+          appBar: buildAppBar(context),
+          backgroundColor: AppColors.background,
+          body: BlocProvider.of<WritePostAdviseBloc>(context).state.page == 0
+              ? writePost(context)
+              : editPicture(context));
+    });
   }
 }

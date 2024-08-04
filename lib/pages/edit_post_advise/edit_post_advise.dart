@@ -35,6 +35,7 @@ class _EditPostAdviseState extends State<EditPostAdvise> {
       post = args["post"];
       // Now you can use the passedValue in your widget
       EditPostAdviseController(context: context).handleLoad(post!.id);
+      context.read<EditPostAdviseBloc>().add(IsLoadingEvent(false));
     }
   }
 

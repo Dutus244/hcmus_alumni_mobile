@@ -40,7 +40,7 @@ class HomePageController {
         toastInfo(msg: translate('error_get_event'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_event'));
+      // toastInfo(msg: translate('error_get_event'));
     }
   }
 
@@ -65,7 +65,7 @@ class HomePageController {
         toastInfo(msg: translate('error_get_news'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_news'));
+      // toastInfo(msg: translate('error_get_news'));
     }
   }
 
@@ -93,7 +93,7 @@ class HomePageController {
         toastInfo(msg: translate('error_get_hof'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_hof'));
+      // toastInfo(msg: translate('error_get_hof'));
     }
   }
 }

@@ -13,6 +13,7 @@ class GroupPageBloc extends Bloc<GroupPageEvent, GroupPageState> {
     on<StatusGroupJoinedEvent>(_statusGroupJoinedEvent);
     on<GroupJoinedsEvent>(_groupJoinedsEvent);
     on<IndexGroupJoinedEvent>(_indexGroupJoinedEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<HasReachedMaxGroupJoinedEvent>(_hasReachedMaxGroupJoinedEvent);
   }
 
@@ -54,6 +55,11 @@ class GroupPageBloc extends Bloc<GroupPageEvent, GroupPageState> {
   void _indexGroupJoinedEvent(
       IndexGroupJoinedEvent event, Emitter<GroupPageState> emit) {
     emit(state.copyWith(indexGroupJoined: event.indexGroupJoined));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<GroupPageState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _hasReachedMaxGroupJoinedEvent(

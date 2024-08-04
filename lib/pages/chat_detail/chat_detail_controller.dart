@@ -95,7 +95,7 @@ class ChatDetailController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_get_message'));
+      // toastInfo(msg: translate('error_get_message'));
     }
   }
 

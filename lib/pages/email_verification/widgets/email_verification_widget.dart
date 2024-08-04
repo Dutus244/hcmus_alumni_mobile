@@ -12,8 +12,13 @@ import '../bloc/email_verification_blocs.dart';
 import '../bloc/email_verification_events.dart';
 import '../email_verification_controller.dart';
 
-Widget buildTextField(BuildContext context, String hintText, String textType, String iconName,
-    void Function(String value)? func1, void Function()? func2) {
+Widget buildTextField(
+    BuildContext context,
+    String hintText,
+    String textType,
+    String iconName,
+    void Function(String value)? func1,
+    void Function()? func2) {
   return Container(
       width: 325.w,
       height: 40.h,
@@ -81,38 +86,40 @@ Widget buildTextField(BuildContext context, String hintText, String textType, St
 
 Widget buildVerifyAndBackButton(
     BuildContext context, String buttonName, String buttonType) {
-  return GestureDetector(
-    onTap: () {
-      if (buttonType == "verify") {
-        EmailVerificationController(context: context).handleEmailVerification();
-      } else {
-        Navigator.of(context).pushNamed("/register");
-      }
-    },
-    child: Container(
-      width: 325.w,
-      height: 50.h,
-      margin: EdgeInsets.only(
-          left: 25.w, right: 25.w, top: buttonType == "verify" ? 50.h : 20.h),
-      decoration: BoxDecoration(
-        color: buttonType == "verify"
-            ? AppColors.element
-            : AppColors.elementLight,
-        borderRadius: BorderRadius.circular(15.w),
-        border: Border.all(
-          color: buttonType == "verify"
-              ? Colors.transparent
-              : AppColors.primaryFourthElementText,
+  return Container(
+    width: 325.w,
+    height: 50.h,
+    margin: EdgeInsets.only(
+        left: 25.w, right: 25.w, top: buttonType == "verify" ? 50.h : 20.h),
+    child: ElevatedButton(
+      onPressed: () {
+        if (!BlocProvider.of<EmailVerificationBloc>(context).state.isLoading) {
+          if (buttonType == "verify") {
+            EmailVerificationController(context: context)
+                .handleEmailVerification();
+          } else {
+            Navigator.of(context).pushNamed("/register");
+          }
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor:
+            buttonType == "verify" ? AppColors.background : AppColors.element,
+        backgroundColor:
+            buttonType == "verify" ? AppColors.element : AppColors.elementLight,
+        minimumSize: Size(325.w, 50.h),
+        padding: EdgeInsets.symmetric(horizontal: 25.w),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.w),
+          side: buttonType == "verify"
+              ? BorderSide(color: Colors.transparent)
+              : BorderSide(color: AppColors.primaryFourthElementText),
         ),
       ),
-      child: Center(
-        child: Text(
-          buttonName,
-          style: AppTextStyle.medium(context).wSemiBold().withColor(
-              buttonType == "verify"
-                  ? AppColors.background
-                  : AppColors.element),
-        ),
+      child: Text(
+        buttonName,
+        style: AppTextStyle.medium(context).wSemiBold().withColor(
+            buttonType == "verify" ? AppColors.background : AppColors.element),
       ),
     ),
   );
@@ -152,13 +159,16 @@ Widget emailVerification(BuildContext context) {
                 child: Text(
                   "${translate('authentication_code_sent')} ${Global.storageService.getUserEmail()}",
                   textAlign: TextAlign.center,
-                  style: AppTextStyle.small(context).italic().withColor(AppColors.element),
+                  style: AppTextStyle.small(context)
+                      .italic()
+                      .withColor(AppColors.element),
                 ),
               )),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(context, translate('authentication_code*'), "code", AppAssets.sendIconP, (value) {
+              buildTextField(context, translate('authentication_code*'), "code",
+                  AppAssets.sendIconP, (value) {
                 context.read<EmailVerificationBloc>().add(CodeEvent(value));
               }, () {
                 EmailVerificationController(context: context)
@@ -167,8 +177,10 @@ Widget emailVerification(BuildContext context) {
             ],
           ),
         ),
-        buildVerifyAndBackButton(context, translate('verify').toUpperCase(), "verify"),
-        buildVerifyAndBackButton(context, translate('back').toUpperCase(), "back"),
+        buildVerifyAndBackButton(
+            context, translate('verify').toUpperCase(), "verify"),
+        buildVerifyAndBackButton(
+            context, translate('back').toUpperCase(), "back"),
       ],
     ),
   );

@@ -29,6 +29,7 @@ class MyProfileEditBloc extends Bloc<MyProfileEditEvent, MyProfileEditState> {
     on<UpdateProfileEvent>(_updateProfileEvent);
     on<UpdateAlumniVerEvent>(_updateAlumniVerEvent);
     on<UpdateAlumniEvent>(_updateAlumniEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
   }
 
   void _fullNameEvent(FullNameEvent event, Emitter<MyProfileEditState> emit) {
@@ -109,6 +110,10 @@ class MyProfileEditBloc extends Bloc<MyProfileEditEvent, MyProfileEditState> {
 
   void _achievementsEvent(AchievementsEvent event, Emitter<MyProfileEditState> emit) {
     emit(state.copyWith(achievements: event.achievements));
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<MyProfileEditState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _myProfileEditResetEvent(MyProfileEditResetEvent event, Emitter<MyProfileEditState> emit) {

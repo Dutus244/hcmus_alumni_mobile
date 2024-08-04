@@ -12,6 +12,7 @@ import 'package:textfield_tags/textfield_tags.dart';
 
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
+import '../../../common/values/text_style.dart';
 import '../../../common/widgets/flutter_toast.dart';
 import '../../../global.dart';
 import '../../../model/group.dart';
@@ -43,39 +44,44 @@ AppBar buildAppBar(BuildContext context) {
 
 Widget buttonEdit(BuildContext context, Group group) {
   String name = BlocProvider.of<GroupEditBloc>(context).state.name;
-  return GestureDetector(
-    onTap: () {
-      if (name != "") {
-        GroupEditController(context: context).handleEditGroup(group);
-      }
-    },
-    child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: (name != "")
-            ? AppColors.element
-            : AppColors.background,
-        borderRadius: BorderRadius.circular(10.w),
-        border: Border.all(
+  return Container(
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+    height: 40.h,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor:
+        (name != "") ? AppColors.background : Colors.black.withOpacity(0.3),
+        backgroundColor: (name != "") ? AppColors.element : AppColors.background,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.w),
+        ),
+        side: BorderSide(
           color: AppColors.elementLight,
         ),
+        padding: EdgeInsets.zero,
       ),
-      child: Center(
+      onPressed: () {
+        if (name != "" && !BlocProvider.of<GroupEditBloc>(context).state.isLoading) {
+          GroupEditController(context: context).handleEditGroup(group);
+        }
+      },
+      child: Container(
+        child: Center(
           child: Container(
-            margin: EdgeInsets.only(left: 12.w, right: 12.w),
+            margin: EdgeInsets.only(left: 12.w, right: 12.w, top: 10.h, bottom: 10.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  translate('save'),
+                  translate('edit'),
                   style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color: (name != "")
-                          ? AppColors.background
-                          : Colors.black.withOpacity(0.3)),
+                    fontFamily: AppFonts.Header,
+                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                    fontWeight: FontWeight.bold,
+                    color: (name != "")
+                        ? AppColors.background
+                        : Colors.black.withOpacity(0.3),
+                  ),
                 ),
                 Container(
                   width: 6.w,
@@ -90,7 +96,9 @@ Widget buttonEdit(BuildContext context, Group group) {
                 ),
               ],
             ),
-          )),
+          ),
+        ),
+      ),
     ),
   );
 }
@@ -484,34 +492,38 @@ void deletePicture(BuildContext context, int index) {
 
 Widget choosePicture(
     BuildContext context, void Function(List<File> value)? func) {
-  return GestureDetector(
-      onTap: () async {
-        final pickedFiles = await ImagePicker().pickMultiImage();
-        if (pickedFiles.length > 1) {
-          toastInfo(msg: translate('picture_above_1'));
-          return;
-        }
-        context.read<GroupEditBloc>().add(NetworkPictureEvent(""));
-        func!(pickedFiles.map((pickedFile) => File(pickedFile.path)).toList());
-      },
-      child: Column(
-        children: [
-          if (BlocProvider.of<GroupEditBloc>(context).state.networkPicture == '' && BlocProvider.of<GroupEditBloc>(context).state.pictures.length ==
-              0)
-            Container(
-              width: 120.w,
-              height: 30.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
+  return Column(
+    children: [
+      if (BlocProvider.of<GroupEditBloc>(context).state.networkPicture == '' && BlocProvider.of<GroupEditBloc>(context).state.pictures.length ==
+          0)
+        Container(
+          margin: EdgeInsets.only(
+              left: 100.w, top: 5.h, right: 100.w, bottom: 10.h),
+          width: 160.w,
+          height: 40.h,
+          child: ElevatedButton(
+            onPressed: () async {
+              final pickedFiles = await ImagePicker().pickMultiImage();
+              if (pickedFiles.length > 1) {
+                toastInfo(msg: translate('picture_above_1'));
+                return;
+              }
+              context.read<GroupEditBloc>().add(NetworkPictureEvent(""));
+              func!(pickedFiles.map((pickedFile) => File(pickedFile.path)).toList());
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: AppColors.textBlack, backgroundColor: Color.fromARGB(255, 230, 230, 230),
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.w),
-                color: AppColors.element,
-                border: Border.all(
-                  color: Colors.transparent,
-                ),
+                side: BorderSide(color: Colors.transparent),
               ),
+              padding: EdgeInsets.zero,
+            ),
+            child: Container(
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(left: 5.w, right: 5.w),
+                  margin: EdgeInsets.symmetric(horizontal: 10.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -519,24 +531,34 @@ Widget choosePicture(
                         "assets/icons/picture.svg",
                         width: 12.w,
                         height: 12.h,
-                        color: AppColors.background,
+                        color: AppColors.textBlack,
                       ),
                       Text(
-                        translate('choose_cover'),
-                        style: TextStyle(
-                            fontFamily: AppFonts.Header,
-                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.background),
+                        translate('choose_picture'),
+                        style: AppTextStyle.small(context).wSemiBold(),
                       ),
                     ],
                   ),
                 ),
               ),
             ),
-          if (BlocProvider.of<GroupEditBloc>(context).state.networkPicture != '' || BlocProvider.of<GroupEditBloc>(context).state.pictures.length ==
-              1)
-            Stack(
+          ),
+        ),
+      GestureDetector(
+        onTap: () async {
+          final pickedFiles = await ImagePicker().pickMultiImage();
+          if (pickedFiles.length > 1) {
+            toastInfo(msg: translate('picture_above_1'));
+            return;
+          }
+          context.read<GroupEditBloc>().add(NetworkPictureEvent(""));
+          func!(pickedFiles.map((pickedFile) => File(pickedFile.path)).toList());
+        },
+        child: Column(
+          children: [
+            if (BlocProvider.of<GroupEditBloc>(context).state.networkPicture != '' || BlocProvider.of<GroupEditBloc>(context).state.pictures.length ==
+                1)
+              Stack(
               children: [
                 Container(
                   margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
@@ -577,8 +599,11 @@ Widget choosePicture(
                     )),
               ],
             ),
-        ],
-      ));
+          ],
+        ),
+      )
+    ],
+  );
 }
 
 void deleteTag(BuildContext context, String tag) {

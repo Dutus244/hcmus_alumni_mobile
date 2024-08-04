@@ -125,7 +125,7 @@ class NotificationPageController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_seen_notification'));
+      // toastInfo(msg: translate('error_seen_notification'));
     }
   }
 }

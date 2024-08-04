@@ -12,6 +12,7 @@ class AdvisePageBloc extends Bloc<AdvisePageEvent, AdvisePageState> {
     on<StatusVoterEvent>(_statusVoterEvent);
     on<VotersEvent>(_votersEvent);
     on<IndexVoterEvent>(_indexVoterEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<HasReachedMaxVoterEvent>(_hasReachedMaxVoterEvent);
   }
 
@@ -49,5 +50,10 @@ class AdvisePageBloc extends Bloc<AdvisePageEvent, AdvisePageState> {
   void _hasReachedMaxVoterEvent(
       HasReachedMaxVoterEvent event, Emitter<AdvisePageState> emit) {
     emit(state.copyWith(hasReachedMaxVoter: event.hasReachedMaxVoter));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<AdvisePageState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 }

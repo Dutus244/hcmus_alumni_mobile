@@ -102,7 +102,7 @@ class GroupSearchController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_get_group'));
+      // toastInfo(msg: translate('error_get_group'));
     }
   }
 
@@ -142,7 +142,7 @@ class GroupSearchController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_join_group'));
+      // toastInfo(msg: translate('error_join_group'));
     }
   }
 }

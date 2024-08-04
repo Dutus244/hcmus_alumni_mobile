@@ -11,6 +11,7 @@ class GroupCreateBloc
     on<PrivacyEvent>(_privacyEvent);
     on<PicturesEvent>(_picturesEvent);
     on<TagsEvent>(_tagsEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<GroupCreateResetEvent>(_groupCreateResetEvent);
   }
 
@@ -36,5 +37,9 @@ class GroupCreateBloc
 
   void _groupCreateResetEvent(GroupCreateResetEvent event, Emitter<GroupCreateState> emit) {
     emit(GroupCreateState());
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<GroupCreateState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 }

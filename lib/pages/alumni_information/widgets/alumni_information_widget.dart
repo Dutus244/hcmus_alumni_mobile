@@ -65,33 +65,33 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
 
 Widget buildLogInAndRegButton(
     BuildContext context, String buttonName, String buttonType) {
-  return GestureDetector(
-    onTap: () {
-      AlumniInformationController(context: context).handleAlumniInformation();
-    },
-    child: Container(
-      width: 325.w,
-      height: 50.h,
-      margin: EdgeInsets.only(
-          left: 25.w, right: 25.w, top: buttonType == "verify" ? 20.h : 20.h),
-      decoration: BoxDecoration(
-        color:
+  return Container(
+    width: 325.w,
+    height: 50.h,
+    margin: EdgeInsets.only(
+        left: 25.w, right: 25.w, top: buttonType == "verify" ? 20.h : 20.h),
+    child: ElevatedButton(
+      onPressed: () {
+        AlumniInformationController(context: context).handleAlumniInformation();
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor:
+            buttonType == "verify" ? AppColors.background : AppColors.element,
+        backgroundColor:
             buttonType == "verify" ? AppColors.element : AppColors.elementLight,
-        borderRadius: BorderRadius.circular(15.w),
-        border: Border.all(
-          color: buttonType == "verify"
-              ? Colors.transparent
-              : AppColors.primaryFourthElementText,
+        minimumSize: Size(325.w, 50.h),
+        padding: EdgeInsets.symmetric(horizontal: 25.w),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.w),
+          side: buttonType == "verify"
+              ? BorderSide(color: Colors.transparent)
+              : BorderSide(color: AppColors.primaryFourthElementText),
         ),
       ),
-      child: Center(
-        child: Text(
-          buttonName,
-          style: AppTextStyle.medium(context).wSemiBold().withColor(
-              buttonType == "verify"
-                  ? AppColors.background
-                  : AppColors.element),
-        ),
+      child: Text(
+        buttonName,
+        style: AppTextStyle.medium(context).wSemiBold().withColor(
+            buttonType == "verify" ? AppColors.background : AppColors.element),
       ),
     ),
   );
@@ -143,7 +143,7 @@ Future<void> _cropImage(
     uiSettings: [
       AndroidUiSettings(
         toolbarTitle: translate('cropper'),
-        toolbarColor: Colors.deepOrange,
+        toolbarColor: AppColors.element,
         toolbarWidgetColor: Colors.white,
         initAspectRatio: CropAspectRatioPreset.original,
         lockAspectRatio: false,

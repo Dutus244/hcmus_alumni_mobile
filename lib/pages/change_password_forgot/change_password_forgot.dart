@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hcmus_alumni_mobile/pages/change_password_forgot/bloc/change_password_forgot_events.dart';
+import 'package:hcmus_alumni_mobile/pages/change_password_forgot/change_password_forgot_controller.dart';
 
 import '../../common/values/colors.dart';
 import 'bloc/change_password_forgot_blocs.dart';
@@ -16,10 +17,12 @@ class ChangePasswordForgot extends StatefulWidget {
 }
 
 class _ChangePasswordForgotState extends State<ChangePasswordForgot> {
+  String email = "";
+
   @override
   void initState() {
     super.initState();
-
+    ChangePasswordForgotController(context: context).startResendCooldown();
     context
         .read<ChangePasswordForgotBloc>()
         .add(ChangePasswordForgotResetEvent());
@@ -27,6 +30,11 @@ class _ChangePasswordForgotState extends State<ChangePasswordForgot> {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic>? args =
+    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
+    if (args != null) {
+      email = args["email"];
+    }
     return PopScope(
       canPop: false, // prevent back
       onPopInvoked: (_) async {
@@ -39,7 +47,7 @@ class _ChangePasswordForgotState extends State<ChangePasswordForgot> {
           child: SafeArea(
               child: Scaffold(
             backgroundColor: AppColors.background,
-            body: changePassword(context),
+            body: changePassword(context, email),
           )),
         );
       }),

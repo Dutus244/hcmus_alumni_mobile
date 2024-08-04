@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -26,8 +27,40 @@ import 'bloc/my_profile_edit_events.dart';
 
 class MyProfileEditController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const MyProfileEditController({required this.context});
+  MyProfileEditController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleGetProfile() async {
     var token = Global.storageService.getUserAuthToken();
@@ -134,6 +167,8 @@ class MyProfileEditController {
   }
 
   Future<void> handleChangeAvatar(File? avatar) async {
+    context.read<MyProfileEditBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/profile/avatar';
     var token = Global.storageService.getUserAuthToken();
@@ -162,15 +197,22 @@ class MyProfileEditController {
 
       // Convert the streamed response to a regular HTTP response
       var response = await http.Response.fromStream(streamedResponse);
-      if (response.statusCode == 200) {}
+      if (response.statusCode == 200) {
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã thay đổi ảnh đại diện thành công');
+      }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: translate('error_verify_alumni'));
+      // toastInfo(msg: translate('error_verify_alumni'));
+      hideLoadingIndicator();
       return;
     }
   }
 
   Future<void> handleChangeCover(File? cover) async {
+    context.read<MyProfileEditBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/profile/cover';
     var token = Global.storageService.getUserAuthToken();
@@ -199,15 +241,22 @@ class MyProfileEditController {
 
       // Convert the streamed response to a regular HTTP response
       var response = await http.Response.fromStream(streamedResponse);
-      if (response.statusCode == 200) {}
+      if (response.statusCode == 200) {
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã thay đổi ảnh nền thành công');
+      }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: translate('error_verify_alumni'));
+      // toastInfo(msg: translate('error_verify_alumni'));
+      hideLoadingIndicator();
       return;
     }
   }
 
   Future<void> handleSaveProfile() async {
+    context.read<MyProfileEditBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<MyProfileEditBloc>().state;
     String fullName = state.fullName;
     int facultyId = state.facultyId;
@@ -254,19 +303,26 @@ class MyProfileEditController {
         body: body,
       );
       if (response.statusCode == 200) {
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('saved_successfully'));
       } else {
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_verify_alumni'));
       }
     } catch (e) {
       // Exception occurred
       print(e);
-      toastInfo(msg: translate('error_verify_alumni'));
+      // toastInfo(msg: translate('error_verify_alumni'));
+      hideLoadingIndicator();
       return;
     }
   }
 
   Future<void> handleEditAlumniVerification() async {
+    context.read<MyProfileEditBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<MyProfileEditBloc>().state;
     String studentId = state.studentId;
     int beginningYear = state.startYear != "" ? int.parse(state.startYear) : 0;
@@ -304,18 +360,24 @@ class MyProfileEditController {
       // Convert the streamed response to a regular HTTP response
       var response = await http.Response.fromStream(streamedResponse);
       if (response.statusCode == 201) {
-        handleGetProfile();
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã thay đổi đơn xét duyệt cựu sinh viên thành công');
       } else {
-
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
       }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: translate('error_verify_alumni'));
+      // toastInfo(msg: translate('error_verify_alumni'));
+      hideLoadingIndicator();
       return;
     }
   }
 
   Future<void> handleAlumniVerification() async {
+    context.read<MyProfileEditBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<MyProfileEditBloc>().state;
     String studentId = state.studentId;
     int beginningYear = state.startYear != "" ? int.parse(state.startYear) : 0;
@@ -353,18 +415,25 @@ class MyProfileEditController {
       // Convert the streamed response to a regular HTTP response
       var response = await http.Response.fromStream(streamedResponse);
       if (response.statusCode == 201) {
-        handleGetProfile();
+        await handleGetProfile();
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã nộp đơn xét duyệt cựu sinh viên thành công');
       } else {
-
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
       }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: translate('error_verify_alumni'));
+      // toastInfo(msg: translate('error_verify_alumni'));
+      hideLoadingIndicator();
       return;
     }
   }
 
   Future<bool> handleDeleteJob(Job job) async {
+    context.read<MyProfileEditBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/profile/job/${job.id}';
     var token = Global.storageService.getUserAuthToken();
@@ -379,11 +448,11 @@ class MyProfileEditController {
       'position': job.position,
       'startTime': job.startTime != ""
           ? DateFormat('yyyy-MM-dd')
-          .format(DateFormat('dd/MM/yyyy').parse(job.startTime))
+          .format(DateFormat('dd/MM/yyyy').parse("01/" + job.startTime))
           : "",
       'endTime': job.endTime != ""
           ? DateFormat('yyyy-MM-dd')
-          .format(DateFormat('dd/MM/yyyy').parse(job.endTime))
+          .format(DateFormat('dd/MM/yyyy').parse("01/" + job.endTime))
           : "",
       'isWorking': job.isWorking,
       'privacy': 'PUBLIC',
@@ -398,21 +467,29 @@ class MyProfileEditController {
         body: body,
       );
       if (response.statusCode == 200) {
-        MyProfileEditController(context: context).handleGetJob();
+        await handleGetJob();
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã xoá công việc thành công');
         return true;
       } else {
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_verify_alumni'));
         return false;
       }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: translate('error_verify_alumni'));
+      // toastInfo(msg: translate('error_verify_alumni'));
+      hideLoadingIndicator();
       print(e);
       return false;
     }
   }
 
   Future<bool> handleDeleteEducation(Education education) async {
+    context.read<MyProfileEditBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/profile/education/${education.id}';
     var token = Global.storageService.getUserAuthToken();
@@ -427,12 +504,12 @@ class MyProfileEditController {
       'degree': education.degree,
       'startTime': education.startTime != ""
           ? DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy')
-          .parse(education.startTime).add(Duration(days: 1))
+          .parse("01/" + education.startTime).add(Duration(days: 1))
       )
           : "",
       'endTime': education.endTime != ""
           ? DateFormat('yyyy-MM-dd').format(DateFormat('dd/MM/yyyy')
-          .parse(education.endTime).add(Duration(days: 1))
+          .parse("01/" + education.endTime).add(Duration(days: 1))
       )
           : "",
       'isLearning': education.isLearning,
@@ -448,21 +525,29 @@ class MyProfileEditController {
         body: body,
       );
       if (response.statusCode == 200) {
-        MyProfileEditController(context: context).handleGetEducation();
+        await handleGetEducation();
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã xoá học vấn thành công');
         return true;
       } else {
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_verify_alumni'));
         return false;
       }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: translate('error_verify_alumni'));
+      // toastInfo(msg: translate('error_verify_alumni'));
+      hideLoadingIndicator();
       print(e);
       return false;
     }
   }
 
   Future<bool> handleDeleteAchievement(Achievement achievement) async {
+    context.read<MyProfileEditBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/profile/achievement/${achievement.id}';
     var token = Global.storageService.getUserAuthToken();
@@ -477,7 +562,7 @@ class MyProfileEditController {
       'achievementType': achievement.type,
       'achievementTime': achievement.time != ""
           ? DateFormat('yyyy-MM-dd')
-          .format(DateFormat('dd/MM/yyyy').parse(achievement.time))
+          .format(DateFormat('dd/MM/yyyy').parse("01/" + achievement.time))
           : "",
       'privacy': 'PUBLIC',
       'isDelete': 1,
@@ -491,15 +576,21 @@ class MyProfileEditController {
         body: body,
       );
       if (response.statusCode == 200) {
-        MyProfileEditController(context: context).handleGetAchievement();
+        await handleGetAchievement();
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã xoá thành tựu thành công');
         return true;
       } else {
+        context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_verify_alumni'));
         return false;
       }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: translate('error_verify_alumni'));
+      // toastInfo(msg: translate('error_verify_alumni'));
+      hideLoadingIndicator();
       print(e);
       return false;
     }

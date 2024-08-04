@@ -27,6 +27,7 @@ class _MyProfileEditState extends State<MyProfileEdit> {
     MyProfileEditController(context: context).handleGetJob();
     MyProfileEditController(context: context).handleGetEducation();
     MyProfileEditController(context: context).handleGetAchievement();
+    context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
   }
 
   @override

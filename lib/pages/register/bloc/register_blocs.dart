@@ -7,6 +7,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<EmailEvent>(_emailEvent);
     on<PasswordEvent>(_passwordEvent);
     on<RePasswordEvent>(_rePasswordEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
+    on<ShowPassEvent>(_showPassEvent);
     on<RegisterResetEvent>(_registerResetEvent);
   }
 
@@ -20,6 +22,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   void _rePasswordEvent(RePasswordEvent event, Emitter<RegisterState> emit) {
     emit(state.copyWith(rePassword: event.rePassword));
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<RegisterState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
+  }
+
+  void _showPassEvent(ShowPassEvent event, Emitter<RegisterState> emit) {
+    emit(state.copyWith(showPass: event.showPass));
   }
 
   void _registerResetEvent(

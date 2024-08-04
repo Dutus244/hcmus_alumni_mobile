@@ -11,6 +11,7 @@ import '../../common/values/colors.dart';
 import 'advise_page_controller.dart';
 import 'bloc/advise_page_blocs.dart';
 import 'bloc/advise_page_states.dart';
+import 'bloc/advise_page_events.dart';
 import 'dart:io' show Platform, exit;
 
 class AdvisePage extends StatefulWidget {
@@ -48,6 +49,7 @@ class _AdvisePageState extends State<AdvisePage> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<AdvisePageBloc>().add(IsLoadingEvent(false));
     return PopScope(
       canPop: false, // prevent back
       onPopInvoked: (_) async {

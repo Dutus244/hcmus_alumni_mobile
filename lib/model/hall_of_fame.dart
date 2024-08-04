@@ -39,7 +39,7 @@ class HallOfFame {
         title = json["title"],
         summary = json["summary"],
         thumbnail = json["thumbnail"],
-        content = json["content"],
+        content = json["content"] != null ? json["content"] : "",
         views = json["views"].toInt(),
         beginningYear = json["beginningYear"].toInt(),
         updateAt = json["updateAt"],

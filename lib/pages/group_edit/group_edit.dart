@@ -26,6 +26,8 @@ class _GroupEditState extends State<GroupEdit> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       handleNavigation();
     });
+    context.read<GroupEditBloc>().add(IsLoadingEvent(false));
+    context.read<GroupEditBloc>().add(PicturesEvent([]));
   }
 
   void handleNavigation() {

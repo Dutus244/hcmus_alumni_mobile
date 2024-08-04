@@ -46,3 +46,9 @@ class HasReachedMaxAdminEvent extends GroupMemberEvent {
 
   const HasReachedMaxAdminEvent(this.hasReachedMaxAdmin);
 }
+
+class IsLoadingEvent extends GroupMemberEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

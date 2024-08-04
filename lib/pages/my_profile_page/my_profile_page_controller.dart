@@ -125,7 +125,7 @@ class MyProfilePageController {
         toastInfo(msg: translate('error_get_events_participated'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_events_participated'));
+      // toastInfo(msg: translate('error_get_events_participated'));
     }
   }
 
@@ -197,7 +197,7 @@ class MyProfilePageController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_get_posts'));
+      // toastInfo(msg: translate('error_get_posts'));
     }
   }
 
@@ -318,7 +318,7 @@ class MyProfilePageController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_choose_option'));
+      // toastInfo(msg: translate('error_choose_option'));
     }
   }
 
@@ -345,7 +345,7 @@ class MyProfilePageController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_not_choose_option'));
+      // toastInfo(msg: translate('error_not_choose_option'));
     }
   }
 
@@ -376,7 +376,7 @@ class MyProfilePageController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_change_option'));
+      // toastInfo(msg: translate('error_change_option'));
     }
   }
 
@@ -408,7 +408,7 @@ class MyProfilePageController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_add_option'));
+      // toastInfo(msg: translate('error_add_option'));
       return;
     }
   }
@@ -609,7 +609,7 @@ class MyProfilePageController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_get_friend'));
+      // toastInfo(msg: translate('error_get_friend'));
     }
   }
 }

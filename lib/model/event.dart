@@ -20,6 +20,7 @@ class Event {
   final User creator;
   final String organizationLocation;
   final String organizationTime;
+  final bool isParticipated;
 
   Event(
       this.id,
@@ -36,13 +37,14 @@ class Event {
       this.status,
       this.creator,
       this.organizationLocation,
-      this.organizationTime);
+      this.organizationTime,
+      this.isParticipated);
 
   Event.fromJson(Map<String, dynamic> json)
       : id = json["id"],
         title = json["title"],
         thumbnail = json["thumbnail"],
-        content = json["content"],
+        content = json["content"] != null ? json["content"] : "",
         views = json["views"].toInt(),
         participants = json["participants"].toInt(),
         childrenCommentNumber = json["childrenCommentNumber"].toInt(),
@@ -53,5 +55,6 @@ class Event {
         status = Status.fromJson(json["status"]),
         creator = User.fromJson(json["creator"]),
         organizationLocation = json["organizationLocation"],
-        organizationTime = json["organizationTime"];
+        organizationTime = json["organizationTime"],
+        isParticipated = json["isParticipated"];
 }

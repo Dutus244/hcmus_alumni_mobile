@@ -150,4 +150,10 @@ class UpdateAlumniEvent extends MyProfileEditEvent {
   const UpdateAlumniEvent(this.alumni);
 }
 
+class IsLoadingEvent extends MyProfileEditEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class MyProfileEditResetEvent extends MyProfileEditEvent {}

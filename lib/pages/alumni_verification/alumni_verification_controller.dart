@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/pages/alumni_verification/bloc/alumni_verification_blocs.dart';
+import 'package:hcmus_alumni_mobile/pages/alumni_verification/bloc/alumni_verification_events.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
@@ -16,10 +18,44 @@ import '../../model/user.dart';
 
 class AlumniVerificationController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const AlumniVerificationController({required this.context});
+  AlumniVerificationController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleAlumniVerification(String fullName, File? avatar) async {
+    context.read<AlumniVerificationBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<AlumniVerificationBloc>().state;
     String socialMediaLink = state.socialMediaLink;
     String studentId = state.studentId;
@@ -77,12 +113,16 @@ class AlumniVerificationController {
         } catch (error) {
           print(error);
         }
-
+        context.read<AlumniVerificationBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã nộp đơn xét duyệt cựu sinh viên thành công');
         Navigator.of(context).pushNamedAndRemoveUntil(
             "/applicationPage", arguments: {"route": 0}, (route) => false);
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
+        context.read<AlumniVerificationBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         if (errorCode == 20400) {
           toastInfo(msg: translate('user_not_exist'));
           return;
@@ -97,7 +137,8 @@ class AlumniVerificationController {
         }
       }
     } catch (e) {
-      // Exception occurred
+      context.read<AlumniVerificationBloc>().add(IsLoadingEvent(false));
+      hideLoadingIndicator();
       toastInfo(msg: translate('error_verify_alumni'));
       return;
     }

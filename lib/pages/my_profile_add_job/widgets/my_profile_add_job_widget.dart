@@ -821,58 +821,62 @@ Widget chooseEndTime(BuildContext context) {
 Widget buttonAdd(BuildContext context, int option, String id) {
   String companyName = BlocProvider.of<MyProfileAddJobBloc>(context).state.companyName;
   String position = BlocProvider.of<MyProfileAddJobBloc>(context).state.position;
-  return GestureDetector(
-    onTap: () {
-      if (companyName != "" && position != "") {
-        if (option == 0) {
-          MyProfileAddJobController(context: context).handleAddJob();
-        } else {
-          MyProfileAddJobController(context: context).handleUpdateJob(id);
+  return Container(
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+    height: 40.h,
+    child: ElevatedButton(
+      onPressed: () {
+        if (BlocProvider.of<MyProfileAddJobBloc>(context)
+            .state
+            .isLoading) {
+          return;
         }
-      }
-    },
-    child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: (companyName != "")
-            ? AppColors.element
-            : AppColors.background,
-        borderRadius: BorderRadius.circular(10.w),
-        border: Border.all(
-          color: AppColors.elementLight,
+        if (companyName != "" && position != "") {
+          if (option == 0) {
+            MyProfileAddJobController(context: context).handleAddJob();
+          } else {
+            MyProfileAddJobController(context: context).handleUpdateJob(id);
+          }
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: (companyName != "") ? AppColors.background : Colors.black.withOpacity(0.3), backgroundColor: (companyName != "") ? AppColors.element : AppColors.background, // Màu văn bản của nút
+        elevation: 0, // Không có đổ bóng
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.w), // Bo góc của nút
+          side: BorderSide(
+            color: AppColors.elementLight, // Màu viền của nút
+          ),
+        ),
+        padding: EdgeInsets.zero, // Để nút giữ nguyên kích thước như Container
+        minimumSize: Size(double.infinity, 30.h), // Đảm bảo chiều cao của nút
+      ),
+      child: Container(
+        margin: EdgeInsets.only(left: 12.w, right: 12.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              translate('save'),
+              style: TextStyle(
+                fontFamily: AppFonts.Header,
+                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                fontWeight: FontWeight.bold,
+                color: (companyName != "") ? AppColors.background : Colors.black.withOpacity(0.3),
+              ),
+            ),
+            Container(
+              width: 6.w,
+            ),
+            SvgPicture.asset(
+              "assets/icons/send.svg",
+              width: 15.w,
+              height: 15.h,
+              color: (companyName != "") ? AppColors.background : Colors.black.withOpacity(0.5),
+            ),
+          ],
         ),
       ),
-      child: Center(
-          child: Container(
-            margin: EdgeInsets.only(left: 12.w, right: 12.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  translate('save'),
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color: (companyName != "")
-                          ? AppColors.background
-                          : Colors.black.withOpacity(0.3)),
-                ),
-                Container(
-                  width: 6.w,
-                ),
-                SvgPicture.asset(
-                  "assets/icons/send.svg",
-                  width: 15.w,
-                  height: 15.h,
-                  color: (companyName != "")
-                      ? AppColors.background
-                      : Colors.black.withOpacity(0.5),
-                ),
-              ],
-            ),
-          )),
     ),
   );
 }

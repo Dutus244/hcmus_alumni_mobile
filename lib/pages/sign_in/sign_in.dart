@@ -26,11 +26,6 @@ class _SignInState extends State<SignIn> {
   void initState() {
     super.initState();
     context.read<SignInBloc>().add(SignInResetEvent());
-    if (Global.storageService.getUserRememberLogin()) {
-      SignInController(context: context).handleRememberSignIn(
-          Global.storageService.getUserEmail(),
-          Global.storageService.getUserPassword());
-    }
   }
 
   @override

@@ -19,11 +19,11 @@ class HofPageController {
 
   const HofPageController({required this.context});
 
-  Future<void> handleSearchHof() async {
+  Future<void> handleSearchHof(String facultySearch, String beginningYearSearch) async {
     final state = context.read<HofPageBloc>().state;
     String name = state.name;
-    String faculty = state.faculty;
-    String beginningYear = state.beginningYear;
+    String faculty = facultySearch == "" ? state.faculty : facultySearch;
+    String beginningYear = beginningYearSearch == "" ? state.beginningYear : beginningYearSearch;
     context.read<HofPageBloc>().add(ClearResultEvent());
     context.read<HofPageBloc>().add(NameSearchEvent(name));
     context.read<HofPageBloc>().add(FacultySearchEvent(faculty));
@@ -127,7 +127,7 @@ class HofPageController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_get_hof'));
+      // toastInfo(msg: translate('error_get_hof'));
     }
   }
 }

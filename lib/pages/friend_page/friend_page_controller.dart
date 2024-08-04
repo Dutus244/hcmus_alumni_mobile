@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -20,8 +21,40 @@ import 'bloc/friend_page_states.dart';
 
 class FriendPageController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const FriendPageController({required this.context});
+  FriendPageController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleSearchFriend() async {
     final state = context.read<FriendPageBloc>().state;
@@ -110,7 +143,7 @@ class FriendPageController {
       }
     } catch (error) {
       if (error.toString() != "Looking up a deactivated widget's ancestor is unsafe.\nAt this point the state of the widget's element tree is no longer stable.\nTo safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.") {
-        toastInfo(msg: translate('error_get_user'));
+        // toastInfo(msg: translate('error_get_user'));
       }
     }
   }
@@ -202,7 +235,7 @@ class FriendPageController {
       }
     } catch (error) {
       if (error.toString() != "Looking up a deactivated widget's ancestor is unsafe.\nAt this point the state of the widget's element tree is no longer stable.\nTo safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.") {
-        toastInfo(msg: translate('error_get_user'));
+        // toastInfo(msg: translate('error_get_user'));
       }
     }
   }
@@ -269,12 +302,14 @@ class FriendPageController {
       }
     } catch (error) {
       if (error.toString() != "Looking up a deactivated widget's ancestor is unsafe.\nAt this point the state of the widget's element tree is no longer stable.\nTo safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.") {
-        toastInfo(msg: translate('error_get_request'));
+        // toastInfo(msg: translate('error_get_request'));
       }
     }
   }
 
   Future<void> handleApprovedRequest(String id) async {
+    context.read<FriendPageBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/friends/requests';
     var token = Global.storageService.getUserAuthToken();
@@ -297,19 +332,27 @@ class FriendPageController {
         body: body,
       );
       if (response.statusCode == 200) {
-        handleLoadRequestData(0);
+        await handleLoadRequestData(0);
+        context.read<FriendPageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã chấp nhận lời mời kết bạn');
       } else {
+        context.read<FriendPageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_approve_request'));
       }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: translate('error_approve_request'));
-      print(e);
+      // toastInfo(msg: translate('error_approve_request'));
+      // print(e);
+      hideLoadingIndicator();
       return;
     }
   }
 
   Future<void> handleDeniedRequest(String id) async {
+    context.read<FriendPageBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/friends/requests';
     var token = Global.storageService.getUserAuthToken();
@@ -332,20 +375,28 @@ class FriendPageController {
         body: body,
       );
       if (response.statusCode == 200) {
-        handleLoadRequestData(0);
-        handleLoadSuggestionData(0);
+        await handleLoadSuggestionData(0);
+        await handleLoadRequestData(0);
+        context.read<FriendPageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã từ chối lời mời kết bạn');
       } else {
+        context.read<FriendPageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_deny_alumni'));
       }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: translate('error_deny_alumni'));
-      print(e);
+      // toastInfo(msg: translate('error_deny_alumni'));
+      // print(e);
+      hideLoadingIndicator();
       return;
     }
   }
 
   Future<void> handleSendRequest(String id) async {
+    context.read<FriendPageBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/friends/requests';
     var token = Global.storageService.getUserAuthToken();
@@ -367,14 +418,20 @@ class FriendPageController {
         body: body,
       );
       if (response.statusCode == 201) {
-        handleLoadSuggestionData(0);
+        await handleLoadSuggestionData(0);
+        context.read<FriendPageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã gửi lời mời kết bạn thành công');
       } else {
+        context.read<FriendPageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_send_request'));
       }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: translate('error_send_request'));
-      print(e);
+      // toastInfo(msg: translate('error_send_request'));
+      // print(e);
+      hideLoadingIndicator();
       return;
     }
   }

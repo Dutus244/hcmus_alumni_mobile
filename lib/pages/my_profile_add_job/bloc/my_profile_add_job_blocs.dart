@@ -11,6 +11,7 @@ class MyProfileAddJobBloc
     on<StartTimeEvent>(_startTimeEvent);
     on<IsWorkingEvent>(_isWorkingEvent);
     on<EndTimeEvent>(_endTimeEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<MyProfileAddJobResetEvent>(_myProfileAddJobResetEvent);
   }
 
@@ -37,6 +38,11 @@ class MyProfileAddJobBloc
   void _endTimeEvent(
       EndTimeEvent event, Emitter<MyProfileAddJobState> emit) async {
     emit(state.copyWith(endTime: event.endTime));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<MyProfileAddJobState> emit) async {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _myProfileAddJobResetEvent(

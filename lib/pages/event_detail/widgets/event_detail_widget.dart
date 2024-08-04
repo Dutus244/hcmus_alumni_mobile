@@ -44,62 +44,63 @@ AppBar buildAppBar(BuildContext context) {
 Widget buildButtonChooseInfoOrParticipant(
     BuildContext context, void Function(int value)? func) {
   return Container(
-    margin: EdgeInsets.only(top: 5.h),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        GestureDetector(
-          onTap: () => func!(0),
-          child: Container(
-            width: 165.w,
-            height: 30.h,
-            margin: EdgeInsets.only(left: 10.w),
-            decoration: BoxDecoration(
-              color: BlocProvider.of<EventDetailBloc>(context).state.page == 1
-                  ? AppColors.elementLight
-                  : AppColors.element,
-              borderRadius: BorderRadius.circular(5.w),
-              border: Border.all(
-                color: Colors.transparent,
-              ),
-            ),
-            child: Center(
-              child: Text(
+        TextButton(
+          onPressed: () => func!(0),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Column(
+            children: [
+              Text(
                 translate('information'),
                 style: AppTextStyle.small(context).wSemiBold().withColor(
-                    BlocProvider.of<EventDetailBloc>(context).state.page == 1
-                        ? AppColors.element
-                        : AppColors.background),
+                      BlocProvider.of<EventDetailBloc>(context).state.page != 1
+                          ? AppColors.element
+                          : AppColors.textGrey,
+                    ),
               ),
-            ),
+              if (BlocProvider.of<EventDetailBloc>(context).state.page != 1)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
+                ),
+            ],
           ),
         ),
-        GestureDetector(
-          onTap: () => func!(1),
-          child: Container(
-            width: 165.w,
-            height: 30.h,
-            margin: EdgeInsets.only(right: 10.w),
-            decoration: BoxDecoration(
-              color: BlocProvider.of<EventDetailBloc>(context).state.page == 1
-                  ? AppColors.element
-                  : AppColors.elementLight,
-              borderRadius: BorderRadius.circular(5.w),
-              border: Border.all(
-                color: Colors.transparent,
-              ),
-            ),
-            child: Center(
-              child: Text(
+        TextButton(
+          onPressed: () => func!(1),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Column(
+            children: [
+              Text(
                 translate('participants'),
                 style: AppTextStyle.small(context).wSemiBold().withColor(
-                    BlocProvider.of<EventDetailBloc>(context).state.page == 1
-                        ? AppColors.background
-                        : AppColors.element),
+                      BlocProvider.of<EventDetailBloc>(context).state.page == 1
+                          ? AppColors.element
+                          : AppColors.textGrey,
+                    ),
               ),
-            ),
+              if (BlocProvider.of<EventDetailBloc>(context).state.page == 1)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
+                ),
+            ],
           ),
-        )
+        ),
       ],
     ),
   );
@@ -142,7 +143,7 @@ Widget eventContent(BuildContext context, Event event) {
         ),
       ),
       Container(
-        padding: EdgeInsets.only(top: 5.h, left: 10.w),
+        padding: EdgeInsets.only(top: 3.h, left: 10.w),
         child: Row(
           children: [
             Row(
@@ -182,6 +183,29 @@ Widget eventContent(BuildContext context, Event event) {
                   style: AppTextStyle.small(context),
                 ),
               ],
+            ),
+          ],
+        ),
+      ),
+      Container(
+        margin: EdgeInsets.only(top: 3.h, left: 10.w, right: 10.w),
+        child: Row(
+          children: [
+            SvgPicture.asset(
+              AppAssets.tagIconS,
+              width: 12.w,
+              height: 12.h,
+              color: AppColors.textGrey,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 2.w),
+              width: 300.w,
+              child: Text(
+                event.tags.map((tag) => tag.name).join(' '),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyle.small(context).withColor(AppColors.tag),
+              ),
             ),
           ],
         ),
@@ -288,59 +312,82 @@ Widget eventContent(BuildContext context, Event event) {
       ),
       if (Global.storageService.permissionEventParticipantCreate())
         Center(
-          child: BlocProvider.of<EventDetailBloc>(context).state.isParticipated
-              ? GestureDetector(
-                  onTap: () {
-                    EventDetailController(context: context)
-                        .handleExitEvent(event.id);
+          child: event.isParticipated
+              ? ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 230, 230, 230),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.w),
+                    ),
+                    minimumSize: Size(165.w, 30.h),
+                    padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                  ),
+                  onPressed: () {
+                    if (!BlocProvider.of<EventDetailBloc>(context)
+                        .state
+                        .isLoading) {
+                      EventDetailController(context: context)
+                          .handleExitEvent(event.id);
+                    }
                   },
-                  child: Container(
-                    width: 165.w,
-                    height: 30.h,
-                    margin: EdgeInsets.only(top: 10.h),
-                    decoration: BoxDecoration(
-                      color: AppColors.background,
-                      borderRadius: BorderRadius.circular(15.w),
-                      border: Border.all(
-                        color: AppColors.element,
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        translate('cancel'),
-                        style: AppTextStyle.small(context)
-                            .wSemiBold()
-                            .withColor(AppColors.element),
-                      ),
-                    ),
+                  child: Text(
+                    translate('cancel'),
+                    style: AppTextStyle.small(context).wSemiBold(),
                   ),
                 )
-              : GestureDetector(
-                  onTap: () {
-                    EventDetailController(context: context)
-                        .handleJoinEvent(event.id);
+              : ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: AppColors.background,
+                    backgroundColor: AppColors.element,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.w),
+                    ),
+                    side: BorderSide(
+                      color: Colors.transparent,
+                    ),
+                    minimumSize: Size(165.w, 30.h),
+                    padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
+                  ),
+                  onPressed: () {
+                    if (!BlocProvider.of<EventDetailBloc>(context)
+                        .state
+                        .isLoading) {
+                      EventDetailController(context: context)
+                          .handleJoinEvent(event.id);
+                    }
                   },
-                  child: Container(
-                    width: 165.w,
-                    height: 30.h,
-                    margin: EdgeInsets.only(top: 10.h),
-                    decoration: BoxDecoration(
-                      color: AppColors.element,
-                      borderRadius: BorderRadius.circular(15.w),
-                      border: Border.all(
-                        color: Colors.transparent,
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        translate('join'),
-                        style: AppTextStyle.small(context)
-                            .wSemiBold()
-                            .withColor(AppColors.background),
-                      ),
-                    ),
+                  child: Text(
+                    translate('join'),
+                    style: AppTextStyle.small(context)
+                        .wSemiBold()
+                        .withColor(AppColors.background),
                   ),
                 ),
+        ),
+      if (!Global.storageService.permissionEventParticipantCreate())
+        Center(
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: AppColors.element,
+              backgroundColor: Color.fromARGB(255, 230, 230, 230),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.w),
+              ),
+              minimumSize: Size(200.w, 30.h),
+              padding: EdgeInsets.only(
+                  top: 5.h, bottom: 5.h, left: 10.w, right: 10.w),
+            ),
+            onPressed: () {
+              Navigator.pushNamed(
+                context,
+                "/myProfileEdit",
+              );
+            },
+            child: Text(
+              'Cần xét duyệt để tham gia',
+              style: AppTextStyle.small(context).wSemiBold().withColor(AppColors.textBlack.withOpacity(0.5)),
+            ),
+          ),
         ),
       Container(
         padding: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
@@ -352,7 +399,10 @@ Widget eventContent(BuildContext context, Event event) {
       Container(
         margin: EdgeInsets.only(top: 10.h),
         padding: EdgeInsets.only(top: 0.h, left: 5.w, right: 5.w),
-        child: Text(event.content, style: AppTextStyle.small(context),),
+        child: Text(
+          event.content,
+          style: AppTextStyle.small(context),
+        ),
       ),
       Container(
         padding: EdgeInsets.only(top: 5.h, left: 20.w, right: 20.w),
@@ -365,29 +415,6 @@ Widget eventContent(BuildContext context, Event event) {
             Text(
               event.creator.fullName,
               style: AppTextStyle.base(context),
-            ),
-          ],
-        ),
-      ),
-      Container(
-        margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              AppAssets.tagIconS,
-              width: 12.w,
-              height: 12.h,
-              color: AppColors.textGrey,
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 2.w),
-              width: 300.w,
-              child: Text(
-                event.tags.map((tag) => tag.name).join(' '),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyle.small(context).withColor(AppColors.tag),
-              ),
             ),
           ],
         ),
@@ -442,50 +469,67 @@ Widget listComment(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        if (Global.storageService.permissionEventCommentCreate())
-          GestureDetector(
-            onTap: () async {
-              await Navigator.pushNamed(
-                context,
-                "/eventDetailWriteComment",
-                arguments: {
-                  "event": event,
-                },
-              );
-              EventDetailController(context: context)
-                  .handleGetComment(event.id, 0);
+        Container(
+          width: 340.w,
+          height: 40.h,
+          margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.black.withOpacity(0.5),
+              backgroundColor: Color.fromARGB(255, 245, 245, 245),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.w),
+              ),
+              side: BorderSide(
+                color: Colors.transparent,
+              ),
+              padding: EdgeInsets.zero, // Remove default padding
+            ),
+            onPressed: () async {
+              if (Global.storageService.permissionNewsCommentCreate()) {
+                await Navigator.pushNamed(
+                  context,
+                  "/eventDetailWriteComment",
+                  arguments: {
+                    "event": event,
+                  },
+                );
+                EventDetailController(context: context)
+                    .handleGetComment(event.id, 0);
+              } else {
+                Navigator.pushNamed(
+                  context,
+                  "/myProfileEdit",
+                );
+              }
             },
             child: Container(
-                width: 340.w,
-                height: 40.h,
-                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.w),
-                  color: AppColors.backgroundWhiteDark,
-                  border: Border.all(
-                    color: Colors.transparent,
+              height: 20.h,
+              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    Global.storageService.permissionNewsCommentCreate()
+                        ? translate('write_comment')
+                        : 'Cần xét duyệt để bình luận',
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-                child: Container(
-                  height: 20.h,
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        translate('write_comment'),
-                        style: AppTextStyle.base(context).wMedium().withColor(AppColors.textBlack.withOpacity(0.5)),
-                      ),
-                      SvgPicture.asset(
-                        AppAssets.sendIconS,
-                        width: 15.w,
-                        height: 15.h,
-                        color: AppColors.textBlack.withOpacity(0.5),
-                      ),
-                    ],
+                  SvgPicture.asset(
+                    "assets/icons/send.svg",
+                    width: 15.w,
+                    height: 15.h,
                   ),
-                )),
+                ],
+              ),
+            ),
           ),
+        ),
         Container(
           padding: EdgeInsets.only(top: 20.h, left: 10.w, bottom: 10.h),
           child: Text(
@@ -505,26 +549,45 @@ Widget listComment(
             !BlocProvider.of<EventDetailBloc>(context)
                 .state
                 .hasReachedMaxComment)
-          GestureDetector(
-            onTap: () {
-              EventDetailController(context: context).handleGetComment(event.id,
-                  BlocProvider.of<EventDetailBloc>(context).state.indexComment);
-            },
-            child: Container(
-              width: 340.w,
-              height: 40.h,
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.w),
-                color: AppColors.elementLight,
-                border: Border.all(
+          Container(
+            width: 340.w,
+            height: 40.h,
+            margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Color.fromARGB(255, 43, 107, 182),
+                backgroundColor: Color.fromARGB(255, 230, 240, 251),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.w),
+                ),
+                padding: EdgeInsets.zero,
+                side: BorderSide(
                   color: Colors.transparent,
                 ),
               ),
-              child: Center(
-                child: Text(
-                  translate('more_comment'),
-                  style: AppTextStyle.base(context).wSemiBold().withColor(AppColors.element),
+              onPressed: () {
+                if (!BlocProvider.of<EventDetailBloc>(context)
+                    .state
+                    .isLoading) {
+                  EventDetailController(context: context).handleGetComment(
+                      event.id,
+                      BlocProvider.of<EventDetailBloc>(context)
+                          .state
+                          .indexComment);
+                }
+              },
+              child: Container(
+                child: Center(
+                  child: Text(
+                    translate('more_comment'),
+                    style: TextStyle(
+                      fontFamily: AppFonts.Header,
+                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 43, 107, 182),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -571,7 +634,7 @@ Widget buildCommentWidget(
                       radius: 10,
                       child: null,
                       backgroundImage:
-                      NetworkImage(comment.creator.avatarUrl ?? ""),
+                          NetworkImage(comment.creator.avatarUrl ?? ""),
                     )),
               ),
               Column(
@@ -587,7 +650,13 @@ Widget buildCommentWidget(
                     ),
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxWidth: (280 - (index == 2 ? 100 : 0 + index == 1 ? 55 : 0)).w,
+                        maxWidth: (280 -
+                                (index == 2
+                                    ? 100
+                                    : 0 + index == 1
+                                        ? 55
+                                        : 0))
+                            .w,
                       ),
                       child: Container(
                         margin: EdgeInsets.only(
@@ -602,7 +671,8 @@ Widget buildCommentWidget(
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: AppColors.textBlack,
-                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                                  fontSize: 12.sp /
+                                      MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.w900,
                                   fontFamily: AppFonts.Header,
                                 ),
@@ -614,7 +684,8 @@ Widget buildCommentWidget(
                               comment.content,
                               style: TextStyle(
                                 color: AppColors.textBlack,
-                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                                fontSize: 12.sp /
+                                    MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -638,7 +709,8 @@ Widget buildCommentWidget(
                               maxLines: 1,
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                                fontSize: 12.sp /
+                                    MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -647,7 +719,8 @@ Widget buildCommentWidget(
                           Container(
                             width: 20.w,
                           ),
-                          if (Global.storageService.permissionNewsCommentCreate())
+                          if (Global.storageService
+                              .permissionNewsCommentCreate())
                             Row(
                               children: [
                                 GestureDetector(
@@ -667,7 +740,9 @@ Widget buildCommentWidget(
                                     translate('reply'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                                      fontSize: 11.sp /
+                                          MediaQuery.of(context)
+                                              .textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -698,7 +773,9 @@ Widget buildCommentWidget(
                                     translate('edit'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                                      fontSize: 11.sp /
+                                          MediaQuery.of(context)
+                                              .textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -715,17 +792,48 @@ Widget buildCommentWidget(
                                 GestureDetector(
                                   onTap: () {
                                     EventDetailController(context: context)
-                                        .handleDeleteComment(event.id, comment.id);
+                                        .handleDeleteComment(
+                                            event.id, comment.id);
                                   },
                                   child: Text(
                                     translate('delete'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                                      fontSize: 11.sp /
+                                          MediaQuery.of(context)
+                                              .textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
                                   ),
+                                ),
+                              ],
+                            ),
+                          if (!Global.storageService
+                              .permissionNewsCommentCreate())
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      "/myProfileEdit",
+                                    );
+                                  },
+                                  child: Text(
+                                    'Cần xét duyệt để bình luận',
+                                    style: TextStyle(
+                                      color: Colors.black.withOpacity(0.5),
+                                      fontSize: 11.sp /
+                                          MediaQuery.of(context)
+                                              .textScaleFactor,
+                                      fontWeight: FontWeight.normal,
+                                      fontFamily: AppFonts.Header,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: 20.w,
                                 ),
                               ],
                             ),
@@ -747,7 +855,8 @@ Widget buildCommentWidget(
                               maxLines: 1,
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                                fontSize: 12.sp /
+                                    MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -776,7 +885,9 @@ Widget buildCommentWidget(
                                     translate('edit'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                                      fontSize: 11.sp /
+                                          MediaQuery.of(context)
+                                              .textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -793,13 +904,16 @@ Widget buildCommentWidget(
                                 GestureDetector(
                                   onTap: () {
                                     EventDetailController(context: context)
-                                        .handleDeleteComment(event.id, comment.id);
+                                        .handleDeleteComment(
+                                            event.id, comment.id);
                                   },
                                   child: Text(
                                     translate('delete'),
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.8),
-                                      fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                                      fontSize: 11.sp /
+                                          MediaQuery.of(context)
+                                              .textScaleFactor,
                                       fontWeight: FontWeight.normal,
                                       fontFamily: AppFonts.Header,
                                     ),
@@ -820,29 +934,31 @@ Widget buildCommentWidget(
         ),
         if (comment.childrenComments.length > 0)
           Container(
-            padding: EdgeInsets.only(left: index == 1 ? 45.w : 60.w, bottom: 10.h),
+            padding:
+                EdgeInsets.only(left: index == 1 ? 45.w : 60.w, bottom: 10.h),
             child: Column(
               children: [
                 for (int i = 0; i < comment.childrenComments.length; i += 1)
                   IntrinsicHeight(
                       child: Row(
-                        children: [
-                          Container(width: 1, color: Colors.grey),
-                          // This is divider
-                          Container(
-                              child: buildCommentWidget(context, event,
-                                  comment.childrenComments[i], index + 1)),
-                        ],
-                      ))
+                    children: [
+                      Container(width: 1, color: Colors.grey),
+                      // This is divider
+                      Container(
+                          child: buildCommentWidget(context, event,
+                              comment.childrenComments[i], index + 1)),
+                    ],
+                  ))
               ],
             ),
           ),
-        if (comment.childrenComments.length !=
-            comment.childrenCommentNumber)
+        if (comment.childrenComments.length != comment.childrenCommentNumber)
           GestureDetector(
             onTap: () {
-              EventDetailController(context: context)
-                  .handleGetChildrenComment(comment);
+              if (!BlocProvider.of<EventDetailBloc>(context).state.isLoading) {
+                EventDetailController(context: context)
+                    .handleGetChildrenComment(comment);
+              }
             },
             child: Container(
               margin: EdgeInsets.only(left: index == 1 ? 45.w : 55.w),

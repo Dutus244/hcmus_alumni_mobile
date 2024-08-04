@@ -8,7 +8,7 @@ class NewsDetailWriteChildrenCommentBloc extends Bloc<
   NewsDetailWriteChildrenCommentBloc()
       : super(NewsDetailWriteChildrenCommentState()) {
     on<CommentEvent>(_commentEvent);
-    ;
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<NewsDetailWriteChildrenCommentResetEvent>(
         _newsDetailWriteChildrenCommentResetEvent);
   }
@@ -16,6 +16,11 @@ class NewsDetailWriteChildrenCommentBloc extends Bloc<
   void _commentEvent(
       CommentEvent event, Emitter<NewsDetailWriteChildrenCommentState> emit) {
     emit(state.copyWith(comment: event.comment));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<NewsDetailWriteChildrenCommentState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _newsDetailWriteChildrenCommentResetEvent(

@@ -40,7 +40,7 @@ class GroupInfoController {
         toastInfo(msg: translate('error_get_member'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_member'));
+      // toastInfo(msg: translate('error_get_member'));
     }
   }
 
@@ -76,7 +76,7 @@ class GroupInfoController {
         toastInfo(msg: translate('error_get_member'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_member'));
+      // toastInfo(msg: translate('error_get_member'));
     }
   }
 }

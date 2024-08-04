@@ -110,3 +110,9 @@ class HasReachedMaxRequestEvent extends FriendPageEvent {
 
   const HasReachedMaxRequestEvent(this.hasReachedMaxRequest);
 }
+
+class IsLoadingEvent extends FriendPageEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

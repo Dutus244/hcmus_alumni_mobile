@@ -291,7 +291,7 @@ Widget member(BuildContext context, Member member, Group group) {
               ),
             ],
           ),
-          if (group.userRole == 'ADMIN' || group.userRole == 'CREATOR')
+          if ((group.userRole == 'ADMIN' || group.userRole == 'CREATOR') && member.user.id != Global.storageService.getUserId())
             GestureDetector(
               onTap: () {
                 showModalBottomSheet(
@@ -340,6 +340,9 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
               ),
               GestureDetector(
                 onTap: () {
+                  if (BlocProvider.of<GroupMemberBloc>(context).state.isLoading){
+                    return;
+                  }
                   GroupMemberController(context: context)
                       .handleDeleteMemeber(groupId, member.user.id);
                   Navigator.pop(context);
@@ -373,6 +376,9 @@ Widget memberManagement(BuildContext context, Member member, String groupId) {
               ),
               GestureDetector(
                 onTap: () {
+                  if (BlocProvider.of<GroupMemberBloc>(context).state.isLoading){
+                    return;
+                  }
                   if (member.role == 'MEMBER') {
                     GroupMemberController(context: context).handleChangeRole(
                         groupId, member.user.id, 'ADMIN');

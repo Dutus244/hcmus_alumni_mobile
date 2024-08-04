@@ -25,6 +25,7 @@ class MyProfileEditState {
   final List<Education> educations;
   final List<Achievement> achievements;
   final String status;
+  final bool isLoading;
 
   MyProfileEditState(
       {this.fullName = "",
@@ -46,7 +47,8 @@ class MyProfileEditState {
       this.jobs = const [],
       this.educations = const [],
       this.achievements = const [],
-      this.status = ""});
+      this.status = "",
+      this.isLoading = false});
 
   MyProfileEditState copyWith({
     String? fullName,
@@ -69,6 +71,7 @@ class MyProfileEditState {
     List<Education>? educations,
     List<Achievement>? achievements,
     String? status,
+    bool? isLoading,
   }) {
     return MyProfileEditState(
         fullName: fullName ?? this.fullName,
@@ -90,6 +93,7 @@ class MyProfileEditState {
         jobs: jobs ?? this.jobs,
         educations: educations ?? this.educations,
         achievements: achievements ?? this.achievements,
-        status: status ?? this.status);
+        status: status ?? this.status,
+        isLoading: isLoading ?? this.isLoading);
   }
 }

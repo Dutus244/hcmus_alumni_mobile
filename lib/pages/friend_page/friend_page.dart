@@ -35,6 +35,7 @@ class _FriendPageState extends State<FriendPage> {
     FriendPageController(context: context).handleLoadRequestData(0);
     context.read<FriendPageBloc>().add(NameEvent(''));
     context.read<FriendPageBloc>().add(NameSearchEvent(''));
+    context.read<FriendPageBloc>().add(IsLoadingEvent(false));
   }
 
   void _onScroll() {

@@ -102,7 +102,7 @@ class ChatPageController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bạn bè");
+      // toastInfo(msg: "Có lỗi xả ra khi lấy danh sách bạn bè");
     }
   }
 }

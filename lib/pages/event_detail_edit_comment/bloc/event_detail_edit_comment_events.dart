@@ -8,4 +8,10 @@ class CommentEvent extends EventDetailEditCommentEvent {
   const CommentEvent(this.comment);
 }
 
+class IsLoadingEvent extends EventDetailEditCommentEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class EventDetailEditCommentResetEvent extends EventDetailEditCommentEvent {}

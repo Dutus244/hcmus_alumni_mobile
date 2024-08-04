@@ -58,3 +58,9 @@ class HasReachedMaxGroupJoinedEvent extends GroupPageEvent {
 
   const HasReachedMaxGroupJoinedEvent(this.hasReachedMaxGroupJoined);
 }
+
+class IsLoadingEvent extends GroupPageEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

@@ -7,13 +7,18 @@ class NewsDetailEditCommentBloc
     extends Bloc<NewsDetailEditCommentEvent, NewsDetailEditCommentState> {
   NewsDetailEditCommentBloc() : super(NewsDetailEditCommentState()) {
     on<CommentEvent>(_commentEvent);
-    ;
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<NewsDetailEditCommentResetEvent>(_newsDetailEditCommentResetEvent);
   }
 
   void _commentEvent(
       CommentEvent event, Emitter<NewsDetailEditCommentState> emit) {
     emit(state.copyWith(comment: event.comment));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<NewsDetailEditCommentState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _newsDetailEditCommentResetEvent(NewsDetailEditCommentResetEvent event,

@@ -33,6 +33,7 @@ class _MyProfileAddAchievementState extends State<MyProfileAddAchievement> {
     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
       option = args["option"];
+      context.read<MyProfileAddAchievementBloc>().add(IsLoadingEvent(false));
       if (option == 1) {
         achievement = args["achievement"];
         context.read<MyProfileAddAchievementBloc>().add(NameEvent(achievement!.name));

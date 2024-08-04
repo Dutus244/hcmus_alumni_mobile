@@ -74,11 +74,11 @@ class NewsEventPageController {
         }
         context.read<NewsEventPageBloc>().add(StatusNewsEvent(Status.success));
       } else {
-        toastInfo(msg: translate('error_get_news'));
+        // toastInfo(msg: translate('error_get_news'));
       }
     } catch (error) {
       if (error.toString() != "Looking up a deactivated widget's ancestor is unsafe.\nAt this point the state of the widget's element tree is no longer stable.\nTo safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.") {
-        toastInfo(msg: translate('error_get_news'));
+        // toastInfo(msg: translate('error_get_news'));
       }
     }
   }
@@ -141,11 +141,11 @@ class NewsEventPageController {
         }
         context.read<NewsEventPageBloc>().add(StatusEventEvent(Status.success));
       } else {
-        toastInfo(msg: translate('error_get_event'));
+        // toastInfo(msg: translate('error_get_event'));
       }
     } catch (error) {
       if (error.toString() != "Looking up a deactivated widget's ancestor is unsafe.\nAt this point the state of the widget's element tree is no longer stable.\nTo safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.") {
-        toastInfo(msg: translate('error_get_event'));
+        // toastInfo(msg: translate('error_get_event'));
       }
     }
   }

@@ -23,6 +23,7 @@ class _OptionPageState extends State<OptionPage> {
     context
         .read<OptionPageBloc>()
         .add(LocaleEvent(Global.storageService.getDeviceLanguage()));
+    context.read<OptionPageBloc>().add(IsLoadingEvent(false));
   }
 
   @override

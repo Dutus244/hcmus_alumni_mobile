@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -17,8 +18,40 @@ import 'package:http/http.dart' as http;
 
 class FriendListController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const FriendListController({required this.context});
+  FriendListController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleSearchFriend(String id) async {
     final state = context
@@ -102,12 +135,14 @@ class FriendListController {
       }
     } catch (error) {
       // Handle errors
-      print(error);
-      toastInfo(msg: translate('error_get_friend'));
+      // print(error);
+      // toastInfo(msg: translate('error_get_friend'));
     }
   }
 
   Future<bool> handleDeleteFriend(String id) async {
+    context.read<FriendListBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/friends/$id';
     var token = Global.storageService.getUserAuthToken();
@@ -124,17 +159,23 @@ class FriendListController {
         headers: headers,
       );
       if (response.statusCode == 200) {
-        handleLoadFriendData(0, id);
-        handleGetFriendCount(id);
+        await handleLoadFriendData(0, id);
+        await handleGetFriendCount(id);
+        context.read<FriendListBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã huỷ kết bạn thành công');
         return true;
       } else {
+        context.read<FriendListBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_verify_alumni'));
         return false;
       }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: translate('error_verify_alumni'));
-      print(e);
+      // toastInfo(msg: translate('error_verify_alumni'));
+      // print(e);
+      hideLoadingIndicator();
       return false;
     }
   }

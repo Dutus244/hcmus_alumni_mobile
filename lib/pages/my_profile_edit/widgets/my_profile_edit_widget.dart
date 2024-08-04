@@ -94,6 +94,11 @@ Widget editAvatar(BuildContext context, void Function(File value)? func) {
             ),
             GestureDetector(
               onTap: () {
+                if (BlocProvider.of<MyProfileEditBloc>(context)
+                    .state
+                    .isLoading) {
+                  return;
+                }
                 _showPickOptionsDialog(context, func);
                 context.read<MyProfileEditBloc>().add(NetworkAvatarEvent(""));
               },
@@ -113,6 +118,11 @@ Widget editAvatar(BuildContext context, void Function(File value)? func) {
       if (BlocProvider.of<MyProfileEditBloc>(context).state.networkAvatar != "")
         GestureDetector(
           onTap: () {
+            if (BlocProvider.of<MyProfileEditBloc>(context)
+                .state
+                .isLoading) {
+              return;
+            }
             _showPickOptionsDialog(context, func);
             context.read<MyProfileEditBloc>().add(NetworkAvatarEvent(""));
           },
@@ -132,6 +142,11 @@ Widget editAvatar(BuildContext context, void Function(File value)? func) {
       if (BlocProvider.of<MyProfileEditBloc>(context).state.avatar != null)
         GestureDetector(
           onTap: () {
+            if (BlocProvider.of<MyProfileEditBloc>(context)
+                .state
+                .isLoading) {
+              return;
+            }
             _showPickOptionsDialog(context, func);
             context.read<MyProfileEditBloc>().add(NetworkAvatarEvent(""));
           },
@@ -152,6 +167,11 @@ Widget editAvatar(BuildContext context, void Function(File value)? func) {
           BlocProvider.of<MyProfileEditBloc>(context).state.avatar == null)
         GestureDetector(
           onTap: () {
+            if (BlocProvider.of<MyProfileEditBloc>(context)
+                .state
+                .isLoading) {
+              return;
+            }
             _showPickOptionsDialog(context, func);
             context.read<MyProfileEditBloc>().add(NetworkAvatarEvent(""));
           },
@@ -268,6 +288,9 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
             ),
             GestureDetector(
               onTap: () async {
+                if (BlocProvider.of<MyProfileEditBloc>(context).state.isLoading) {
+                  return;
+                }
                 final pickedFiles = await ImagePicker().pickMultiImage();
                 if (pickedFiles.length > 1) {
                   toastInfo(msg: translate('picture_above_1'));
@@ -295,6 +318,9 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
       if (BlocProvider.of<MyProfileEditBloc>(context).state.networkCover != '')
         GestureDetector(
           onTap: () async {
+            if (BlocProvider.of<MyProfileEditBloc>(context).state.isLoading) {
+              return;
+            }
             final pickedFiles = await ImagePicker().pickMultiImage();
             if (pickedFiles.length > 1) {
               toastInfo(msg: translate('picture_above_1'));
@@ -324,6 +350,9 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
       if (BlocProvider.of<MyProfileEditBloc>(context).state.cover.length > 0)
         GestureDetector(
           onTap: () async {
+            if (BlocProvider.of<MyProfileEditBloc>(context).state.isLoading) {
+              return;
+            }
             final pickedFiles = await ImagePicker().pickMultiImage();
             if (pickedFiles.length > 1) {
               toastInfo(msg: translate('picture_above_1'));
@@ -354,6 +383,9 @@ Widget editCover(BuildContext context, void Function(List<File> value)? func) {
           BlocProvider.of<MyProfileEditBloc>(context).state.cover.length == 0)
         GestureDetector(
           onTap: () async {
+            if (BlocProvider.of<MyProfileEditBloc>(context).state.isLoading) {
+              return;
+            }
             final pickedFiles = await ImagePicker().pickMultiImage();
             if (pickedFiles.length > 1) {
               toastInfo(msg: translate('picture_above_1'));
@@ -829,34 +861,36 @@ Widget editAboutMe(BuildContext context) {
           (value) {
         context.read<MyProfileEditBloc>().add(AboutMeEvent(value));
       }),
-      GestureDetector(
-        onTap: () {
-          MyProfileEditController(context: context).handleSaveProfile();
-        },
-        child: Container(
-          margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
-          height: 30.h,
-          decoration: BoxDecoration(
-            color: AppColors.element,
-            borderRadius: BorderRadius.circular(5.w),
-            border: Border.all(
-              color: Colors.transparent,
+      Container(
+        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
+        height: 40.h,
+        child: ElevatedButton(
+          onPressed: () {
+            if (BlocProvider.of<MyProfileEditBloc>(context)
+                .state
+                .isLoading) {
+              return;
+            }
+            MyProfileEditController(context: context).handleSaveProfile();
+          },
+          style: ElevatedButton.styleFrom(
+            foregroundColor: AppColors.background, backgroundColor: AppColors.element, // Màu văn bản của nút
+            padding: EdgeInsets.zero, // Để nút giữ nguyên kích thước như Container
+            elevation: 0, // Không có đổ bóng
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.w), // Bo góc của nút
             ),
+            minimumSize: Size(double.infinity, 30.h), // Đảm bảo chiều cao của nút
           ),
           child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  translate('save'),
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header,
-                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.background,
-                  ),
-                ),
-              ],
+            child: Text(
+              translate('save'),
+              style: TextStyle(
+                fontFamily: AppFonts.Header,
+                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                fontWeight: FontWeight.bold,
+                color: AppColors.background,
+              ),
             ),
           ),
         ),
@@ -1132,67 +1166,67 @@ Widget editAlumni(BuildContext context) {
         ),
       ),
       if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "DENIED" || BlocProvider.of<MyProfileEditBloc>(context).state.status == "UNSENT")
-        GestureDetector(
-        onTap: () {
-          MyProfileEditController(context: context).handleAlumniVerification();
-        },
-        child: Container(
+        Container(
           margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
-          height: 30.h,
-          decoration: BoxDecoration(
-            color: AppColors.element,
-            borderRadius: BorderRadius.circular(5.w),
-            border: Border.all(
-              color: Colors.transparent,
+          height: 40.h,
+          child: ElevatedButton(
+            onPressed: () {
+              if (BlocProvider.of<MyProfileEditBloc>(context).state.isLoading) {
+                return;
+              }
+              MyProfileEditController(context: context).handleAlumniVerification();
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: AppColors.background, backgroundColor: AppColors.element, // Màu văn bản của nút
+              padding: EdgeInsets.zero, // Để nút giữ nguyên kích thước như Container
+              elevation: 0, // Không có đổ bóng
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.w), // Bo góc của nút
+              ),
+              minimumSize: Size(double.infinity, 30.h), // Đảm bảo chiều cao của nút
             ),
-          ),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  translate('reapply'),
-                  style: TextStyle(
-                    fontFamily: AppFonts.Header,
-                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.background,
-                  ),
+            child: Center(
+              child: Text(
+                translate('reapply'),
+                style: TextStyle(
+                  fontFamily: AppFonts.Header,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.background,
                 ),
-              ],
+              ),
             ),
           ),
         ),
-      ),
       if (BlocProvider.of<MyProfileEditBloc>(context).state.status == "PENDING")
-        GestureDetector(
-          onTap: () {
-            MyProfileEditController(context: context).handleEditAlumniVerification();
-          },
-          child: Container(
-            margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
-            height: 30.h,
-            decoration: BoxDecoration(
-              color: AppColors.element,
-              borderRadius: BorderRadius.circular(5.w),
-              border: Border.all(
-                color: Colors.transparent,
+        Container(
+          margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 20.h),
+          height: 40.h,
+          child: ElevatedButton(
+            onPressed: () {
+              if (BlocProvider.of<MyProfileEditBloc>(context).state.isLoading) {
+                return;
+              }
+              MyProfileEditController(context: context).handleEditAlumniVerification();
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: AppColors.background, backgroundColor: AppColors.element, // Màu văn bản của nút
+              padding: EdgeInsets.zero, // Để nút giữ nguyên kích thước như Container
+              elevation: 0, // Không có đổ bóng
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5.w), // Bo góc của nút
               ),
+              minimumSize: Size(double.infinity, 30.h), // Đảm bảo chiều cao của nút
             ),
             child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    translate('edit'),
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.background,
-                    ),
-                  ),
-                ],
+              child: Text(
+                translate('edit'),
+                style: TextStyle(
+                  fontFamily: AppFonts.Header,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.background,
+                ),
               ),
             ),
           ),

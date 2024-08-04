@@ -56,8 +56,8 @@ class _EventDetailState extends State<EventDetail> {
       id = args["id"];
       EventDetailController(context: context).handleGetEvent(id);
       EventDetailController(context: context).handleGetComment(id, 0);
-      EventDetailController(context: context).handleCheckIsParticipated(id);
       EventDetailController(context: context).handleGetParticipant(id, 0);
+      context.read<EventDetailBloc>().add(IsLoadingEvent(false));
     }
 
     return BlocBuilder<EventDetailBloc, EventDetailState>(

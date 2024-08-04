@@ -85,7 +85,7 @@ class GroupDetailListVotersController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_get_voters'));
+      // toastInfo(msg: translate('error_get_voters'));
       return;
     }
   }

@@ -9,6 +9,7 @@ class GroupDetailBloc extends Bloc<GroupDetailEvent, GroupDetailState> {
     on<StatusPostEvent>(_statusPostEvent);
     on<PostsEvent>(_postsEvent);
     on<IndexPostEvent>(_indexPostEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<HasReachedMaxPostEvent>(_hasReachedMaxPostEvent);
   }
 
@@ -27,6 +28,10 @@ class GroupDetailBloc extends Bloc<GroupDetailEvent, GroupDetailState> {
 
   void _indexPostEvent(IndexPostEvent event, Emitter<GroupDetailState> emit) {
     emit(state.copyWith(indexPost: event.indexPost));
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<GroupDetailState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _hasReachedMaxPostEvent(
