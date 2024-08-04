@@ -52,3 +52,9 @@ class IsLoadingEvent extends ListCommentPostGroupEvent {
 
   const IsLoadingEvent(this.isLoading);
 }
+
+class IsLoadingEvent extends ListCommentPostGroupEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

@@ -116,3 +116,9 @@ class IsLoadingEvent extends FriendPageEvent {
 
   const IsLoadingEvent(this.isLoading);
 }
+
+class IsLoadingEvent extends FriendPageEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

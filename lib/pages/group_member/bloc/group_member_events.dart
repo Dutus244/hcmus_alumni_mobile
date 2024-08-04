@@ -52,3 +52,9 @@ class IsLoadingEvent extends GroupMemberEvent {
 
   const IsLoadingEvent(this.isLoading);
 }
+
+class IsLoadingEvent extends GroupMemberEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
