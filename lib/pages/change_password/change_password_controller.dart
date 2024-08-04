@@ -96,7 +96,7 @@ class ChangePasswordController {
       context.read<ChangePasswordBloc>().add(IsLoadingEvent(true));
       showLoadingIndicator();
       var apiUrl = dotenv.env['API_URL'];
-      var endpoint = '/auth/reset-password';
+      var endpoint = '/auth/change-password';
       var token = Global.storageService.getUserAuthToken();
 
       var headers = <String, String>{
@@ -105,7 +105,6 @@ class ChangePasswordController {
       };
 
       var body = json.encode({
-        'email': Global.storageService.getUserEmail(),
         'oldPassword': Global.storageService.getUserPassword(),
         'newPassword': password
       });
