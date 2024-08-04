@@ -13,9 +13,3 @@ class IsLoadingEvent extends OptionPageEvent {
 
   const IsLoadingEvent(this.isLoading);
 }
-
-class IsLoadingEvent extends OptionPageEvent {
-  final bool isLoading;
-
-  const IsLoadingEvent(this.isLoading);
-}

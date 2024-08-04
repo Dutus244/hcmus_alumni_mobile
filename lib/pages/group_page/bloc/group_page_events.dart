@@ -64,9 +64,3 @@ class IsLoadingEvent extends GroupPageEvent {
 
   const IsLoadingEvent(this.isLoading);
 }
-
-class IsLoadingEvent extends GroupPageEvent {
-  final bool isLoading;
-
-  const IsLoadingEvent(this.isLoading);
-}

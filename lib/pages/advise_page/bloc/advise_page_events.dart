@@ -59,9 +59,3 @@ class IsLoadingEvent extends AdvisePageEvent {
 
   const IsLoadingEvent(this.isLoading);
 }
-
-class IsLoadingEvent extends AdvisePageEvent {
-  final bool isLoading;
-
-  const IsLoadingEvent(this.isLoading);
-}
