@@ -226,129 +226,135 @@ class ChatDetailController {
   }
 
   Future<void> handleSendMessage(int inboxId) async {
-    String content = BlocProvider.of<ChatDetailBloc>(context).state.content;
-    List<File> images = BlocProvider.of<ChatDetailBloc>(context).state.images;
-    int mode = BlocProvider.of<ChatDetailBloc>(context).state.mode;
-    Message? children = BlocProvider.of<ChatDetailBloc>(context).state.children;
-    context.read<ChatDetailBloc>().add(IsLoadingEvent(true));
-    showLoadingIndicator();
-    if (mode == 0) {
-      if (content != "") {
-        try {
-          socketService.sendMessage(inboxId, {
-            'content': content,
-            'senderId': Global.storageService.getUserId()
-          });
-        } catch (error) {
-          print(error);
-          toastInfo(msg: 'Có lỗi trong việc gửi tin nhắn');
-        }
-      }
-      if (images.length > 0) {
-        var apiUrl = dotenv.env['API_URL'];
-        var endpoint = '/messages/inbox/$inboxId/media';
-
-        var token = Global.storageService.getUserAuthToken();
-
-        var headers = <String, String>{
-          'Authorization': 'Bearer $token',
-          "Content-Type": "application/json"
-          // Include bearer token in the headers
-        };
-
-        for (int i = 0; i < images.length; i++) {
-          var request =
-          http.MultipartRequest('POST', Uri.parse('$apiUrl$endpoint'));
-          request.headers.addAll(headers);
-          request.fields['messageType'] = 'IMAGE';
-
-          File imageFile = await resizeImageIfNeeded(images[i]);
-
-          request.files.add(
-            http.MultipartFile(
-              'media',
-              imageFile.readAsBytes().asStream(),
-              imageFile.lengthSync(),
-              filename: imageFile.toString(),
-              contentType: MediaType('image', 'jpeg'),
-            ),
-          );
-
+    try {
+      String content = BlocProvider.of<ChatDetailBloc>(context).state.content;
+      List<File> images = BlocProvider.of<ChatDetailBloc>(context).state.images;
+      int mode = BlocProvider.of<ChatDetailBloc>(context).state.mode;
+      Message? children =
+          BlocProvider.of<ChatDetailBloc>(context).state.children;
+      context.read<ChatDetailBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
+      if (mode == 0) {
+        if (content != "") {
           try {
-            // Send the request
-            var streamedResponse = await request.send();
+            socketService.sendMessage(inboxId, {
+              'content': content,
+              'senderId': Global.storageService.getUserId()
+            });
+          } catch (error) {
+            print(error);
+            toastInfo(msg: 'Có lỗi trong việc gửi tin nhắn');
+          }
+        }
+        if (images.length > 0) {
+          var apiUrl = dotenv.env['API_URL'];
+          var endpoint = '/messages/inbox/$inboxId/media';
 
-            // Convert the streamed response to a regular HTTP response
-            var response = await http.Response.fromStream(streamedResponse);
-            if (response.statusCode == 201) {
-            } else {}
-          } catch (e) {
-            // Exception occurred
+          var token = Global.storageService.getUserAuthToken();
+
+          var headers = <String, String>{
+            'Authorization': 'Bearer $token',
+            "Content-Type": "application/json"
+            // Include bearer token in the headers
+          };
+
+          for (int i = 0; i < images.length; i++) {
+            var request =
+                http.MultipartRequest('POST', Uri.parse('$apiUrl$endpoint'));
+            request.headers.addAll(headers);
+            request.fields['messageType'] = 'IMAGE';
+
+            File imageFile = await resizeImageIfNeeded(images[i]);
+
+            request.files.add(
+              http.MultipartFile(
+                'media',
+                imageFile.readAsBytes().asStream(),
+                imageFile.lengthSync(),
+                filename: imageFile.toString(),
+                contentType: MediaType('image', 'jpeg'),
+              ),
+            );
+
+            try {
+              // Send the request
+              var streamedResponse = await request.send();
+
+              // Convert the streamed response to a regular HTTP response
+              var response = await http.Response.fromStream(streamedResponse);
+              if (response.statusCode == 201) {
+              } else {}
+            } catch (e) {
+              // Exception occurred
+            }
+          }
+        }
+      } else {
+        if (content != "") {
+          try {
+            socketService.sendMessage(inboxId, {
+              'content': content,
+              'senderId': Global.storageService.getUserId(),
+              'parentMessageId': children?.id
+            });
+          } catch (error) {
+            toastInfo(msg: 'Có lỗi trong việc gửi tin nhắn');
+          }
+        }
+        if (images.length > 0) {
+          var apiUrl = dotenv.env['API_URL'];
+          var endpoint = '/messages/inbox/$inboxId/media';
+
+          var token = Global.storageService.getUserAuthToken();
+
+          var headers = <String, String>{
+            'Authorization': 'Bearer $token',
+            "Content-Type": "application/json"
+            // Include bearer token in the headers
+          };
+
+          for (int i = 0; i < images.length; i++) {
+            var request =
+                http.MultipartRequest('POST', Uri.parse('$apiUrl$endpoint'));
+            request.headers.addAll(headers);
+            request.fields['messageType'] = 'IMAGE';
+            request.fields['parentMessageId'] = children!.id.toString();
+
+            File imageFile = await resizeImageIfNeeded(images[i]);
+
+            request.files.add(
+              http.MultipartFile(
+                'media',
+                imageFile.readAsBytes().asStream(),
+                imageFile.lengthSync(),
+                filename: imageFile.toString(),
+                contentType: MediaType('image', 'jpeg'),
+              ),
+            );
+
+            try {
+              // Send the request
+              var streamedResponse = await request.send();
+
+              // Convert the streamed response to a regular HTTP response
+              var response = await http.Response.fromStream(streamedResponse);
+              if (response.statusCode == 201) {
+              } else {}
+            } catch (e) {
+              // Exception occurred
+            }
           }
         }
       }
-    } else {
-      if (content != "") {
-        try {
-          socketService.sendMessage(inboxId, {
-            'content': content,
-            'senderId': Global.storageService.getUserId(),
-            'parentMessageId': children?.id
-          });
-        } catch (error) {
-          toastInfo(msg: 'Có lỗi trong việc gửi tin nhắn');
-        }
-      }
-      if (images.length > 0) {
-        var apiUrl = dotenv.env['API_URL'];
-        var endpoint = '/messages/inbox/$inboxId/media';
-
-        var token = Global.storageService.getUserAuthToken();
-
-        var headers = <String, String>{
-          'Authorization': 'Bearer $token',
-          "Content-Type": "application/json"
-          // Include bearer token in the headers
-        };
-
-        for (int i = 0; i < images.length; i++) {
-          var request =
-          http.MultipartRequest('POST', Uri.parse('$apiUrl$endpoint'));
-          request.headers.addAll(headers);
-          request.fields['messageType'] = 'IMAGE';
-          request.fields['parentMessageId'] = children!.id.toString();
-
-          File imageFile = await resizeImageIfNeeded(images[i]);
-
-          request.files.add(
-            http.MultipartFile(
-              'media',
-              imageFile.readAsBytes().asStream(),
-              imageFile.lengthSync(),
-              filename: imageFile.toString(),
-              contentType: MediaType('image', 'jpeg'),
-            ),
-          );
-
-          try {
-            // Send the request
-            var streamedResponse = await request.send();
-
-            // Convert the streamed response to a regular HTTP response
-            var response = await http.Response.fromStream(streamedResponse);
-            if (response.statusCode == 201) {} else {}
-          } catch (e) {
-            // Exception occurred
-          }
-        }
-      }
+      context.read<ChatDetailBloc>().add(IsLoadingEvent(false));
+      hideLoadingIndicator();
+      context.read<ChatDetailBloc>().add(ModeEvent(0));
+      context.read<ChatDetailBloc>().add(ContentEvent(''));
+      context.read<ChatDetailBloc>().add(ImagesEvent([]));
+      context.read<ChatDetailBloc>().add(ModeImageEvent(false));
+    } catch (error) {
+      hideLoadingIndicator();
     }
-    context.read<ChatDetailBloc>().add(IsLoadingEvent(false));
-    hideLoadingIndicator();
-    context.read<ChatDetailBloc>().add(ModeEvent(0));
-    context.read<ChatDetailBloc>().add(ContentEvent(''));
-    context.read<ChatDetailBloc>().add(ImagesEvent([]));
-    context.read<ChatDetailBloc>().add(ModeImageEvent(false));
   }
 
   Future<void> handleReceiveMessage(String message) async {
