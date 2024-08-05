@@ -52,4 +52,10 @@ class AllowAddOptionsEvent extends WritePostGroupEvent {
   const AllowAddOptionsEvent(this.allowAddOptions);
 }
 
+class IsLoadingEvent extends WritePostGroupEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class WritePostGroupResetEvent extends WritePostGroupEvent {}

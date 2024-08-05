@@ -14,6 +14,7 @@ class PostGroupDetailBloc
     on<ContentEvent>(_contentEvent);
     on<ChildrenEvent>(_childrenEvent);
     on<ReplyEvent>(_replyEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
   }
 
   void _postEvent(PostEvent event,
@@ -53,5 +54,9 @@ class PostGroupDetailBloc
 
   void _replyEvent(ReplyEvent event, Emitter<PostGroupDetailState> emit) {
     emit(state.copyWith(reply: event.reply));
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<PostGroupDetailState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 }

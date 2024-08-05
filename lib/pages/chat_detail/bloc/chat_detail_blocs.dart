@@ -19,6 +19,7 @@ class ChatDetailBloc extends Bloc<ChatDetailEvent, ChatDetailState> {
     on<IndexDeviceImageEvent>(_indexDeviceImageEvent);
     on<HasReachedMaxDeviceImageEvent>(_hasReachedMaxDeviceImageEvent);
     on<ImagesEvent>(_imagesEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
   }
 
   void _statusEvent(StatusEvent event, Emitter<ChatDetailState> emit) async {
@@ -76,5 +77,9 @@ class ChatDetailBloc extends Bloc<ChatDetailEvent, ChatDetailState> {
 
   void _imagesEvent(ImagesEvent event, Emitter<ChatDetailState> emit) async {
     emit(state.copyWith(images: event.images));
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<ChatDetailState> emit) async {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 }

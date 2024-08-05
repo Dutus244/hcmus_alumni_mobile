@@ -21,9 +21,6 @@ class _WritePostGroupState extends State<WritePostGroup> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<WritePostGroupBloc>()
-        .add(WritePostGroupResetEvent());
   }
 
   @override
@@ -35,13 +32,18 @@ class _WritePostGroupState extends State<WritePostGroup> {
     }
 
     return BlocBuilder<WritePostGroupBloc, WritePostGroupState>(
-        builder: (context, state) {
-          return Scaffold(
-              appBar: buildAppBar(context),
-              backgroundColor: AppColors.background,
-              body: BlocProvider.of<WritePostGroupBloc>(context)
-                  .state.page == 0 ? writePost(context, id) : editPicture(context)
-          );
-        });
+      builder: (context, state) {
+        return WillPopScope(
+            onWillPop: () async {
+              return !state.isLoading;
+            },
+            child: Scaffold(
+                appBar: buildAppBar(context),
+                backgroundColor: AppColors.background,
+                body: BlocProvider.of<WritePostGroupBloc>(context)
+                    .state.page == 0 ? writePost(context, id) : editPicture(context)
+            ));
+      },
+    );
   }
 }

@@ -13,6 +13,7 @@ class WritePostGroupBloc
     on<PageEvent>(_pageEvent);
     on<AllowAddOptionsEvent>(_allowAddOptionsEvent);
     on<AllowMultipleVotesEvent>(_allowMultipleVotesEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<WritePostGroupResetEvent>(_writePostGroupResetEvent);
   }
 
@@ -46,6 +47,10 @@ class WritePostGroupBloc
 
   void _allowMultipleVotesEvent(AllowMultipleVotesEvent event, Emitter<WritePostGroupState> emit) {
     emit(state.copyWith(allowMultipleVotes: event.allowMultipleVotes));
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<WritePostGroupState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _writePostGroupResetEvent(

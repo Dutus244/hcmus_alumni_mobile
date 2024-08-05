@@ -133,3 +133,9 @@ class FriendsEvent extends MyProfilePageEvent {
 
   const FriendsEvent(this.friends);
 }
+
+class IsLoadingEvent extends MyProfilePageEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

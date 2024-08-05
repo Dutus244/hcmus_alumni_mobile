@@ -147,7 +147,7 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
   return Container(
       width: 320.w,
-      margin: EdgeInsets.only(left: 10.w, right: 10.w),
+      margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
       decoration: BoxDecoration(
         color: AppColors.background,
         border: Border.all(color: Colors.transparent),
@@ -156,9 +156,15 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
         children: [
           Container(
             width: 300.w,
-            child: TextField(
-              onChanged: (value) => func!(value),
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
+              },
               keyboardType: TextInputType.multiline,
+              initialValue: BlocProvider
+                  .of<WritePostAdviseBloc>(context)
+                  .state
+                  .title,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -172,12 +178,11 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small(context)
-                    .wSemiBold()
-                    .withColor(AppColors.secondaryElementText),
+                hintStyle: AppTextStyle.small(context).withColor(
+                    AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(context).wSemiBold(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
             ),
           )
@@ -187,43 +192,55 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
 
 Widget buildTextFieldContent(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  return Container(
-      width: 320.w,
-      margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 10.w, bottom: 2.h),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        border: Border.all(color: Colors.transparent),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 300.w,
-            child: TextField(
-              onChanged: (value) => func!(value),
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              // Cho phép đa dòng
-              decoration: InputDecoration(
-                hintText: hintText,
-                contentPadding: EdgeInsets.zero,
-                border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                disabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small(context)
-                    .withColor(AppColors.secondaryElementText),
-                counterText: '',
+  print(BlocProvider
+      .of<WritePostAdviseBloc>(context)
+      .state
+      .content);
+  return GestureDetector(
+    child: Container(
+        width: 320.w,
+        margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 10.w, bottom: 2.h),
+        decoration: BoxDecoration(
+          color: AppColors.background,
+          border: Border.all(color: Colors.transparent),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 300.w,
+              child: TextFormField(
+                onChanged: (value) {
+                  func!(value);
+                },
+                keyboardType: TextInputType.multiline,
+                initialValue: BlocProvider
+                    .of<WritePostAdviseBloc>(context)
+                    .state
+                    .content,
+                maxLines: null,
+                // Cho phép đa dòng
+                decoration: InputDecoration(
+                  hintText: hintText,
+                  contentPadding: EdgeInsets.zero,
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent)),
+                  enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent)),
+                  disabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent)),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent)),
+                  hintStyle: AppTextStyle.small(context).withColor(
+                      AppColors.secondaryElementText),
+                  counterText: '',
+                ),
+                style: AppTextStyle.small(context),
+                autocorrect: false,
               ),
-              style: AppTextStyle.small(context),
-              autocorrect: false,
-            ),
-          )
-        ],
-      ));
+            )
+          ],
+        )),
+  );
 }
 
 Widget buildTextFieldVote(BuildContext context, int index, String hintText,
@@ -251,7 +268,7 @@ Widget buildTextFieldVote(BuildContext context, int index, String hintText,
                 Container(
                   margin: EdgeInsets.only(left: 10.w),
                   width: 290.w,
-                  child: TextField(
+                  child: TextFormField(
                     keyboardType: TextInputType.multiline,
                     onChanged: (value) {
                       List<String> currentList =
@@ -261,6 +278,10 @@ Widget buildTextFieldVote(BuildContext context, int index, String hintText,
                       currentList[index] = value;
                       func!(currentList);
                     },
+                    initialValue: BlocProvider
+                        .of<WritePostAdviseBloc>(context)
+                        .state
+                        .votes[index],
                     maxLines: null,
                     // Cho phép đa dòng
                     decoration: InputDecoration(

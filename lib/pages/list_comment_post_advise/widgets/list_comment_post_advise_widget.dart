@@ -370,6 +370,11 @@ Widget buildCommentWidget(
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    if (BlocProvider.of<ListCommentPostAdviseBloc>(context)
+                                        .state
+                                        .isLoading) {
+                                      return;
+                                    }
                                     ListCommentPostAdviseController(
                                             context: context)
                                         .handleDeleteComment(id, comment.id);
@@ -481,6 +486,11 @@ Widget buildCommentWidget(
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    if (BlocProvider.of<ListCommentPostAdviseBloc>(context)
+                                        .state
+                                        .isLoading) {
+                                      return;
+                                    }
                                     ListCommentPostAdviseController(
                                             context: context)
                                         .handleDeleteComment(id, comment.id);

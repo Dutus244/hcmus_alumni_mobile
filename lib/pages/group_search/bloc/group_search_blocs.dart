@@ -12,6 +12,7 @@ class GroupSearchBloc extends Bloc<GroupSearchEvent, GroupSearchState> {
     on<GroupsEvent>(_groupsEvent);
     on<IndexGroupEvent>(_indexGroupEvent);
     on<HasReachedMaxGroupEvent>(_hasReachedMaxGroupEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<ClearResultEvent>(_clearResultEvent);
   }
 
@@ -38,6 +39,11 @@ class GroupSearchBloc extends Bloc<GroupSearchEvent, GroupSearchState> {
   void _hasReachedMaxGroupEvent(
       HasReachedMaxGroupEvent event, Emitter<GroupSearchState> emit) {
     emit(state.copyWith(hasReachedMaxGroup: event.hasReachedMaxGroup));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<GroupSearchState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _groupSearchResetEvent(

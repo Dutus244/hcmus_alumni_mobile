@@ -8,6 +8,7 @@ import 'package:hcmus_alumni_mobile/pages/post_advise_detail/post_advise_detail_
 import '../../common/values/colors.dart';
 import 'bloc/post_advise_detail_blocs.dart';
 import 'bloc/post_advise_detail_states.dart';
+import 'bloc/post_advise_detail_events.dart';
 import 'widgets/post_advise_detail_widget.dart';
 
 class PostAdviseDetail extends StatefulWidget {
@@ -28,6 +29,7 @@ class _PostAdviseDetailState extends State<PostAdviseDetail> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
+    context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
   }
 
   void _onScroll() {

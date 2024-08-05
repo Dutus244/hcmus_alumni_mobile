@@ -53,9 +53,6 @@ AppBar buildAppBar(BuildContext context) {
                 Container(
                   width: 30.w,
                 ),
-              Container(
-                width: 30.w,
-              )
             ],
           ),
           Text(
@@ -71,7 +68,7 @@ AppBar buildAppBar(BuildContext context) {
           Container(
             width:
                 (Global.storageService.permissionGroupCreate() ? 30.w : 0.w) +
-                    90.w,
+                    60.w,
             child: Row(
               children: [
                 if (Global.storageService.permissionGroupCreate())
@@ -99,26 +96,6 @@ AppBar buildAppBar(BuildContext context) {
                       SizedBox(width: 10.w),
                     ],
                   ),
-                GestureDetector(
-                  onTap: () async {
-                    await Navigator.pushNamed(
-                      context,
-                      "/groupSearch",
-                    );
-                    GroupPageController(context: context)
-                        .handleLoadGroupDiscoverData(0);
-                    GroupPageController(context: context)
-                        .handleLoadGroupJoinedData(0);
-                  },
-                  child: Container(
-                    width: 20.w,
-                    height: 20.h,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/icons/search.png"))),
-                  ),
-                ),
-                SizedBox(width: 10.w),
                 Row(
                   children: [
                     GestureDetector(
@@ -162,6 +139,54 @@ AppBar buildAppBar(BuildContext context) {
       ),
     ),
     centerTitle: true, // Đặt tiêu đề vào giữa
+  );
+}
+
+Widget buildButton(BuildContext context, String buttonText, String iconName) {
+  return Container(
+    width: 340.w,
+    height: 40.h,
+    margin: EdgeInsets.only(bottom: 10.h, top: 0.h),
+    child: ElevatedButton(
+      onPressed: () async {
+        await Navigator.pushNamed(
+          context,
+          "/groupSearch",
+        );
+        GroupPageController(context: context)
+            .handleLoadGroupDiscoverData(0);
+        GroupPageController(context: context)
+            .handleLoadGroupJoinedData(0);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.background,
+        foregroundColor: AppColors.element,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15.w)),
+          side: BorderSide(color: AppColors.primaryFourthElementText),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            buttonText,
+            style: TextStyle(
+              fontFamily: AppFonts.Header,
+              color: AppColors.textBlack,
+              fontWeight: FontWeight.normal,
+              fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+            ),
+          ),
+          Container(
+            width: 16.w,
+            height: 16.w,
+            margin: EdgeInsets.only(right: 10.w),
+            child: Image.asset("assets/icons/$iconName.png"),
+          ),
+        ],
+      ),
+    ),
   );
 }
 
@@ -261,6 +286,10 @@ Widget listGroupDiscover(
                       context.read<GroupPageBloc>().add(PageEvent(1));
                     }),
                     Container(
+                      height: 5.h,
+                    ),
+                    buildButton(context, 'Tìm kiếm nhóm', 'search'),
+                    Container(
                       height: 10.h,
                     ),
                     loadingWidget(),
@@ -276,6 +305,10 @@ Widget listGroupDiscover(
                       buildButtonChoose(context, (value) {
                         context.read<GroupPageBloc>().add(PageEvent(1));
                       }),
+                      Container(
+                        height: 5.h,
+                      ),
+                      buildButton(context, 'Tìm kiếm nhóm', 'search'),
                       Center(
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
@@ -317,7 +350,11 @@ Widget listGroupDiscover(
                           context.read<GroupPageBloc>().add(PageEvent(1));
                         }),
                         Container(
-                          height: 10.h,
+                          height: 5.h,
+                        ),
+                        buildButton(context, 'Tìm kiếm nhóm', 'search'),
+                        Container(
+                          height: 5.h,
                         ),
                         Container(
                           margin: EdgeInsets.only(
@@ -909,6 +946,10 @@ Widget listGroupJoined(
                       context.read<GroupPageBloc>().add(PageEvent(0));
                     }),
                     Container(
+                      height: 5.h,
+                    ),
+                    buildButton(context, 'Tìm kiếm nhóm', 'search'),
+                    Container(
                       height: 10.h,
                     ),
                     loadingWidget(),
@@ -924,6 +965,10 @@ Widget listGroupJoined(
                       buildButtonChoose(context, (value) {
                         context.read<GroupPageBloc>().add(PageEvent(0));
                       }),
+                      Container(
+                        height: 5.h,
+                      ),
+                      buildButton(context, 'Tìm kiếm nhóm', 'search'),
                       Center(
                           child: Container(
                         margin: EdgeInsets.only(top: 20.h),
@@ -965,7 +1010,11 @@ Widget listGroupJoined(
                           context.read<GroupPageBloc>().add(PageEvent(0));
                         }),
                         Container(
-                          height: 10.h,
+                          height: 5.h,
+                        ),
+                        buildButton(context, 'Tìm kiếm nhóm', 'search'),
+                        Container(
+                          height: 5.h,
                         ),
                         Container(
                           margin: EdgeInsets.only(

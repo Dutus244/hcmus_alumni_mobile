@@ -25,6 +25,7 @@ class MyProfilePageBloc extends Bloc<MyProfilePageEvent, MyProfilePageState> {
     on<AchievementsEvent>(_achievementsEvent);
     on<FriendCountEvent>(_friendCountEvent);
     on<FriendsEvent>(_friendsEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
   }
 
   void _userEvent(UserEvent event, Emitter<MyProfilePageState> emit) {
@@ -113,5 +114,9 @@ class MyProfilePageBloc extends Bloc<MyProfilePageEvent, MyProfilePageState> {
 
   void _friendsEvent(FriendsEvent event, Emitter<MyProfilePageState> emit) async {
     emit(state.copyWith(friends: event.friends));
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<MyProfilePageState> emit) async {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 }

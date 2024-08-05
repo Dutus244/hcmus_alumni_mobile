@@ -157,9 +157,13 @@ class WritePostAdviseController {
                 hideLoadingIndicator();
                 toastInfo(msg: "Đăng bài viết thành công");
                 Navigator.pop(context);
-              } else {}
+              } else {
+                context.read<WritePostAdviseBloc>().add(IsLoadingEvent(false));
+                hideLoadingIndicator();
+              }
             } catch (e) {
               // Exception occurred
+              hideLoadingIndicator();
               print('Exception occurred: $e');
             }
           } else {
@@ -248,9 +252,13 @@ class WritePostAdviseController {
               hideLoadingIndicator();
               toastInfo(msg: "Đăng bài viết thành công");
               Navigator.pop(context);
-            } else {}
+            } else {
+              context.read<WritePostAdviseBloc>().add(IsLoadingEvent(false));
+              hideLoadingIndicator();
+            }
           } catch (e) {
             // Exception occurred
+            hideLoadingIndicator();
           }
         } else {
           context.read<WritePostAdviseBloc>().add(IsLoadingEvent(false));

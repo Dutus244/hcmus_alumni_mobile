@@ -14,6 +14,7 @@ class EditPostGroupBloc
     on<PicturesEvent>(_picturesEvent);
     on<DeletePicturesEvent>(_deletePicturesEvent);
     on<PageEvent>(_pageEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<EditPostGroupResetEvent>(_editPostGroupResetEvent);
   }
 
@@ -45,6 +46,10 @@ class EditPostGroupBloc
 
   void _pageEvent(PageEvent event, Emitter<EditPostGroupState> emit) {
     emit(state.copyWith(page: event.page));
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<EditPostGroupState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _editPostGroupResetEvent(

@@ -1055,6 +1055,9 @@ Widget navigation(BuildContext context, Message? message, int inboxId,
                 }),
                 GestureDetector(
                   onTap: () {
+                    if (BlocProvider.of<ChatDetailBloc>(context).state.isLoading) {
+                      return;
+                    }
                     if (content != "" || images.length > 0) {
                       ChatDetailController(context: context)
                           .handleSendMessage(inboxId);
@@ -1173,6 +1176,9 @@ Widget navigation(BuildContext context, Message? message, int inboxId,
                     }),
                     GestureDetector(
                       onTap: () {
+                        if (BlocProvider.of<ChatDetailBloc>(context).state.isLoading) {
+                          return;
+                        }
                         if (content != "" || images.isNotEmpty) {
                           ChatDetailController(context: context)
                               .handleSendMessage(inboxId);
