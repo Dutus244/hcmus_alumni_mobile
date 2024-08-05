@@ -10,6 +10,7 @@ class ChatCreateBloc extends Bloc<ChatCreateEvent, ChatCreateState> {
     on<StatusEvent>(_statusEvent);
     on<UsersEvent>(_usersEvent);
     on<IndexUserEvent>(_indexUserEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<HasReachedMaxUserEvent>(_hasReachedMaxUserEvent);
   }
 
@@ -31,6 +32,10 @@ class ChatCreateBloc extends Bloc<ChatCreateEvent, ChatCreateState> {
 
   void _indexUserEvent(IndexUserEvent event, Emitter<ChatCreateState> emit) {
     emit(state.copyWith(indexUser: event.indexUser));
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<ChatCreateState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _hasReachedMaxUserEvent(

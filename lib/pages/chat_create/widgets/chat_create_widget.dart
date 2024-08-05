@@ -199,6 +199,9 @@ Widget listUser(BuildContext context, ScrollController _scrollController) {
 Widget user(BuildContext context, User user) {
   return GestureDetector(
     onTap: () {
+      if (BlocProvider.of<ChatCreateBloc>(context).state.isLoading) {
+        return;
+      }
       ChatCreateController(context: context).handleCreateInbox(user);
     },
     child: Container(
