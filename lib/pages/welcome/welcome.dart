@@ -96,21 +96,21 @@ class _WelcomeState extends State<Welcome> {
                           AppAssets.welcomeImage3),
                     ],
                   ),
-                  Positioned(
-                      bottom: 95.h,
-                      child: DotsIndicator(
-                        position: state.page,
-                        dotsCount: 3,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        decorator: DotsDecorator(
-                            color: AppColors.primaryThirdElementText,
-                            activeColor: AppColors.element,
-                            size: const Size.square(8.0),
-                            activeSize: const Size(18.0, 8.0),
-                            activeShape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            )),
-                      ))
+                  // Positioned(
+                  //     bottom: 95.h,
+                  //     child: DotsIndicator(
+                  //       position: state.page,
+                  //       dotsCount: 3,
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       decorator: DotsDecorator(
+                  //           color: AppColors.primaryThirdElementText,
+                  //           activeColor: AppColors.element,
+                  //           size: const Size.square(8.0),
+                  //           activeSize: const Size(18.0, 8.0),
+                  //           activeShape: RoundedRectangleBorder(
+                  //             borderRadius: BorderRadius.circular(5.0),
+                  //           )),
+                  //     ))
                 ],
               ),
             );
