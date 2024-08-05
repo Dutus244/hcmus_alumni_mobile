@@ -384,7 +384,7 @@ Widget eventContent(BuildContext context, Event event) {
               );
             },
             child: Text(
-              'Cần xét duyệt để tham gia',
+              'Xét duyệt để tham gia',
               style: AppTextStyle.small(context).wSemiBold().withColor(AppColors.textBlack.withOpacity(0.5)),
             ),
           ),
@@ -513,7 +513,7 @@ Widget listComment(
                   Text(
                     Global.storageService.permissionNewsCommentCreate()
                         ? translate('write_comment')
-                        : 'Cần xét duyệt để bình luận',
+                        : 'Xét duyệt để bình luận',
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
@@ -821,7 +821,7 @@ Widget buildCommentWidget(
                                     );
                                   },
                                   child: Text(
-                                    'Cần xét duyệt để bình luận',
+                                    'Xét duyệt để bình luận',
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.5),
                                       fontSize: 11.sp /
