@@ -13,6 +13,7 @@ class ListCommentPostAdviseBloc
     on<ContentEvent>(_contentEvent);
     on<ChildrenEvent>(_childrenEvent);
     on<ReplyEvent>(_replyEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
   }
 
   void _statusCommentEvent(StatusCommentEvent event,
@@ -47,5 +48,9 @@ class ListCommentPostAdviseBloc
 
   void _replyEvent(ReplyEvent event, Emitter<ListCommentPostAdviseState> emit) {
     emit(state.copyWith(reply: event.reply));
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<ListCommentPostAdviseState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 }

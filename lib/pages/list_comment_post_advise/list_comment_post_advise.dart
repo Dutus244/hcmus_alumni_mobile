@@ -31,6 +31,7 @@ class _ListCommentPostAdviseState extends State<ListCommentPostAdvise> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
+    context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(false));
   }
 
   void _onScroll() {

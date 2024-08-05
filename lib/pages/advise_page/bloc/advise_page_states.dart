@@ -13,6 +13,7 @@ class AdvisePageState {
   final List<Voter> voters;
   final int indexVoter;
   final bool hasReachedMaxVoter;
+  final bool isLoading;
 
   AdvisePageState(
       {this.statusPost = Status.loading,
@@ -22,7 +23,8 @@ class AdvisePageState {
       this.statusVoter = Status.loading,
       this.voters = const [],
       this.indexVoter = 0,
-      this.hasReachedMaxVoter = false});
+      this.hasReachedMaxVoter = false,
+      this.isLoading = false});
 
   AdvisePageState copyWith({
     Status? statusPost,
@@ -33,6 +35,7 @@ class AdvisePageState {
     List<Voter>? voters,
     int? indexVoter,
     bool? hasReachedMaxVoter,
+    bool? isLoading,
   }) {
     return AdvisePageState(
         statusPost: statusPost ?? this.statusPost,
@@ -42,6 +45,7 @@ class AdvisePageState {
         statusVoter: statusVoter ?? this.statusVoter,
         voters: voters ?? this.voters,
         indexVoter: indexVoter ?? this.indexVoter,
-        hasReachedMaxVoter: hasReachedMaxVoter ?? this.hasReachedMaxVoter);
+        hasReachedMaxVoter: hasReachedMaxVoter ?? this.hasReachedMaxVoter,
+        isLoading: isLoading ?? this.isLoading);
   }
 }

@@ -32,6 +32,7 @@ class _NewsDetailState extends State<NewsDetail> {
       NewsDetailController(context: context).handleGetNews(id);
       NewsDetailController(context: context).handleGetComment(id, 0);
       NewsDetailController(context: context).handleGetRelatedNews(id);
+      context.read<NewsDetailBloc>().add(IsLoadingEvent(false));
     }
 
     return BlocBuilder<NewsDetailBloc, NewsDetailState>(

@@ -32,4 +32,10 @@ class EndTimeEvent extends MyProfileAddJobEvent {
   const EndTimeEvent(this.endTime);
 }
 
+class IsLoadingEvent extends MyProfileAddJobEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class MyProfileAddJobResetEvent extends MyProfileAddJobEvent {}

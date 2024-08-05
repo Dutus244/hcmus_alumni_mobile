@@ -16,8 +16,40 @@ import 'package:http_parser/http_parser.dart';
 
 class WritePostAdviseController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const WritePostAdviseController({required this.context});
+  WritePostAdviseController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   List<Map<String, dynamic>> convertTagsToJson(List<String> tags) {
     return tags.map((tag) => {'name': tag}).toList();
@@ -56,6 +88,8 @@ class WritePostAdviseController {
         ),
       );
       if (shouldPost != null && shouldPost) {
+        context.read<WritePostAdviseBloc>().add(IsLoadingEvent(true));
+        showLoadingIndicator();
         var apiUrl = dotenv.env['API_URL'];
         var endpoint = '/counsel';
 
@@ -119,15 +153,24 @@ class WritePostAdviseController {
                 context
                     .read<WritePostAdviseBloc>()
                     .add(WritePostAdviseResetEvent());
+                context.read<WritePostAdviseBloc>().add(IsLoadingEvent(false));
+                hideLoadingIndicator();
+                toastInfo(msg: "Đăng bài viết thành công");
                 Navigator.pop(context);
-              } else {}
+              } else {
+                context.read<WritePostAdviseBloc>().add(IsLoadingEvent(false));
+                hideLoadingIndicator();
+              }
             } catch (e) {
               // Exception occurred
+              hideLoadingIndicator();
               print('Exception occurred: $e');
             }
           } else {
             Map<String, dynamic> jsonMap = json.decode(response.body);
             int errorCode = jsonMap['error']['code'];
+            context.read<WritePostAdviseBloc>().add(IsLoadingEvent(false));
+            hideLoadingIndicator();
             if (errorCode == 60302) {
               toastInfo(msg: "Số lượng thẻ không được vượt quá 5");
               return;
@@ -139,9 +182,12 @@ class WritePostAdviseController {
           }
         } catch (error) {
           // Handle errors
+          hideLoadingIndicator();
         }
       }
     } else {
+      context.read<WritePostAdviseBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/counsel';
 
@@ -202,17 +248,25 @@ class WritePostAdviseController {
               context
                   .read<WritePostAdviseBloc>()
                   .add(WritePostAdviseResetEvent());
+              context.read<WritePostAdviseBloc>().add(IsLoadingEvent(false));
+              hideLoadingIndicator();
+              toastInfo(msg: "Đăng bài viết thành công");
               Navigator.pop(context);
-            } else {}
+            } else {
+              context.read<WritePostAdviseBloc>().add(IsLoadingEvent(false));
+              hideLoadingIndicator();
+            }
           } catch (e) {
             // Exception occurred
-            toastInfo(msg: translate('error_post_article'));
+            hideLoadingIndicator();
           }
         } else {
+          context.read<WritePostAdviseBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           toastInfo(msg: translate('error_post_article'));
         }
       } catch (error) {
-        toastInfo(msg: translate('error_post_article'));
+        hideLoadingIndicator();
       }
     }
   }

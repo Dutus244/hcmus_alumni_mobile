@@ -8,6 +8,8 @@ class ChangePasswordBloc
   ChangePasswordBloc() : super(ChangePasswordState()) {
     on<PasswordEvent>(_passwordEvent);
     on<RePasswordEvent>(_rePasswordEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
+    on<ShowPassEvent>(_showPassEvent);
     on<ChangePasswordResetEvent>(_changePasswordResetEvent);
   }
 
@@ -19,6 +21,16 @@ class ChangePasswordBloc
   void _rePasswordEvent(
       RePasswordEvent event, Emitter<ChangePasswordState> emit) {
     emit(state.copyWith(rePassword: event.rePassword));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<ChangePasswordState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
+  }
+
+  void _showPassEvent(
+      ShowPassEvent event, Emitter<ChangePasswordState> emit) {
+    emit(state.copyWith(showPass: event.showPass));
   }
 
   void _changePasswordResetEvent(ChangePasswordResetEvent event,

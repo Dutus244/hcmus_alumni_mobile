@@ -21,7 +21,9 @@ AppBar buildAppBar(BuildContext context) {
     backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
-        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        margin: Platform.isAndroid
+            ? EdgeInsets.only(top: 20.h)
+            : EdgeInsets.only(top: 40.h),
         child: Text(
           translate('approve_group_members'),
           textAlign: TextAlign.center,
@@ -73,7 +75,8 @@ Widget listRequest(
                           translate('no_data'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                            fontSize:
+                                12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -103,7 +106,8 @@ Widget listRequest(
                             context,
                             BlocProvider.of<GroupMemberApproveBloc>(context)
                                 .state
-                                .requests[index], groupId),
+                                .requests[index],
+                            groupId),
                       ],
                     );
                   } else {
@@ -111,7 +115,8 @@ Widget listRequest(
                         context,
                         BlocProvider.of<GroupMemberApproveBloc>(context)
                             .state
-                            .requests[index], groupId);
+                            .requests[index],
+                        groupId);
                   }
                 }
             }
@@ -125,17 +130,15 @@ Widget listRequest(
 Widget request(BuildContext context, GroupRequest request, String groupId) {
   return GestureDetector(
     onTap: () {
-      if (request.user.id ==
-          Global.storageService.getUserId()) {
+      if (request.user.id == Global.storageService.getUserId()) {
         Navigator.pushNamed(
           context,
           "/myProfilePage",
         );
       } else {
-        Navigator.pushNamed(context, "/otherProfilePage",
-            arguments: {
-              "id": request.user.id,
-            });
+        Navigator.pushNamed(context, "/otherProfilePage", arguments: {
+          "id": request.user.id,
+        });
       }
     },
     child: Container(
@@ -149,8 +152,7 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
               child: CircleAvatar(
                 radius: 40,
                 child: null,
-                backgroundImage:
-                NetworkImage(request.user.avatarUrl),
+                backgroundImage: NetworkImage(request.user.avatarUrl),
               ),
             ),
             Container(
@@ -170,7 +172,8 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
                         request.user.fullName,
                         style: TextStyle(
                           color: AppColors.textBlack,
-                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                          fontSize:
+                              12.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w900,
                           fontFamily: AppFonts.Header,
                         ),
@@ -186,44 +189,54 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          GroupMemberApproveController(context: context).handleApprovedRequest(groupId, request.user.id);
-                        },
-                        child: Container(
-                          width: 120.w,
-                          height: 30.h,
-                          decoration: BoxDecoration(
-                            color: AppColors.element,
-                            borderRadius: BorderRadius.circular(5.w),
-                            border: Border.all(
-                              color: Colors.transparent,
+                      Container(
+                        width: 120.w,
+                        height: 30.h,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (BlocProvider.of<GroupMemberApproveBloc>(context).state.isLoading){
+                              return;
+                            }
+                            GroupMemberApproveController(context: context)
+                                .handleApprovedRequest(groupId, request.user.id);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.element,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.w),
                             ),
+                            minimumSize: Size(120.w, 30.h),
                           ),
                           child: Center(
                             child: Text(
                               translate('approve'),
                               style: TextStyle(
-                                  fontFamily: AppFonts.Header,
-                                  fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.background),
+                                fontFamily: AppFonts.Header,
+                                fontSize: 11.sp /
+                                    MediaQuery.of(context).textScaleFactor,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.background,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          GroupMemberApproveController(context: context).handleDeniedRequest(groupId, request.user.id);
-                        },
-                        child: Container(
-                          width: 120.w,
-                          height: 30.h,
-                          margin: EdgeInsets.only(left: 10.w),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 230, 230, 230),
-                            borderRadius: BorderRadius.circular(5.w),
-                            border: Border.all(
+                      Container(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (BlocProvider.of<GroupMemberApproveBloc>(context).state.isLoading){
+                              return;
+                            }
+                            GroupMemberApproveController(context: context)
+                                .handleDeniedRequest(groupId, request.user.id);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: AppColors.textBlack, backgroundColor: Color.fromARGB(255, 230, 230, 230),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.w),
+                            ),
+                            minimumSize: Size(120.w, 30.h),
+                            side: BorderSide(
                               color: Colors.transparent,
                             ),
                           ),
@@ -231,11 +244,10 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
                             child: Text(
                               translate('deny'),
                               style: TextStyle(
-                                  fontFamily: AppFonts.Header,
-                                  fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                  AppColors.textBlack),
+                                fontFamily: AppFonts.Header,
+                                fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -246,7 +258,6 @@ Widget request(BuildContext context, GroupRequest request, String groupId) {
               ],
             )
           ],
-        )
-    ),
+        )),
   );
 }

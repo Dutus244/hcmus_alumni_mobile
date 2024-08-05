@@ -30,6 +30,7 @@ class _FriendListState extends State<FriendList> {
     context.read<FriendListBloc>().add(NameEvent(''));
     context.read<FriendListBloc>().add(NameSearchEvent(''));
     context.read<FriendListBloc>().add(ClearResultEvent());
+    context.read<FriendListBloc>().add(IsLoadingEvent(false));
   }
 
   void _onScroll() {

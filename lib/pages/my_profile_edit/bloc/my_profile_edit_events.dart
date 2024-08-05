@@ -12,6 +12,12 @@ class MyProfileEditEvent {
   const MyProfileEditEvent();
 }
 
+class UserEvent extends MyProfileEditEvent {
+  final User user;
+
+  const UserEvent(this.user);
+}
+
 class FullNameEvent extends MyProfileEditEvent {
   final String fullName;
 
@@ -148,6 +154,12 @@ class UpdateAlumniEvent extends MyProfileEditEvent {
   final Alumni alumni;
 
   const UpdateAlumniEvent(this.alumni);
+}
+
+class IsLoadingEvent extends MyProfileEditEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
 }
 
 class MyProfileEditResetEvent extends MyProfileEditEvent {}

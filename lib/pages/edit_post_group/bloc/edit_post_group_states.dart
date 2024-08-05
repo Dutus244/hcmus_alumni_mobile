@@ -11,6 +11,7 @@ class EditPostGroupState {
   final List<File> pictures;
   final List<String> deletePictures;
   final int page;
+  final bool isLoading;
 
   EditPostGroupState(
       {this.title = "",
@@ -19,7 +20,8 @@ class EditPostGroupState {
       this.pictureNetworks = const [],
       this.pictures = const [],
       this.deletePictures = const [],
-      this.page = 0});
+      this.page = 0,
+        this.isLoading = false});
 
   EditPostGroupState copyWith(
       {String? title,
@@ -28,7 +30,8 @@ class EditPostGroupState {
       List<Picture>? pictureNetworks,
       List<String>? deletePictures,
       List<File>? pictures,
-      int? page}) {
+      int? page,
+        bool? isLoading}) {
     return EditPostGroupState(
       title: title ?? this.title,
       content: content ?? this.content,
@@ -37,6 +40,7 @@ class EditPostGroupState {
       pictures: pictures ?? this.pictures,
       deletePictures: deletePictures ?? this.deletePictures,
       page: page ?? this.page,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

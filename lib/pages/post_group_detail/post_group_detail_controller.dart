@@ -17,8 +17,40 @@ import 'bloc/post_group_detail_events.dart';
 
 class PostGroupDetailController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const PostGroupDetailController({required this.context});
+  PostGroupDetailController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleLoadPostData(String id) async {
     var apiUrl = dotenv.env['API_URL'];
@@ -45,11 +77,13 @@ class PostGroupDetailController {
         }
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_news'));
+      // toastInfo(msg: translate('error_get_news'));
     }
   }
 
   Future<void> handleLikePost(String id) async {
+    context.read<PostGroupDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var post = BlocProvider.of<PostGroupDetailBloc>(context).state.post;
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$id/react';
@@ -68,23 +102,23 @@ class PostGroupDetailController {
     if (post!.isReacted) {
       var response = await http.delete(url, headers: headers);
       if (response.statusCode == 200) {
-        handleLoadPostData(id);
-        return;
+        await handleLoadPostData(id);
       } else {
         // Handle other status codes if needed
         toastInfo(msg: translate('error_unlike_post'));
-        return;
       }
+      context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+      hideLoadingIndicator();
     } else {
       var response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 201) {
-        handleLoadPostData(id);
-        return;
+        await handleLoadPostData(id);
       } else {
         // Handle other status codes if needed
         toastInfo(msg: translate('error_like_post'));
-        return;
       }
+      context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+      hideLoadingIndicator();
     }
   }
 
@@ -107,6 +141,8 @@ class PostGroupDetailController {
       ),
     );
     if (shouldDelete != null && shouldDelete) {
+      context.read<PostGroupDetailBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/groups/posts/$id';
 
@@ -121,16 +157,22 @@ class PostGroupDetailController {
 
         var response = await http.delete(url, headers: headers);
         if (response.statusCode == 200) {
+          context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
+          toastInfo(msg: 'Xoá bài viết thành công');
           Navigator.pop(context);
           return true;
         } else {
           // Handle other status codes if needed
+          context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           toastInfo(msg: translate('error_delete_post'));
           return false;
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: translate('error_delete_post'));
+        // toastInfo(msg: translate('error_delete_post'));
+        hideLoadingIndicator();
         return false;
       }
     }
@@ -161,12 +203,14 @@ class PostGroupDetailController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_choose_option'));
+      // toastInfo(msg: translate('error_choose_option'));
       return;
     }
   }
 
   Future<void> handleDeleteVote(String id, int voteId) async {
+    context.read<PostGroupDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$id/votes/$voteId';
 
@@ -182,20 +226,27 @@ class PostGroupDetailController {
 
       var response = await http.delete(url, headers: headers);
       if (response.statusCode == 200) {
-        handleLoadPostData(id);
+        await handleLoadPostData(id);
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
       } else {
         // Handle other status codes if needed
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_not_choose_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_not_choose_option'));
+      // toastInfo(msg: translate('error_not_choose_option'));
+      hideLoadingIndicator();
       return;
     }
   }
 
   Future<void> handleUpdateVote(String id, int oldVoteId, int newVoteId) async {
+    context.read<PostGroupDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$id/votes/$oldVoteId';
 
@@ -215,20 +266,27 @@ class PostGroupDetailController {
 
       var response = await http.put(url, headers: headers, body: body);
       if (response.statusCode == 200) {
-        handleLoadPostData(id);
+        await handleLoadPostData(id);
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
       } else {
         // Handle other status codes if needed
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_change_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_change_option'));
+      // toastInfo(msg: translate('error_change_option'));
+      hideLoadingIndicator();
       return;
     }
   }
 
   Future<void> handleAddVote(String id, String vote) async {
+    context.read<PostGroupDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$id/votes';
 
@@ -248,15 +306,21 @@ class PostGroupDetailController {
       var response =
       await http.post(url, headers: headers, body: json.encode(map));
       if (response.statusCode == 201) {
-        handleLoadPostData(id);
+        await handleLoadPostData(id);
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Thêm lựa chọn thành công');
       } else {
         // Handle other status codes if needed
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_add_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_add_option'));
+      // toastInfo(msg: translate('error_add_option'));
+      hideLoadingIndicator();
       return;
     }
   }
@@ -332,11 +396,13 @@ class PostGroupDetailController {
         toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_comment'));
+      // toastInfo(msg: translate('error_get_comment'));
     }
   }
 
   Future<void> handleGetChildrenComment(Comment comment) async {
+    context.read<PostGroupDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/comments/${comment.id}/children';
     var pageSize = 10;
@@ -362,15 +428,18 @@ class PostGroupDetailController {
         if (parentComment != null) {
           await parentComment.fetchChildrenComments(jsonMap);
         }
-
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         context
             .read<PostGroupDetailBloc>()
             .add(CommentsEvent(currentList));
       } else {
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_comment'));
+      // toastInfo(msg: translate('error_get_comment'));
     }
   }
 
@@ -390,6 +459,8 @@ class PostGroupDetailController {
   }
 
   Future<void> handleLoadWriteComment(String id) async {
+    context.read<PostGroupDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<PostGroupDetailBloc>().state;
     String comment = state.content;
 
@@ -414,20 +485,28 @@ class PostGroupDetailController {
         context
             .read<PostGroupDetailBloc>()
             .add(ContentEvent(''));
-        handleGetComment(id, 0);
+        await handleGetComment(id, 0);
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Bình luận thành công');
       } else {
         // Handle other status codes if needed
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_send_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_send_comment'));
+      // toastInfo(msg: translate('error_send_comment'));
+      hideLoadingIndicator();
     }
   }
 
 
   Future<void> handleLoadWriteChildrenComment(
       String id, String commentId) async {
+    context.read<PostGroupDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<PostGroupDetailBloc>().state;
     String comment = state.content;
 
@@ -452,18 +531,26 @@ class PostGroupDetailController {
         context
             .read<PostGroupDetailBloc>()
             .add(ContentEvent(''));
-        handleGetComment(id, 0);
+        await handleGetComment(id, 0);
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Bình luận thành công');
       } else {
         // Handle other status codes if needed
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_send_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_send_comment'));
+      // toastInfo(msg: translate('error_send_comment'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleEditComment(String id, String commentId) async {
+    context.read<PostGroupDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<PostGroupDetailBloc>().state;
     String comment = state.content;
 
@@ -489,14 +576,20 @@ class PostGroupDetailController {
         context
             .read<PostGroupDetailBloc>()
             .add(ContentEvent(''));
-        handleGetComment(id, 0);
+        await handleGetComment(id, 0);
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Sửa bình luận thành công');
       } else {
         // Handle other status codes if needed
+        context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_edit_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_edit_comment'));
+      // toastInfo(msg: translate('error_edit_comment'));
+      hideLoadingIndicator();
     }
   }
 
@@ -519,6 +612,8 @@ class PostGroupDetailController {
       ),
     );
     if (shouldDelete != null && shouldDelete) {
+      context.read<PostGroupDetailBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/groups/comments/$commentId';
 
@@ -535,14 +630,20 @@ class PostGroupDetailController {
         var response = await http.delete(url, headers: headers);
 
         if (response.statusCode == 200) {
-          handleGetComment(id, 0);
+          await handleGetComment(id, 0);
+          context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
+          toastInfo(msg: 'Xoá bình luận thành công');
         } else {
           // Handle other status codes if needed
+          context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           toastInfo(msg: translate('error_delete_comment'));
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: translate('error_delete_comment'));
+        // toastInfo(msg: translate('error_delete_comment'));
+        hideLoadingIndicator();
       }
     }
     return shouldDelete ?? false;

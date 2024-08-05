@@ -87,4 +87,10 @@ class ImagesEvent extends ChatDetailEvent {
   const ImagesEvent(this.images);
 }
 
+class IsLoadingEvent extends ChatDetailEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class ChatDetailResetEvent extends ChatDetailEvent {}

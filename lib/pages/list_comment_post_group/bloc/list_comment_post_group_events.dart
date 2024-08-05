@@ -46,3 +46,9 @@ class ReplyEvent extends ListCommentPostGroupEvent {
 
   const ReplyEvent(this.reply);
 }
+
+class IsLoadingEvent extends ListCommentPostGroupEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

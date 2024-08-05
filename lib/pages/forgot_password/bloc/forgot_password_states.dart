@@ -1,16 +1,16 @@
 class ForgotPasswordState {
   final String email;
-  final String code;
+  final bool isLoading;
 
   const ForgotPasswordState({
     this.email = "",
-    this.code = "",
+    this.isLoading = false,
   });
 
-  ForgotPasswordState copyWith({String? email, String? code}) {
+  ForgotPasswordState copyWith({String? email, String? code, bool? isLoading}) {
     return ForgotPasswordState(
       email: email ?? this.email,
-      code: code ?? this.code,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

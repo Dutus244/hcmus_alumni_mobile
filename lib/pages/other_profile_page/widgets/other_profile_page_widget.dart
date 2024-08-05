@@ -145,7 +145,8 @@ Widget listFriend(BuildContext context, String id) {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontFamily: AppFonts.Header,
-                                fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                                fontSize: 12.sp /
+                                    MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.textBlack,
                               ),
@@ -218,7 +219,8 @@ Widget listFriend(BuildContext context, String id) {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontFamily: AppFonts.Header,
-                              fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                              fontSize: 12.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               color: AppColors.textBlack,
                             ),
@@ -382,21 +384,27 @@ Widget header(BuildContext context) {
       Row(
         children: [
           if (isFriendStatus == "Not Friend")
-            GestureDetector(
-              onTap: () {
-                OtherProfilePageController(context: context)
-                    .handleSendRequest(user.id);
-              },
-              child: Container(
-                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-                width: 160.w,
-                height: 35.h,
-                decoration: BoxDecoration(
-                  color: AppColors.element,
-                  borderRadius: BorderRadius.circular(5.w),
-                  border: Border.all(
-                    color: Colors.transparent,
+            Container(
+              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+              width: 160.w,
+              height: 35.h,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (BlocProvider.of<OtherProfilePageBloc>(context)
+                      .state
+                      .isLoading) {
+                    return;
+                  }
+                  OtherProfilePageController(context: context)
+                      .handleSendRequest(user.id);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.element, // Background color
+                  minimumSize: Size(160.w, 35.h), // Width and height
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.w),
                   ),
+                  padding: EdgeInsets.zero, // Remove default padding
                 ),
                 child: Center(
                   child: Row(
@@ -408,9 +416,7 @@ Widget header(BuildContext context) {
                         height: 14.h,
                         color: AppColors.background,
                       ),
-                      Container(
-                        width: 5.w,
-                      ),
+                      SizedBox(width: 5.w),
                       Text(
                         translate('add_friend'),
                         style: AppTextStyle.base(context)
@@ -423,20 +429,32 @@ Widget header(BuildContext context) {
               ),
             ),
           if (isFriendStatus == "Not Friend")
-            GestureDetector(
-              onTap: () {
-                OtherProfilePageController(context: context).handleInbox(user);
-              },
-              child: Container(
-                margin: EdgeInsets.only(right: 10.w, top: 10.h),
-                width: 160.w,
-                height: 35.h,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 230, 230, 230),
-                  borderRadius: BorderRadius.circular(5.w),
-                  border: Border.all(
-                    color: Colors.transparent,
+            Container(
+              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+              width: 160.w,
+              height: 35.h,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Check if the state is loading
+                  if (BlocProvider.of<OtherProfilePageBloc>(context)
+                      .state
+                      .isLoading) {
+                    return;
+                  }
+                  // Handle inbox action
+                  OtherProfilePageController(context: context).handleInbox(user);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 230, 230, 230),
+                  // Background color
+                  minimumSize: Size(160.w, 35.h),
+                  // Width and height
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.w),
                   ),
+                  padding: EdgeInsets.zero,
+                  // Remove default padding
+                  side: BorderSide(color: Colors.transparent), // Border color
                 ),
                 child: Center(
                   child: Row(
@@ -448,9 +466,7 @@ Widget header(BuildContext context) {
                         height: 14.h,
                         color: AppColors.textBlack,
                       ),
-                      Container(
-                        width: 5.w,
-                      ),
+                      SizedBox(width: 5.w),
                       Text(
                         translate('chat'),
                         style: AppTextStyle.base(context).wSemiBold(),
@@ -461,24 +477,29 @@ Widget header(BuildContext context) {
               ),
             ),
           if (isFriendStatus == "true")
-            GestureDetector(
-              onTap: () {
-                showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (ctx) => deleteFriend(context, user.id),
-                );
-              },
-              child: Container(
-                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-                width: 160.w,
-                height: 35.h,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 230, 230, 230),
-                  borderRadius: BorderRadius.circular(5.w),
-                  border: Border.all(
-                    color: Colors.transparent,
+            Container(
+              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+              width: 160.w,
+              height: 35.h,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (BlocProvider.of<OtherProfilePageBloc>(context).state.isLoading) {
+                    return;
+                  }
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (ctx) => deleteFriend(context, user.id),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 230, 230, 230), // Background color
+                  minimumSize: Size(160.w, 35.h), // Width and height
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.w),
                   ),
+                  padding: EdgeInsets.zero, // Remove default padding
+                  side: BorderSide(color: Colors.transparent), // Border color
                 ),
                 child: Center(
                   child: Row(
@@ -490,9 +511,7 @@ Widget header(BuildContext context) {
                         height: 20.h,
                         color: AppColors.textBlack,
                       ),
-                      Container(
-                        width: 5.w,
-                      ),
+                      SizedBox(width: 5.w),
                       Text(
                         translate('friend'),
                         style: AppTextStyle.base(context).wSemiBold(),
@@ -503,20 +522,25 @@ Widget header(BuildContext context) {
               ),
             ),
           if (isFriendStatus == "true")
-            GestureDetector(
-              onTap: () {
-                OtherProfilePageController(context: context).handleInbox(user);
-              },
-              child: Container(
-                margin: EdgeInsets.only(right: 10.w, top: 10.h),
-                width: 160.w,
-                height: 35.h,
-                decoration: BoxDecoration(
-                  color: AppColors.element,
-                  borderRadius: BorderRadius.circular(5.w),
-                  border: Border.all(
-                    color: Colors.transparent,
+            Container(
+              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+              width: 160.w,
+              height: 35.h,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (BlocProvider.of<OtherProfilePageBloc>(context).state.isLoading) {
+                    return;
+                  }
+                  OtherProfilePageController(context: context).handleInbox(user);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.element, // Background color
+                  minimumSize: Size(160.w, 35.h), // Width and height
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.w),
                   ),
+                  side: BorderSide(color: Colors.transparent), // Border color
+                  padding: EdgeInsets.zero, // Remove default padding
                 ),
                 child: Center(
                   child: Row(
@@ -528,9 +552,7 @@ Widget header(BuildContext context) {
                         height: 14.h,
                         color: AppColors.background,
                       ),
-                      Container(
-                        width: 5.w,
-                      ),
+                      SizedBox(width: 5.w),
                       Text(
                         translate('chat'),
                         style: AppTextStyle.base(context)
@@ -543,21 +565,26 @@ Widget header(BuildContext context) {
               ),
             ),
           if (isFriendStatus == "Pending")
-            GestureDetector(
-              onTap: () {
-                OtherProfilePageController(context: context)
-                    .handleSendRequest(user.id);
-              },
-              child: Container(
-                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-                width: 160.w,
-                height: 35.h,
-                decoration: BoxDecoration(
-                  color: AppColors.element,
-                  borderRadius: BorderRadius.circular(5.w),
-                  border: Border.all(
-                    color: Colors.transparent,
+            Container(
+              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+              width: 160.w,
+              height: 35.h,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (BlocProvider.of<OtherProfilePageBloc>(context).state.isLoading) {
+                    return;
+                  }
+                  OtherProfilePageController(context: context)
+                      .handleSendRequest(user.id);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.element, // Background color
+                  minimumSize: Size(160.w, 35.h), // Width and height
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.w),
                   ),
+                  side: BorderSide(color: Colors.transparent), // Border color
+                  padding: EdgeInsets.zero, // Remove default padding
                 ),
                 child: Center(
                   child: Row(
@@ -569,9 +596,7 @@ Widget header(BuildContext context) {
                         height: 14.h,
                         color: AppColors.background,
                       ),
-                      Container(
-                        width: 5.w,
-                      ),
+                      SizedBox(width: 5.w),
                       Text(
                         translate('cancel_invitation'),
                         style: AppTextStyle.base(context)
@@ -584,20 +609,25 @@ Widget header(BuildContext context) {
               ),
             ),
           if (isFriendStatus == "Pending")
-            GestureDetector(
-              onTap: () {
-                OtherProfilePageController(context: context).handleInbox(user);
-              },
-              child: Container(
-                margin: EdgeInsets.only(right: 10.w, top: 10.h),
-                width: 160.w,
-                height: 35.h,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 230, 230, 230),
-                  borderRadius: BorderRadius.circular(5.w),
-                  border: Border.all(
-                    color: Colors.transparent,
+            Container(
+              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+              width: 160.w,
+              height: 35.h,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (BlocProvider.of<OtherProfilePageBloc>(context).state.isLoading) {
+                    return;
+                  }
+                  OtherProfilePageController(context: context).handleInbox(user);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 230, 230, 230), // Background color
+                  minimumSize: Size(160.w, 35.h), // Width and height
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.w),
                   ),
+                  side: BorderSide(color: Colors.transparent), // Border color
+                  padding: EdgeInsets.zero, // Remove default padding
                 ),
                 child: Center(
                   child: Row(
@@ -609,9 +639,7 @@ Widget header(BuildContext context) {
                         height: 14.h,
                         color: AppColors.textBlack,
                       ),
-                      Container(
-                        width: 5.w,
-                      ),
+                      SizedBox(width: 5.w),
                       Text(
                         translate('chat'),
                         style: AppTextStyle.base(context).wSemiBold(),
@@ -960,8 +988,8 @@ Widget event(BuildContext context, Event event) {
                     Text(
                       handleDateTime1(event.publishedAt),
                       maxLines: 1,
-                      style:
-                          AppTextStyle.xSmall(context).withColor(AppColors.textGrey),
+                      style: AppTextStyle.xSmall(context)
+                          .withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -982,8 +1010,8 @@ Widget event(BuildContext context, Event event) {
                     Text(
                       event.views.toString(),
                       maxLines: 1,
-                      style:
-                          AppTextStyle.xSmall(context).withColor(AppColors.textGrey),
+                      style: AppTextStyle.xSmall(context)
+                          .withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -1004,8 +1032,8 @@ Widget event(BuildContext context, Event event) {
                     Text(
                       event.participants.toString(),
                       maxLines: 1,
-                      style:
-                          AppTextStyle.xSmall(context).withColor(AppColors.textGrey),
+                      style: AppTextStyle.xSmall(context)
+                          .withColor(AppColors.textGrey),
                     ),
                   ],
                 ),
@@ -1027,7 +1055,8 @@ Widget event(BuildContext context, Event event) {
                     margin: EdgeInsets.only(left: 2.w),
                     child: Text(
                       event.tags[i].name,
-                      style: AppTextStyle.xSmall(context).withColor(AppColors.tag),
+                      style:
+                          AppTextStyle.xSmall(context).withColor(AppColors.tag),
                     ),
                   ),
               ],
@@ -1076,7 +1105,8 @@ Widget event(BuildContext context, Event event) {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: Color.fromARGB(255, 63, 63, 70),
                       ),
@@ -1155,7 +1185,8 @@ Widget event(BuildContext context, Event event) {
                       event.faculty.name,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header,
                       ),

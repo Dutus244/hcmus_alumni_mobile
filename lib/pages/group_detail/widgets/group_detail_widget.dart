@@ -28,7 +28,9 @@ AppBar buildAppBar(BuildContext context) {
     backgroundColor: AppColors.background,
     flexibleSpace: Center(
       child: Container(
-        margin: Platform.isAndroid ? EdgeInsets.only(top: 20.h) : EdgeInsets.only(top: 40.h),
+        margin: Platform.isAndroid
+            ? EdgeInsets.only(top: 20.h)
+            : EdgeInsets.only(top: 40.h),
         child: Text(
           translate('group'),
           textAlign: TextAlign.center,
@@ -141,7 +143,8 @@ Widget informationGroup(BuildContext context, Group group) {
                       maxLines: 2,
                       style: TextStyle(
                         color: AppColors.textGrey,
-                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.bold,
                         fontFamily: AppFonts.Header,
                       ),
@@ -151,7 +154,8 @@ Widget informationGroup(BuildContext context, Group group) {
                       maxLines: 2,
                       style: TextStyle(
                         color: AppColors.textBlack,
-                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.bold,
                         fontFamily: AppFonts.Header,
                       ),
@@ -161,7 +165,8 @@ Widget informationGroup(BuildContext context, Group group) {
                       maxLines: 2,
                       style: TextStyle(
                         color: AppColors.textGrey,
-                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.bold,
                         fontFamily: AppFonts.Header,
                       ),
@@ -186,7 +191,8 @@ Widget informationGroup(BuildContext context, Group group) {
                         group.tags.map((tag) => tag.name).join(' '),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyle.small(context).withColor(AppColors.tag),
+                        style: AppTextStyle.small(context)
+                            .withColor(AppColors.tag),
                       ),
                     ),
                   ],
@@ -201,60 +207,49 @@ Widget informationGroup(BuildContext context, Group group) {
 }
 
 Widget buildCreatePostButton(BuildContext context, Group group) {
-  return GestureDetector(
-    onTap: () async {
-      await Navigator.pushNamed(
-        context,
-        "/writePostGroup",
-        arguments: {
-          "id": group.id,
-        },
-      );
-      GroupDetailController(context: context).handleLoadPostData(group.id, 0);
-    },
-    child: Container(
-      height: 40.h,
-      padding: EdgeInsets.only(top: 0.h, bottom: 5.h, left: 10.w),
+  return Container(
+    height: 40.h,
+    padding: EdgeInsets.only(top: 0.h, bottom: 5.h, left: 10.w, right: 10.w),
+    child: ElevatedButton(
+      onPressed: () async {
+        await Navigator.pushNamed(
+          context,
+          "/writePostGroup",
+          arguments: {
+            "id": group.id,
+          },
+        );
+        GroupDetailController(context: context).handleLoadPostData(group.id, 0);
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.white,
+        padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+        // Text color
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.w),
+          side: BorderSide(color: Colors.grey.withOpacity(0.5)),
+        ),
+      ),
       child: Row(
         children: [
-          GestureDetector(
+          Expanded(
             child: Container(
-              width: 300.w,
-              height: 30.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.w),
-                border: Border.all(
-                  color: Colors.grey.withOpacity(0.5),
-                ),
-              ),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                // Căn giữa theo chiều dọc
-                child: Container(
-                  padding: EdgeInsets.only(left: 10.w),
-                  child: Text(
-                    translate('what_advise_do_you_want'),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: AppFonts.Header,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                    ),
-                  ),
-                ),
+              padding: EdgeInsets.only(left: 10.w),
+              child: Text(
+                translate('what_advise_do_you_want'),
+                style: AppTextStyle.small(context),
               ),
             ),
           ),
-          GestureDetector(
-            child: Container(
-              height: 40.h,
-              width: 40.w,
-              padding: EdgeInsets.only(left: 10.w),
-              child: Image.asset(
-                'assets/icons/image.png',
-              ),
+          Container(
+            height: 40.h,
+            width: 40.w,
+            padding: EdgeInsets.only(left: 10.w),
+            child: Image.asset(
+              AppAssets.imageIconP,
             ),
-          )
+          ),
         ],
       ),
     ),
@@ -265,49 +260,46 @@ Widget joinGroup(BuildContext context, Group group) {
   if (!Global.storageService.permissionGroupJoin()) {
     return Container();
   }
-  return GestureDetector(
-    onTap: () {
-      GroupDetailController(context: context).handleRequestJoinGroup(group.id);
-    },
-    child: group.isRequestPending ? Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 230, 230, 230),
-        borderRadius: BorderRadius.circular(5.w),
-        border: Border.all(
-          color: Colors.transparent,
+  return Container(
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
+    height: 40.h,
+    child: ElevatedButton(
+      onPressed: () {
+        if (BlocProvider.of<GroupDetailBloc>(context).state.isLoading) {
+          return;
+        }
+        if (group.isRequestPending) {
+          return;
+        }
+        GroupDetailController(context: context)
+            .handleRequestJoinGroup(group.id);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: group.isRequestPending
+            ? Color.fromARGB(255, 230, 230, 230)
+            : AppColors.element,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.w),
         ),
+        padding: EdgeInsets.zero, // Remove default padding
+        minimumSize: Size(double.infinity, 30.h), // Set button height
       ),
-      child: Center(
-        child: Text(
-          translate('waiting_approval'),
-          style: TextStyle(
-            fontFamily: AppFonts.Header,
-            fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textBlack,
-          ),
-        ),
-      ),
-    ) : Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: AppColors.element,
-        borderRadius: BorderRadius.circular(5.w),
-        border: Border.all(
-          color: Colors.transparent,
-        ),
-      ),
-      child: Center(
-        child: Text(
-          translate('join'),
-          style: TextStyle(
-            fontFamily: AppFonts.Header,
-            fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-            fontWeight: FontWeight.bold,
-            color: AppColors.background,
+      child: Container(
+        margin:
+            EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h, bottom: 10.h),
+        child: Center(
+          child: Text(
+            group.isRequestPending
+                ? translate('waiting_approval')
+                : translate('join'),
+            style: TextStyle(
+              fontFamily: AppFonts.Header,
+              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+              fontWeight: FontWeight.bold,
+              color: group.isRequestPending
+                  ? AppColors.textBlack
+                  : AppColors.background,
+            ),
           ),
         ),
       ),
@@ -331,96 +323,98 @@ Widget space() {
 }
 
 Widget joinedGroup(BuildContext context, Group group) {
-  return GestureDetector(
-    onTap: () {
-      if (group.userRole == 'MEMBER') {
-        showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          builder: (ctx) => exitGroup(context, group),
-        );
-      }
-      else {
-        Navigator.pushNamed(
-          context,
-          "/groupManagement",
-          arguments: {
-            "group": group,
-          },
-        );
-      }
-    },
-    child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
-      width: 160.w,
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: (group.userRole == 'MEMBER') ? Color.fromARGB(255, 230, 230, 230) : AppColors.element,
-        borderRadius: BorderRadius.circular(5.w),
-        border: Border.all(
-          color: Colors.transparent,
+  return Container(
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 15.h),
+    width: 160.w,
+    height: 40.h,
+    child: ElevatedButton(
+      onPressed: () {
+        if (group.userRole == 'MEMBER') {
+          showModalBottomSheet(
+            isScrollControlled: true,
+            context: context,
+            builder: (ctx) => exitGroup(context, group),
+          );
+        } else {
+          Navigator.pushNamed(
+            context,
+            "/groupManagement",
+            arguments: {
+              "group": group,
+            },
+          );
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: (group.userRole == 'MEMBER')
+            ? Color.fromARGB(255, 230, 230, 230)
+            : AppColors.element,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.w),
         ),
+        padding: EdgeInsets.zero,
+        minimumSize: Size(160.w, 30.h),
       ),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (group.userRole == 'MEMBER')
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    "assets/icons/tick.svg",
-                    width: 14.w,
-                    height: 14.h,
-                    color: AppColors.textBlack,
-                  ),
-                  Container(
-                    width: 5.w,
-                  ),
-                  Text(
-                    translate('joined'),
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
+      child: Container(
+        margin:
+            EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h, bottom: 10.h),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (group.userRole == 'MEMBER')
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/tick.svg",
+                      width: 14.w,
+                      height: 14.h,
                       color: AppColors.textBlack,
                     ),
-                  ),
-                  Container(
-                    width: 5.w,
-                  ),
-                  SvgPicture.asset(
-                    "assets/icons/dropdown.svg",
-                    width: 14.w,
-                    height: 14.h,
-                    color: AppColors.textBlack,
-                  ),
-                ],
-              ),
-            if (group.userRole == 'ADMIN' || group.userRole == 'CREATOR')
-              Row(
-                children: [
-                  SvgPicture.asset(
-                    "assets/icons/star_circle.svg",
-                    width: 14.w,
-                    height: 14.h,
-                    color: AppColors.background,
-                  ),
-                  Container(
-                    width: 5.w,
-                  ),
-                  Text(
-                    translate('manage'),
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
+                    SizedBox(width: 5.w),
+                    Text(
+                      translate('joined'),
+                      style: TextStyle(
+                        fontFamily: AppFonts.Header,
+                        fontSize:
+                            14.sp / MediaQuery.of(context).textScaleFactor,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textBlack,
+                      ),
+                    ),
+                    SizedBox(width: 5.w),
+                    SvgPicture.asset(
+                      "assets/icons/dropdown.svg",
+                      width: 14.w,
+                      height: 14.h,
+                      color: AppColors.textBlack,
+                    ),
+                  ],
+                ),
+              if (group.userRole == 'ADMIN' || group.userRole == 'CREATOR')
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/star_circle.svg",
+                      width: 14.w,
+                      height: 14.h,
                       color: AppColors.background,
                     ),
-                  ),
-                ],
-              ),
-          ],
+                    SizedBox(width: 5.w),
+                    Text(
+                      translate('manage'),
+                      style: TextStyle(
+                        fontFamily: AppFonts.Header,
+                        fontSize:
+                            14.sp / MediaQuery.of(context).textScaleFactor,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.background,
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
         ),
       ),
     ),
@@ -465,8 +459,7 @@ Widget exitGroup(BuildContext context, Group group) {
   );
 }
 
-Widget groupPrivateNotJoined(
-    BuildContext context, Group? group) {
+Widget groupPrivateNotJoined(BuildContext context, Group? group) {
   if (group == null) {
     return loadingWidget();
   } else {
@@ -528,7 +521,8 @@ Widget groupPrivateNotJoined(
                             translate('private'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                              fontSize: 14.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -539,7 +533,8 @@ Widget groupPrivateNotJoined(
                               translate('private_description'),
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                                fontSize: 14.sp /
+                                    MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -571,7 +566,8 @@ Widget groupPrivateNotJoined(
                             translate('group_history'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                              fontSize: 14.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFonts.Header,
                             ),
@@ -582,7 +578,8 @@ Widget groupPrivateNotJoined(
                               '${translate('group_creation_date')} ${handleDateTime2('2024-04-10 20:29:15')}',
                               style: TextStyle(
                                 color: AppColors.textGrey,
-                                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                                fontSize: 14.sp /
+                                    MediaQuery.of(context).textScaleFactor,
                                 fontWeight: FontWeight.normal,
                                 fontFamily: AppFonts.Header,
                               ),
@@ -602,8 +599,8 @@ Widget groupPrivateNotJoined(
   }
 }
 
-Widget group(BuildContext context, ScrollController _scrollController,
-    Group? group) {
+Widget group(
+    BuildContext context, ScrollController _scrollController, Group? group) {
   if (group == null) {
     return loadingWidget();
   } else {
@@ -615,7 +612,8 @@ Widget group(BuildContext context, ScrollController _scrollController,
           child: ListView.builder(
             controller: _scrollController,
             itemCount:
-                BlocProvider.of<GroupDetailBloc>(context).state.posts.length + 1,
+                BlocProvider.of<GroupDetailBloc>(context).state.posts.length +
+                    1,
             itemBuilder: (BuildContext context, int index) {
               switch (
                   BlocProvider.of<GroupDetailBloc>(context).state.statusPost) {
@@ -653,7 +651,8 @@ Widget group(BuildContext context, ScrollController _scrollController,
                             translate('no_posts'),
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 11.sp / MediaQuery.of(context).textScaleFactor,
+                              fontSize: 11.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.normal,
                               fontFamily: AppFonts.Header,
                             ),
@@ -690,7 +689,8 @@ Widget group(BuildContext context, ScrollController _scrollController,
                               context,
                               BlocProvider.of<GroupDetailBloc>(context)
                                   .state
-                                  .posts[index], group),
+                                  .posts[index],
+                              group),
                         ],
                       );
                     } else {
@@ -698,7 +698,8 @@ Widget group(BuildContext context, ScrollController _scrollController,
                           context,
                           BlocProvider.of<GroupDetailBloc>(context)
                               .state
-                              .posts[index], group);
+                              .posts[index],
+                          group);
                     }
                   }
               }
@@ -712,7 +713,7 @@ Widget group(BuildContext context, ScrollController _scrollController,
 
 Widget postOption(BuildContext context, Post post, String groupId) {
   return Container(
-    height: post.permissions.edit ? 90.h : 50.h,
+    height: (post.votes.length == 0 && post.permissions.edit) ? 90.h : 50.h,
     child: Stack(
       children: [
         SingleChildScrollView(
@@ -720,81 +721,91 @@ Widget postOption(BuildContext context, Post post, String groupId) {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              if (post.permissions.edit)
+              if (post.votes.length == 0 && post.permissions.edit)
                 GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    "/editPostGroup",
-                    arguments: {
-                      "id": groupId,
-                      "post": post,
-                    },
-                  );
-                },
-                child: Container(
-                  margin: EdgeInsets.only(left: 10.w, top: 10.h),
-                  color: Colors.transparent,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/edit.svg",
-                        width: 14.w,
-                        height: 14.h,
-                        color: AppColors.textBlack,
-                      ),
-                      Container(
-                        width: 10.w,
-                      ),
-                      Text(
-                        translate('edit_post'),
-                        style: TextStyle(
-                          fontFamily: AppFonts.Header,
-                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
-                          fontWeight: FontWeight.bold,
+                  onTap: () async {
+                    await Navigator.pushNamed(
+                      context,
+                      "/editPostGroup",
+                      arguments: {
+                        "id": groupId,
+                        "post": post,
+                      },
+                    );
+                    GroupDetailController(context: context)
+                        .handleLoadPostData(groupId, 0);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: 10.w, top: 10.h),
+                    color: Colors.transparent,
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icons/edit.svg",
+                          width: 14.w,
+                          height: 14.h,
                           color: AppColors.textBlack,
                         ),
-                      ),
-                    ],
+                        Container(
+                          width: 10.w,
+                        ),
+                        Text(
+                          translate('edit_post'),
+                          style: TextStyle(
+                            fontFamily: AppFonts.Header,
+                            fontSize:
+                                16.sp / MediaQuery.of(context).textScaleFactor,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textBlack,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
               if (post.permissions.delete)
                 GestureDetector(
-                onTap: () async {
-                  bool shouldDelete = await GroupDetailController(context: context)
-                      .handleDeletePost(post.id, groupId);
-                  if (shouldDelete) {
-                    Navigator.pop(context); // Close the modal after deletion
-                  }
-                },
-                child: Container(
-                  margin: EdgeInsets.only(left: 10.w, top: 10.h),
-                  color: Colors.transparent,
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/trash.svg",
-                        width: 14.w,
-                        height: 14.h,
-                        color: AppColors.textBlack,
-                      ),
-                      Container(
-                        width: 10.w,
-                      ),
-                      Text(
-                        translate('delete_post'),
-                        style: TextStyle(
-                          fontFamily: AppFonts.Header,
-                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
-                          fontWeight: FontWeight.bold,
+                  onTap: () async {
+                    if (BlocProvider.of<GroupDetailBloc>(context)
+                        .state
+                        .isLoading) {
+                      return;
+                    }
+                    bool shouldDelete =
+                        await GroupDetailController(context: context)
+                            .handleDeletePost(post.id, groupId);
+                    if (shouldDelete) {
+                      Navigator.pop(context); // Close the modal after deletion
+                    }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: 10.w, top: 10.h),
+                    color: Colors.transparent,
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icons/trash.svg",
+                          width: 14.w,
+                          height: 14.h,
                           color: AppColors.textBlack,
                         ),
-                      ),
-                    ],
+                        Container(
+                          width: 10.w,
+                        ),
+                        Text(
+                          translate('delete_post'),
+                          style: TextStyle(
+                            fontFamily: AppFonts.Header,
+                            fontSize:
+                                16.sp / MediaQuery.of(context).textScaleFactor,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textBlack,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
@@ -853,7 +864,8 @@ Widget post(BuildContext context, Post post, Group group) {
                         maxLines: 1,
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
-                          fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                          fontSize:
+                              12.sp / MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textBlack,
                         ),
@@ -865,7 +877,8 @@ Widget post(BuildContext context, Post post, Group group) {
                             maxLines: 1,
                             style: TextStyle(
                               fontFamily: AppFonts.Header,
-                              fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                              fontSize: 10.sp /
+                                  MediaQuery.of(context).textScaleFactor,
                               fontWeight: FontWeight.normal,
                               color: AppColors.textGrey,
                             ),
@@ -888,7 +901,8 @@ Widget post(BuildContext context, Post post, Group group) {
                       width: 17.w,
                       height: 17.h,
                       decoration: const BoxDecoration(
-                          image: DecorationImage(image: AssetImage("assets/icons/3dot.png"))),
+                          image: DecorationImage(
+                              image: AssetImage("assets/icons/3dot.png"))),
                     ),
                   ),
               ],
@@ -924,7 +938,8 @@ Widget post(BuildContext context, Post post, Group group) {
                     post.tags.map((tag) => tag.name).join(' '),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.xSmall(context).withColor(AppColors.tag),
+                    style:
+                        AppTextStyle.xSmall(context).withColor(AppColors.tag),
                   ),
                 ),
               ],
@@ -972,14 +987,27 @@ Widget post(BuildContext context, Post post, Group group) {
                               value: post.votes[i].name,
                               groupValue: post.voteSelectedOne,
                               onChanged: (value) {
+                                if (BlocProvider.of<GroupDetailBloc>(context)
+                                    .state
+                                    .isLoading) {
+                                  return;
+                                }
                                 if (post.voteSelectedOne == "") {
                                   GroupDetailController(context: context)
-                                      .handleVote(group.id, post.id, post.votes[i].id);
+                                      .handleVote(
+                                          group.id, post.id, post.votes[i].id);
                                 } else {
-                                  for (int j = 0; j < post.votes.length; j += 1) {
-                                    if (post.votes[j].name == post.voteSelectedOne) {
+                                  for (int j = 0;
+                                      j < post.votes.length;
+                                      j += 1) {
+                                    if (post.votes[j].name ==
+                                        post.voteSelectedOne) {
                                       GroupDetailController(context: context)
-                                          .handleUpdateVote(group.id, post.id, post.votes[j].id, post.votes[i].id);
+                                          .handleUpdateVote(
+                                              group.id,
+                                              post.id,
+                                              post.votes[j].id,
+                                              post.votes[i].id);
                                     }
                                   }
                                 }
@@ -993,7 +1021,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                                  fontSize: 12.sp /
+                                      MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.normal,
                                   color: AppColors.textGrey),
                             ),
@@ -1018,7 +1047,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                                  fontSize: 12.sp /
+                                      MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.normal,
                                   color: AppColors.element),
                             ),
@@ -1061,8 +1091,9 @@ Widget post(BuildContext context, Post post, Group group) {
                           if (group.isJoined)
                             Checkbox(
                               checkColor: AppColors.background,
-                              fillColor: MaterialStateProperty.resolveWith<Color?>(
-                                    (Set<MaterialState> states) {
+                              fillColor:
+                                  MaterialStateProperty.resolveWith<Color?>(
+                                (Set<MaterialState> states) {
                                   if (states.contains(MaterialState.selected)) {
                                     return AppColors.element; // Selected color
                                   }
@@ -1070,15 +1101,23 @@ Widget post(BuildContext context, Post post, Group group) {
                                 },
                               ),
                               onChanged: (value) {
+                                if (BlocProvider.of<GroupDetailBloc>(context)
+                                    .state
+                                    .isLoading) {
+                                  return;
+                                }
                                 if (value! == true) {
                                   GroupDetailController(context: context)
-                                      .handleVote(group.id, post.id, post.votes[i].id);
+                                      .handleVote(
+                                          group.id, post.id, post.votes[i].id);
                                 } else {
                                   GroupDetailController(context: context)
-                                      .handleDeleteVote(group.id, post.id, post.votes[i].id);
+                                      .handleDeleteVote(
+                                          group.id, post.id, post.votes[i].id);
                                 }
                               },
-                              value: post.voteSelectedMultiple.contains(post.votes[i].name),
+                              value: post.voteSelectedMultiple
+                                  .contains(post.votes[i].name),
                             ),
                           Container(
                             width: 220.w,
@@ -1088,7 +1127,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                                  fontSize: 12.sp /
+                                      MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.normal,
                                   color: AppColors.textGrey),
                             ),
@@ -1113,7 +1153,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               '${calculatePercentages(post.votes[i].voteCount, post.totalVote)}%',
                               style: TextStyle(
                                   fontFamily: AppFonts.Header,
-                                  fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                                  fontSize: 12.sp /
+                                      MediaQuery.of(context).textScaleFactor,
                                   fontWeight: FontWeight.normal,
                                   color: AppColors.element),
                             ),
@@ -1133,89 +1174,89 @@ Widget post(BuildContext context, Post post, Group group) {
                 ),
               ),
           if (post.votes.length > 0 && post.allowAddOptions && group.isJoined)
-            GestureDetector(
-              onTap: () {
-                if (post
-                    .votes
-                    .length >=
-                    10) {
-                  toastInfo(msg: translate('option_above_10'));
-                  return;
-                }
-                TextEditingController textController = TextEditingController();
-
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text(translate('add_option')),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextField(
-                          controller: textController,
-                          decoration: InputDecoration(
-                            hintText: translate('add_option'),
-                          ),
-                        ),
-                      ],
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: Text(translate('cancel')),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, {
-                          'confirmed': true,
-                          'vote': textController.text,
-                        }),
-                        child: Text(translate('add')),
-                      ),
-                    ],
-                  ),
-                ).then((result) {
-                  if (result != null && result['confirmed'] == true) {
-                    String vote = result['vote'];
-                    GroupDetailController(context: context)
-                        .handleAddVote(group.id, post.id, vote);
-                  } else {
-                  }
-                });
-              },
+            Center(
               child: Container(
                 width: 350.w,
                 height: 35.h,
                 margin: EdgeInsets.only(
                     top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(10.w),
-                  border: Border.all(
-                    color: AppColors.primaryFourthElementText,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (post.votes.length >= 10) {
+                      toastInfo(msg: translate("option_above_10"));
+                      return;
+                    }
+                    if (BlocProvider.of<GroupDetailBloc>(context).state.isLoading) {
+                      return;
+                    }
+                    TextEditingController textController = TextEditingController();
+
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text(translate('add_option')),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextField(
+                              controller: textController,
+                              decoration: InputDecoration(
+                                hintText: translate('add_option'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: Text(translate('cancel')),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, {
+                              'confirmed': true,
+                              'vote': textController.text,
+                            }),
+                            child: Text(translate('add')),
+                          ),
+                        ],
+                      ),
+                    ).then((result) {
+                      if (result != null && result['confirmed'] == true) {
+                        String vote = result['vote'];
+                        GroupDetailController(context: context).handleAddVote(group.id, post.id, vote);
+                      }
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.transparent, backgroundColor: Colors.transparent, // Transparent background for pressed state
+                    shadowColor: Colors.transparent, // Remove shadow
+                    padding: EdgeInsets.zero, // Remove default padding
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.w),
+                      side: BorderSide(
+                        color: AppColors.primaryFourthElementText,
+                      ),
+                    ),
                   ),
-                ),
-                child: Container(
-                  margin: EdgeInsets.only(left: 10.w),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/add.svg",
-                        width: 14.w,
-                        height: 14.h,
-                        color: AppColors.textGrey,
-                      ),
-                      Container(
-                        width: 5.w,
-                      ),
-                      Text(
-                        translate('add_option'),
-                        style: TextStyle(
-                            fontFamily: AppFonts.Header,
-                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                            fontWeight: FontWeight.normal,
-                            color: AppColors.textGrey),
-                      ),
-                    ],
+                  child: Container(
+                    width: 350.w,
+                    height: 35.h,
+                    margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          AppAssets.addIconS,
+                          width: 14.w,
+                          height: 14.h,
+                          color: AppColors.textGrey,
+                        ),
+                        SizedBox(width: 5.w),
+                        Text(
+                          translate('add_option'),
+                          style: AppTextStyle.small(context),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -1327,7 +1368,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[1].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[1].pictureUrl),
                               ),
                             ),
                           ),
@@ -1338,7 +1380,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[2].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[2].pictureUrl),
                               ),
                             ),
                           ),
@@ -1375,7 +1418,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[0].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[0].pictureUrl),
                               ),
                             ),
                           ),
@@ -1386,7 +1430,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[1].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[1].pictureUrl),
                               ),
                             ),
                           ),
@@ -1404,7 +1449,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[2].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[2].pictureUrl),
                               ),
                             ),
                           ),
@@ -1415,7 +1461,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[3].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[3].pictureUrl),
                               ),
                             ),
                           ),
@@ -1452,7 +1499,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[0].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[0].pictureUrl),
                               ),
                             ),
                           ),
@@ -1463,7 +1511,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[1].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[1].pictureUrl),
                               ),
                             ),
                           ),
@@ -1481,7 +1530,8 @@ Widget post(BuildContext context, Post post, Group group) {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(post.pictures[2].pictureUrl),
+                                image:
+                                    NetworkImage(post.pictures[2].pictureUrl),
                               ),
                             ),
                           ),
@@ -1494,8 +1544,8 @@ Widget post(BuildContext context, Post post, Group group) {
                                   shape: BoxShape.rectangle,
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image:
-                                        NetworkImage(post.pictures[3].pictureUrl),
+                                    image: NetworkImage(
+                                        post.pictures[3].pictureUrl),
                                   ),
                                 ),
                               ),
@@ -1514,7 +1564,9 @@ Widget post(BuildContext context, Post post, Group group) {
                                       '+1',
                                       style: TextStyle(
                                         fontFamily: AppFonts.Header,
-                                        fontSize: 32.sp / MediaQuery.of(context).textScaleFactor,
+                                        fontSize: 32.sp /
+                                            MediaQuery.of(context)
+                                                .textScaleFactor,
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.background,
                                       ),
@@ -1566,7 +1618,8 @@ Widget post(BuildContext context, Post post, Group group) {
                           post.reactionCount.toString(),
                           style: TextStyle(
                             fontFamily: AppFonts.Header,
-                            fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                            fontSize:
+                                10.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             color: AppColors.textBlack,
                           ),
@@ -1593,7 +1646,8 @@ Widget post(BuildContext context, Post post, Group group) {
                       '${post.childrenCommentNumber} ${translate('comments').toLowerCase()}',
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textBlack,
                       ),
@@ -1610,112 +1664,123 @@ Widget post(BuildContext context, Post post, Group group) {
           ),
           if (group.isJoined)
             Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(top: 3.h, bottom: 3.h),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      GroupDetailController(context: context)
-                          .handleLikePost(post.id);
-                    },
-                    child: post.isReacted
-                        ? Container(
-                            margin: EdgeInsets.only(left: 40.w),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/like.svg",
-                                  width: 20.w,
-                                  height: 20.h,
-                                  color: AppColors.element,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Text(
-                                    translate('like'),
-                                    style: TextStyle(
-                                      fontFamily: AppFonts.Header,
-                                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
-                                      fontWeight: FontWeight.normal,
-                                      color: AppColors.element,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(top: 3.h, bottom: 3.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        if (BlocProvider.of<GroupDetailBloc>(context)
+                            .state
+                            .isLoading) {
+                          return;
+                        }
+                        GroupDetailController(context: context)
+                            .handleLikePost(post.id);
+                      },
+                      child: post.isReacted
+                          ? Container(
+                              margin: EdgeInsets.only(left: 40.w),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/like.svg",
+                                    width: 20.w,
+                                    height: 20.h,
+                                    color: AppColors.element,
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: Text(
+                                      translate('like'),
+                                      style: TextStyle(
+                                        fontFamily: AppFonts.Header,
+                                        fontSize: 10.sp /
+                                            MediaQuery.of(context)
+                                                .textScaleFactor,
+                                        fontWeight: FontWeight.normal,
+                                        color: AppColors.element,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : Container(
-                            margin: EdgeInsets.only(left: 40.w),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/like.svg",
-                                  width: 20.w,
-                                  height: 20.h,
-                                  color: AppColors.textBlack,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 5.w),
-                                  child: Text(
-                                    translate('like'),
-                                    style: TextStyle(
-                                      fontFamily: AppFonts.Header,
-                                      fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
-                                      fontWeight: FontWeight.normal,
-                                      color: AppColors.textBlack,
+                                ],
+                              ),
+                            )
+                          : Container(
+                              margin: EdgeInsets.only(left: 40.w),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/like.svg",
+                                    width: 20.w,
+                                    height: 20.h,
+                                    color: AppColors.textBlack,
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(left: 5.w),
+                                    child: Text(
+                                      translate('like'),
+                                      style: TextStyle(
+                                        fontFamily: AppFonts.Header,
+                                        fontSize: 10.sp /
+                                            MediaQuery.of(context)
+                                                .textScaleFactor,
+                                        fontWeight: FontWeight.normal,
+                                        color: AppColors.textBlack,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                  ),
-                ),
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        "/listCommentPostGroup",
-                        arguments: {
-                          "id": post.id,
-                          "groupId": group.id,
-                        },
-                      );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(right: 40.w),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 20.h,
-                            width: 20.w,
-                            child: Image.asset('assets/icons/comment.png'),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 5.w),
-                            child: Text(
-                              translate('comment'),
-                              style: TextStyle(
-                                fontFamily: AppFonts.Header,
-                                fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
-                                fontWeight: FontWeight.normal,
-                                color: AppColors.textBlack,
+                                ],
                               ),
                             ),
-                          ),
-                        ],
+                    ),
+                  ),
+                  Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          "/listCommentPostGroup",
+                          arguments: {
+                            "id": post.id,
+                            "groupId": group.id,
+                            "isJoined": group.isJoined,
+                          },
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 40.w),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 20.h,
+                              width: 20.w,
+                              child: Image.asset('assets/icons/comment.png'),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: 5.w),
+                              child: Text(
+                                translate('comment'),
+                                style: TextStyle(
+                                  fontFamily: AppFonts.Header,
+                                  fontSize: 10.sp /
+                                      MediaQuery.of(context).textScaleFactor,
+                                  fontWeight: FontWeight.normal,
+                                  color: AppColors.textBlack,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
           Container(
             height: 5.h,
             color: AppColors.elementLight,

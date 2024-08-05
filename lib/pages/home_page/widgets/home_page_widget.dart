@@ -228,8 +228,8 @@ Widget event(BuildContext context, Event event) {
 
 Widget listNews(BuildContext context, List<News> newsList) {
   return Container(
-    margin: EdgeInsets.only(top: 5.h, left: 5.w, right: 5.w),
-    padding: EdgeInsets.only(top: 10.h, left: 5.w, right: 5.w),
+    margin: EdgeInsets.only(top: 15.h, left: 5.w, right: 5.w),
+    padding: EdgeInsets.only(top: 15.h, left: 5.w, right: 5.w),
     decoration: BoxDecoration(
       color: AppColors.background,
       borderRadius: BorderRadius.circular(15.w),
@@ -393,7 +393,7 @@ Widget news(BuildContext context, News news) {
 
 Widget listHof(BuildContext context, List<HallOfFame> hallOfFameList) {
   return Container(
-    padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
+    padding: EdgeInsets.only(top: 15.h, bottom: 5.h),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -555,7 +555,7 @@ Widget hof(BuildContext context, HallOfFame hallOfFame) {
 
 Widget advise(BuildContext context) {
   return Container(
-    padding: EdgeInsets.only(top: 0.h, bottom: 5.h),
+    padding: EdgeInsets.only(top: 15.h, bottom: 5.h),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -616,37 +616,77 @@ Widget advise(BuildContext context) {
             if (Global.storageService.permissionCounselCreate())
               Align(
               alignment: Alignment.centerRight,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    "/writePostAdvise",
-                  );
-                },
-                child: Container(
-                  width: 100.w,
-                  height: 30.h,
-                  margin: EdgeInsets.only(top: 45.h, left: 20.w, right: 45.w),
-                  decoration: BoxDecoration(
-                    color: AppColors.element,
-                    borderRadius: BorderRadius.circular(15.w),
-                    border: Border.all(
-                      color: Colors.transparent,
+              child: Container(
+                width: 100.w,
+                height: 30.h,
+                margin: EdgeInsets.only(top: 45.h, left: 20.w, right: 45.w),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      "/writePostAdvise",
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: AppColors.background, backgroundColor: AppColors.element, // Text color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.w),
                     ),
+                    padding: EdgeInsets.zero, // Remove default padding
+                    minimumSize: Size(100.w, 30.h), // Set size of the button
+                    side: BorderSide(color: Colors.transparent), // Border color
                   ),
                   child: Center(
                     child: Text(
                       translate('advise'),
                       style: TextStyle(
-                          fontFamily: AppFonts.Header,
-                          fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.background),
+                        fontFamily: AppFonts.Header,
+                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.background,
+                      ),
                     ),
                   ),
                 ),
               ),
-            )
+            ),
+            if (!Global.storageService.permissionCounselCreate())
+              Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                  width: 160.w,
+                  height: 30.h,
+                  margin: EdgeInsets.only(top: 45.h, left: 15.w, right: 15.w),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        "/myProfileEdit",
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.black.withOpacity(0.5), backgroundColor: Color.fromARGB(255, 245, 245, 245), // Text color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.w),
+                      ),
+                      padding: EdgeInsets.zero, // Remove default padding
+                      minimumSize: Size(100.w, 30.h), // Set size of the button
+                      side: BorderSide(color: Colors.transparent), // Border color
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Cần xét duyệt để tư vấn',
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header,
+                          fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textBlack,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
           ],
         )
       ],

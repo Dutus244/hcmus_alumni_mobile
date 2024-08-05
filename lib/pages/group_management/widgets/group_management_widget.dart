@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:hcmus_alumni_mobile/common/widgets/loading_widget.dart';
 import 'package:hcmus_alumni_mobile/model/group.dart';
+import 'package:hcmus_alumni_mobile/pages/group_management/bloc/group_management_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/group_management/group_management_controller.dart';
 
 import '../../../common/function/handle_participant_count.dart';
@@ -220,6 +222,9 @@ Widget groupManagement(BuildContext context, Group? group) {
             ),
             GestureDetector(
               onTap: () {
+                if(BlocProvider.of<GroupManagementBloc>(context).state.isLoading) {
+                  return;
+                }
                 GroupManagementController(context: context).handleExitGroup(group.id);
               },
               child: Container(
@@ -251,6 +256,9 @@ Widget groupManagement(BuildContext context, Group? group) {
             ),
             GestureDetector(
               onTap: () {
+                if(BlocProvider.of<GroupManagementBloc>(context).state.isLoading) {
+                  return;
+                }
                 GroupManagementController(context: context).handleDeleteGroup(group.id);
               },
               child: Container(

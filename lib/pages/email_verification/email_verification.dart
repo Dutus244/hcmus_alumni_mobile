@@ -21,7 +21,7 @@ class _EmailVerificationState extends State<EmailVerification> {
   void initState() {
     super.initState();
     context.read<EmailVerificationBloc>().add(EmailVerificationResetEvent());
-    EmailVerificationController(context: context).startResendCooldown();;
+    EmailVerificationController(context: context).startResendCooldown();
   }
 
   @override

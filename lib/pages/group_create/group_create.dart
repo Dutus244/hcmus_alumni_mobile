@@ -20,6 +20,7 @@ class _WritePostAdviseState extends State<GroupCreate> {
   void initState() {
     super.initState();
     context.read<GroupCreateBloc>().add(GroupCreateResetEvent());
+    context.read<GroupCreateBloc>().add(IsLoadingEvent(false));
   }
 
   @override

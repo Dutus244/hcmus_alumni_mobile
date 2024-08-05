@@ -29,3 +29,9 @@ class HasReachedMaxRequestEvent extends GroupMemberApproveEvent {
 
   const HasReachedMaxRequestEvent(this.hasReachedMaxRequest);
 }
+
+class IsLoadingEvent extends GroupMemberApproveEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

@@ -18,6 +18,7 @@ class ChatDetailState {
   final int indexDeviceImage;
   final bool hasReachedMaxDeviceImage;
   final List<File> images;
+  final bool isLoading;
 
   const ChatDetailState({
     this.mode = 0,
@@ -32,7 +33,8 @@ class ChatDetailState {
     this.deviceImages = const [],
     this.indexDeviceImage = 0,
     this.hasReachedMaxDeviceImage = false,
-    this.images = const []
+    this.images = const [],
+    this.isLoading = false,
   });
 
   ChatDetailState copyWith({
@@ -48,7 +50,8 @@ class ChatDetailState {
     List<File>? deviceImages,
     int? indexDeviceImage,
     bool? hasReachedMaxDeviceImage,
-    List<File>? images
+    List<File>? images,
+    bool? isLoading,
   }) {
     return ChatDetailState(
       mode: mode ?? this.mode,
@@ -64,6 +67,7 @@ class ChatDetailState {
       indexDeviceImage: indexDeviceImage ?? this.indexDeviceImage,
       hasReachedMaxDeviceImage: hasReachedMaxDeviceImage ?? this.hasReachedMaxDeviceImage,
       images: images ?? this.images,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

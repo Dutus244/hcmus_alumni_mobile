@@ -35,6 +35,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
     MyProfilePageController(context: context).handleLoadEventsData(0);
     MyProfilePageController(context: context).handleLoadPostData(0);
     MyProfilePageController(context: context).handleLoadCommentPostAdviseData(0);
+
   }
 
   void _onScroll() {

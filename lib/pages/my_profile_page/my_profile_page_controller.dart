@@ -27,8 +27,41 @@ import 'package:http/http.dart' as http;
 
 class MyProfilePageController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const MyProfilePageController({required this.context});
+  MyProfilePageController({required this.context});
+  
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
+  
 
   Future<void> handleGetProfile() async {
     var token = Global.storageService.getUserAuthToken();
@@ -125,7 +158,7 @@ class MyProfilePageController {
         toastInfo(msg: translate('error_get_events_participated'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_events_participated'));
+      // toastInfo(msg: translate('error_get_events_participated'));
     }
   }
 
@@ -197,11 +230,13 @@ class MyProfilePageController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_get_posts'));
+      // toastInfo(msg: translate('error_get_posts'));
     }
   }
 
   Future<void> handleLikePost(String id) async {
+    context.read<MyProfilePageBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     List<Post> currentList =
         BlocProvider.of<MyProfilePageBloc>(context).state.posts;
 
@@ -227,22 +262,24 @@ class MyProfilePageController {
             currentList[i].reactionCount -= 1;
             currentList[i].isReacted = false;
             context.read<MyProfilePageBloc>().add(PostsEvent(currentList));
-            return;
           } else {
             // Handle other status codes if needed
             toastInfo(msg: translate('error_unlike_post'));
           }
+          context.read<MyProfilePageBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
         } else {
           var response = await http.post(url, headers: headers, body: body);
           if (response.statusCode == 201) {
             currentList[i].reactionCount += 1;
             currentList[i].isReacted = true;
             context.read<MyProfilePageBloc>().add(PostsEvent(currentList));
-            return;
           } else {
             // Handle other status codes if needed
             toastInfo(msg: translate('error_like_post'));
           }
+          context.read<MyProfilePageBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
         }
       }
     }
@@ -267,6 +304,8 @@ class MyProfilePageController {
       ),
     );
     if (shouldDelete != null && shouldDelete) {
+      context.read<MyProfilePageBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/counsel/$id';
 
@@ -281,21 +320,29 @@ class MyProfilePageController {
 
         var response = await http.delete(url, headers: headers);
         if (response.statusCode == 200) {
-          MyProfilePageController(context: context).handleLoadPostData(0);
+          await handleLoadPostData(0);
+          context.read<MyProfilePageBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
+          toastInfo(msg: 'Xoá bài viết thành công');
           return true;
         } else {
           // Handle other status codes if needed
+          context.read<MyProfilePageBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           toastInfo(msg: translate('error_delete_post'));
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: translate('error_delete_post'));
+        // toastInfo(msg: translate('error_delete_post'));
+        hideLoadingIndicator();
       }
     }
     return shouldDelete ?? false;
   }
 
   Future<void> handleVote(String id, int newVoteId) async {
+    context.read<MyProfilePageBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel/$id/votes/$newVoteId';
 
@@ -311,18 +358,25 @@ class MyProfilePageController {
 
       var response = await http.post(url, headers: headers);
       if (response.statusCode == 201) {
-        MyProfilePageController(context: context).handleLoadPostData(0);
+        await handleLoadPostData(0);
+        context.read<MyProfilePageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
       } else {
         // Handle other status codes if needed
+        context.read<MyProfilePageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_choose_option'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_choose_option'));
+      // toastInfo(msg: translate('error_choose_option'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleDeleteVote(String id, int voteId) async {
+    context.read<MyProfilePageBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel/$id/votes/$voteId';
 
@@ -338,18 +392,25 @@ class MyProfilePageController {
 
       var response = await http.delete(url, headers: headers);
       if (response.statusCode == 200) {
-        MyProfilePageController(context: context).handleLoadPostData(0);
+        await handleLoadPostData(0);
+        context.read<MyProfilePageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
       } else {
         // Handle other status codes if needed
+        context.read<MyProfilePageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_not_choose_option'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_not_choose_option'));
+      // toastInfo(msg: translate('error_not_choose_option'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleUpdateVote(String id, int oldVoteId, int newVoteId) async {
+    context.read<MyProfilePageBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel/$id/votes/$oldVoteId';
 
@@ -369,18 +430,25 @@ class MyProfilePageController {
 
       var response = await http.put(url, headers: headers, body: body);
       if (response.statusCode == 200) {
-        MyProfilePageController(context: context).handleLoadPostData(0);
+        await handleLoadPostData(0);
+        context.read<MyProfilePageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
       } else {
         // Handle other status codes if needed
+        context.read<MyProfilePageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_change_option'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_change_option'));
+      // toastInfo(msg: translate('error_change_option'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleAddVote(String id, String vote) async {
+    context.read<MyProfilePageBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel/$id/votes';
 
@@ -400,15 +468,21 @@ class MyProfilePageController {
       var response =
           await http.post(url, headers: headers, body: json.encode(map));
       if (response.statusCode == 201) {
-        MyProfilePageController(context: context).handleLoadPostData(0);
+        await handleLoadPostData(0);
+        context.read<MyProfilePageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Thêm lựa chọn thành công');
       } else {
         // Handle other status codes if needed
+        context.read<MyProfilePageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_add_option'));
         return;
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_add_option'));
+      // toastInfo(msg: translate('error_add_option'));
+      hideLoadingIndicator();
       return;
     }
   }
@@ -609,7 +683,7 @@ class MyProfilePageController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_get_friend'));
+      // toastInfo(msg: translate('error_get_friend'));
     }
   }
 }

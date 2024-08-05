@@ -10,6 +10,7 @@ class ListCommentPostAdviseState {
   final String content;
   final Comment? children;
   final int reply;
+  final bool isLoading;
 
   ListCommentPostAdviseState(
       {this.statusComment = Status.loading,
@@ -18,7 +19,8 @@ class ListCommentPostAdviseState {
       this.hasReachedMaxComment = false,
       this.content = "",
       this.children = null,
-      this.reply = 0});
+      this.reply = 0,
+      this.isLoading = false});
 
   ListCommentPostAdviseState copyWith(
       {Status? statusComment,
@@ -27,7 +29,8 @@ class ListCommentPostAdviseState {
       bool? hasReachedMaxComment,
       String? content,
       Comment? children,
-      int? reply}) {
+      int? reply,
+      bool? isLoading}) {
     return ListCommentPostAdviseState(
       statusComment: statusComment ?? this.statusComment,
       comments: comments ?? this.comments,
@@ -36,6 +39,7 @@ class ListCommentPostAdviseState {
       content: content ?? this.content,
       children: children ?? this.children,
       reply: reply ?? this.reply,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

@@ -44,12 +44,6 @@ class HasReachedMaxCommentEvent extends EventDetailEvent {
   const HasReachedMaxCommentEvent(this.hasReachedMaxComment);
 }
 
-class IsParticipatedEvent extends EventDetailEvent {
-  final bool isParticipated;
-
-  const IsParticipatedEvent(this.isParticipated);
-}
-
 class StatusParticipantEvent extends EventDetailEvent {
   final Status statusParticipant;
 
@@ -72,5 +66,11 @@ class HasReachedMaxParticipantEvent extends EventDetailEvent {
   final bool hasReachedMaxParticipant;
 
   const HasReachedMaxParticipantEvent(this.hasReachedMaxParticipant);
+}
+
+class IsLoadingEvent extends EventDetailEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
 }
 

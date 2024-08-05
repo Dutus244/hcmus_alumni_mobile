@@ -18,8 +18,8 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   void initState() {
     super.initState();
-
     context.read<ChangePasswordBloc>().add(ChangePasswordResetEvent());
+    context.read<ChangePasswordBloc>().add(IsLoadingEvent(false));
   }
 
   @override

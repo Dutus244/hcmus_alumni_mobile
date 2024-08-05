@@ -12,6 +12,7 @@ class NewsDetailBloc extends Bloc<NewsDetailEvent, NewsDetailState> {
     on<CommentsEvent>(_commentsEvent);
     on<IndexCommentEvent>(_indexCommentEvent);
     on<HasReachedMaxCommentEvent>(_hasReachedMaxCommentEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<RelatedNewsEvent>(_relatedNewsEvent);
   }
 
@@ -44,6 +45,11 @@ class NewsDetailBloc extends Bloc<NewsDetailEvent, NewsDetailState> {
   void _hasReachedMaxCommentEvent(
       HasReachedMaxCommentEvent event, Emitter<NewsDetailState> emit) {
     emit(state.copyWith(hasReachedMaxComment: event.hasReachedMaxComment));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<NewsDetailState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _relatedNewsEvent(

@@ -11,6 +11,7 @@ class MyProfileAddEducationBloc
     on<StartTimeEvent>(_startTimeEvent);
     on<IsStudyingEvent>(_isStudyingEvent);
     on<EndTimeEvent>(_endTimeEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<MyProfileAddEducationResetEvent>(_myProfileAddEducationResetEvent);
   }
 
@@ -37,6 +38,11 @@ class MyProfileAddEducationBloc
   void _endTimeEvent(
       EndTimeEvent event, Emitter<MyProfileAddEducationState> emit) async {
     emit(state.copyWith(endTime: event.endTime));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<MyProfileAddEducationState> emit) async {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _myProfileAddEducationResetEvent(

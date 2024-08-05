@@ -9,6 +9,7 @@ class WritePostAdviseState {
   final int page;
   final bool allowMultipleVotes;
   final bool allowAddOptions;
+  final bool isLoading;
 
   WritePostAdviseState(
       {this.title = "",
@@ -18,7 +19,8 @@ class WritePostAdviseState {
       this.pictures = const [],
       this.page = 0,
       this.allowMultipleVotes = false,
-      this.allowAddOptions = false});
+      this.allowAddOptions = false,
+      this.isLoading = false});
 
   WritePostAdviseState copyWith(
       {String? title,
@@ -28,7 +30,8 @@ class WritePostAdviseState {
       List<File>? pictures,
       int? page,
       bool? allowMultipleVotes,
-      bool? allowAddOptions}) {
+      bool? allowAddOptions,
+      bool? isLoading}) {
     return WritePostAdviseState(
       title: title ?? this.title,
       content: content ?? this.content,
@@ -38,6 +41,7 @@ class WritePostAdviseState {
       page: page ?? this.page,
       allowAddOptions: allowAddOptions ?? this.allowAddOptions,
       allowMultipleVotes: allowMultipleVotes ?? this.allowMultipleVotes,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

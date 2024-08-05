@@ -9,6 +9,7 @@ class MyProfileAddAchievementBloc
     on<NameEvent>(_nameEvent);
     on<TypeEvent>(_typeEvent);
     on<TimeEvent>(_timeEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<MyProfileAddAchievementResetEvent>(_myProfileAddAchievementResetEvent);
   }
 
@@ -25,6 +26,11 @@ class MyProfileAddAchievementBloc
   void _timeEvent(
       TimeEvent event, Emitter<MyProfileAddAchievementState> emit) async {
     emit(state.copyWith(time: event.time));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<MyProfileAddAchievementState> emit) async {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _myProfileAddAchievementResetEvent(

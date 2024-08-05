@@ -306,6 +306,11 @@ Widget buildCommentWidget(
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    if (BlocProvider.of<ListCommentPostGroupBloc>(context)
+                                        .state
+                                        .isLoading) {
+                                      return;
+                                    }
                                     ListCommentPostGroupController(context: context)
                                         .handleDeleteComment(id, comment.id);
                                   },
@@ -383,6 +388,11 @@ Widget buildCommentWidget(
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    if (BlocProvider.of<ListCommentPostGroupBloc>(context)
+                                        .state
+                                        .isLoading) {
+                                      return;
+                                    }
                                     ListCommentPostGroupController(context: context)
                                         .handleDeleteComment(id, comment.id);
                                   },
@@ -528,6 +538,11 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                 GestureDetector(
                   onTap: () {
                     if (content != "") {
+                      if (BlocProvider.of<ListCommentPostGroupBloc>(context)
+                          .state
+                          .isLoading) {
+                        return;
+                      }
                       ListCommentPostGroupController(context: context)
                           .handleLoadWriteComment(id);
                     }
@@ -612,6 +627,11 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                     GestureDetector(
                       onTap: () {
                         if (content != "") {
+                          if (BlocProvider.of<ListCommentPostGroupBloc>(context)
+                              .state
+                              .isLoading) {
+                            return;
+                          }
                           ListCommentPostGroupController(context: context)
                               .handleLoadWriteChildrenComment(
                               id,
@@ -696,6 +716,11 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                           1
                           ? () {
                         if (content != "") {
+                          if (BlocProvider.of<ListCommentPostGroupBloc>(context)
+                              .state
+                              .isLoading) {
+                            return;
+                          }
                           ListCommentPostGroupController(
                               context: context)
                               .handleLoadWriteChildrenComment(
@@ -710,6 +735,11 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                       }
                           : () {
                         if (content != "") {
+                          if (BlocProvider.of<ListCommentPostGroupBloc>(context)
+                              .state
+                              .isLoading) {
+                            return;
+                          }
                           ListCommentPostGroupController(
                               context: context)
                               .handleEditComment(

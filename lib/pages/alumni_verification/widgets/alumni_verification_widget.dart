@@ -115,37 +115,41 @@ Widget buildTextFieldStartYear(BuildContext context, String hintText,
 
 Widget buildLogInAndRegButton(BuildContext context, String buttonName,
     String buttonType, String fullName, File? avatar) {
-  return GestureDetector(
-    onTap: () {
-      if (buttonType == "verify") {
-        AlumniVerificationController(context: context)
-            .handleAlumniVerification(fullName, avatar);
-      } else {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            "/applicationPage", arguments: {"route": 0}, (route) => false);
-      }
-    },
-    child: Container(
-      width: 325.w,
-      height: 50.h,
-      margin: EdgeInsets.only(
-          left: 25.w, right: 25.w, top: buttonType == "verify" ? 10.h : 10.h),
-      decoration: BoxDecoration(
-        color:
+  return Container(
+    width: 325.w,
+    height: 50.h,
+    margin: EdgeInsets.only(
+        left: 25.w, right: 25.w, top: buttonType == "verify" ? 10.h : 10.h),
+    child: ElevatedButton(
+      onPressed: () {
+        if (!BlocProvider.of<AlumniVerificationBloc>(context).state.isLoading) {
+          if (buttonType == "verify") {
+            AlumniVerificationController(context: context)
+                .handleAlumniVerification(fullName, avatar);
+          } else {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                "/applicationPage", arguments: {"route": 0}, (route) => false);
+          }
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor:
+            buttonType == "verify" ? AppColors.background : AppColors.element,
+        backgroundColor:
             buttonType == "verify" ? AppColors.element : AppColors.elementLight,
-        borderRadius: BorderRadius.circular(15.w),
-        border: Border.all(
-          color: buttonType == "verify"
-              ? Colors.transparent
-              : AppColors.primaryFourthElementText,
+        minimumSize: Size(325.w, 50.h),
+        padding: EdgeInsets.symmetric(horizontal: 25.w),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.w),
+          side: buttonType == "verify"
+              ? BorderSide(color: Colors.transparent)
+              : BorderSide(color: AppColors.primaryFourthElementText),
         ),
       ),
-      child: Center(
-        child: Text(buttonName,
-            style: AppTextStyle.medium(context).wSemiBold().withColor(
-                buttonType == "verify"
-                    ? AppColors.background
-                    : AppColors.element)),
+      child: Text(
+        buttonName,
+        style: AppTextStyle.medium(context).wSemiBold().withColor(
+            buttonType == "verify" ? AppColors.background : AppColors.element),
       ),
     ),
   );

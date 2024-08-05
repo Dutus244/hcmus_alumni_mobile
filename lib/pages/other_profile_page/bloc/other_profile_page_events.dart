@@ -1,4 +1,5 @@
 import 'package:hcmus_alumni_mobile/model/event.dart';
+import 'package:hcmus_alumni_mobile/pages/advise_page/bloc/advise_page_events.dart';
 
 import '../../../model/achievement.dart';
 import '../../../model/education.dart';
@@ -76,4 +77,10 @@ class IsFriendStatusEvent extends OtherProfilePageEvent {
   final String isFriendStatus;
 
   const IsFriendStatusEvent(this.isFriendStatus);
+}
+
+class IsLoadingEvent extends OtherProfilePageEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
 }

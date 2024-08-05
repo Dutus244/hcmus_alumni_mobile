@@ -9,6 +9,7 @@ import 'package:hcmus_alumni_mobile/pages/group_detail/widgets/group_detail_widg
 import '../../common/values/colors.dart';
 import 'bloc/group_detail_blocs.dart';
 import 'bloc/group_detail_states.dart';
+import 'bloc/group_detail_events.dart';
 
 class GroupDetail extends StatefulWidget {
   const GroupDetail({super.key});
@@ -27,6 +28,7 @@ class _GroupDetailState extends State<GroupDetail> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    context.read<GroupDetailBloc>().add(IsLoadingEvent(false));
   }
 
   void _onScroll() {

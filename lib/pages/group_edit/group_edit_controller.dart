@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -16,8 +17,40 @@ import 'bloc/group_edit_events.dart';
 
 class GroupEditController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const GroupEditController({required this.context});
+  GroupEditController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleGetGroup(String id) async {
     var apiUrl = dotenv.env['API_URL'];
@@ -43,11 +76,13 @@ class GroupEditController {
         toastInfo(msg: translate('error_get_info_group'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_info_group'));
+      // toastInfo(msg: translate('error_get_info_group'));
     }
   }
 
   Future<void> handleEditGroup(Group group) async {
+    context.read<GroupEditBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<GroupEditBloc>().state;
     String name = state.name;
     String description = state.description;
@@ -89,13 +124,19 @@ class GroupEditController {
       // Convert the streamed response to a regular HTTP response
       var response = await http.Response.fromStream(streamedResponse);
       if (response.statusCode == 200) {
+        context.read<GroupEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Sửa nhóm thành công');
         Navigator.pop(context);
       } else {
+        context.read<GroupEditBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_edit_group'));
       }
     } catch (e) {
       // Exception occurred
-      toastInfo(msg: translate('error_edit_group'));
+      // toastInfo(msg: translate('error_edit_group'));
+      hideLoadingIndicator();
     }
   }
 }

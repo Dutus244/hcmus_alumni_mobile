@@ -7,13 +7,18 @@ class EventDetailWriteCommentBloc
     extends Bloc<EventDetailWriteCommentEvent, EventDetailWriteCommentState> {
   EventDetailWriteCommentBloc() : super(EventDetailWriteCommentState()) {
     on<CommentEvent>(_commentEvent);
-    ;
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<EventDetailWriteCommentResetEvent>(_newsDetailWriteCommentResetEvent);
   }
 
   void _commentEvent(
       CommentEvent event, Emitter<EventDetailWriteCommentState> emit) {
     emit(state.copyWith(comment: event.comment));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<EventDetailWriteCommentState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _newsDetailWriteCommentResetEvent(

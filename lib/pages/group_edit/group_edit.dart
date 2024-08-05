@@ -40,11 +40,17 @@ class _GroupEditState extends State<GroupEdit> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GroupEditBloc, GroupEditState>(
-        builder: (context, state) {
-          return Scaffold(
+      builder: (context, state) {
+        return WillPopScope(
+          onWillPop: () async {
+            return !state.isLoading;
+          },
+          child: Scaffold(
               appBar: buildAppBar(context),
               backgroundColor: AppColors.background,
-              body: groupEdit(context, group));
-        });
+              body: groupEdit(context, group)),
+        );
+      },
+    );
   }
 }

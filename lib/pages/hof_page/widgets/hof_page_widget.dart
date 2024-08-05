@@ -86,7 +86,7 @@ Widget buildTextField(BuildContext context, String hintText, String textType,
           ),
           GestureDetector(
             onTap: () {
-              HofPageController(context: context).handleSearchHof();
+              HofPageController(context: context).handleSearchHof("", "");
             },
             child: Container(
               width: 16.w,
@@ -189,6 +189,7 @@ Widget dropdownButtonFaculty(List<String> faculties, BuildContext context,
           onChanged: (value) {
             if (value != null) {
               func!(value);
+              HofPageController(context: context).handleSearchHof(value, "");
             }
           }),
     ),
@@ -255,6 +256,7 @@ Widget dropdownButtonGraduationYear(List<String> graduationYear,
           onChanged: (value) {
             if (value != null) {
               func!(value);
+              HofPageController(context: context).handleSearchHof("", value);
             }
           }),
     ),

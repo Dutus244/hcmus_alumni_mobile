@@ -26,6 +26,7 @@ class _NewsDetailWriteChildrenCommentState
     context
         .read<NewsDetailWriteChildrenCommentBloc>()
         .add(NewsDetailWriteChildrenCommentResetEvent());
+    context.read<NewsDetailWriteChildrenCommentBloc>().add(IsLoadingEvent(false));
   }
 
   late News news;

@@ -65,46 +65,48 @@ Widget optionPage(BuildContext context) {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
+          ElevatedButton(
+            onPressed: () {
               Navigator.pushNamed(context, '/changePassword');
             },
-            child: Container(
-              color: Colors.transparent,
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/lock.svg",
-                        width: 16.w,
-                        height: 16.h,
-                        color: Colors.black,
-                      ),
-                      Container(
-                        width: 10.h,
-                      ),
-                      Text(
-                        translate('change_password'),
-                        style: TextStyle(
-                          color: AppColors.textBlack,
-                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SvgPicture.asset(
-                    "assets/icons/arrow_next.svg",
-                    width: 16.w,
-                    height: 16.h,
-                    color: Colors.black,
-                  ),
-                ],
+            style: ElevatedButton.styleFrom(
+              foregroundColor: AppColors.element, backgroundColor: Colors.white, // Color for the icon and text
+              minimumSize: Size(double.infinity, 40.h), // Make it rectangular and adjust the height
+              padding: EdgeInsets.symmetric(horizontal: 10.w), // Adjust horizontal padding
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0.w), // Rounded corners
               ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/lock.svg",
+                      width: 16.w,
+                      height: 16.h,
+                      color: Colors.black,
+                    ),
+                    SizedBox(width: 10.h),
+                    Text(
+                      translate('change_password'),
+                      style: TextStyle(
+                        color: AppColors.textBlack,
+                        fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
+                        fontWeight: FontWeight.w900,
+                        fontFamily: AppFonts.Header,
+                      ),
+                    ),
+                  ],
+                ),
+                SvgPicture.asset(
+                  "assets/icons/arrow_next.svg",
+                  width: 16.w,
+                  height: 16.h,
+                  color: Colors.black,
+                ),
+              ],
             ),
           ),
           // Container(
@@ -275,88 +277,100 @@ Widget optionPage(BuildContext context) {
           //     ),
           //   ),
           // ),
-          GestureDetector(
-            onTap: () {
+          ElevatedButton(
+            onPressed: () {
+              if (BlocProvider.of<OptionPageBloc>(context).state.isLoading) {
+                return;
+              }
               OptionPageController(context: context).handleDeleteUser();
             },
-            child: Container(
-              color: Colors.transparent,
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/delete_user.svg",
-                        width: 16.w,
-                        height: 16.h,
-                        color: Colors.black,
-                      ),
-                      Container(
-                        width: 10.h,
-                      ),
-                      Text(
-                        'Xoá tài khoản',
-                        style: TextStyle(
-                          color: AppColors.textBlack,
-                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SvgPicture.asset(
-                    "assets/icons/arrow_next.svg",
-                    width: 16.w,
-                    height: 16.h,
-                    color: Colors.black,
-                  ),
-                ],
+            style: ElevatedButton.styleFrom(
+              foregroundColor: AppColors.element, backgroundColor: Colors.white, // Color for the icon and text
+              minimumSize: Size(double.infinity, 40.h), // Make it rectangular and adjust the height
+              padding: EdgeInsets.symmetric(horizontal: 10.w), // Adjust horizontal padding
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0.w), // Rounded corners
               ),
             ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/delete_user.svg",
+                      width: 16.w,
+                      height: 16.h,
+                      color: Colors.black,
+                    ),
+                    SizedBox(width: 10.h),
+                    Text(
+                      'Xoá tài khoản',
+                      style: TextStyle(
+                        color: AppColors.textBlack,
+                        fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
+                        fontWeight: FontWeight.w900,
+                        fontFamily: AppFonts.Header,
+                      ),
+                    ),
+                  ],
+                ),
+                SvgPicture.asset(
+                  "assets/icons/arrow_next.svg",
+                  width: 16.w,
+                  height: 16.h,
+                  color: Colors.black,
+                ),
+              ],
+            ),
           ),
-          GestureDetector(
-            onTap: () {
+          ElevatedButton(
+            onPressed: () {
+              if (BlocProvider.of<OptionPageBloc>(context).state.isLoading) {
+                return;
+              }
               OptionPageController(context: context).handleSignOut();
             },
-            child: Container(
-              color: Colors.transparent,
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/sign_out.svg",
-                        width: 16.w,
-                        height: 16.h,
-                        color: Colors.black,
-                      ),
-                      Container(
-                        width: 10.h,
-                      ),
-                      Text(
-                        translate('sign_out'),
-                        style: TextStyle(
-                          color: AppColors.textBlack,
-                          fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: AppFonts.Header,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SvgPicture.asset(
-                    "assets/icons/arrow_next.svg",
-                    width: 16.w,
-                    height: 16.h,
-                    color: Colors.black,
-                  ),
-                ],
+            style: ElevatedButton.styleFrom(
+              foregroundColor: AppColors.element, backgroundColor: Colors.white, // Color for the icon and text
+              minimumSize: Size(double.infinity, 40.h), // Make it rectangular and adjust the height
+              padding: EdgeInsets.symmetric(horizontal: 10.w), // Adjust horizontal padding
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(0.w), // Rounded corners
               ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/sign_out.svg",
+                      width: 16.w,
+                      height: 16.h,
+                      color: Colors.black,
+                    ),
+                    Container(
+                      width: 10.h,
+                    ),
+                    Text(
+                      translate('sign_out'),
+                      style: TextStyle(
+                        color: AppColors.textBlack,
+                        fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
+                        fontWeight: FontWeight.w900,
+                        fontFamily: AppFonts.Header,
+                      ),
+                    ),
+                  ],
+                ),
+                SvgPicture.asset(
+                  "assets/icons/arrow_next.svg",
+                  width: 16.w,
+                  height: 16.h,
+                  color: Colors.black,
+                ),
+              ],
             ),
           ),
           Container(

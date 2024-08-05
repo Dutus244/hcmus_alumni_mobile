@@ -28,6 +28,7 @@ class _NewsDetailWriteCommentState extends State<NewsDetailWriteComment> {
       context
           .read<NewsDetailWriteCommentBloc>()
           .add(NewsDetailWriteCommentResetEvent());
+      context.read<NewsDetailWriteCommentBloc>().add(IsLoadingEvent(false));
     }
 
     return BlocBuilder<NewsDetailWriteCommentBloc,

@@ -14,6 +14,7 @@ class FriendListBloc extends Bloc<FriendListEvent, FriendListState> {
     on<HasReachedMaxFriendEvent>(_hasReachedMaxFriendEvent);
     on<ClearResultEvent>(_clearResultEvent);
     on<FriendCountEvent>(_friendCountEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
   }
 
   void _nameEvent(NameEvent event, Emitter<FriendListState> emit) {
@@ -39,6 +40,11 @@ class FriendListBloc extends Bloc<FriendListEvent, FriendListState> {
   void _hasReachedMaxFriendEvent(
       HasReachedMaxFriendEvent event, Emitter<FriendListState> emit) {
     emit(state.copyWith(hasReachedMaxFriend: event.hasReachedMaxFriend));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<FriendListState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _friendSearchResetEvent(

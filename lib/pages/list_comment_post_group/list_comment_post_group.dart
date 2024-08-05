@@ -32,6 +32,7 @@ class _ListCommentPostGroupState extends State<ListCommentPostGroup> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
+    context.read<ListCommentPostGroupBloc>().add(IsLoadingEvent(false));
   }
 
   void _onScroll() {

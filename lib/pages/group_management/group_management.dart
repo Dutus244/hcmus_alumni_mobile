@@ -8,6 +8,7 @@ import '../../common/values/colors.dart';
 import '../../model/group.dart';
 import 'bloc/group_management_blocs.dart';
 import 'bloc/group_management_states.dart';
+import 'bloc/group_management_events.dart';
 
 class GroupManagement extends StatefulWidget {
   const GroupManagement({super.key});
@@ -26,6 +27,7 @@ class _GroupManagementState extends State<GroupManagement> {
     if (args != null) {
       group = args["group"];
       GroupManagementController(context: context).handleGetGroup(group.id);
+      context.read<GroupManagementBloc>().add(IsLoadingEvent(false));
     }
 
     return BlocBuilder<GroupManagementBloc, GroupManagementState>(

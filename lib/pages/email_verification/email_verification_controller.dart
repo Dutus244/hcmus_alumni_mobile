@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -10,13 +11,12 @@ import '../../common/services/firebase_service.dart';
 import '../../common/services/socket_service.dart';
 import '../../common/values/constants.dart';
 import '../../common/widgets/flutter_toast.dart';
+import 'bloc/email_verification_events.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
 import '../../global.dart';
 import 'dart:convert';
-
-import '../../model/user.dart';
 
 class EmailVerificationController {
   final BuildContext context;
@@ -24,15 +24,51 @@ class EmailVerificationController {
   static bool isResending = false;
   int resendCooldown = 60;
   static int remainingTime = 0;
+  OverlayEntry? _overlayEntry;
 
   EmailVerificationController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleResendCode() async {
     final email = Global.storageService.getUserEmail();
     if (isResending) {
-      toastInfo(msg: "${translate('please_wait')} $remainingTime ${translate('seconds_resend_code').toLowerCase()}");
+      toastInfo(
+          msg:
+              "${translate('please_wait')} $remainingTime ${translate('seconds_resend_code').toLowerCase()}");
       return;
     }
+    context.read<EmailVerificationBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
 
     var url = Uri.parse('${dotenv.env['API_URL']}/auth/send-authorize-code');
     final map = <String, dynamic>{};
@@ -43,6 +79,8 @@ class EmailVerificationController {
       if (response.statusCode != 200) {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
+        context.read<EmailVerificationBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         if (errorCode == 10300) {
           toastInfo(msg: translate('email_already_exist'));
           return;
@@ -51,9 +89,15 @@ class EmailVerificationController {
           toastInfo(msg: translate('error_send_code'));
           return;
         }
+      } else {
+        context.read<EmailVerificationBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Đã gửi mã thành công');
       }
       startResendCooldown();
     } catch (error) {
+      context.read<EmailVerificationBloc>().add(IsLoadingEvent(false));
+      hideLoadingIndicator();
       toastInfo(msg: translate('error_send_code'));
     }
   }
@@ -80,6 +124,8 @@ class EmailVerificationController {
         toastInfo(msg: translate('must_fill_authentication_code'));
         return;
       }
+      context.read<EmailVerificationBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
       var url =
           Uri.parse('${dotenv.env['API_URL']}/auth/verify-authorize-code');
       final map = <String, dynamic>{};
@@ -109,11 +155,11 @@ class EmailVerificationController {
                 if (response.statusCode == 200) {
                   Map<String, dynamic> jsonMap = json.decode(response.body);
                   String jwtToken = jsonMap['jwt'];
-                  Global.storageService.setString(
-                      AppConstants.USER_AUTH_TOKEN, jwtToken);
+                  Global.storageService
+                      .setString(AppConstants.USER_AUTH_TOKEN, jwtToken);
 
-                  var url =
-                  Uri.parse('${dotenv.env['API_URL']}/notification/subscription');
+                  var url = Uri.parse(
+                      '${dotenv.env['API_URL']}/notification/subscription');
                   final token = await NotificationServices().getDeviceToken();
                   var headers = <String, String>{
                     'Authorization': 'Bearer $jwtToken',
@@ -128,55 +174,35 @@ class EmailVerificationController {
                     print(error);
                   }
 
-                  Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
+                  Map<String, dynamic> decodedToken =
+                      JwtDecoder.decode(jwtToken);
                   Global.storageService
                       .setString(AppConstants.USER_ID, decodedToken["sub"]);
 
-                  List<String> permissions = List<String>.from(jsonMap['permissions']);
+                  List<String> permissions =
+                      List<String>.from(jsonMap['permissions']);
                   handleSavePermission(permissions);
                   socketService.connect(Global.storageService.getUserId());
-
+                  context
+                      .read<EmailVerificationBloc>()
+                      .add(IsLoadingEvent(false));
+                  hideLoadingIndicator();
+                  toastInfo(msg: "Đăng ký thành công");
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       "/alumniInformation", (route) => false);
-                } else {
-                  Map<String, dynamic> jsonMap = json.decode(response.body);
-                  int errorCode = jsonMap['error']['code'];
-                  if (errorCode == 10100) {
-                    toastInfo(msg: translate('email_password_invalid'));
-                    return;
-                  }
-                  if (errorCode == 10101) {
-                    toastInfo(msg: translate('email_password_invalid'));
-                    return;
-                  }
-                  if (errorCode == 10102) {
-                    toastInfo(msg: translate('error_sigin'));
-                    return;
-                  }
                 }
               } catch (error) {
                 print(error);
-                toastInfo(msg: translate('error_login'));
-              }
-            } else {
-              Map<String, dynamic> jsonMap = json.decode(response.body);
-              int errorCode = jsonMap['error']['code'];
-              if (errorCode == 10200) {
-                toastInfo(msg: translate('email_password_invalid'));
-                return;
-              }
-              if (errorCode == 10201) {
-                toastInfo(msg: translate('email_password_invalid'));
-                return;
               }
             }
           } catch (error) {
             print(error);
-            toastInfo(msg: translate('error_register'));
           }
         } else {
           Map<String, dynamic> jsonMap = json.decode(response.body);
           int errorCode = jsonMap['error']['code'];
+          context.read<EmailVerificationBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           if (errorCode == 10402) {
             toastInfo(msg: translate('authentication_code_invalid_expired'));
             return;
@@ -187,9 +213,13 @@ class EmailVerificationController {
           }
         }
       } catch (error) {
+        context.read<EmailVerificationBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_verify_authentication_code'));
       }
     } catch (e) {
+      context.read<EmailVerificationBloc>().add(IsLoadingEvent(false));
+      hideLoadingIndicator();
       toastInfo(msg: translate('error_verify_authentication_code'));
     }
   }

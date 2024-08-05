@@ -24,6 +24,7 @@ class _EventDetailEditCommentState extends State<EventDetailEditComment> {
   @override
   void initState() {
     super.initState();
+    context.read<EventDetailEditCommentBloc>().add(IsLoadingEvent(false));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       handleNavigation();
     });

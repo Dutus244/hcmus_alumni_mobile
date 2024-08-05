@@ -40,92 +40,105 @@ AppBar buildAppBar(BuildContext context) {
 Widget buttonSend(BuildContext context) {
   String title = BlocProvider.of<WritePostAdviseBloc>(context).state.title;
   String content = BlocProvider.of<WritePostAdviseBloc>(context).state.content;
-  return GestureDetector(
-    onTap: () {
-      if (title != "" && content != "") {
-        WritePostAdviseController(context: context).handlePost();
-      }
-    },
-    child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: (title != "" && content != "")
-            ? AppColors.element
-            : AppColors.background,
-        borderRadius: BorderRadius.circular(10.w),
-        border: Border.all(
-          color: AppColors.backgroundGrey,
+  return Container(
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+    height: 40.h,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor:
+        (title != "" && content != "") ? AppColors.background : Colors.black.withOpacity(0.3),
+        backgroundColor: (title != "" && content != "") ? AppColors.element : AppColors.background,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.w),
+        ),
+        side: BorderSide(
+          color: AppColors.elementLight,
+        ),
+        padding: EdgeInsets.zero,
+      ),
+      onPressed: () {
+        if (title != "" && content != "" && !BlocProvider.of<WritePostAdviseBloc>(context).state.isLoading) {
+          WritePostAdviseController(context: context).handlePost();
+        }
+      },
+      child: Container(
+        child: Center(
+          child: Container(
+            margin: EdgeInsets.only(left: 12.w, right: 12.w, top: 10.h, bottom: 10.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  translate('send'),
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header,
+                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                    fontWeight: FontWeight.bold,
+                    color: (title != "" && content != "")
+                        ? AppColors.background
+                        : Colors.black.withOpacity(0.3),
+                  ),
+                ),
+                Container(
+                  width: 6.w,
+                ),
+                SvgPicture.asset(
+                  "assets/icons/send.svg",
+                  width: 15.w,
+                  height: 15.h,
+                  color: (title != "" && content != "")
+                      ? AppColors.background
+                      : Colors.black.withOpacity(0.5),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
-      child: Center(
-          child: Container(
-        margin: EdgeInsets.only(left: 12.w, right: 12.w),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              translate('post'),
-              style: AppTextStyle.base(context).wSemiBold().withColor(
-                  (title != "" && content != "")
-                      ? AppColors.background
-                      : AppColors.textBlack.withOpacity(0.3)),
-            ),
-            Container(
-              width: 6.w,
-            ),
-            SvgPicture.asset(
-              "assets/icons/send.svg",
-              width: 15.w,
-              height: 15.h,
-              color: (title != "" && content != "")
-                  ? AppColors.background
-                  : Colors.black.withOpacity(0.5),
-            ),
-          ],
-        ),
-      )),
     ),
   );
 }
 
 Widget buttonFinishEditPicture(BuildContext context) {
-  return GestureDetector(
-    onTap: () {
-      context.read<WritePostAdviseBloc>().add(PageEvent(0));
-    },
-    child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: AppColors.element,
-        borderRadius: BorderRadius.circular(10.w),
-        border: Border.all(
-          color: AppColors.elementLight,
+  return Container(
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+    height: 40.h,
+    child: ElevatedButton(
+      onPressed: () {
+        context.read<WritePostAdviseBloc>().add(PageEvent(0));
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: AppColors.background, backgroundColor: AppColors.element,
+        shadowColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.w),
+          side: BorderSide(color: AppColors.elementLight),
+        ),
+        padding: EdgeInsets.zero,
+      ),
+      child: Container(
+        child: Center(
+          child: Container(
+            margin: EdgeInsets.only(left: 12.w, right: 12.w, top: 10.h, bottom: 10.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  translate('save'),
+                  style: AppTextStyle.base(context).wSemiBold().withColor(AppColors.background),
+                ),
+                SizedBox(width: 6.w),
+                SvgPicture.asset(
+                  "assets/icons/send.svg",
+                  width: 15.w,
+                  height: 15.h,
+                  color: AppColors.background,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
-      child: Center(
-          child: Container(
-        margin: EdgeInsets.only(left: 12.w, right: 12.w),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              translate('save'),
-              style: AppTextStyle.base(context).wSemiBold(),
-            ),
-            Container(
-              width: 6.w,
-            ),
-            SvgPicture.asset(
-              "assets/icons/send.svg",
-              width: 15.w,
-              height: 15.h,
-              color: AppColors.background,
-            ),
-          ],
-        ),
-      )),
     ),
   );
 }
@@ -134,7 +147,7 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
   return Container(
       width: 320.w,
-      margin: EdgeInsets.only(left: 10.w, right: 10.w),
+      margin: EdgeInsets.only(top: 5.h, left: 10.w, right: 10.w),
       decoration: BoxDecoration(
         color: AppColors.background,
         border: Border.all(color: Colors.transparent),
@@ -143,9 +156,15 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
         children: [
           Container(
             width: 300.w,
-            child: TextField(
-              onChanged: (value) => func!(value),
+            child: TextFormField(
+              onChanged: (value) {
+                func!(value);
+              },
               keyboardType: TextInputType.multiline,
+              initialValue: BlocProvider
+                  .of<WritePostAdviseBloc>(context)
+                  .state
+                  .title,
               maxLines: null,
               // Cho phép đa dòng
               decoration: InputDecoration(
@@ -159,12 +178,11 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
                     borderSide: BorderSide(color: Colors.transparent)),
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small(context)
-                    .wSemiBold()
-                    .withColor(AppColors.secondaryElementText),
+                hintStyle: AppTextStyle.small(context).withColor(
+                    AppColors.secondaryElementText),
                 counterText: '',
               ),
-              style: AppTextStyle.small(context).wSemiBold(),
+              style: AppTextStyle.small(context),
               autocorrect: false,
             ),
           )
@@ -174,43 +192,55 @@ Widget buildTextFieldTitle(BuildContext context, String hintText,
 
 Widget buildTextFieldContent(BuildContext context, String hintText,
     String textType, String iconName, void Function(String value)? func) {
-  return Container(
-      width: 320.w,
-      margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 10.w, bottom: 2.h),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        border: Border.all(color: Colors.transparent),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 300.w,
-            child: TextField(
-              onChanged: (value) => func!(value),
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              // Cho phép đa dòng
-              decoration: InputDecoration(
-                hintText: hintText,
-                contentPadding: EdgeInsets.zero,
-                border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                disabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small(context)
-                    .withColor(AppColors.secondaryElementText),
-                counterText: '',
+  print(BlocProvider
+      .of<WritePostAdviseBloc>(context)
+      .state
+      .content);
+  return GestureDetector(
+    child: Container(
+        width: 320.w,
+        margin: EdgeInsets.only(top: 2.h, left: 10.w, right: 10.w, bottom: 2.h),
+        decoration: BoxDecoration(
+          color: AppColors.background,
+          border: Border.all(color: Colors.transparent),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 300.w,
+              child: TextFormField(
+                onChanged: (value) {
+                  func!(value);
+                },
+                keyboardType: TextInputType.multiline,
+                initialValue: BlocProvider
+                    .of<WritePostAdviseBloc>(context)
+                    .state
+                    .content,
+                maxLines: null,
+                // Cho phép đa dòng
+                decoration: InputDecoration(
+                  hintText: hintText,
+                  contentPadding: EdgeInsets.zero,
+                  border: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent)),
+                  enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent)),
+                  disabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent)),
+                  focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent)),
+                  hintStyle: AppTextStyle.small(context).withColor(
+                      AppColors.secondaryElementText),
+                  counterText: '',
+                ),
+                style: AppTextStyle.small(context),
+                autocorrect: false,
               ),
-              style: AppTextStyle.small(context),
-              autocorrect: false,
-            ),
-          )
-        ],
-      ));
+            )
+          ],
+        )),
+  );
 }
 
 Widget buildTextFieldVote(BuildContext context, int index, String hintText,
@@ -238,7 +268,7 @@ Widget buildTextFieldVote(BuildContext context, int index, String hintText,
                 Container(
                   margin: EdgeInsets.only(left: 10.w),
                   width: 290.w,
-                  child: TextField(
+                  child: TextFormField(
                     keyboardType: TextInputType.multiline,
                     onChanged: (value) {
                       List<String> currentList =
@@ -248,6 +278,10 @@ Widget buildTextFieldVote(BuildContext context, int index, String hintText,
                       currentList[index] = value;
                       func!(currentList);
                     },
+                    initialValue: BlocProvider
+                        .of<WritePostAdviseBloc>(context)
+                        .state
+                        .votes[index],
                     maxLines: null,
                     // Cho phép đa dòng
                     decoration: InputDecoration(
@@ -385,55 +419,55 @@ Widget editPicture(BuildContext context) {
   );
 }
 
-Widget chooseEditPicture(
-    BuildContext context, void Function(List<File> value)? func) {
-  return GestureDetector(
-    onTap: () async {
-      List<File> currentList =
-          BlocProvider.of<WritePostAdviseBloc>(context).state.pictures;
+Widget chooseEditPicture(BuildContext context, void Function(List<File> value)? func) {
+  return Container(
+    width: 340.w,
+    height: 40.h,
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h, bottom: 10.h),
+    child: ElevatedButton(
+      onPressed: () async {
+        List<File> currentList = BlocProvider.of<WritePostAdviseBloc>(context).state.pictures;
 
-      final pickedFiles = await ImagePicker().pickMultiImage();
-      if (pickedFiles.length + currentList.length > 5) {
-        toastInfo(msg: translate('picture_above_5'));
-        return;
-      }
-      currentList.addAll(pickedFiles.map((pickedFile) =>
-          File(pickedFile.path))); // Concatenate currentList and picked files
+        final pickedFiles = await ImagePicker().pickMultiImage();
+        if (pickedFiles.length + currentList.length > 5) {
+          toastInfo(msg: translate('picture_above_5'));
+          return;
+        }
+        currentList.addAll(pickedFiles.map((pickedFile) => File(pickedFile.path))); // Concatenate currentList and picked files
 
-      func!(currentList);
-    },
-    child: Container(
-      width: 340.w,
-      height: 40.h,
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h, bottom: 10.h),
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(15.w),
-        color: AppColors.background,
-        border: Border.all(color: AppColors.element),
+        func!(currentList);
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: AppColors.element, backgroundColor: AppColors.background,
+        shadowColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.w),
+          side: BorderSide(color: AppColors.element),
+        ),
+        padding: EdgeInsets.zero,
       ),
-      child: Center(
-        child: Container(
-          margin: EdgeInsets.only(left: 5.w, right: 5.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                "assets/icons/picture.svg",
-                width: 12.w,
-                height: 12.h,
-                color: AppColors.element,
-              ),
-              Container(
-                width: 5.w,
-              ),
-              Text(
-                translate('add_picture'),
-                style: AppTextStyle.small(context)
-                    .wSemiBold()
-                    .withColor(AppColors.element),
-              ),
-            ],
+      child: Container(
+        child: Center(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 5.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  "assets/icons/picture.svg",
+                  width: 12.w,
+                  height: 12.h,
+                  color: AppColors.element,
+                ),
+                SizedBox(width: 5.w),
+                Text(
+                  translate('add_picture'),
+                  style: AppTextStyle.small(context)
+                      .wSemiBold()
+                      .withColor(AppColors.element),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -456,46 +490,42 @@ void deleteVote(BuildContext context, int index) {
 }
 
 Widget choosePicture(
-    BuildContext context, void Function(List<File> value)? func) {
-  return GestureDetector(
-      onTap: () async {
-        if (BlocProvider.of<WritePostAdviseBloc>(context)
-                .state
-                .pictures
-                .length ==
-            0) {
-          final pickedFiles = await ImagePicker().pickMultiImage();
-          if (pickedFiles.length > 5) {
-            toastInfo(msg: translate('picture_above_5'));
-            return;
-          }
-          func!(
-              pickedFiles.map((pickedFile) => File(pickedFile.path)).toList());
-        } else {
-          context.read<WritePostAdviseBloc>().add(PageEvent(1));
-        }
-      },
-      child: Column(
-        children: [
-          if (BlocProvider.of<WritePostAdviseBloc>(context)
-                  .state
-                  .pictures
-                  .length ==
-              0)
-            Container(
-              width: 160.w,
-              height: 30.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
+BuildContext context, void Function(List<File> value)? func) {
+  return Column(
+    children: [
+      if (BlocProvider.of<WritePostAdviseBloc>(context)
+          .state
+          .pictures
+          .length ==
+          0)
+        Container(
+          margin: EdgeInsets.only(
+              left: 100.w, top: 5.h, right: 100.w, bottom: 10.h),
+          width: 160.w,
+          height: 40.h,
+          child: ElevatedButton(
+            onPressed: () async {
+              final pickedFiles = await ImagePicker().pickMultiImage();
+              if (pickedFiles.length > 5) {
+                toastInfo(msg: translate('picture_above_5'));
+                return;
+              }
+              func!(
+                  pickedFiles.map((pickedFile) => File(pickedFile.path)).toList());
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: AppColors.textBlack, backgroundColor: Color.fromARGB(255, 230, 230, 230),
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.w),
-                color: Color.fromARGB(255, 230, 230, 230),
-                border: Border.all(
-                  color: Colors.transparent,
-                ),
+                side: BorderSide(color: Colors.transparent),
               ),
+              padding: EdgeInsets.zero,
+            ),
+            child: Container(
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                  margin: EdgeInsets.symmetric(horizontal: 10.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -514,727 +544,738 @@ Widget choosePicture(
                 ),
               ),
             ),
-          if (BlocProvider.of<WritePostAdviseBloc>(context)
-                  .state
-                  .pictures
-                  .length ==
-              1)
-            Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
-                  width: 340.w,
-                  height: 240.h,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: FileImage(
-                          BlocProvider.of<WritePostAdviseBloc>(context)
-                              .state
-                              .pictures[0]),
+          ),
+        ),
+      GestureDetector(
+        onTap: () {
+          context.read<WritePostAdviseBloc>().add(PageEvent(1));
+        },
+        child: Column(
+          children: [
+            if (BlocProvider.of<WritePostAdviseBloc>(context)
+                .state
+                .pictures
+                .length ==
+                1)
+              Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
+                    width: 340.w,
+                    height: 240.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: FileImage(
+                            BlocProvider.of<WritePostAdviseBloc>(context)
+                                .state
+                                .pictures[0]),
+                      ),
                     ),
                   ),
-                ),
-                Align(
-                    alignment: Alignment.topLeft,
-                    child: GestureDetector(
-                      onTap: () {
-                        deletePicture(context, 0);
-                      },
-                      child: Container(
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: GestureDetector(
+                        onTap: () {
+                          deletePicture(context, 0);
+                        },
+                        child: Container(
+                          margin:
+                          EdgeInsets.only(left: 15.w, top: 8.h, right: 15.w),
+                          padding: EdgeInsets.only(
+                              left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.backgroundGrey,
+                          ),
+                          child: SvgPicture.asset(
+                            "assets/icons/close.svg",
+                            width: 12.w,
+                            height: 12.h,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )),
+                ],
+              ),
+            if (BlocProvider.of<WritePostAdviseBloc>(context)
+                .state
+                .pictures
+                .length ==
+                2)
+              Column(
+                children: [
+                  Stack(
+                    children: [
+                      Container(
                         margin:
-                            EdgeInsets.only(left: 15.w, top: 8.h, right: 15.w),
-                        padding: EdgeInsets.only(
-                            left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
+                        EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
+                        width: 340.w,
+                        height: 120.h,
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.backgroundGrey,
-                        ),
-                        child: SvgPicture.asset(
-                          "assets/icons/close.svg",
-                          width: 12.w,
-                          height: 12.h,
-                          color: Colors.white,
-                        ),
-                      ),
-                    )),
-              ],
-            ),
-          if (BlocProvider.of<WritePostAdviseBloc>(context)
-                  .state
-                  .pictures
-                  .length ==
-              2)
-            Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      margin:
-                          EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
-                      width: 340.w,
-                      height: 120.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: FileImage(
-                              BlocProvider.of<WritePostAdviseBloc>(context)
-                                  .state
-                                  .pictures[0]),
+                          shape: BoxShape.rectangle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: FileImage(
+                                BlocProvider.of<WritePostAdviseBloc>(context)
+                                    .state
+                                    .pictures[0]),
+                          ),
                         ),
                       ),
-                    ),
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: GestureDetector(
-                          onTap: () {
-                            deletePicture(context, 0);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(
-                                left: 15.w, top: 8.h, right: 15.w),
-                            padding: EdgeInsets.only(
-                                left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.backgroundGrey,
-                            ),
-                            child: SvgPicture.asset(
-                              "assets/icons/close.svg",
-                              width: 12.w,
-                              height: 12.h,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )),
-                  ],
-                ),
-                Stack(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                      width: 340.w,
-                      height: 120.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: FileImage(
-                              BlocProvider.of<WritePostAdviseBloc>(context)
-                                  .state
-                                  .pictures[1]),
-                        ),
-                      ),
-                    ),
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: GestureDetector(
-                          onTap: () {
-                            deletePicture(context, 1);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(
-                                left: 15.w, top: 8.h, right: 15.w),
-                            padding: EdgeInsets.only(
-                                left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.backgroundGrey,
-                            ),
-                            child: SvgPicture.asset(
-                              "assets/icons/close.svg",
-                              width: 12.w,
-                              height: 12.h,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )),
-                  ],
-                ),
-              ],
-            ),
-          if (BlocProvider.of<WritePostAdviseBloc>(context)
-                  .state
-                  .pictures
-                  .length ==
-              3)
-            Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      margin:
-                          EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
-                      width: 340.w,
-                      height: 120.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: FileImage(
-                              BlocProvider.of<WritePostAdviseBloc>(context)
-                                  .state
-                                  .pictures[0]),
-                        ),
-                      ),
-                    ),
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: GestureDetector(
-                          onTap: () {
-                            deletePicture(context, 0);
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(
-                                left: 15.w, top: 8.h, right: 15.w),
-                            padding: EdgeInsets.only(
-                                left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.backgroundGrey,
-                            ),
-                            child: SvgPicture.asset(
-                              "assets/icons/close.svg",
-                              width: 12.w,
-                              height: 12.h,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )),
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: FileImage(
-                                    BlocProvider.of<WritePostAdviseBloc>(
-                                            context)
-                                        .state
-                                        .pictures[1]),
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topLeft,
-                              child: GestureDetector(
-                                onTap: () {
-                                  deletePicture(context, 1);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: FileImage(
-                                    BlocProvider.of<WritePostAdviseBloc>(
-                                            context)
-                                        .state
-                                        .pictures[2]),
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topLeft,
-                              child: GestureDetector(
-                                onTap: () {
-                                  deletePicture(context, 2);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          if (BlocProvider.of<WritePostAdviseBloc>(context)
-                  .state
-                  .pictures
-                  .length ==
-              4)
-            Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: FileImage(
-                                    BlocProvider.of<WritePostAdviseBloc>(
-                                            context)
-                                        .state
-                                        .pictures[0]),
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  deletePicture(context, 0);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: FileImage(
-                                    BlocProvider.of<WritePostAdviseBloc>(
-                                            context)
-                                        .state
-                                        .pictures[1]),
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  deletePicture(context, 1);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: FileImage(
-                                    BlocProvider.of<WritePostAdviseBloc>(
-                                            context)
-                                        .state
-                                        .pictures[2]),
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  deletePicture(context, 2);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: FileImage(
-                                    BlocProvider.of<WritePostAdviseBloc>(
-                                            context)
-                                        .state
-                                        .pictures[3]),
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  deletePicture(context, 3);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          if (BlocProvider.of<WritePostAdviseBloc>(context)
-                  .state
-                  .pictures
-                  .length ==
-              5)
-            Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: FileImage(
-                                    BlocProvider.of<WritePostAdviseBloc>(
-                                            context)
-                                        .state
-                                        .pictures[0]),
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  deletePicture(context, 0);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: FileImage(
-                                    BlocProvider.of<WritePostAdviseBloc>(
-                                            context)
-                                        .state
-                                        .pictures[1]),
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  deletePicture(context, 1);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: FileImage(
-                                    BlocProvider.of<WritePostAdviseBloc>(
-                                            context)
-                                        .state
-                                        .pictures[2]),
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  deletePicture(context, 2);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: FileImage(
-                                    BlocProvider.of<WritePostAdviseBloc>(
-                                            context)
-                                        .state
-                                        .pictures[3]),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: GestureDetector(
+                            onTap: () {
+                              deletePicture(context, 0);
+                            },
                             child: Container(
+                              margin: EdgeInsets.only(
+                                  left: 15.w, top: 8.h, right: 15.w),
+                              padding: EdgeInsets.only(
+                                  left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.backgroundGrey,
+                              ),
+                              child: SvgPicture.asset(
+                                "assets/icons/close.svg",
+                                width: 12.w,
+                                height: 12.h,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ],
+                  ),
+                  Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                        width: 340.w,
+                        height: 120.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: FileImage(
+                                BlocProvider.of<WritePostAdviseBloc>(context)
+                                    .state
+                                    .pictures[1]),
+                          ),
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: GestureDetector(
+                            onTap: () {
+                              deletePicture(context, 1);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  left: 15.w, top: 8.h, right: 15.w),
+                              padding: EdgeInsets.only(
+                                  left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.backgroundGrey,
+                              ),
+                              child: SvgPicture.asset(
+                                "assets/icons/close.svg",
+                                width: 12.w,
+                                height: 12.h,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+            if (BlocProvider.of<WritePostAdviseBloc>(context)
+                .state
+                .pictures
+                .length ==
+                3)
+              Column(
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        margin:
+                        EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
+                        width: 340.w,
+                        height: 120.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: FileImage(
+                                BlocProvider.of<WritePostAdviseBloc>(context)
+                                    .state
+                                    .pictures[0]),
+                          ),
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: GestureDetector(
+                            onTap: () {
+                              deletePicture(context, 0);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  left: 15.w, top: 8.h, right: 15.w),
+                              padding: EdgeInsets.only(
+                                  left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.backgroundGrey,
+                              ),
+                              child: SvgPicture.asset(
+                                "assets/icons/close.svg",
+                                width: 12.w,
+                                height: 12.h,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )),
+                    ],
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
                               width: 170.w,
                               height: 120.h,
                               decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
-                                color: Color.fromARGB(255, 24, 59, 86)
-                                    .withOpacity(0.5),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                      BlocProvider.of<WritePostAdviseBloc>(
+                                          context)
+                                          .state
+                                          .pictures[1]),
+                                ),
                               ),
-                              child: Center(
-                                child: Text(
-                                  '+1',
-                                  style: TextStyle(
-                                    fontFamily: AppFonts.Header,
-                                    fontSize: 32.sp / MediaQuery.of(context).textScaleFactor,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.background,
+                            ),
+                            Align(
+                                alignment: Alignment.topLeft,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    deletePicture(context, 1);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/close.svg",
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                      BlocProvider.of<WritePostAdviseBloc>(
+                                          context)
+                                          .state
+                                          .pictures[2]),
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topLeft,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    deletePicture(context, 2);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/close.svg",
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            if (BlocProvider.of<WritePostAdviseBloc>(context)
+                .state
+                .pictures
+                .length ==
+                4)
+              Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                      BlocProvider.of<WritePostAdviseBloc>(
+                                          context)
+                                          .state
+                                          .pictures[0]),
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    deletePicture(context, 0);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/close.svg",
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                      BlocProvider.of<WritePostAdviseBloc>(
+                                          context)
+                                          .state
+                                          .pictures[1]),
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    deletePicture(context, 1);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/close.svg",
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                      BlocProvider.of<WritePostAdviseBloc>(
+                                          context)
+                                          .state
+                                          .pictures[2]),
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    deletePicture(context, 2);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/close.svg",
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                      BlocProvider.of<WritePostAdviseBloc>(
+                                          context)
+                                          .state
+                                          .pictures[3]),
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    deletePicture(context, 3);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/close.svg",
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            if (BlocProvider.of<WritePostAdviseBloc>(context)
+                .state
+                .pictures
+                .length ==
+                5)
+              Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                      BlocProvider.of<WritePostAdviseBloc>(
+                                          context)
+                                          .state
+                                          .pictures[0]),
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    deletePicture(context, 0);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/close.svg",
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                      BlocProvider.of<WritePostAdviseBloc>(
+                                          context)
+                                          .state
+                                          .pictures[1]),
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    deletePicture(context, 1);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/close.svg",
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                      BlocProvider.of<WritePostAdviseBloc>(
+                                          context)
+                                          .state
+                                          .pictures[2]),
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    deletePicture(context, 2);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/close.svg",
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(
+                                      BlocProvider.of<WritePostAdviseBloc>(
+                                          context)
+                                          .state
+                                          .pictures[3]),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Container(
+                                width: 170.w,
+                                height: 120.h,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  color: Color.fromARGB(255, 24, 59, 86)
+                                      .withOpacity(0.5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '+1',
+                                    style: TextStyle(
+                                      fontFamily: AppFonts.Header,
+                                      fontSize: 32.sp / MediaQuery.of(context).textScaleFactor,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.background,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  deletePicture(context, 3);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    deletePicture(context, 3);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/close.svg",
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                  child: SvgPicture.asset(
-                                    "assets/icons/close.svg",
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ],
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-        ],
-      ));
+                ],
+              ),
+          ],
+        ),
+      )
+    ],
+  );
 }
 
 Widget chooseVote(BuildContext context) {
@@ -1243,43 +1284,46 @@ Widget chooseVote(BuildContext context) {
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
       if (BlocProvider.of<WritePostAdviseBloc>(context).state.votes.length == 0)
-        GestureDetector(
-          onTap: () {
-            List<String> currentList = List<String>.from(
-                BlocProvider.of<WritePostAdviseBloc>(context).state.votes);
-            currentList.add('');
-            context.read<WritePostAdviseBloc>().add(VotesEvent(currentList));
-          },
-          child: Container(
-            margin: EdgeInsets.only(
-                left: 100.w, top: 5.h, right: 100.w, bottom: 10.h),
-            width: 160.w,
-            height: 30.h,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(15.w),
-              color: Color.fromARGB(255, 230, 230, 230),
-              border: Border.all(
-                color: Colors.transparent,
+        Container(
+          margin: EdgeInsets.only(
+              left: 100.w, top: 5.h, right: 100.w, bottom: 10.h),
+          width: 160.w,
+          height: 40.h,
+          child: ElevatedButton(
+            onPressed: () {
+              List<String> currentList = List<String>.from(
+                  BlocProvider.of<WritePostAdviseBloc>(context).state.votes);
+              currentList.add('');
+              context.read<WritePostAdviseBloc>().add(VotesEvent(currentList));
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: AppColors.textBlack, backgroundColor: Color.fromARGB(255, 230, 230, 230),
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.w),
+                side: BorderSide(color: Colors.transparent),
               ),
+              padding: EdgeInsets.zero,
             ),
-            child: Center(
-              child: Container(
-                margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/vote.svg",
-                      width: 12.w,
-                      height: 12.h,
-                      color: AppColors.textBlack,
-                    ),
-                    Text(
-                      translate('create_vote'),
-                      style: AppTextStyle.small(context).wSemiBold(),
-                    ),
-                  ],
+            child: Container(
+              child: Center(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/vote.svg",
+                        width: 12.w,
+                        height: 12.h,
+                        color: AppColors.textBlack,
+                      ),
+                      Text(
+                        translate('create_vote'),
+                        style: AppTextStyle.small(context).wSemiBold(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -1292,32 +1336,34 @@ Widget chooseVote(BuildContext context) {
           context.read<WritePostAdviseBloc>().add(VotesEvent(value));
         }),
       if (BlocProvider.of<WritePostAdviseBloc>(context).state.votes.length > 0)
-        GestureDetector(
-          onTap: () {
-            if (BlocProvider.of<WritePostAdviseBloc>(context)
-                    .state
-                    .votes
-                    .length >=
-                10) {
-              toastInfo(msg: translate('option_above_10'));
-              return;
-            }
-            List<String> currentList = List<String>.from(
-                BlocProvider.of<WritePostAdviseBloc>(context).state.votes);
-            currentList.add('');
-            context.read<WritePostAdviseBloc>().add(VotesEvent(currentList));
-          },
-          child: Container(
-            width: 310.w,
-            height: 35.h,
-            margin: EdgeInsets.only(
-                top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.circular(15.w),
-              border: Border.all(
-                color: AppColors.primaryFourthElementText,
+        Container(
+          width: 310.w,
+          height: 35.h,
+          margin: EdgeInsets.only(
+              top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
+          child: ElevatedButton(
+            onPressed: () {
+              if (BlocProvider.of<WritePostAdviseBloc>(context)
+                  .state
+                  .votes
+                  .length >=
+                  10) {
+                toastInfo(msg: translate('option_above_10'));
+                return;
+              }
+              List<String> currentList = List<String>.from(
+                  BlocProvider.of<WritePostAdviseBloc>(context).state.votes);
+              currentList.add('');
+              context.read<WritePostAdviseBloc>().add(VotesEvent(currentList));
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: AppColors.textGrey, backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.w),
+                side: BorderSide(color: AppColors.primaryFourthElementText),
               ),
+              padding: EdgeInsets.zero,
             ),
             child: Container(
               margin: EdgeInsets.only(left: 10.w),
@@ -1329,9 +1375,7 @@ Widget chooseVote(BuildContext context) {
                     height: 14.h,
                     color: AppColors.textGrey,
                   ),
-                  Container(
-                    width: 5.w,
-                  ),
+                  SizedBox(width: 5.w),
                   Text(
                     translate('add_option'),
                     style: AppTextStyle.small(context).withColor(AppColors.textGrey),

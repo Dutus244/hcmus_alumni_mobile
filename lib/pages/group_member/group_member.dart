@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hcmus_alumni_mobile/pages/group_member/bloc/group_member_blocs.dart';
 import 'package:hcmus_alumni_mobile/pages/group_member/bloc/group_member_states.dart';
+import 'package:hcmus_alumni_mobile/pages/group_member/bloc/group_member_events.dart';
 import 'package:hcmus_alumni_mobile/pages/group_member/group_member_controller.dart';
 import 'package:hcmus_alumni_mobile/pages/group_member/widgets/group_member_widget.dart';
 
@@ -28,6 +29,7 @@ class _GroupMemberState extends State<GroupMember> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
+    context.read<GroupMemberBloc>().add(IsLoadingEvent(false));
   }
 
   void _onScroll() {

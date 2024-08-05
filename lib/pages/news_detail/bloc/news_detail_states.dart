@@ -12,6 +12,7 @@ class NewsDetailState {
   final int indexComment;
   final bool hasReachedMaxComment;
   final List<News> relatedNews;
+  final bool isLoading;
 
   NewsDetailState(
       {this.fontSize = 40,
@@ -20,7 +21,8 @@ class NewsDetailState {
       this.comments = const [],
       this.indexComment = 0,
       this.hasReachedMaxComment = false,
-      this.relatedNews = const []});
+      this.relatedNews = const [],
+      this.isLoading = false});
 
   NewsDetailState copyWith(
       {double? fontSize,
@@ -29,7 +31,8 @@ class NewsDetailState {
       List<Comment>? comments,
       int? indexComment,
       bool? hasReachedMaxComment,
-      List<News>? relatedNews}) {
+      List<News>? relatedNews,
+      bool? isLoading}) {
     return NewsDetailState(
       fontSize: fontSize ?? this.fontSize,
       fontFamily: fontFamily ?? this.fontFamily,
@@ -38,6 +41,7 @@ class NewsDetailState {
       indexComment: indexComment ?? this.indexComment,
       hasReachedMaxComment: hasReachedMaxComment ?? this.hasReachedMaxComment,
       relatedNews: relatedNews ?? this.relatedNews,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

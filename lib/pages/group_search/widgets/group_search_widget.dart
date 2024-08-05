@@ -223,7 +223,7 @@ Widget group(BuildContext context, Group group) {
     child: Column(
       children: [
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 10.w),
+          margin: EdgeInsets.only(top: 10.h, left: 10.w, right: 10.w),
           color: Colors.transparent,
           child: Column(
             children: [
@@ -291,7 +291,7 @@ Widget group(BuildContext context, Group group) {
                             Container(
                               margin: EdgeInsets.only(top: 10.h),
                               width: 280.w,
-                              height: 30.h,
+                              height: 25.h,
                               decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 230, 230, 230),
                                 borderRadius: BorderRadius.circular(5.w),
@@ -312,21 +312,26 @@ Widget group(BuildContext context, Group group) {
                               ),
                             ),
                           if (!group.isJoined && !group.isRequestPending)
-                            GestureDetector(
-                              onTap: () {
-                                GroupSearchController(context: context)
-                                    .handleRequestJoinGroup(group);
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(top: 10.h),
-                                width: 280.w,
-                                height: 25.h,
-                                decoration: BoxDecoration(
-                                  color: AppColors.element,
-                                  borderRadius: BorderRadius.circular(5.w),
-                                  border: Border.all(
-                                    color: Colors.transparent,
+                            Container(
+                              margin: EdgeInsets.only(top: 10.h),
+                              width: 280.w,
+                              height: 25.h,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (BlocProvider.of<GroupSearchBloc>(context).state.isLoading) {
+                                    return;
+                                  }
+                                  GroupSearchController(context: context).handleRequestJoinGroup(group);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.element,
+                                  foregroundColor: AppColors.background,// Background color
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.w), // Rounded corners
                                   ),
+                                  side: BorderSide(color: Colors.transparent), // Border color
+                                  minimumSize: Size(280.w, 25.h), // Button size
+                                  padding: EdgeInsets.zero, // Remove default padding
                                 ),
                                 child: Center(
                                   child: Text(
@@ -335,7 +340,7 @@ Widget group(BuildContext context, Group group) {
                                       fontFamily: AppFonts.Header,
                                       fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.background,
+                                      color: AppColors.background, // Text color
                                     ),
                                   ),
                                 ),
@@ -375,7 +380,7 @@ Widget group(BuildContext context, Group group) {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+          margin: EdgeInsets.only(top: 10.h),
           height: 2.h,
           color: AppColors.elementLight,
         ),

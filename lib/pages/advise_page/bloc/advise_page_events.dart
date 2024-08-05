@@ -53,3 +53,9 @@ class HasReachedMaxVoterEvent extends AdvisePageEvent {
 
   const HasReachedMaxVoterEvent(this.hasReachedMaxVoter);
 }
+
+class IsLoadingEvent extends AdvisePageEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

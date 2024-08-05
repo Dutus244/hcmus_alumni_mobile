@@ -9,6 +9,7 @@ class WritePostGroupState {
   final int page;
   final bool allowMultipleVotes;
   final bool allowAddOptions;
+  final bool isLoading;
 
   WritePostGroupState(
       {this.title = "",
@@ -18,7 +19,8 @@ class WritePostGroupState {
       this.pictures = const [],
       this.page = 0,
       this.allowMultipleVotes = false,
-      this.allowAddOptions = false});
+      this.allowAddOptions = false,
+      this.isLoading = false});
 
   WritePostGroupState copyWith(
       {String? title,
@@ -28,7 +30,8 @@ class WritePostGroupState {
       List<File>? pictures,
       int? page,
       bool? allowMultipleVotes,
-      bool? allowAddOptions}) {
+      bool? allowAddOptions,
+      bool? isLoading}) {
     return WritePostGroupState(
       title: title ?? this.title,
       content: content ?? this.content,
@@ -38,6 +41,7 @@ class WritePostGroupState {
       page: page ?? this.page,
       allowAddOptions: allowAddOptions ?? this.allowAddOptions,
       allowMultipleVotes: allowMultipleVotes ?? this.allowMultipleVotes,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

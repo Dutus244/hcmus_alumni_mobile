@@ -22,6 +22,8 @@ class OtherProfilePageState {
 
   final String isFriendStatus;
 
+  final bool isLoading;
+
   OtherProfilePageState({
     this.statusEvent = Status.loading,
     this.events = const [],
@@ -34,6 +36,7 @@ class OtherProfilePageState {
     this.jobs = const [],
     this.achievements = const [],
     this.isFriendStatus = "",
+    this.isLoading = false,
   });
 
   OtherProfilePageState copyWith({
@@ -48,6 +51,7 @@ class OtherProfilePageState {
     List<Job>? jobs,
     List<Achievement>? achievements,
     String? isFriendStatus,
+    bool? isLoading,
   }) {
     return OtherProfilePageState(
       statusEvent: statusEvent ?? this.statusEvent,
@@ -61,6 +65,7 @@ class OtherProfilePageState {
       jobs: jobs ?? this.jobs,
       achievements: achievements ?? this.achievements,
       isFriendStatus: isFriendStatus ?? this.isFriendStatus,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

@@ -40,7 +40,7 @@ class News {
         title = json["title"],
         summary = json["summary"],
         thumbnail = json["thumbnail"],
-        content = json["content"],
+        content = json["content"] != null ? json["content"] : "",
         views = json["views"].toInt(),
         childrenCommentNumber = json["childrenCommentNumber"].toInt(),
         updateAt = json["updateAt"],

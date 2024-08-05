@@ -27,6 +27,8 @@ class FriendPageState {
   final int indexRequest;
   final bool hasReachedMaxRequest;
 
+  final bool isLoading;
+
   FriendPageState({
     this.page = 0,
     this.name = "",
@@ -45,6 +47,7 @@ class FriendPageState {
     this.friendRequests = const [],
     this.indexRequest = 0,
     this.hasReachedMaxRequest = false,
+    this.isLoading = false,
   });
 
   FriendPageState copyWith({
@@ -65,6 +68,7 @@ class FriendPageState {
     List<FriendRequest>? friendRequests,
     int? indexRequest,
     bool? hasReachedMaxRequest,
+    bool? isLoading,
   }) {
     return FriendPageState(
         page: page ?? this.page,
@@ -85,6 +89,7 @@ class FriendPageState {
         friendRequests: friendRequests ?? this.friendRequests,
         indexRequest: indexRequest ?? this.indexRequest,
         hasReachedMaxRequest:
-            hasReachedMaxRequest ?? this.hasReachedMaxRequest);
+            hasReachedMaxRequest ?? this.hasReachedMaxRequest,
+    isLoading: isLoading ?? this.isLoading);
   }
 }

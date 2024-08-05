@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../common/values/colors.dart';
 import 'bloc/other_profile_page_blocs.dart';
 import 'bloc/other_profile_page_states.dart';
+import 'bloc/other_profile_page_events.dart';
 import 'other_profile_page_controller.dart';
 import 'widgets/other_profile_page_widget.dart';
 
@@ -27,6 +28,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
+    context.read<OtherProfilePageBloc>().add(IsLoadingEvent(false));
   }
 
   void _onScroll() {

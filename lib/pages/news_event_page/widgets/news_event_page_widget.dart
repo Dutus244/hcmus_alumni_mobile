@@ -20,86 +20,71 @@ import '../../../model/news.dart';
 Widget buildButtonChooseNewsOrEvent(
     BuildContext context, void Function(int value)? func) {
   return Container(
-    margin: EdgeInsets.only(top: 5.h),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        GestureDetector(
-          onTap: () {
-            if (BlocProvider.of<NewsEventPageBloc>(context).state.page != 0) {
-              if (func != null) {
-                func(0);
-              }
-            }
+        TextButton(
+          onPressed: () => {
+            if (BlocProvider.of<NewsEventPageBloc>(context).state.page != 0)
+              {func!(0)}
           },
-          child: Container(
-            width: 165.w,
-            height: 30.h,
-            margin: EdgeInsets.only(left: 10.w),
-            decoration: BoxDecoration(
-              color: BlocProvider.of<NewsEventPageBloc>(context).state.page == 1
-                  ? AppColors.elementLight
-                  : AppColors.element,
-              borderRadius: BorderRadius.circular(5.w),
-              border: Border.all(
-                color: Colors.transparent,
-              ),
-            ),
-            child: Center(
-              child: Text(
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Column(
+            children: [
+              Text(
                 translate('news'),
-                style: TextStyle(
-                    fontFamily: AppFonts.Header,
-                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                    fontWeight: FontWeight.bold,
-                    color: BlocProvider.of<NewsEventPageBloc>(context)
-                                .state
-                                .page ==
-                            1
-                        ? AppColors.element
-                        : AppColors.background),
+                style: AppTextStyle.small(context).wSemiBold().withColor(
+                      BlocProvider.of<NewsEventPageBloc>(context).state.page ==
+                              0
+                          ? AppColors.element
+                          : AppColors.textGrey,
+                    ),
               ),
-            ),
+              if (BlocProvider.of<NewsEventPageBloc>(context).state.page == 0)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
+                ),
+            ],
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            if (BlocProvider.of<NewsEventPageBloc>(context).state.page != 1) {
-              if (func != null) {
-                func(1);
-              }
-            }
+        TextButton(
+          onPressed: () => {
+            if (BlocProvider.of<NewsEventPageBloc>(context).state.page != 1)
+              {func!(1)}
           },
-          child: Container(
-            width: 165.w,
-            height: 30.h,
-            margin: EdgeInsets.only(right: 10.w),
-            decoration: BoxDecoration(
-              color: BlocProvider.of<NewsEventPageBloc>(context).state.page == 1
-                  ? AppColors.element
-                  : AppColors.elementLight,
-              borderRadius: BorderRadius.circular(5.w),
-              border: Border.all(
-                color: Colors.transparent,
-              ),
-            ),
-            child: Center(
-              child: Text(
-                translate('event'),
-                style: TextStyle(
-                    fontFamily: AppFonts.Header,
-                    fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                    fontWeight: FontWeight.bold,
-                    color: BlocProvider.of<NewsEventPageBloc>(context)
-                                .state
-                                .page ==
-                            1
-                        ? AppColors.background
-                        : AppColors.element),
-              ),
-            ),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
-        )
+          child: Column(
+            children: [
+              Text(
+                translate('event'),
+                style: AppTextStyle.small(context).wSemiBold().withColor(
+                      BlocProvider.of<NewsEventPageBloc>(context).state.page ==
+                              1
+                          ? AppColors.element
+                          : AppColors.textGrey,
+                    ),
+              ),
+              if (BlocProvider.of<NewsEventPageBloc>(context).state.page == 1)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
+                ),
+            ],
+          ),
+        ),
       ],
     ),
   );
@@ -143,7 +128,8 @@ Widget listNews(BuildContext context, ScrollController _scrollController) {
                           translate('no_news'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                            fontSize:
+                                12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -232,7 +218,8 @@ Widget news(BuildContext context, News news) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -255,10 +242,10 @@ Widget news(BuildContext context, News news) {
                     ),
                     Text(
                       news.views.toString(),
-                      maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -285,7 +272,8 @@ Widget news(BuildContext context, News news) {
                     news.tags.map((tag) => tag.name).join(' '),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.xSmall(context).withColor(AppColors.tag),
+                    style:
+                        AppTextStyle.xSmall(context).withColor(AppColors.tag),
                   ),
                 ),
               ],
@@ -295,7 +283,6 @@ Widget news(BuildContext context, News news) {
             margin: EdgeInsets.only(top: 3.h),
             child: Text(
               news.title,
-              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
@@ -351,7 +338,8 @@ Widget news(BuildContext context, News news) {
                       news.faculty.name,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header,
                       ),
@@ -416,7 +404,8 @@ Widget listEvent(BuildContext context, ScrollController _scrollController) {
                           translate('no_event'),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                            fontSize:
+                                12.sp / MediaQuery.of(context).textScaleFactor,
                             fontWeight: FontWeight.normal,
                             fontFamily: AppFonts.Header,
                           ),
@@ -505,7 +494,8 @@ Widget event(BuildContext context, Event event) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -528,10 +518,10 @@ Widget event(BuildContext context, Event event) {
                     ),
                     Text(
                       event.views.toString(),
-                      maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -557,7 +547,8 @@ Widget event(BuildContext context, Event event) {
                       maxLines: 1,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            10.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: AppColors.textGrey,
                       ),
@@ -584,7 +575,8 @@ Widget event(BuildContext context, Event event) {
                     event.tags.map((tag) => tag.name).join(' '),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyle.xSmall(context).withColor(AppColors.tag),
+                    style:
+                        AppTextStyle.xSmall(context).withColor(AppColors.tag),
                   ),
                 ),
               ],
@@ -594,7 +586,6 @@ Widget event(BuildContext context, Event event) {
             margin: EdgeInsets.only(top: 3.h),
             child: Text(
               event.title,
-              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontSize: 16.sp / MediaQuery.of(context).textScaleFactor,
@@ -638,7 +629,8 @@ Widget event(BuildContext context, Event event) {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
-                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         color: Color.fromARGB(255, 63, 63, 70),
                       ),
@@ -717,7 +709,8 @@ Widget event(BuildContext context, Event event) {
                       event.faculty.name,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
+                        fontSize:
+                            12.sp / MediaQuery.of(context).textScaleFactor,
                         fontWeight: FontWeight.normal,
                         fontFamily: AppFonts.Header,
                       ),

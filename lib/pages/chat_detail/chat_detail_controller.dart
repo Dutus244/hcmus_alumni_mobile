@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -24,8 +25,40 @@ import 'package:path_provider/path_provider.dart';
 
 class ChatDetailController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const ChatDetailController({required this.context});
+  ChatDetailController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleLoadMessageData(int page, int inboxId) async {
     if (page == 0) {
@@ -95,7 +128,7 @@ class ChatDetailController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_get_message'));
+      // toastInfo(msg: translate('error_get_message'));
     }
   }
 
@@ -197,6 +230,8 @@ class ChatDetailController {
     List<File> images = BlocProvider.of<ChatDetailBloc>(context).state.images;
     int mode = BlocProvider.of<ChatDetailBloc>(context).state.mode;
     Message? children = BlocProvider.of<ChatDetailBloc>(context).state.children;
+    context.read<ChatDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     if (mode == 0) {
       if (content != "") {
         try {
@@ -308,8 +343,11 @@ class ChatDetailController {
         }
       }
     }
+    context.read<ChatDetailBloc>().add(IsLoadingEvent(false));
+    hideLoadingIndicator();
     context.read<ChatDetailBloc>().add(ModeEvent(0));
     context.read<ChatDetailBloc>().add(ContentEvent(''));
+    context.read<ChatDetailBloc>().add(ImagesEvent([]));
     context.read<ChatDetailBloc>().add(ModeImageEvent(false));
   }
 

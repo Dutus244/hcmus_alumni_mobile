@@ -44,6 +44,12 @@ class HasReachedMaxCommentEvent extends NewsDetailEvent {
   const HasReachedMaxCommentEvent(this.hasReachedMaxComment);
 }
 
+class IsLoadingEvent extends NewsDetailEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class RelatedNewsEvent extends NewsDetailEvent {
   final List<News> relatedNews;
 

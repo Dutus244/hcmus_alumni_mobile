@@ -21,8 +21,40 @@ import 'bloc/event_detail_states.dart';
 
 class EventDetailController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const EventDetailController({required this.context});
+  EventDetailController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleGetEvent(String id) async {
     var apiUrl = dotenv.env['API_URL'];
@@ -49,10 +81,7 @@ class EventDetailController {
           return;
         }
       }
-    } catch (error) {
-      // Handle errors
-      toastInfo(msg: translate('error_get_event'));
-    }
+    } catch (error) {}
   }
 
   Future<void> handleGetComment(String id, int page) async {
@@ -67,6 +96,8 @@ class EventDetailController {
       }
       context.read<EventDetailBloc>().add(IndexCommentEvent(
           BlocProvider.of<EventDetailBloc>(context).state.indexComment + 1));
+      context.read<EventDetailBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
     }
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/events/$id/comments';
@@ -87,6 +118,8 @@ class EventDetailController {
           if (page == 0) {
             context.read<EventDetailBloc>().add(CommentsEvent([]));
           }
+          context.read<EventDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           context.read<EventDetailBloc>().add(HasReachedMaxCommentEvent(true));
           return;
         }
@@ -96,6 +129,8 @@ class EventDetailController {
               .read<EventDetailBloc>()
               .add(CommentsEvent(commentResponse.comments));
         } else {
+          context.read<EventDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           List<Comment> currentList =
               BlocProvider.of<EventDetailBloc>(context).state.comments;
           List<Comment> updatedNewsList = List.of(currentList)
@@ -106,14 +141,18 @@ class EventDetailController {
           context.read<EventDetailBloc>().add(HasReachedMaxCommentEvent(true));
         }
       } else {
+        context.read<EventDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_comment'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleGetChildrenComment(Comment comment) async {
+    context.read<EventDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/events/comments/${comment.id}/children';
     var pageSize = 10;
@@ -138,18 +177,21 @@ class EventDetailController {
         if (parentComment != null) {
           await parentComment.fetchChildrenComments(jsonMap);
         }
-
+        context.read<EventDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         context.read<EventDetailBloc>().add(CommentsEvent(currentList));
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
+        context.read<EventDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         if (errorCode == 51300) {
           toastInfo(msg: translate('no_father_comment_found'));
           return;
         }
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_comment'));
+      hideLoadingIndicator();
     }
   }
 
@@ -168,31 +210,9 @@ class EventDetailController {
     return null;
   }
 
-  Future<void> handleCheckIsParticipated(String id) async {
-    var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/events/is-participated';
-    var token = Global.storageService.getUserAuthToken();
-
-    var headers = <String, String>{
-      'Authorization': 'Bearer $token', // Include bearer token in the headers
-    };
-
-    try {
-      var url = Uri.parse('$apiUrl$endpoint?eventIds=$id');
-      var response = await http.get(url, headers: headers);
-      var responseBody = utf8.decode(response.bodyBytes);
-      if (response.statusCode == 200) {
-        var jsonMap = json.decode(responseBody);
-        context
-            .read<EventDetailBloc>()
-            .add(IsParticipatedEvent(jsonMap[0]["isParticipated"]));
-      } else {}
-    } catch (error) {
-      // Handle errors
-    }
-  }
-
   Future<void> handleJoinEvent(String id) async {
+    context.read<EventDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/events/$id/participants';
 
@@ -212,11 +232,16 @@ class EventDetailController {
       var response = await http.post(url, headers: headers, body: body);
 
       if (response.statusCode == 201) {
-        context.read<EventDetailBloc>().add(IsParticipatedEvent(true));
-        EventDetailController(context: context).handleGetParticipant(id, 0);
+        await EventDetailController(context: context).handleGetEvent(id);
+        await EventDetailController(context: context).handleGetParticipant(id, 0);
+        context.read<EventDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: translate('Tham gia thành công'));
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
+        context.read<EventDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         if (errorCode == 51000) {
           toastInfo(msg: translate('no_event_found'));
           return;
@@ -231,12 +256,13 @@ class EventDetailController {
         }
       }
     } catch (error) {
-      // Handle errors
-      toastInfo(msg: translate('error_participate_event'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleExitEvent(String id) async {
+    context.read<EventDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/events/$id/participants';
 
@@ -255,15 +281,14 @@ class EventDetailController {
 
       var response = await http.delete(url, headers: headers, body: body);
       if (response.statusCode == 200) {
-        context.read<EventDetailBloc>().add(IsParticipatedEvent(false));
-        EventDetailController(context: context).handleGetParticipant(id, 0);
-      } else {
-        // Handle other status codes if needed
-        toastInfo(msg: translate('error_cancel_participate_event'));
+        await EventDetailController(context: context).handleGetEvent(id);
+        await EventDetailController(context: context).handleGetParticipant(id, 0);
+        context.read<EventDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: translate('Huỷ tham gia thành công'));
       }
     } catch (error) {
-      // Handle errors
-      toastInfo(msg: translate('error_cancel_participate_event'));
+      hideLoadingIndicator();
     }
   }
 
@@ -338,9 +363,7 @@ class EventDetailController {
           return;
         }
       }
-    } catch (error) {
-      toastInfo(msg: translate('error_get_participant'));
-    }
+    } catch (error) {}
   }
 
   Future<void> handleDeleteComment(String id, String commentId) async {
@@ -362,6 +385,8 @@ class EventDetailController {
       ),
     );
     if (shouldDelete != null && shouldDelete) {
+      context.read<EventDetailBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/events/comments/$commentId';
 
@@ -378,11 +403,16 @@ class EventDetailController {
         var response = await http.delete(url, headers: headers);
 
         if (response.statusCode == 200) {
-          EventDetailController(context: context).handleGetEvent(id);
-          EventDetailController(context: context).handleGetComment(id, 0);
+          await handleGetEvent(id);
+          await handleGetComment(id, 0);
+          context.read<EventDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
+          toastInfo(msg: 'Xoá bình luận thành công');
         } else {
           Map<String, dynamic> jsonMap = json.decode(response.body);
           int errorCode = jsonMap['error']['code'];
+          context.read<EventDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           if (errorCode == 51600) {
             toastInfo(msg: translate('no_comment_found'));
             return;
@@ -390,7 +420,7 @@ class EventDetailController {
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: translate('error_delete_comment'));
+        hideLoadingIndicator();
       }
     }
     return shouldDelete ?? false;

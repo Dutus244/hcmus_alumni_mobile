@@ -18,8 +18,40 @@ import '../../model/news_response.dart';
 
 class NewsDetailController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const NewsDetailController({required this.context});
+  NewsDetailController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleGetNews(String id) async {
     var apiUrl = dotenv.env['API_URL'];
@@ -46,7 +78,7 @@ class NewsDetailController {
         }
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_news'));
+      // toastInfo(msg: translate('error_get_news'));
     }
   }
 
@@ -60,6 +92,8 @@ class NewsDetailController {
       }
       context.read<NewsDetailBloc>().add(IndexCommentEvent(
           BlocProvider.of<NewsDetailBloc>(context).state.indexComment + 1));
+      context.read<NewsDetailBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
     }
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/news/$id/comments';
@@ -80,6 +114,8 @@ class NewsDetailController {
           if (page == 0) {
             context.read<NewsDetailBloc>().add(CommentsEvent([]));
           }
+          context.read<NewsDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           context.read<NewsDetailBloc>().add(HasReachedMaxCommentEvent(true));
           return;
         }
@@ -89,6 +125,8 @@ class NewsDetailController {
               .read<NewsDetailBloc>()
               .add(CommentsEvent(commentResponse.comments));
         } else {
+          context.read<NewsDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           List<Comment> currentList =
               BlocProvider.of<NewsDetailBloc>(context).state.comments;
           List<Comment> updatedNewsList = List.of(currentList)
@@ -96,14 +134,19 @@ class NewsDetailController {
           context.read<NewsDetailBloc>().add(CommentsEvent(updatedNewsList));
         }
       } else {
+        context.read<NewsDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_comment'));
+      // toastInfo(msg: translate('error_get_comment'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleGetChildrenComment(Comment comment) async {
+    context.read<NewsDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/news/comments/${comment.id}/children';
     var pageSize = 10;
@@ -129,18 +172,22 @@ class NewsDetailController {
         if (parentComment != null) {
           await parentComment.fetchChildrenComments(jsonMap);
         }
-
+        context.read<NewsDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         context.read<NewsDetailBloc>().add(CommentsEvent(currentList));
       } else {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int errorCode = jsonMap['error']['code'];
+        context.read<NewsDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         if (errorCode == 41100) {
           toastInfo(msg: translate('no_father_comment_found'));
           return;
         }
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_comment'));
+      // toastInfo(msg: translate('error_get_comment'));
+      hideLoadingIndicator();
     }
   }
 
@@ -185,12 +232,12 @@ class NewsDetailController {
         }
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_related_news'));
+      // toastInfo(msg: translate('error_get_related_news'));
     }
   }
 
   Future<void> handleDeleteComment(String id, String commentId) async {
-    final shouldDelte = await showDialog(
+    final shouldDelete = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(translate('delete_comment')),
@@ -207,7 +254,9 @@ class NewsDetailController {
         ],
       ),
     );
-    if (shouldDelte != null && shouldDelte) {
+    if (shouldDelete != null && shouldDelete) {
+      context.read<NewsDetailBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/news/comments/$commentId';
 
@@ -223,11 +272,16 @@ class NewsDetailController {
 
         var response = await http.delete(url, headers: headers);
         if (response.statusCode == 200) {
-          NewsDetailController(context: context).handleGetNews(id);
-          NewsDetailController(context: context).handleGetComment(id, 0);
+          await handleGetNews(id);
+          await handleGetComment(id, 0);
+          context.read<NewsDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
+          toastInfo(msg: 'Xoá bình luận thành công');
         } else {
           Map<String, dynamic> jsonMap = json.decode(response.body);
           int errorCode = jsonMap['error']['code'];
+          context.read<NewsDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           if (errorCode == 41400) {
             toastInfo(msg: translate('no_comment_found'));
             return;
@@ -235,9 +289,10 @@ class NewsDetailController {
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: translate('error_delete_comment'));
+        // toastInfo(msg: translate('error_delete_comment'));
+        hideLoadingIndicator();
       }
     }
-    return shouldDelte ?? false;
+    return shouldDelete ?? false;
   }
 }

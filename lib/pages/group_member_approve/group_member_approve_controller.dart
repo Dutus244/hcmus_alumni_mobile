@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -16,8 +17,40 @@ import 'package:http/http.dart' as http;
 
 class GroupMemberApproveController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const GroupMemberApproveController({required this.context});
+  GroupMemberApproveController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleGetMember(String id, int page) async {
     if (page == 0) {
@@ -94,6 +127,8 @@ class GroupMemberApproveController {
   }
 
   Future<void> handleApprovedRequest(String groupId, String userId) async {
+    context.read<GroupMemberApproveBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$groupId/requests/$userId';
     var token = Global.storageService.getUserAuthToken();
@@ -106,17 +141,24 @@ class GroupMemberApproveController {
       var url = Uri.parse('$apiUrl$endpoint?status=APPROVED');
       var response = await http.put(url, headers: headers);
       if (response.statusCode == 200) {
-        GroupMemberApproveController(context: context)
-            .handleGetMember(groupId, 0);
+        await handleGetMember(groupId, 0);
+        context.read<GroupMemberApproveBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: "Đã phê duyệt thành công");
       } else {
+        context.read<GroupMemberApproveBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: "Có lỗi xả ra khi chấp nhập yêu cầu");
       }
     } catch (error) {
-      toastInfo(msg: "Có lỗi xả ra khi chấp nhập yêu cầu");
+      // toastInfo(msg: "Có lỗi xả ra khi chấp nhập yêu cầu");
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleDeniedRequest(String groupId, String userId) async {
+    context.read<GroupMemberApproveBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/groups/$groupId/requests/$userId';
     var token = Global.storageService.getUserAuthToken();
@@ -129,13 +171,18 @@ class GroupMemberApproveController {
       var url = Uri.parse('$apiUrl$endpoint?status=DENIED');
       var response = await http.put(url, headers: headers);
       if (response.statusCode == 200) {
-        GroupMemberApproveController(context: context)
-            .handleGetMember(groupId, 0);
+        await handleGetMember(groupId, 0);
+        context.read<GroupMemberApproveBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: "Đã từ chối thành công");
       } else {
+        context.read<GroupMemberApproveBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_deny_request_group'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_deny_request_group'));
+      // toastInfo(msg: translate('error_deny_request_group'));
+      hideLoadingIndicator();
     }
   }
 }

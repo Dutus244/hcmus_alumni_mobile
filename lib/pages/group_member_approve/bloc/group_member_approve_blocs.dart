@@ -9,6 +9,7 @@ class GroupMemberApproveBloc
     on<StatusEvent>(_statusEvent);
     on<RequestsEvent>(_requestsEvent);
     on<IndexRequestEvent>(_indexRequestEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<HasReachedMaxRequestEvent>(_hasReachedMaxRequestEvent);
   }
 
@@ -25,6 +26,11 @@ class GroupMemberApproveBloc
   void _indexRequestEvent(
       IndexRequestEvent event, Emitter<GroupMemberApproveState> emit) {
     emit(state.copyWith(indexRequest: event.indexRequest));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<GroupMemberApproveState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _hasReachedMaxRequestEvent(

@@ -22,6 +22,7 @@ class FriendPageBloc extends Bloc<FriendPageEvent, FriendPageState> {
     on<UsersEvent>(_usersEvent);
     on<IndexUserEvent>(_indexUserEvent);
     on<HasReachedMaxUserEvent>(_hasReachedMaxUserEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
   }
 
   void _pageEvent(PageEvent event, Emitter<FriendPageState> emit) async {
@@ -101,5 +102,10 @@ class FriendPageBloc extends Bloc<FriendPageEvent, FriendPageState> {
   void _hasReachedMaxRequestEvent(
       HasReachedMaxRequestEvent event, Emitter<FriendPageState> emit) {
     emit(state.copyWith(hasReachedMaxRequest: event.hasReachedMaxRequest));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<FriendPageState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 }

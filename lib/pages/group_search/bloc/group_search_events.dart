@@ -42,6 +42,12 @@ class HasReachedMaxGroupEvent extends GroupSearchEvent {
   const HasReachedMaxGroupEvent(this.hasReachedMaxGroup);
 }
 
+class IsLoadingEvent extends GroupSearchEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class ClearResultEvent extends GroupSearchEvent {}
 
 class GroupSearchResetEvent extends GroupSearchEvent {}

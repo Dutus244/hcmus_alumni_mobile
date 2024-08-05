@@ -26,4 +26,10 @@ class FacultyIdEvent extends AlumniVerificationEvent {
   const FacultyIdEvent(this.facultyId);
 }
 
+class IsLoadingEvent extends AlumniVerificationEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class AlumniVerificationResetEvent extends AlumniVerificationEvent {}

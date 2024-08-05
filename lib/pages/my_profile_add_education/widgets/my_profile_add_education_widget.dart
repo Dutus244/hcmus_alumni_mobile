@@ -962,58 +962,62 @@ Widget chooseEndTime(BuildContext context) {
 Widget buttonAdd(BuildContext context, int option, String id) {
   String schoolName = BlocProvider.of<MyProfileAddEducationBloc>(context).state.schoolName;
   String degree = BlocProvider.of<MyProfileAddEducationBloc>(context).state.degree;
-  return GestureDetector(
-    onTap: () {
-      if (schoolName != "" && degree != "") {
-        if (option == 0) {
-          MyProfileAddEducationController(context: context).handleAddEducation();
-        } else {
-          MyProfileAddEducationController(context: context).handleUpdateEducation(id);
+  return Container(
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+    height: 40.h,
+    child: ElevatedButton(
+      onPressed: () {
+        if (BlocProvider.of<MyProfileAddEducationBloc>(context)
+            .state
+            .isLoading) {
+          return;
         }
-      }
-    },
-    child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: (schoolName != "")
-            ? AppColors.element
-            : AppColors.background,
-        borderRadius: BorderRadius.circular(10.w),
-        border: Border.all(
-          color: AppColors.elementLight,
+        if (schoolName != "" && degree != "") {
+          if (option == 0) {
+            MyProfileAddEducationController(context: context).handleAddEducation();
+          } else {
+            MyProfileAddEducationController(context: context).handleUpdateEducation(id);
+          }
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: (schoolName != "") ? AppColors.background : Colors.black.withOpacity(0.3), backgroundColor: (schoolName != "") ? AppColors.element : AppColors.background, // Màu văn bản của nút
+        elevation: 0, // Không có đổ bóng
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.w), // Bo góc của nút
+          side: BorderSide(
+            color: AppColors.elementLight, // Màu viền của nút
+          ),
+        ),
+        padding: EdgeInsets.zero, // Để nút giữ nguyên kích thước như Container
+        minimumSize: Size(double.infinity, 30.h), // Đảm bảo chiều cao của nút
+      ),
+      child: Container(
+        margin: EdgeInsets.only(left: 12.w, right: 12.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              translate('save'),
+              style: TextStyle(
+                fontFamily: AppFonts.Header,
+                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                fontWeight: FontWeight.bold,
+                color: (schoolName != "") ? AppColors.background : Colors.black.withOpacity(0.3),
+              ),
+            ),
+            Container(
+              width: 6.w,
+            ),
+            SvgPicture.asset(
+              "assets/icons/send.svg",
+              width: 15.w,
+              height: 15.h,
+              color: (schoolName != "") ? AppColors.background : Colors.black.withOpacity(0.5),
+            ),
+          ],
         ),
       ),
-      child: Center(
-          child: Container(
-            margin: EdgeInsets.only(left: 12.w, right: 12.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  translate('save'),
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color: (schoolName != "")
-                          ? AppColors.background
-                          : Colors.black.withOpacity(0.3)),
-                ),
-                Container(
-                  width: 6.w,
-                ),
-                SvgPicture.asset(
-                  "assets/icons/send.svg",
-                  width: 15.w,
-                  height: 15.h,
-                  color: (schoolName != "")
-                      ? AppColors.background
-                      : Colors.black.withOpacity(0.5),
-                ),
-              ],
-            ),
-          )),
     ),
   );
 }

@@ -10,6 +10,7 @@ class AlumniVerificationBloc
     on<StudentIdEvent>(_studentIdEvent);
     on<StartYearEvent>(_startYearEvent);
     on<FacultyIdEvent>(_facultyIdEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<AlumniVerificationResetEvent>(_alumniVerificationResetEvent);
   }
 
@@ -31,6 +32,11 @@ class AlumniVerificationBloc
   void _facultyIdEvent(
       FacultyIdEvent event, Emitter<AlumniVerificationState> emit) {
     emit(state.copyWith(facultyId: event.facultyId));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<AlumniVerificationState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _alumniVerificationResetEvent(AlumniVerificationResetEvent event,

@@ -632,58 +632,62 @@ Widget chooseTime(BuildContext context) {
 Widget buttonAdd(BuildContext context, int option, String id) {
   String name = BlocProvider.of<MyProfileAddAchievementBloc>(context).state.name;
   String type = BlocProvider.of<MyProfileAddAchievementBloc>(context).state.type;
-  return GestureDetector(
-    onTap: () {
-      if (name != "" && type != "") {
-        if (option == 0) {
-          MyProfileAddAchievementController(context: context).handleAddAchievement();
-        } else {
-          MyProfileAddAchievementController(context: context).handleUpdateAchievement(id);
+  return Container(
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+    height: 40.h,
+    child: ElevatedButton(
+      onPressed: () {
+        if (BlocProvider.of<MyProfileAddAchievementBloc>(context)
+            .state
+            .isLoading) {
+          return;
         }
-      }
-    },
-    child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: (name != "")
-            ? AppColors.element
-            : AppColors.background,
-        borderRadius: BorderRadius.circular(10.w),
-        border: Border.all(
-          color: AppColors.elementLight,
+        if (name != "" && type != "") {
+          if (option == 0) {
+            MyProfileAddAchievementController(context: context).handleAddAchievement();
+          } else {
+            MyProfileAddAchievementController(context: context).handleUpdateAchievement(id);
+          }
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: (name != "") ? AppColors.background : Colors.black.withOpacity(0.3), backgroundColor: (name != "") ? AppColors.element : AppColors.background, // Màu văn bản của nút
+        elevation: 0, // Không có đổ bóng
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.w), // Bo góc của nút
+          side: BorderSide(
+            color: AppColors.elementLight, // Màu viền của nút
+          ),
+        ),
+        padding: EdgeInsets.zero, // Để nút giữ nguyên kích thước như Container
+        minimumSize: Size(double.infinity, 30.h), // Đảm bảo chiều cao của nút
+      ),
+      child: Container(
+        margin: EdgeInsets.only(left: 12.w, right: 12.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              translate('save'),
+              style: TextStyle(
+                fontFamily: AppFonts.Header,
+                fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                fontWeight: FontWeight.bold,
+                color: (name != "") ? AppColors.background : Colors.black.withOpacity(0.3),
+              ),
+            ),
+            Container(
+              width: 6.w,
+            ),
+            SvgPicture.asset(
+              "assets/icons/send.svg",
+              width: 15.w,
+              height: 15.h,
+              color: (name != "") ? AppColors.background : Colors.black.withOpacity(0.5),
+            ),
+          ],
         ),
       ),
-      child: Center(
-          child: Container(
-            margin: EdgeInsets.only(left: 12.w, right: 12.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  translate('save'),
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color: (name != "")
-                          ? AppColors.background
-                          : Colors.black.withOpacity(0.3)),
-                ),
-                Container(
-                  width: 6.w,
-                ),
-                SvgPicture.asset(
-                  "assets/icons/send.svg",
-                  width: 15.w,
-                  height: 15.h,
-                  color: (name != "")
-                      ? AppColors.background
-                      : Colors.black.withOpacity(0.5),
-                ),
-              ],
-            ),
-          )),
     ),
   );
 }

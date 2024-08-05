@@ -48,6 +48,12 @@ class FriendCountEvent extends FriendListEvent {
   const FriendCountEvent(this.friendCount);
 }
 
+class IsLoadingEvent extends FriendListEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class ClearResultEvent extends FriendListEvent {}
 
 class FriendSearchResetEvent extends FriendListEvent {}

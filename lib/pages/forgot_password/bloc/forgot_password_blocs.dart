@@ -7,7 +7,7 @@ class ForgotPasswordBloc
     extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
   ForgotPasswordBloc() : super(ForgotPasswordState()) {
     on<EmailEvent>(_emailEvent);
-    on<CodeEvent>(_codeEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<ForgotPasswordResetEvent>(_forgotPasswordResetEvent);
   }
 
@@ -15,8 +15,9 @@ class ForgotPasswordBloc
     emit(state.copyWith(email: event.email));
   }
 
-  void _codeEvent(CodeEvent event, Emitter<ForgotPasswordState> emit) {
-    emit(state.copyWith(code: event.code));
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<ForgotPasswordState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _forgotPasswordResetEvent(

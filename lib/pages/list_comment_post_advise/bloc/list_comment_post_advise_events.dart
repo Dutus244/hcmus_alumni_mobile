@@ -41,6 +41,12 @@ class ChildrenEvent extends ListCommentPostAdviseEvent {
   const ChildrenEvent(this.children);
 }
 
+class IsLoadingEvent extends ListCommentPostAdviseEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class ReplyEvent extends ListCommentPostAdviseEvent {
   final int reply;
 

@@ -1,14 +1,22 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hcmus_alumni_mobile/common/values/assets.dart';
 import 'package:hcmus_alumni_mobile/common/values/constants.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
+import '../../common/function/handle_save_permission.dart';
 import '../../common/services/firebase_service.dart';
+import '../../common/services/socket_service.dart';
 import '../../common/values/colors.dart';
 import '../../global.dart';
+import 'package:http/http.dart' as http;
+
+import '../../model/user.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -42,9 +50,7 @@ class _SplashState extends State<Splash> {
     });
   }
 
-  void handleNavigation() {
-    double textScaleFactor = MediaQuery.of(context).textScaleFactor;
-    print(textScaleFactor);
+  Future<void> handleNavigation() async {
     Map<String, dynamic>? args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (args != null) {
@@ -140,20 +146,88 @@ class _SplashState extends State<Splash> {
           break;
       }
     } else {
-      Timer(Duration(seconds: 2), () {
-        if (Global.storageService.getDeviceFirstOpen()) {
-          Global.storageService
-              .setBool(AppConstants.DEVICE_OPEN_FIRST_TIME, false);
-          Locale currentLocale = Localizations.localeOf(context);
-          Global.storageService.setString(
-              AppConstants.DEVICE_LANGUAGE, currentLocale.toString());
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil("/welcome", (route) => false);
-        } else {
+      if (Global.storageService.getUserRememberLogin()) {
+        var url = Uri.parse('${dotenv.env['API_URL']}/auth/login');
+        final map = <String, dynamic>{};
+        map['email'] = Global.storageService.getUserEmail();
+        map['pass'] = Global.storageService.getUserPassword();
+
+        try {
+          var response = await http.post(url, body: map);
+
+          if (response.statusCode == 200) {
+            Map<String, dynamic> jsonMap = json.decode(response.body);
+            String jwtToken = jsonMap['jwt'];
+
+            var url =
+                Uri.parse('${dotenv.env['API_URL']}/notification/subscription');
+            final token = await NotificationServices().getDeviceToken();
+            var headers = <String, String>{
+              'Authorization': 'Bearer $jwtToken',
+              'Content-Type': 'application/json',
+            };
+            final body = jsonEncode({
+              'token': token,
+            });
+            try {
+              await http.post(url, body: body, headers: headers);
+            } catch (error) {
+              print(error);
+            }
+
+            Global.storageService
+                .setString(AppConstants.USER_AUTH_TOKEN, jwtToken);
+            Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
+            Global.storageService
+                .setString(AppConstants.USER_ID, decodedToken["sub"]);
+            List<String> permissions =
+                List<String>.from(jsonMap['permissions']);
+            handleSavePermission(permissions);
+            socketService.connect(Global.storageService.getUserId());
+
+            url = Uri.parse(
+                '${dotenv.env['API_URL']}/user/${Global.storageService.getUserId()}/profile');
+            try {
+              var response = await http.get(url, headers: headers);
+              var responseBody = utf8.decode(response.bodyBytes);
+              if (response.statusCode == 200) {
+                var jsonMap = json.decode(responseBody);
+                var user = User.fromJson(jsonMap["user"]);
+                Global.storageService
+                    .setString(AppConstants.USER_FULL_NAME, user.fullName);
+                Global.storageService
+                    .setString(AppConstants.USER_AVATAR_URL, user.avatarUrl);
+              }
+            } catch (error) {
+              print(error);
+            }
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                "/applicationPage", (route) => false,
+                arguments: {"route": 0});
+          } else {
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil("/signIn", (route) => false);
+          }
+        } catch (error) {
           Navigator.of(context)
               .pushNamedAndRemoveUntil("/signIn", (route) => false);
         }
-      });
+      } else {
+        Timer(Duration(seconds: 2), () {
+          if (Global.storageService.getDeviceFirstOpen()) {
+            Global.storageService
+                .setBool(AppConstants.DEVICE_OPEN_FIRST_TIME, false);
+            Locale currentLocale = Localizations.localeOf(context);
+            Global.storageService.setString(
+                AppConstants.DEVICE_LANGUAGE, currentLocale.toString());
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil("/welcome", (route) => false);
+          } else {
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil("/signIn", (route) => false);
+          }
+        });
+      }
     }
   }
 

@@ -15,6 +15,8 @@ class GroupPageState {
   final int indexGroupJoined;
   final bool hasReachedMaxGroupJoined;
 
+  final bool isLoading;
+
   GroupPageState({
     this.page = 0,
     this.statusGroupDiscover = Status.loading,
@@ -25,6 +27,7 @@ class GroupPageState {
     this.groupJoineds = const [],
     this.indexGroupJoined = 0,
     this.hasReachedMaxGroupJoined = false,
+    this.isLoading = false,
   });
 
   GroupPageState copyWith({
@@ -37,6 +40,7 @@ class GroupPageState {
     List<Group>? groupJoineds,
     int? indexGroupJoined,
     bool? hasReachedMaxGroupJoined,
+    bool? isLoading,
   }) {
     return GroupPageState(
       page: page ?? this.page,
@@ -50,6 +54,7 @@ class GroupPageState {
       indexGroupJoined: indexGroupJoined ?? this.indexGroupJoined,
       hasReachedMaxGroupJoined:
           hasReachedMaxGroupJoined ?? this.hasReachedMaxGroupJoined,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

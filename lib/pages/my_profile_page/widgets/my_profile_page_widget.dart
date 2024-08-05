@@ -272,81 +272,84 @@ Widget header(BuildContext context) {
       ),
       Row(
         children: [
-          GestureDetector(
-            onTap: () async {
-              await Navigator.pushNamed(
-                context,
-                "/myProfileEdit",
-              );
-              MyProfilePageController(context: context).handleGetProfile();
-            },
-            child: Container(
-              margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
-              width: 290.w,
-              height: 35.h,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 230, 230, 230),
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
+          Container(
+            margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
+            width: 290.w,
+            height: 35.h,
+            child: ElevatedButton(
+              onPressed: () async {
+                await Navigator.pushNamed(
+                  context,
+                  "/myProfileEdit",
+                );
+                MyProfilePageController(context: context).handleGetProfile();
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: AppColors.textBlack, backgroundColor: Color.fromARGB(255, 230, 230, 230),
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.w),
                 ),
               ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/edit.svg",
-                      width: 14.w,
-                      height: 14.h,
-                      color: AppColors.textBlack,
-                    ),
-                    Container(
-                      width: 5.w,
-                    ),
-                    Text(
-                      translate('edit_profile'),
-                      style: TextStyle(
-                        fontFamily: AppFonts.Header,
-                        fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-                        fontWeight: FontWeight.bold,
+              child: Container(
+                width: 290.w,
+                height: 35.h,
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/edit.svg",
+                        width: 14.w,
+                        height: 14.h,
                         color: AppColors.textBlack,
                       ),
-                    ),
-                  ],
+                      SizedBox(width: 5.w),
+                      Text(
+                        translate('edit_profile'),
+                        style: TextStyle(
+                          fontFamily: AppFonts.Header,
+                          fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textBlack,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                "/optionPage",
-              );
-            },
-            child: Container(
-              margin: EdgeInsets.only(right: 10.w, top: 10.h),
-              width: 40.w,
-              height: 30.h,
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 230, 230, 230),
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
+          Container(
+            margin: EdgeInsets.only(right: 10.w, top: 10.h),
+            width: 35.w,
+            height: 35.h,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  "/optionPage",
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: AppColors.textBlack, backgroundColor: Color.fromARGB(255, 230, 230, 230),
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.w),
                 ),
               ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/option.svg",
-                      width: 14.w,
-                      height: 14.h,
-                      color: AppColors.textBlack,
-                    ),
-                  ],
+              child: Container(
+                width: 40.w,
+                height: 30.h,
+                child: Center(
+                  child: SvgPicture.asset(
+                    "assets/icons/option.svg",
+                    width: 14.w,
+                    height: 14.h,
+                    color: AppColors.textBlack,
+                  ),
                 ),
               ),
             ),
@@ -701,38 +704,45 @@ Widget listFriend(BuildContext context) {
             ],
           ),
         ),
-      GestureDetector(
-        onTap: () async {
-          await Navigator.pushNamed(context, "/friendList",
-              arguments: {"id": Global.storageService.getUserId()});
-          MyProfilePageController(context: context).handleLoadFriendData();
-          MyProfilePageController(context: context).handleGetFriendCount();
-        },
-        child: Container(
+      Container(
+        width: 340.w,
+        height: 40.h,
+        margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 0.h),
+        child: ElevatedButton(
+          onPressed: () async {
+            await Navigator.pushNamed(
+              context,
+              "/friendList",
+              arguments: {"id": Global.storageService.getUserId()},
+            );
+            MyProfilePageController(context: context).handleLoadFriendData();
+            MyProfilePageController(context: context).handleGetFriendCount();
+          },
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.black, backgroundColor: Color.fromARGB(255, 230, 230, 230),
+            padding: EdgeInsets.zero,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.w),
+            ),
+          ),
+          child: Container(
             width: 340.w,
             height: 40.h,
             margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 0.h),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5.w),
-              color: Color.fromARGB(255, 230, 230, 230),
-              border: Border.all(
-                color: Colors.transparent,
+            child: Center(
+              child: Text(
+                translate('see_all_friends'),
+                style: TextStyle(
+                  fontFamily: AppFonts.Header,
+                  fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
             ),
-            child: Container(
-                height: 20.h,
-                margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 2.h),
-                child: Center(
-                  child: Text(
-                    translate('see_all_friends'),
-                    style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ))),
+          ),
+        ),
       ),
       Container(
         margin: EdgeInsets.only(top: 10.h),
@@ -743,137 +753,94 @@ Widget listFriend(BuildContext context) {
   );
 }
 
-Widget buildButtonChooseNewsOrEvent(
-    BuildContext context, void Function(int value)? func) {
-  return Container(
-    margin: EdgeInsets.only(top: 5.h),
-    child: SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          GestureDetector(
-            onTap: () {
-              if (func != null) {
-                if (BlocProvider.of<MyProfilePageBloc>(context).state.page !=
-                    0) {
-                  func(0);
-                }
-              }
-            },
-            child: Container(
-              width: 165.w,
-              height: 30.h,
-              margin: EdgeInsets.only(left: 10.w),
-              decoration: BoxDecoration(
-                color:
-                    BlocProvider.of<MyProfilePageBloc>(context).state.page == 0
-                        ? AppColors.element
-                        : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  translate('advise'),
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color: BlocProvider.of<MyProfilePageBloc>(context)
-                                  .state
-                                  .page ==
-                              0
-                          ? AppColors.background
-                          : AppColors.element),
-                ),
-              ),
-            ),
+Widget buildButtonChooseNewsOrEvent(BuildContext context, void Function(int value)? func) {
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        TextButton(
+          onPressed: () => func!(0),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
-          GestureDetector(
-            onTap: () {
-              if (func != null) {
-                if (BlocProvider.of<MyProfilePageBloc>(context).state.page !=
-                    1) {
-                  func(1);
-                }
-              }
-            },
-            child: Container(
-              width: 165.w,
-              height: 30.h,
-              margin: EdgeInsets.symmetric(horizontal: 10.w),
-              decoration: BoxDecoration(
-                color:
-                    BlocProvider.of<MyProfilePageBloc>(context).state.page == 1
-                        ? AppColors.element
-                        : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
+          child: Column(
+            children: [
+              Text(
+                translate('advise'),
+                style: AppTextStyle.small(context).wSemiBold().withColor(
+                  BlocProvider.of<MyProfilePageBloc>(context).state.page == 0
+                      ? AppColors.element
+                      : AppColors.textGrey,
                 ),
               ),
-              child: Center(
-                child: Text(
-                  translate('events_participated'),
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color: BlocProvider.of<MyProfilePageBloc>(context)
-                                  .state
-                                  .page ==
-                              1
-                          ? AppColors.background
-                          : AppColors.element),
+              if (BlocProvider.of<MyProfilePageBloc>(context).state.page == 0)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
                 ),
-              ),
-            ),
+            ],
           ),
-          GestureDetector(
-            onTap: () {
-              if (func != null) {
-                if (BlocProvider.of<MyProfilePageBloc>(context).state.page !=
-                    2) {
-                  func(2);
-                }
-              }
-            },
-            child: Container(
-              width: 165.w,
-              height: 30.h,
-              margin: EdgeInsets.only(right: 10.w),
-              decoration: BoxDecoration(
-                color:
-                    BlocProvider.of<MyProfilePageBloc>(context).state.page == 2
-                        ? AppColors.element
-                        : AppColors.elementLight,
-                borderRadius: BorderRadius.circular(5.w),
-                border: Border.all(
-                  color: Colors.transparent,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  translate('comment_advise'),
-                  style: TextStyle(
-                      fontFamily: AppFonts.Header,
-                      fontSize: 12.sp / MediaQuery.of(context).textScaleFactor,
-                      fontWeight: FontWeight.bold,
-                      color: BlocProvider.of<MyProfilePageBloc>(context)
-                                  .state
-                                  .page ==
-                              2
-                          ? AppColors.background
-                          : AppColors.element),
-                ),
-              ),
-            ),
+        ),
+        TextButton(
+          onPressed: () => func!(1),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
-        ],
-      ),
+          child: Column(
+            children: [
+              Text(
+                translate('events_participated'),
+                style: AppTextStyle.small(context).wSemiBold().withColor(
+                  BlocProvider.of<MyProfilePageBloc>(context).state.page == 1
+                      ? AppColors.element
+                      : AppColors.textGrey,
+                ),
+              ),
+              if (BlocProvider.of<MyProfilePageBloc>(context).state.page == 1)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
+                ),
+            ],
+          ),
+        ),
+        TextButton(
+          onPressed: () => func!(2),
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+          child: Column(
+            children: [
+              Text(
+                translate('comment_advise'),
+                style: AppTextStyle.small(context).wSemiBold().withColor(
+                  BlocProvider.of<MyProfilePageBloc>(context).state.page == 2
+                      ? AppColors.element
+                      : AppColors.textGrey,
+                ),
+              ),
+              if (BlocProvider.of<MyProfilePageBloc>(context).state.page == 2)
+                Container(
+                  margin: EdgeInsets.only(top: 5.h),
+                  height: 2.h,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  color: AppColors.element,
+                ),
+            ],
+          ),
+        ),
+      ],
     ),
   );
 }
@@ -1434,6 +1401,9 @@ Widget postOption(BuildContext context, Post post) {
                 ),
               GestureDetector(
                 onTap: () async {
+                  if (BlocProvider.of<MyProfilePageBloc>(context).state.isLoading) {
+                    return;
+                  }
                   bool shouldDelete =
                       await MyProfilePageController(context: context)
                           .handleDeletePost(post.id);
@@ -1646,6 +1616,9 @@ Widget post(BuildContext context, Post post) {
                               value: post.votes[i].name,
                               groupValue: post.voteSelectedOne,
                               onChanged: (value) {
+                                if (BlocProvider.of<MyProfilePageBloc>(context).state.isLoading) {
+                                  return;
+                                }
                                 if (post.voteSelectedOne == "") {
                                   MyProfilePageController(context: context)
                                       .handleVote(post.id, post.votes[i].id);
@@ -1750,6 +1723,9 @@ Widget post(BuildContext context, Post post) {
                                 },
                               ),
                               onChanged: (value) {
+                                if (BlocProvider.of<MyProfilePageBloc>(context).state.isLoading) {
+                                  return;
+                                }
                                 if (value! == true) {
                                   MyProfilePageController(context: context)
                                       .handleVote(post.id, post.votes[i].id);
@@ -2302,6 +2278,9 @@ Widget post(BuildContext context, Post post) {
                         Center(
                           child: GestureDetector(
                             onTap: () {
+                              if (BlocProvider.of<MyProfilePageBloc>(context).state.isLoading) {
+                                return;
+                              }
                               MyProfilePageController(context: context)
                                   .handleLikePost(post.id);
                             },

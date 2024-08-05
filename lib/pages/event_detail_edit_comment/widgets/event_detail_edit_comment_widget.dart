@@ -130,53 +130,65 @@ Widget header(BuildContext context, Event event) {
 }
 
 Widget buttonEdit(BuildContext context, Event event, Comment Comment) {
-  String comment =
-      BlocProvider.of<EventDetailEditCommentBloc>(context).state.comment;
-  return GestureDetector(
-    onTap: () {
-      if (comment != "") {
-        EventDetailEditCommentController(context: context)
-            .handleEditComment(event.id, Comment.id);
-      }
-    },
-    child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: comment != ""
-            ? AppColors.element
-            : AppColors.background,
-        borderRadius: BorderRadius.circular(10.w),
-        border: Border.all(
+  String comment = BlocProvider.of<EventDetailEditCommentBloc>(context)
+      .state
+      .comment;
+  return Container(
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+    height: 40.h,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor:
+        comment != "" ? AppColors.background : Colors.black.withOpacity(0.3),
+        backgroundColor: comment != "" ? AppColors.element : AppColors.background,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.w),
+        ),
+        side: BorderSide(
           color: AppColors.elementLight,
         ),
+        padding: EdgeInsets.zero,
       ),
-      child: Center(
+      onPressed: () {
+        if (comment != "" && !BlocProvider.of<EventDetailEditCommentBloc>(context).state.isLoading) {
+          EventDetailEditCommentController(context: context)
+              .handleEditComment(event.id, Comment.id);
+        }
+      },
+      child: Container(
+        child: Center(
           child: Container(
-        margin: EdgeInsets.only(left: 12.w, right: 12.w),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              translate('save'),
-              style: AppTextStyle.base(context).wSemiBold().withColor(comment != ""
-                  ? AppColors.background
-                  : AppColors.textBlack.withOpacity(0.3)),
+            margin: EdgeInsets.only(left: 12.w, right: 12.w, top: 10.h, bottom: 10.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  translate('edit'),
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header,
+                    fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
+                    fontWeight: FontWeight.bold,
+                    color: comment != ""
+                        ? AppColors.background
+                        : Colors.black.withOpacity(0.3),
+                  ),
+                ),
+                Container(
+                  width: 6.w,
+                ),
+                SvgPicture.asset(
+                  "assets/icons/send.svg",
+                  width: 15.w,
+                  height: 15.h,
+                  color: comment != ""
+                      ? AppColors.background
+                      : Colors.black.withOpacity(0.5),
+                ),
+              ],
             ),
-            Container(
-              width: 6.w,
-            ),
-            SvgPicture.asset(
-              AppAssets.sendIconS,
-              width: 15.w,
-              height: 15.h,
-              color: comment != ""
-                  ? AppColors.background
-                  : AppColors.textBlack.withOpacity(0.5),
-            ),
-          ],
+          ),
         ),
-      )),
+      ),
     ),
   );
 }

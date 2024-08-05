@@ -30,11 +30,14 @@ class _FriendPageState extends State<FriendPage> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
+    context.read<FriendPageBloc>().add(NameEvent(''));
+    context.read<FriendPageBloc>().add(NameSearchEvent(''));
+    context.read<FriendPageBloc>().add(NameUserEvent(''));
+    context.read<FriendPageBloc>().add(NameUserSearchEvent(''));
+    context.read<FriendPageBloc>().add(IsLoadingEvent(false));
     FriendPageController(context: context).handleLoadUserData(0);
     FriendPageController(context: context).handleLoadSuggestionData(0);
     FriendPageController(context: context).handleLoadRequestData(0);
-    context.read<FriendPageBloc>().add(NameEvent(''));
-    context.read<FriendPageBloc>().add(NameSearchEvent(''));
   }
 
   void _onScroll() {

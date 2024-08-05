@@ -8,10 +8,10 @@ class EmailEvent extends ForgotPasswordEvent {
   const EmailEvent(this.email);
 }
 
-class CodeEvent extends ForgotPasswordEvent {
-  final String code;
+class IsLoadingEvent extends ForgotPasswordEvent {
+  final bool isLoading;
 
-  const CodeEvent(this.code);
+  const IsLoadingEvent(this.isLoading);
 }
 
 class ForgotPasswordResetEvent extends ForgotPasswordEvent {}

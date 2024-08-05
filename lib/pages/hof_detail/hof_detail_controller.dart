@@ -49,7 +49,7 @@ class HofDetailController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_get_hof'));
+      // toastInfo(msg: translate('error_get_hof'));
     }
   }
 }

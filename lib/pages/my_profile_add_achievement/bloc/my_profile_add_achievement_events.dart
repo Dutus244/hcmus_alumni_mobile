@@ -20,4 +20,10 @@ class TimeEvent extends MyProfileAddAchievementEvent {
   const TimeEvent(this.time);
 }
 
+class IsLoadingEvent extends MyProfileAddAchievementEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class MyProfileAddAchievementResetEvent extends MyProfileAddAchievementEvent {}

@@ -42,13 +42,19 @@ class _EditPostGroupState extends State<EditPostGroup> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EditPostGroupBloc, EditPostGroupState>(
-        builder: (context, state) {
-          return Scaffold(
-              appBar: buildAppBar(context),
-              backgroundColor: AppColors.background,
-              body: BlocProvider.of<EditPostGroupBloc>(context).state.page == 0
-                  ? writePost(context, post, id)
-                  : editPicture(context));
-        });
+      builder: (context, state) {
+        return WillPopScope(
+          onWillPop: () async {
+            return !state.isLoading;
+          },
+          child: Scaffold(
+          appBar: buildAppBar(context),
+        backgroundColor: AppColors.background,
+        body: BlocProvider.of<EditPostGroupBloc>(context).state.page == 0
+        ? writePost(context, post, id)
+            : editPicture(context),
+        ));
+      },
+    );
   }
 }

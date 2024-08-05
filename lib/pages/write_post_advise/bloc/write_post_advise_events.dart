@@ -52,4 +52,10 @@ class AllowAddOptionsEvent extends WritePostAdviseEvent {
   const AllowAddOptionsEvent(this.allowAddOptions);
 }
 
+class IsLoadingEvent extends WritePostAdviseEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class WritePostAdviseResetEvent extends WritePostAdviseEvent {}

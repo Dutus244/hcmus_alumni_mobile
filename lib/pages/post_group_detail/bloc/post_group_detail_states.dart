@@ -13,6 +13,7 @@ class PostGroupDetailState {
   final String content;
   final Comment? children;
   final int reply;
+  final bool isLoading;
 
   PostGroupDetailState(
       {this.post = null,
@@ -22,7 +23,8 @@ class PostGroupDetailState {
       this.hasReachedMaxComment = false,
       this.content = "",
       this.children = null,
-      this.reply = 0});
+      this.reply = 0,
+      this.isLoading = false});
 
   PostGroupDetailState copyWith(
       {Post? post,
@@ -32,7 +34,8 @@ class PostGroupDetailState {
       bool? hasReachedMaxComment,
       String? content,
       Comment? children,
-      int? reply}) {
+      int? reply,
+      bool? isLoading}) {
     return PostGroupDetailState(
       post: post ?? this.post,
       statusComment: statusComment ?? this.statusComment,
@@ -42,6 +45,7 @@ class PostGroupDetailState {
       content: content ?? this.content,
       children: children ?? this.children,
       reply: reply ?? this.reply,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

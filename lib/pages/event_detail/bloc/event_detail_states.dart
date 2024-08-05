@@ -14,12 +14,11 @@ class EventDetailState {
   final int indexComment;
   final bool hasReachedMaxComment;
 
-  final bool isParticipated;
-
   final Status statusParticipant;
   final List<Participant> participants;
   final int indexParticipant;
   final bool hasReachedMaxParticipant;
+  final bool isLoading;
 
   EventDetailState(
       {this.page = 0,
@@ -28,11 +27,11 @@ class EventDetailState {
       this.comments = const [],
       this.indexComment = 0,
       this.hasReachedMaxComment = false,
-      this.isParticipated = false,
       this.statusParticipant = Status.loading,
       this.participants = const [],
       this.indexParticipant = 0,
-      this.hasReachedMaxParticipant = false});
+      this.hasReachedMaxParticipant = false,
+      this.isLoading = false});
 
   EventDetailState copyWith(
       {int? page,
@@ -41,11 +40,11 @@ class EventDetailState {
       List<Comment>? comments,
       int? indexComment,
       bool? hasReachedMaxComment,
-      bool? isParticipated,
       Status? statusParticipant,
       List<Participant>? participants,
       int? indexParticipant,
-      bool? hasReachedMaxParticipant}) {
+      bool? hasReachedMaxParticipant,
+      bool? isLoading}) {
     return EventDetailState(
       page: page ?? this.page,
       event: event ?? this.event,
@@ -53,12 +52,12 @@ class EventDetailState {
       comments: comments ?? this.comments,
       indexComment: indexComment ?? this.indexComment,
       hasReachedMaxComment: hasReachedMaxComment ?? this.hasReachedMaxComment,
-      isParticipated: isParticipated ?? this.isParticipated,
       statusParticipant: statusParticipant ?? this.statusParticipant,
       participants: participants ?? this.participants,
       indexParticipant: indexParticipant ?? this.indexParticipant,
       hasReachedMaxParticipant:
           hasReachedMaxParticipant ?? this.hasReachedMaxParticipant,
+      isLoading: isLoading ?? this.isLoading
     );
   }
 }

@@ -32,4 +32,10 @@ class EndTimeEvent extends MyProfileAddEducationEvent {
   const EndTimeEvent(this.endTime);
 }
 
+class IsLoadingEvent extends MyProfileAddEducationEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class MyProfileAddEducationResetEvent extends MyProfileAddEducationEvent {}

@@ -20,4 +20,16 @@ class RememberLoginEvent extends SignInEvent {
   const RememberLoginEvent(this.rememberLogin);
 }
 
+class IsLoadingEvent extends SignInEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
+class ShowPassEvent extends SignInEvent {
+  final bool showPass;
+
+  const ShowPassEvent(this.showPass);
+}
+
 class SignInResetEvent extends SignInEvent {}

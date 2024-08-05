@@ -11,10 +11,10 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
     on<CommentsEvent>(_commentsEvent);
     on<IndexCommentEvent>(_indexCommentEvent);
     on<HasReachedMaxCommentEvent>(_hasReachedMaxCommentEvent);
-    on<IsParticipatedEvent>(_isParticipatedEvent);
     on<StatusParticipantEvent>(_statusParticipantEvent);
     on<ParticipantsEvent>(_participantsEvent);
     on<IndexParticipantEvent>(_indexParticipantEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<HasReachedMaxParticipantEvent>(_hasReachedMaxParticipantEvent);
   }
 
@@ -45,10 +45,6 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
     emit(state.copyWith(hasReachedMaxComment: event.hasReachedMaxComment));
   }
 
-  void _isParticipatedEvent(
-      IsParticipatedEvent event, Emitter<EventDetailState> emit) {
-    emit(state.copyWith(isParticipated: event.isParticipated));
-  }
 
   void _statusParticipantEvent(
       StatusParticipantEvent event, Emitter<EventDetailState> emit) async {
@@ -63,6 +59,11 @@ class EventDetailBloc extends Bloc<EventDetailEvent, EventDetailState> {
   void _indexParticipantEvent(
       IndexParticipantEvent event, Emitter<EventDetailState> emit) {
     emit(state.copyWith(indexParticipant: event.indexParticipant));
+  }
+
+  void _isLoadingEvent(
+      IsLoadingEvent event, Emitter<EventDetailState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _hasReachedMaxParticipantEvent(

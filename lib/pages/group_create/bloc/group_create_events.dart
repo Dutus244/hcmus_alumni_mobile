@@ -34,4 +34,10 @@ class TagsEvent extends GroupCreateEvent {
   const TagsEvent(this.tags);
 }
 
+class IsLoadingEvent extends GroupCreateEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class GroupCreateResetEvent extends GroupCreateEvent {}

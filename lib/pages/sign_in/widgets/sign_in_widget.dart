@@ -10,56 +10,74 @@ import '../../../common/values/fonts.dart';
 import '../sign_in_controller.dart';
 import "../bloc/sign_in_events.dart";
 
-Widget buildTextField(BuildContext context, String hintText, String textType, String iconName,
-    void Function(String value)? func) {
+Widget buildTextField(BuildContext context, String hintText, String textType,
+    String iconName, void Function(String value)? func) {
   return Container(
-      width: 325.w,
-      height: 40.h,
-      margin: textType == "email"
-          ? EdgeInsets.only(bottom: 20.h)
-          : EdgeInsets.only(bottom: 10.h),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.all(Radius.circular(15.w)),
-        border: Border.all(color: AppColors.primaryFourthElementText),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 16.w,
-            height: 16.w,
-            margin: EdgeInsets.only(left: 17.w),
-            child: Image.asset("assets/icons/$iconName.png"),
-          ),
-          Container(
-            width: 270.w,
-            height: 40.h,
-            padding: EdgeInsets.only(top: 2.h, left: 10.w),
-            child: TextField(
-              onChanged: (value) => func!(value),
-              keyboardType: TextInputType.multiline,
-              decoration: InputDecoration(
-                hintText: hintText,
-                contentPadding: EdgeInsets.zero,
-                border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                disabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent)),
-                hintStyle: AppTextStyle.small(context).withColor(AppColors.secondaryElementText),
-                counterText: '',
-              ),
-              style: AppTextStyle.small(context),
-              autocorrect: false,
-              obscureText: textType == "password" ? true : false,
-              maxLength: 50,
+    width: 325.w,
+    height: 40.h,
+    margin: textType == "email"
+        ? EdgeInsets.only(bottom: 20.h)
+        : EdgeInsets.only(bottom: 10.h),
+    decoration: BoxDecoration(
+      color: AppColors.background,
+      borderRadius: BorderRadius.all(Radius.circular(15.w)),
+      border: Border.all(color: AppColors.primaryFourthElementText),
+    ),
+    child: Row(
+      children: [
+        Container(
+          width: 16.w,
+          height: 16.w,
+          margin: EdgeInsets.only(left: 17.w),
+          child: Image.asset("assets/icons/${iconName}.png"),
+        ),
+        Container(
+          width: textType == "email" ? 270.w : 230.w,
+          height: 40.h,
+          padding: EdgeInsets.only(top: 2.h, left: 10.w),
+          child: TextField(
+            onChanged: (value) => func!(value),
+            keyboardType: TextInputType.multiline,
+            decoration: InputDecoration(
+              hintText: hintText,
+              contentPadding: EdgeInsets.zero,
+              border: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent)),
+              enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent)),
+              disabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent)),
+              focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent)),
+              hintStyle: AppTextStyle.small(context)
+                  .withColor(AppColors.secondaryElementText),
+              counterText: '',
             ),
-          )
-        ],
-      ));
+            style: AppTextStyle.small(context),
+            autocorrect: false,
+            obscureText: textType == "password"
+                ? !BlocProvider.of<SignInBloc>(context).state.showPass
+                : false,
+            maxLength: textType == "email" ? 50 : 20,
+          ),
+        ),
+        if (textType == "password")
+          IconButton(
+            icon: Icon(
+              BlocProvider.of<SignInBloc>(context).state.showPass
+                  ? Icons.visibility
+                  : Icons.visibility_off,
+              color: AppColors.primaryFourthElementText,
+              size: 20.w,
+            ),
+            onPressed: () {
+              context.read<SignInBloc>().add(ShowPassEvent(
+                  !BlocProvider.of<SignInBloc>(context).state.showPass));
+            },
+          ),
+      ],
+    ),
+  );
 }
 
 Widget forgotPassword(BuildContext context) {
@@ -115,37 +133,39 @@ Widget rememberLogin(BuildContext context, void Function(bool value)? func) {
 
 Widget buildLogInAndRegButton(
     BuildContext context, String buttonName, String buttonType) {
-  return GestureDetector(
-    onTap: () {
-      if (buttonType == "login") {
-        SignInController(context: context).handleSignIn();
-      } else {
-        Navigator.of(context).pushNamed("/register");
-      }
-    },
-    child: Container(
-      width: 325.w,
-      height: 50.h,
-      margin: EdgeInsets.only(
-          left: 25.w, right: 25.w, top: buttonType == "login" ? 50.h : 20.h),
-      decoration: BoxDecoration(
-        color: buttonType == "login"
-            ? AppColors.element
-            : AppColors.elementLight,
-        borderRadius: BorderRadius.circular(15.w),
-        border: Border.all(
-          color: buttonType == "login"
-              ? Colors.transparent
-              : AppColors.primaryFourthElementText,
+  return Container(
+    width: 325.w,
+    height: 50.h,
+    margin: EdgeInsets.only(
+        left: 25.w, right: 25.w, top: buttonType == "login" ? 50.h : 20.h),
+    child: ElevatedButton(
+      onPressed: () {
+        if (!BlocProvider.of<SignInBloc>(context).state.isLoading) {
+          if (buttonType == "login") {
+            SignInController(context: context).handleSignIn();
+          } else {
+            Navigator.of(context).pushNamed("/register");
+          }
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor:
+            buttonType == "login" ? AppColors.background : AppColors.element,
+        backgroundColor:
+            buttonType == "login" ? AppColors.element : AppColors.elementLight,
+        minimumSize: Size(325.w, 50.h),
+        padding: EdgeInsets.symmetric(horizontal: 25.w),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.w),
+          side: buttonType == "login"
+              ? BorderSide(color: Colors.transparent)
+              : BorderSide(color: AppColors.primaryFourthElementText),
         ),
       ),
-      child: Center(
-        child: Text(
-          buttonName,
-          style: AppTextStyle.medium(context).wSemiBold().withColor(buttonType == "login"
-              ? AppColors.background
-              : AppColors.element),
-        ),
+      child: Text(
+        buttonName,
+        style: AppTextStyle.medium(context).wSemiBold().withColor(
+            buttonType == "login" ? AppColors.background : AppColors.element),
       ),
     ),
   );
@@ -173,47 +193,47 @@ Widget signIn(BuildContext context) {
               ),
               Center(
                   child: Container(
-                    padding: EdgeInsets.only(bottom: 15.h),
-                    child: Text(
-                      translate('signin').toUpperCase(),
-                      style: AppTextStyle.large(context).wSemiBold(),
-                    ),
-                  )),
+                padding: EdgeInsets.only(bottom: 15.h),
+                child: Text(
+                  translate('signin').toUpperCase(),
+                  style: AppTextStyle.large(context).wSemiBold(),
+                ),
+              )),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(context, translate('email*'), "email", "email", (value) {
+              buildTextField(context, translate('email*'), "email", "email",
+                  (value) {
                 context.read<SignInBloc>().add(EmailEvent(value));
               }),
               SizedBox(
                 height: 5.h,
               ),
-              buildTextField(context, translate('password*'), "password", "lock",
-                      (value) {
-                    context.read<SignInBloc>().add(PasswordEvent(value));
-                  }),
+              buildTextField(
+                  context, translate('password*'), "password", "lock", (value) {
+                context.read<SignInBloc>().add(PasswordEvent(value));
+              }),
             ],
           ),
         ),
         Container(
-          padding:
-          EdgeInsets.only(left: 25.w, right: 25.w, top: 10.h),
+          padding: EdgeInsets.only(left: 25.w, right: 25.w, top: 10.h),
           height: 24.h,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               rememberLogin(context, (value) {
-                context
-                    .read<SignInBloc>()
-                    .add(RememberLoginEvent(value));
+                context.read<SignInBloc>().add(RememberLoginEvent(value));
               }),
               forgotPassword(context),
             ],
           ),
         ),
-        buildLogInAndRegButton(context, translate('signin').toUpperCase(), "login"),
-        buildLogInAndRegButton(context, translate('signup').toUpperCase(), "register"),
+        buildLogInAndRegButton(
+            context, translate('signin').toUpperCase(), "login"),
+        buildLogInAndRegButton(
+            context, translate('signup').toUpperCase(), "register"),
       ],
     ),
   );

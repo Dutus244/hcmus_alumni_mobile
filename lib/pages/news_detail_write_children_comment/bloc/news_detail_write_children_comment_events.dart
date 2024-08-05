@@ -8,5 +8,11 @@ class CommentEvent extends NewsDetailWriteChildrenCommentEvent {
   const CommentEvent(this.comment);
 }
 
+class IsLoadingEvent extends NewsDetailWriteChildrenCommentEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class NewsDetailWriteChildrenCommentResetEvent
     extends NewsDetailWriteChildrenCommentEvent {}

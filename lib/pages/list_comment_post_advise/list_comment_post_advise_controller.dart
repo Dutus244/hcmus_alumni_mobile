@@ -18,8 +18,40 @@ import 'bloc/list_comment_post_advise_states.dart';
 
 class ListCommentPostAdviseController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const ListCommentPostAdviseController({required this.context});
+  ListCommentPostAdviseController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleGetComment(String id, int page) async {
     if (page == 0) {
@@ -92,11 +124,13 @@ class ListCommentPostAdviseController {
         toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_comment'));
+      // toastInfo(msg: translate('error_get_comment'));
     }
   }
 
   Future<void> handleGetChildrenComment(Comment comment) async {
+    context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel/comments/${comment.id}/children';
     var pageSize = 10;
@@ -122,15 +156,19 @@ class ListCommentPostAdviseController {
         if (parentComment != null) {
           await parentComment.fetchChildrenComments(jsonMap);
         }
-
+        context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         context
             .read<ListCommentPostAdviseBloc>()
             .add(CommentsEvent(currentList));
       } else {
+        context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
-      toastInfo(msg: translate('error_get_comment'));
+      hideLoadingIndicator();
+      // toastInfo(msg: translate('error_get_comment'));
     }
   }
 
@@ -150,6 +188,8 @@ class ListCommentPostAdviseController {
   }
 
   Future<void> handleLoadWriteComment(String id) async {
+    context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<ListCommentPostAdviseBloc>().state;
     String comment = state.content;
 
@@ -175,20 +215,27 @@ class ListCommentPostAdviseController {
         context
             .read< ListCommentPostAdviseBloc>()
             .add(ContentEvent(''));
-        ListCommentPostAdviseController(context: context)
-            .handleGetComment(id, 0);
+        await handleGetComment(id, 0);
+        context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Bình luận thành công');
       } else {
         // Handle other status codes if needed
+        context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_send_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_send_comment'));
+      // toastInfo(msg: translate('error_send_comment'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleLoadWriteChildrenComment(
       String id, String commentId) async {
+    context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<ListCommentPostAdviseBloc>().state;
     String comment = state.content;
 
@@ -213,19 +260,26 @@ class ListCommentPostAdviseController {
         context
             .read< ListCommentPostAdviseBloc>()
             .add(ContentEvent(''));
-        ListCommentPostAdviseController(context: context)
-            .handleGetComment(id, 0);
+        await handleGetComment(id, 0);
+        context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Bình luận thành công');
       } else {
         // Handle other status codes if needed
+        context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_send_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_send_comment'));
+      // toastInfo(msg: translate('error_send_comment'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleEditComment(String id, String commentId) async {
+    context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<ListCommentPostAdviseBloc>().state;
     String comment = state.content;
 
@@ -251,15 +305,20 @@ class ListCommentPostAdviseController {
         context
             .read< ListCommentPostAdviseBloc>()
             .add(ContentEvent(''));
-        ListCommentPostAdviseController(context: context)
-            .handleGetComment(id, 0);
+        await handleGetComment(id, 0);
+        context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Sửa bình luận thành công');
       } else {
         // Handle other status codes if needed
+        context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_edit_comment'));
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_edit_comment'));
+      // toastInfo(msg: translate('error_edit_comment'));
+      hideLoadingIndicator();
     }
   }
 
@@ -282,6 +341,8 @@ class ListCommentPostAdviseController {
       ),
     );
     if (shouldDelete != null && shouldDelete) {
+      context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/counsel/comments/$commentId';
 
@@ -298,15 +359,20 @@ class ListCommentPostAdviseController {
         var response = await http.delete(url, headers: headers);
 
         if (response.statusCode == 200) {
-          ListCommentPostAdviseController(context: context)
-              .handleGetComment(id, 0);
+          await handleGetComment(id, 0);
+          context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
+          toastInfo(msg: 'Xoá bình luận thành công');
         } else {
           // Handle other status codes if needed
+          context.read<ListCommentPostAdviseBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           toastInfo(msg: translate('error_delete_comment'));
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: translate('error_delete_comment'));
+        // toastInfo(msg: translate('error_delete_comment'));
+        hideLoadingIndicator();
       }
     }
     return shouldDelete ?? false;

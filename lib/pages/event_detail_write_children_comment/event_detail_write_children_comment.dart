@@ -29,6 +29,7 @@ class _EventDetailWriteChildrenCommentState
     context
         .read<EventDetailWriteChildrenCommentBloc>()
         .add(EventDetailWriteChildrenCommentResetEvent());
+    context.read<EventDetailWriteChildrenCommentBloc>().add(IsLoadingEvent(false));
   }
 
   @override

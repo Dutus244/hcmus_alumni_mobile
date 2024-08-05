@@ -106,7 +106,7 @@ class ChatCreateController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: translate('error_get_user'));
+      // toastInfo(msg: translate('error_get_user'));
     }
   }
 
@@ -150,7 +150,7 @@ class ChatCreateController {
       }
     } catch (error) {
       // Handle errors
-      toastInfo(msg: "Có lỗi xả ra khi tạo cuộc hội thoại");
+      // toastInfo(msg: "Có lỗi xả ra khi tạo cuộc hội thoại");
       print(error);
     }
   }

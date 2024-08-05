@@ -331,6 +331,11 @@ Widget buildCommentWidget(
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    if (BlocProvider.of<PostGroupDetailBloc>(context)
+                                        .state
+                                        .isLoading) {
+                                      return;
+                                    }
                                     PostGroupDetailController(context: context)
                                         .handleDeleteComment(id, comment.id);
                                   },
@@ -408,6 +413,11 @@ Widget buildCommentWidget(
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    if (BlocProvider.of<PostGroupDetailBloc>(context)
+                                        .state
+                                        .isLoading) {
+                                      return;
+                                    }
                                     PostGroupDetailController(context: context)
                                         .handleDeleteComment(id, comment.id);
                                   },
@@ -552,6 +562,11 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                 }),
                 GestureDetector(
                   onTap: () {
+                    if (BlocProvider.of<PostGroupDetailBloc>(context)
+                        .state
+                        .isLoading) {
+                      return;
+                    }
                     if (content != "") {
                       PostGroupDetailController(context: context)
                           .handleLoadWriteComment(id);
@@ -641,6 +656,11 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                     }),
                     GestureDetector(
                       onTap: () {
+                        if (BlocProvider.of<PostGroupDetailBloc>(context)
+                            .state
+                            .isLoading) {
+                          return;
+                        }
                         if (content != "") {
                           PostGroupDetailController(context: context)
                               .handleLoadWriteChildrenComment(
@@ -730,6 +750,11 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                           .reply ==
                           1
                           ? () {
+                        if (BlocProvider.of<PostGroupDetailBloc>(context)
+                            .state
+                            .isLoading) {
+                          return;
+                        }
                         if (content != "") {
                           PostGroupDetailController(
                               context: context)
@@ -745,6 +770,11 @@ Widget navigation(BuildContext context, String content, Comment? comment,
                       }
                           : () {
                         if (content != "") {
+                          if (BlocProvider.of<PostGroupDetailBloc>(context)
+                              .state
+                              .isLoading) {
+                            return;
+                          }
                           PostGroupDetailController(
                               context: context)
                               .handleEditComment(
@@ -823,6 +853,11 @@ Widget postOption(BuildContext context, Post post) {
                 ),
               GestureDetector(
                 onTap: () async {
+                  if (BlocProvider.of<PostGroupDetailBloc>(context)
+                      .state
+                      .isLoading) {
+                    return;
+                  }
                   bool shouldDelete =
                   await PostGroupDetailController(context: context)
                       .handleDeletePost(post.id);
@@ -1014,6 +1049,11 @@ Widget post(BuildContext context, Post? post) {
                             value: post.votes[i].name,
                             groupValue: post.voteSelectedOne,
                             onChanged: (value) {
+                              if (BlocProvider.of<PostGroupDetailBloc>(context)
+                                  .state
+                                  .isLoading) {
+                                return;
+                              }
                               if (post.voteSelectedOne == "") {
                                 PostGroupDetailController(context: context)
                                     .handleVote(post.id, post.votes[i].id);
@@ -1108,6 +1148,11 @@ Widget post(BuildContext context, Post? post) {
                               },
                             ),
                             onChanged: (value) {
+                              if (BlocProvider.of<PostGroupDetailBloc>(context)
+                                  .state
+                                  .isLoading) {
+                                return;
+                              }
                               if (value! == true) {
                                 PostGroupDetailController(context: context)
                                     .handleVote(post.id, post.votes[i].id);
@@ -1628,6 +1673,11 @@ Widget post(BuildContext context, Post? post) {
                       Center(
                         child: GestureDetector(
                           onTap: () {
+                            if (BlocProvider.of<PostGroupDetailBloc>(context)
+                                .state
+                                .isLoading) {
+                              return;
+                            }
                             PostGroupDetailController(context: context)
                                 .handleLikePost(post.id);
                           },

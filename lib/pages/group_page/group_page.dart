@@ -35,6 +35,7 @@ class _GroupPageState extends State<GroupPage> {
     _scrollController.addListener(_onScroll);
     GroupPageController(context: context).handleLoadGroupDiscoverData(0);
     GroupPageController(context: context).handleLoadGroupJoinedData(0);
+    context.read<GroupPageBloc>().add(IsLoadingEvent(false));
   }
 
   void _onScroll() {

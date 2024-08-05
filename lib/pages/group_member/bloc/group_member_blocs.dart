@@ -11,6 +11,7 @@ class GroupMemberBloc extends Bloc<GroupMemberEvent, GroupMemberState> {
     on<HasReachedMaxMemberEvent>(_hasReachedMaxMemberEvent);
     on<AdminsEvent>(_adminsEvent);
     on<IndexAdminEvent>(_indexAdminEvent);
+    on<IsLoadingEvent>(_isLoadingEvent);
     on<HasReachedMaxAdminEvent>(_hasReachedMaxAdminEvent);
   }
 
@@ -38,6 +39,10 @@ class GroupMemberBloc extends Bloc<GroupMemberEvent, GroupMemberState> {
 
   void _indexAdminEvent(IndexAdminEvent event, Emitter<GroupMemberState> emit) {
     emit(state.copyWith(indexAdmin: event.indexAdmin));
+  }
+
+  void _isLoadingEvent(IsLoadingEvent event, Emitter<GroupMemberState> emit) {
+    emit(state.copyWith(isLoading: event.isLoading));
   }
 
   void _hasReachedMaxAdminEvent(

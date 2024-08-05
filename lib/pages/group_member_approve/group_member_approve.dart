@@ -9,6 +9,7 @@ import '../../common/values/colors.dart';
 import '../../model/group.dart';
 import 'bloc/group_member_approve_blocs.dart';
 import 'bloc/group_member_approve_states.dart';
+import 'bloc/group_member_approve_events.dart';
 import 'widgets/group_member_approve_widget.dart';
 
 class GroupMemberApprove extends StatefulWidget {
@@ -28,6 +29,7 @@ class _GroupMemberApproveState extends State<GroupMemberApprove> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
+    context.read<GroupMemberApproveBloc>().add(IsLoadingEvent(false));
   }
 
   void _onScroll() {

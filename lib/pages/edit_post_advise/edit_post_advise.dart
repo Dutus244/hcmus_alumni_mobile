@@ -41,13 +41,20 @@ class _EditPostAdviseState extends State<EditPostAdvise> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EditPostAdviseBloc, EditPostAdviseState>(
-        builder: (context, state) {
-          return Scaffold(
-              appBar: buildAppBar(context),
-              backgroundColor: AppColors.background,
-              body: BlocProvider.of<EditPostAdviseBloc>(context).state.page == 0
-                  ? writePost(context, post)
-                  : editPicture(context));
-        });
+      builder: (context, state) {
+        return WillPopScope(
+          onWillPop: () async {
+            return !state.isLoading;
+          },
+          child: Scaffold(
+            appBar: buildAppBar(context),
+            backgroundColor: AppColors.background,
+            body: BlocProvider.of<EditPostAdviseBloc>(context).state.page == 0
+                ? writePost(context, post)
+                : editPicture(context),
+          ),
+        );
+      },
+    );
   }
 }

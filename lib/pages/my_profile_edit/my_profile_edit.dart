@@ -20,9 +20,6 @@ class _MyProfileEditState extends State<MyProfileEdit> {
   @override
   void initState() {
     super.initState();
-    context
-        .read<MyProfileEditBloc>()
-        .add(MyProfileEditResetEvent());
     MyProfileEditController(context: context).handleGetProfile();
     MyProfileEditController(context: context).handleGetJob();
     MyProfileEditController(context: context).handleGetEducation();
@@ -32,12 +29,18 @@ class _MyProfileEditState extends State<MyProfileEdit> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MyProfileEditBloc, MyProfileEditState>(
-        builder: (context, state) {
-          return Scaffold(
+      builder: (context, state) {
+        return WillPopScope(
+          onWillPop: () async {
+            return !state.isLoading;
+          },
+          child: Scaffold(
               appBar: buildAppBar(context),
               backgroundColor: AppColors.background,
-              body: myProfileEdit(context)
-          );
-        });
+              body: myProfileEdit(context, state.user)
+          ),
+        );
+      },
+    );
   }
 }

@@ -35,3 +35,9 @@ class HasReachedMaxPostEvent extends GroupDetailEvent {
 
   const HasReachedMaxPostEvent(this.hasReachedMaxPost);
 }
+
+class IsLoadingEvent extends GroupDetailEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
