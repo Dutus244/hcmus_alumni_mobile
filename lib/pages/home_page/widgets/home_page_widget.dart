@@ -675,7 +675,7 @@ Widget advise(BuildContext context) {
                     ),
                     child: Center(
                       child: Text(
-                        'Cần xét duyệt để tư vấn',
+                        'Xét duyệt để tư vấn',
                         style: TextStyle(
                           fontFamily: AppFonts.Header,
                           fontSize: 10.sp / MediaQuery.of(context).textScaleFactor,

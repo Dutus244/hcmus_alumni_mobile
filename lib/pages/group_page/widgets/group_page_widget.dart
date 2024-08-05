@@ -612,6 +612,45 @@ Widget groupDiscover(BuildContext context, Group group) {
                 ),
               ),
             ),
+          if (!Global.storageService.permissionGroupJoin())
+            Positioned(
+              bottom: 5.h,
+              left: 10.w,
+              right: 10.w,
+              child: Container(
+                width: 145.w,
+                height: 30.h,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      "/myProfileEdit",
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black.withOpacity(0.5),
+                    backgroundColor: Color.fromARGB(255, 245, 245, 245),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.w),
+                    ),
+                    padding: EdgeInsets.zero, // Remove default padding
+                    minimumSize: Size(145.w, 30.h), // Set button size
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Xét duyệt để tham gia',
+                      style: TextStyle(
+                        fontFamily: AppFonts.Header,
+                        fontSize:
+                        12.sp / MediaQuery.of(context).textScaleFactor,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textBlack.withOpacity(0.5),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     ),
