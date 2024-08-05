@@ -10,6 +10,7 @@ class ChatCreateState {
   final List<User> users;
   final int indexUser;
   final bool hasReachedMaxUser;
+  final bool isLoading;
 
   const ChatCreateState({
     this.name = "",
@@ -18,6 +19,7 @@ class ChatCreateState {
     this.users = const [],
     this.indexUser = 0,
     this.hasReachedMaxUser = false,
+    this.isLoading = false,
   });
 
   ChatCreateState copyWith({
@@ -27,6 +29,7 @@ class ChatCreateState {
     List<User>? users,
     int? indexUser,
     bool? hasReachedMaxUser,
+    bool? isLoading,
   }) {
     return ChatCreateState(
       name: name ?? this.name,
@@ -35,6 +38,7 @@ class ChatCreateState {
       users: users ?? this.users,
       indexUser: indexUser ?? this.indexUser,
       hasReachedMaxUser: hasReachedMaxUser ?? this.hasReachedMaxUser,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

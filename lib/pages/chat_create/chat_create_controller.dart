@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -16,8 +17,40 @@ import 'bloc/chat_create_states.dart';
 
 class ChatCreateController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const ChatCreateController({required this.context});
+  ChatCreateController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   List<Map<String, dynamic>> convertTagsToJson(List<User> users) {
     return users.map((user) => {'userId': user.id}).toList();
@@ -111,6 +144,8 @@ class ChatCreateController {
   }
 
   Future<void> handleCreateInbox(User user) async {
+    context.read<ChatCreateBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/messages/inbox';
 
@@ -139,18 +174,23 @@ class ChatCreateController {
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonMap = json.decode(response.body);
         int inboxId = jsonMap['inboxId'];
+        context.read<ChatCreateBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
 
         Navigator.pushNamed(context, "/chatDetail", arguments: {
           "inboxId": inboxId,
           "name": user.fullName,
         });
       } else {
+        context.read<ChatCreateBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         // Handle other status codes if needed
         toastInfo(msg: "Có lỗi xả ra khi tạo cuộc hội thoại");
       }
     } catch (error) {
       // Handle errors
       // toastInfo(msg: "Có lỗi xả ra khi tạo cuộc hội thoại");
+      hideLoadingIndicator();
       print(error);
     }
   }
