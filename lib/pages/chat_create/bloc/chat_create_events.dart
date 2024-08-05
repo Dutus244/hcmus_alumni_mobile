@@ -42,3 +42,9 @@ class HasReachedMaxUserEvent extends ChatCreateEvent {
 
   const HasReachedMaxUserEvent(this.hasReachedMaxUser);
 }
+
+class IsLoadingEvent extends ChatCreateEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

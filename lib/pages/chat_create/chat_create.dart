@@ -29,6 +29,7 @@ class _FriendListState extends State<ChatCreate> {
     context.read<ChatCreateBloc>().add(NameEvent(''));
     context.read<ChatCreateBloc>().add(NameSearchEvent(''));
     ChatCreateController(context: context).handleLoadUserData(0);
+    context.read<ChatCreateBloc>().add(IsLoadingEvent(false));
   }
 
   void _onScroll() {
