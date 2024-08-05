@@ -50,42 +50,59 @@ Widget buttonEdit(BuildContext context, String postId, String groupId) {
       .of<EditPostGroupBloc>(context)
       .state
       .content;
-  return GestureDetector(
-    onTap: () {
-      if (title != "" && content != "") {
-        EditPostGroupController(context: context).handlePost(postId, groupId);
-      }
-    },
-    child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: (title != "" && content != "")
+  return Container(
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+    height: 40.h,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        foregroundColor:
+        (title != "" && content != "") ? AppColors.background : Colors.black
+            .withOpacity(0.3),
+        backgroundColor: (title != "" && content != "")
             ? AppColors.element
             : AppColors.background,
-        borderRadius: BorderRadius.circular(10.w),
-        border: Border.all(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.w),
+        ),
+        side: BorderSide(
           color: AppColors.elementLight,
         ),
+        padding: EdgeInsets.zero,
       ),
-      child: Center(
+      onPressed: () {
+        if (title != "" && content != "" && !BlocProvider
+            .of<EditPostGroupBloc>(context)
+            .state
+            .isLoading) {
+          EditPostGroupController(context: context).handlePost(postId, groupId);
+        }
+      },
+      child: Container(
+        child: Center(
           child: Container(
-            margin: EdgeInsets.only(left: 12.w, right: 12.w),
+            margin: EdgeInsets.only(
+                left: 12.w, right: 12.w, top: 10.h, bottom: 10.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  translate('save'),
-                  style: AppTextStyle.base(context).wSemiBold().withColor(
-                      (title != "" && content != "")
-                          ? AppColors.background
-                          : Colors.black.withOpacity(0.3)),
+                  translate('edit'),
+                  style: TextStyle(
+                    fontFamily: AppFonts.Header,
+                    fontSize: 14.sp / MediaQuery
+                        .of(context)
+                        .textScaleFactor,
+                    fontWeight: FontWeight.bold,
+                    color: (title != "" && content != "")
+                        ? AppColors.background
+                        : Colors.black.withOpacity(0.3),
+                  ),
                 ),
                 Container(
                   width: 6.w,
                 ),
                 SvgPicture.asset(
-                  AppAssets.sendIconS,
+                  "assets/icons/send.svg",
                   width: 15.w,
                   height: 15.h,
                   color: (title != "" && content != "")
@@ -94,49 +111,53 @@ Widget buttonEdit(BuildContext context, String postId, String groupId) {
                 ),
               ],
             ),
-          )),
+          ),
+        ),
+      ),
     ),
   );
 }
 
 Widget buttonFinishEditPicture(BuildContext context) {
-  return GestureDetector(
-    onTap: () {
-      context.read<EditPostGroupBloc>().add(PageEvent(0));
-    },
-    child: Container(
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
-      height: 30.h,
-      decoration: BoxDecoration(
-        color: AppColors.element,
-        borderRadius: BorderRadius.circular(10.w),
-        border: Border.all(
-          color: AppColors.elementLight,
+  return Container(
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 30.h),
+    height: 40.h,
+    child: ElevatedButton(
+      onPressed: () {
+        context.read<EditPostGroupBloc>().add(PageEvent(0));
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: AppColors.background, backgroundColor: AppColors.element,
+        shadowColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.w),
+          side: BorderSide(color: AppColors.elementLight),
         ),
+        padding: EdgeInsets.zero,
       ),
-      child: Center(
+      child: Container(
+        child: Center(
           child: Container(
-            margin: EdgeInsets.only(left: 12.w, right: 12.w),
+            margin: EdgeInsets.only(left: 12.w, right: 12.w, top: 10.h, bottom: 10.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   translate('save'),
-                  style: AppTextStyle.base(context).wSemiBold().withColor(
-                      AppColors.background),
+                  style: AppTextStyle.base(context).wSemiBold().withColor(AppColors.background),
                 ),
-                Container(
-                  width: 6.w,
-                ),
+                SizedBox(width: 6.w),
                 SvgPicture.asset(
-                  AppAssets.sendIconS,
+                  "assets/icons/send.svg",
                   width: 15.w,
                   height: 15.h,
                   color: AppColors.background,
                 ),
               ],
             ),
-          )),
+          ),
+        ),
+      ),
     ),
   );
 }
@@ -394,60 +415,63 @@ Widget editPicture(BuildContext context) {
   );
 }
 
-Widget chooseEditPicture(BuildContext context,
-    void Function(List<File> value)? func) {
-  return GestureDetector(
-    onTap: () async {
-      List<File> currentList = List.from(BlocProvider
-          .of<EditPostGroupBloc>(context)
-          .state
-          .pictures);
+Widget chooseEditPicture(BuildContext context, void Function(List<File> value)? func) {
+  return Container(
+    width: 340.w,
+    height: 40.h,
+    margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h, bottom: 10.h),
+    child: ElevatedButton(
+      onPressed: () async {
+        List<File> currentList = List.from(BlocProvider
+            .of<EditPostGroupBloc>(context)
+            .state
+            .pictures);
 
-      final pickedFiles = await ImagePicker().pickMultiImage();
-      if (pickedFiles.length + currentList.length + BlocProvider
-          .of<EditPostGroupBloc>(context)
-          .state
-          .pictureNetworks
-          .length > 5) {
-        toastInfo(msg: translate('picture_above_5'));
-        return;
-      }
-      currentList.addAll(pickedFiles.map((pickedFile) =>
-          File(pickedFile.path))); // Concatenate currentList and picked files
+        final pickedFiles = await ImagePicker().pickMultiImage();
+        if (pickedFiles.length + currentList.length + BlocProvider
+            .of<EditPostGroupBloc>(context)
+            .state
+            .pictureNetworks
+            .length > 5) {
+          toastInfo(msg: translate('picture_above_5'));
+          return;
+        }
+        currentList.addAll(pickedFiles.map((pickedFile) =>
+            File(pickedFile.path))); // Concatenate currentList and picked files
 
-      func!(currentList);
-    },
-    child: Container(
-      width: 340.w,
-      height: 40.h,
-      margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h, bottom: 10.h),
-      decoration: BoxDecoration(
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(15.w),
-        color: AppColors.background,
-        border: Border.all(color: AppColors.element),
+        func!(currentList);
+      },
+      style: ElevatedButton.styleFrom(
+        foregroundColor: AppColors.element, backgroundColor: AppColors.background,
+        shadowColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.w),
+          side: BorderSide(color: AppColors.element),
+        ),
+        padding: EdgeInsets.zero,
       ),
-      child: Center(
-        child: Container(
-          margin: EdgeInsets.only(left: 5.w, right: 5.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                AppAssets.pictureIconS,
-                width: 12.w,
-                height: 12.h,
-                color: AppColors.element,
-              ),
-              Container(
-                width: 5.w,
-              ),
-              Text(
-                translate('add_picture'),
-                style: AppTextStyle.small(context).wSemiBold().withColor(
-                    AppColors.element),
-              ),
-            ],
+      child: Container(
+        child: Center(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 5.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  "assets/icons/picture.svg",
+                  width: 12.w,
+                  height: 12.h,
+                  color: AppColors.element,
+                ),
+                SizedBox(width: 5.w),
+                Text(
+                  translate('add_picture'),
+                  style: AppTextStyle.small(context)
+                      .wSemiBold()
+                      .withColor(AppColors.element),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -482,1300 +506,1301 @@ void deletePictureNetwork(BuildContext context, int index) {
 
 Widget choosePicture(BuildContext context,
     void Function(List<File> value)? func) {
-  return GestureDetector(
-      onTap: () async {
-        if (BlocProvider
-            .of<EditPostGroupBloc>(context)
-            .state
-            .pictures
-            .length +
-            BlocProvider
-                .of<EditPostGroupBloc>(context)
-                .state
-                .pictureNetworks
-                .length ==
-            0) {
-          final pickedFiles = await ImagePicker().pickMultiImage();
-          if (pickedFiles.length +
-              BlocProvider
-                  .of<EditPostGroupBloc>(context)
-                  .state
-                  .pictureNetworks
-                  .length > 5) {
-            toastInfo(msg: translate('picture_above_5'));
-            return;
-          }
-          func!(pickedFiles
-              .map((pickedFile) => File(pickedFile.path))
-              .toList());
-        } else {
-          context.read<EditPostGroupBloc>().add(PageEvent(1));
-        }
-      },
-      child: Column(
-        children: [
-          if (BlocProvider
+  return Column(
+    children: [
+      if (BlocProvider
+          .of<EditPostGroupBloc>(context)
+          .state
+          .pictures
+          .length +
+          BlocProvider
               .of<EditPostGroupBloc>(context)
               .state
-              .pictures
-              .length +
-              BlocProvider
-                  .of<EditPostGroupBloc>(context)
-                  .state
-                  .pictureNetworks
-                  .length ==
-              0)
-            Container(
-              width: 160.w,
-              height: 30.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
+              .pictureNetworks
+              .length ==
+          0)
+        Container(
+          margin: EdgeInsets.only(
+              left: 100.w, top: 5.h, right: 100.w, bottom: 10.h),
+          width: 160.w,
+          height: 40.h,
+          child: ElevatedButton(
+            onPressed: () async {
+              final pickedFiles = await ImagePicker().pickMultiImage();
+              if (pickedFiles.length +
+                  BlocProvider
+                      .of<EditPostGroupBloc>(context)
+                      .state
+                      .pictureNetworks
+                      .length > 5) {
+                toastInfo(msg: translate('picture_above_5'));
+                return;
+              }
+              func!(pickedFiles
+                  .map((pickedFile) => File(pickedFile.path))
+                  .toList());
+            },
+            style: ElevatedButton.styleFrom(
+              foregroundColor: AppColors.textBlack,
+              backgroundColor: Color.fromARGB(255, 230, 230, 230),
+              shadowColor: Colors.transparent,
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.w),
-                color: AppColors.element,
-                border: Border.all(
-                  color: Colors.transparent,
-                ),
+                side: BorderSide(color: Colors.transparent),
               ),
+              padding: EdgeInsets.zero,
+            ),
+            child: Container(
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.only(left: 20.w, right: 20.w),
+                  margin: EdgeInsets.symmetric(horizontal: 10.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       SvgPicture.asset(
-                        AppAssets.pictureIconS,
+                        "assets/icons/picture.svg",
                         width: 12.w,
                         height: 12.h,
-                        color: AppColors.background,
+                        color: AppColors.textBlack,
                       ),
                       Text(
                         translate('choose_picture'),
-                        style: AppTextStyle.small(context).wSemiBold().withColor(
-                            AppColors.background),
+                        style: AppTextStyle.small(context).wSemiBold(),
                       ),
                     ],
                   ),
                 ),
               ),
             ),
-          if (BlocProvider
-              .of<EditPostGroupBloc>(context)
-              .state
-              .pictures
-              .length +
-              BlocProvider
-                  .of<EditPostGroupBloc>(context)
-                  .state
-                  .pictureNetworks
-                  .length ==
-              1)
-            Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
-                  width: 340.w,
-                  height: 240.h,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: BlocProvider
-                          .of<EditPostGroupBloc>(context)
-                          .state
-                          .pictureNetworks
-                          .length >
-                          0
-                          ? NetworkImage(
-                          BlocProvider
-                              .of<EditPostGroupBloc>(context)
-                              .state
-                              .pictureNetworks[0]
-                              .pictureUrl) as ImageProvider<Object>
-                          : FileImage(BlocProvider
-                          .of<EditPostGroupBloc>(context)
-                          .state
-                          .pictures[
-                      0 -
-                          BlocProvider
-                              .of<EditPostGroupBloc>(context)
-                              .state
-                              .pictureNetworks
-                              .length]) as ImageProvider<Object>,
-                    ),
-                  ),
-                ),
-                Align(
-                    alignment: Alignment.topLeft,
-                    child: GestureDetector(
-                      onTap: () {
-                        if (BlocProvider
+          ),
+        ),
+      GestureDetector(
+        onTap: () {
+          context.read<EditPostGroupBloc>().add(PageEvent(1));
+        },
+        child: Column(
+          children: [
+            if (BlocProvider
+                .of<EditPostGroupBloc>(context)
+                .state
+                .pictures
+                .length +
+                BlocProvider
+                    .of<EditPostGroupBloc>(context)
+                    .state
+                    .pictureNetworks
+                    .length ==
+                1)
+              Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
+                    width: 340.w,
+                    height: 240.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: BlocProvider
                             .of<EditPostGroupBloc>(context)
                             .state
                             .pictureNetworks
                             .length >
-                            0) {
-                          deletePictureNetwork(context, 0);
-                        } else {
-                          deletePicture(
-                              context,
-                              0 -
-                                  BlocProvider
-                                      .of<EditPostGroupBloc>(context)
-                                      .state
-                                      .pictureNetworks
-                                      .length);
-                        }
-                      },
-                      child: Container(
+                            0
+                            ? NetworkImage(
+                            BlocProvider
+                                .of<EditPostGroupBloc>(context)
+                                .state
+                                .pictureNetworks[0]
+                                .pictureUrl) as ImageProvider<Object>
+                            : FileImage(BlocProvider
+                            .of<EditPostGroupBloc>(context)
+                            .state
+                            .pictures[
+                        0 -
+                            BlocProvider
+                                .of<EditPostGroupBloc>(context)
+                                .state
+                                .pictureNetworks
+                                .length]) as ImageProvider<Object>,
+                      ),
+                    ),
+                  ),
+                  Align(
+                      alignment: Alignment.topLeft,
+                      child: GestureDetector(
+                        onTap: () {
+                          if (BlocProvider
+                              .of<EditPostGroupBloc>(context)
+                              .state
+                              .pictureNetworks
+                              .length >
+                              0) {
+                            deletePictureNetwork(context, 0);
+                          } else {
+                            deletePicture(
+                                context,
+                                0 -
+                                    BlocProvider
+                                        .of<EditPostGroupBloc>(context)
+                                        .state
+                                        .pictureNetworks
+                                        .length);
+                          }
+                        },
+                        child: Container(
+                          margin:
+                          EdgeInsets.only(left: 15.w, top: 8.h, right: 15.w),
+                          padding: EdgeInsets.only(
+                              left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.backgroundGrey,
+                          ),
+                          child: SvgPicture.asset(
+                            AppAssets.closeIconS,
+                            width: 12.w,
+                            height: 12.h,
+                            color: AppColors.background,
+                          ),
+                        ),
+                      )),
+                ],
+              ),
+            if (BlocProvider
+                .of<EditPostGroupBloc>(context)
+                .state
+                .pictures
+                .length +
+                BlocProvider
+                    .of<EditPostGroupBloc>(context)
+                    .state
+                    .pictureNetworks
+                    .length ==
+                2)
+              Column(
+                children: [
+                  Stack(
+                    children: [
+                      Container(
                         margin:
-                        EdgeInsets.only(left: 15.w, top: 8.h, right: 15.w),
-                        padding: EdgeInsets.only(
-                            left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
+                        EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
+                        width: 340.w,
+                        height: 120.h,
                         decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.backgroundGrey,
-                        ),
-                        child: SvgPicture.asset(
-                          AppAssets.closeIconS,
-                          width: 12.w,
-                          height: 12.h,
-                          color: AppColors.background,
-                        ),
-                      ),
-                    )),
-              ],
-            ),
-          if (BlocProvider
-              .of<EditPostGroupBloc>(context)
-              .state
-              .pictures
-              .length +
-              BlocProvider
-                  .of<EditPostGroupBloc>(context)
-                  .state
-                  .pictureNetworks
-                  .length ==
-              2)
-            Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      margin:
-                      EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
-                      width: 340.w,
-                      height: 120.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: BlocProvider
-                              .of<EditPostGroupBloc>(context)
-                              .state
-                              .pictureNetworks
-                              .length >
-                              0
-                              ? NetworkImage(
-                              BlocProvider
-                                  .of<EditPostGroupBloc>(context)
-                                  .state
-                                  .pictureNetworks[0]
-                                  .pictureUrl) as ImageProvider<Object>
-                              : FileImage(
-                              BlocProvider
-                                  .of<EditPostGroupBloc>(context)
-                                  .state
-                                  .pictures[
-                              0 -
-                                  BlocProvider
-                                      .of<EditPostGroupBloc>(context)
-                                      .state
-                                      .pictureNetworks
-                                      .length]) as ImageProvider<Object>,
-                        ),
-                      ),
-                    ),
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: GestureDetector(
-                          onTap: () {
-                            if (BlocProvider
+                          shape: BoxShape.rectangle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: BlocProvider
                                 .of<EditPostGroupBloc>(context)
                                 .state
                                 .pictureNetworks
                                 .length >
-                                0) {
-                              deletePictureNetwork(context, 0);
-                            } else {
-                              deletePicture(
-                                  context,
-                                  0 -
-                                      BlocProvider
-                                          .of<EditPostGroupBloc>(
-                                          context)
-                                          .state
-                                          .pictureNetworks
-                                          .length);
-                            }
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(
-                                left: 15.w, top: 8.h, right: 15.w),
-                            padding: EdgeInsets.only(
-                                left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.backgroundGrey,
-                            ),
-                            child: SvgPicture.asset(
-                              AppAssets.closeIconS,
-                              width: 12.w,
-                              height: 12.h,
-                              color: AppColors.background,
-                            ),
+                                0
+                                ? NetworkImage(
+                                BlocProvider
+                                    .of<EditPostGroupBloc>(context)
+                                    .state
+                                    .pictureNetworks[0]
+                                    .pictureUrl) as ImageProvider<Object>
+                                : FileImage(
+                                BlocProvider
+                                    .of<EditPostGroupBloc>(context)
+                                    .state
+                                    .pictures[
+                                0 -
+                                    BlocProvider
+                                        .of<EditPostGroupBloc>(context)
+                                        .state
+                                        .pictureNetworks
+                                        .length]) as ImageProvider<Object>,
                           ),
-                        )),
-                  ],
-                ),
-                Stack(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                      width: 340.w,
-                      height: 120.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: BlocProvider
-                              .of<EditPostGroupBloc>(context)
-                              .state
-                              .pictureNetworks
-                              .length >
-                              1
-                              ? NetworkImage(
-                              BlocProvider
-                                  .of<EditPostGroupBloc>(context)
-                                  .state
-                                  .pictureNetworks[1]
-                                  .pictureUrl) as ImageProvider<Object>
-                              : FileImage(
-                              BlocProvider
-                                  .of<EditPostGroupBloc>(context)
-                                  .state
-                                  .pictures[
-                              1 -
-                                  BlocProvider
-                                      .of<EditPostGroupBloc>(context)
-                                      .state
-                                      .pictureNetworks
-                                      .length]) as ImageProvider<Object>,
                         ),
                       ),
-                    ),
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: GestureDetector(
-                          onTap: () {
-                            if (BlocProvider
-                                .of<EditPostGroupBloc>(context)
-                                .state
-                                .pictureNetworks
-                                .length >
-                                1) {
-                              deletePictureNetwork(context, 1);
-                            } else {
-                              deletePicture(
-                                  context,
-                                  1 -
-                                      BlocProvider
-                                          .of<EditPostGroupBloc>(
-                                          context)
-                                          .state
-                                          .pictureNetworks
-                                          .length);
-                            }
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(
-                                left: 15.w, top: 8.h, right: 15.w),
-                            padding: EdgeInsets.only(
-                                left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.backgroundGrey,
-                            ),
-                            child: SvgPicture.asset(
-                              AppAssets.closeIconS,
-                              width: 12.w,
-                              height: 12.h,
-                              color: AppColors.background,
-                            ),
-                          ),
-                        )),
-                  ],
-                ),
-              ],
-            ),
-          if (BlocProvider
-              .of<EditPostGroupBloc>(context)
-              .state
-              .pictures
-              .length +
-              BlocProvider
-                  .of<EditPostGroupBloc>(context)
-                  .state
-                  .pictureNetworks
-                  .length ==
-              3)
-            Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      margin:
-                      EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
-                      width: 340.w,
-                      height: 120.h,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: BlocProvider
-                              .of<EditPostGroupBloc>(context)
-                              .state
-                              .pictureNetworks
-                              .length >
-                              0
-                              ? NetworkImage(
-                              BlocProvider
-                                  .of<EditPostGroupBloc>(context)
-                                  .state
-                                  .pictureNetworks[0]
-                                  .pictureUrl) as ImageProvider<Object>
-                              : FileImage(BlocProvider
-                              .of<EditPostGroupBloc>(context)
-                              .state
-                              .pictures[
-                          0 -
-                              BlocProvider
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (BlocProvider
                                   .of<EditPostGroupBloc>(context)
                                   .state
                                   .pictureNetworks
-                                  .length]) as ImageProvider<Object>,
-                        ),
-                      ),
-                    ),
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: GestureDetector(
-                          onTap: () {
-                            if (BlocProvider
+                                  .length >
+                                  0) {
+                                deletePictureNetwork(context, 0);
+                              } else {
+                                deletePicture(
+                                    context,
+                                    0 -
+                                        BlocProvider
+                                            .of<EditPostGroupBloc>(
+                                            context)
+                                            .state
+                                            .pictureNetworks
+                                            .length);
+                              }
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  left: 15.w, top: 8.h, right: 15.w),
+                              padding: EdgeInsets.only(
+                                  left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.backgroundGrey,
+                              ),
+                              child: SvgPicture.asset(
+                                AppAssets.closeIconS,
+                                width: 12.w,
+                                height: 12.h,
+                                color: AppColors.background,
+                              ),
+                            ),
+                          )),
+                    ],
+                  ),
+                  Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                        width: 340.w,
+                        height: 120.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: BlocProvider
                                 .of<EditPostGroupBloc>(context)
                                 .state
                                 .pictureNetworks
                                 .length >
-                                0) {
-                              deletePictureNetwork(context, 0);
-                            } else {
-                              deletePicture(
-                                  context,
+                                1
+                                ? NetworkImage(
+                                BlocProvider
+                                    .of<EditPostGroupBloc>(context)
+                                    .state
+                                    .pictureNetworks[1]
+                                    .pictureUrl) as ImageProvider<Object>
+                                : FileImage(
+                                BlocProvider
+                                    .of<EditPostGroupBloc>(context)
+                                    .state
+                                    .pictures[
+                                1 -
+                                    BlocProvider
+                                        .of<EditPostGroupBloc>(context)
+                                        .state
+                                        .pictureNetworks
+                                        .length]) as ImageProvider<Object>,
+                          ),
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (BlocProvider
+                                  .of<EditPostGroupBloc>(context)
+                                  .state
+                                  .pictureNetworks
+                                  .length >
+                                  1) {
+                                deletePictureNetwork(context, 1);
+                              } else {
+                                deletePicture(
+                                    context,
+                                    1 -
+                                        BlocProvider
+                                            .of<EditPostGroupBloc>(
+                                            context)
+                                            .state
+                                            .pictureNetworks
+                                            .length);
+                              }
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  left: 15.w, top: 8.h, right: 15.w),
+                              padding: EdgeInsets.only(
+                                  left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.backgroundGrey,
+                              ),
+                              child: SvgPicture.asset(
+                                AppAssets.closeIconS,
+                                width: 12.w,
+                                height: 12.h,
+                                color: AppColors.background,
+                              ),
+                            ),
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+            if (BlocProvider
+                .of<EditPostGroupBloc>(context)
+                .state
+                .pictures
+                .length +
+                BlocProvider
+                    .of<EditPostGroupBloc>(context)
+                    .state
+                    .pictureNetworks
+                    .length ==
+                3)
+              Column(
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        margin:
+                        EdgeInsets.only(left: 10.w, top: 5.h, right: 10.w),
+                        width: 340.w,
+                        height: 120.h,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: BlocProvider
+                                .of<EditPostGroupBloc>(context)
+                                .state
+                                .pictureNetworks
+                                .length >
+                                0
+                                ? NetworkImage(
+                                BlocProvider
+                                    .of<EditPostGroupBloc>(context)
+                                    .state
+                                    .pictureNetworks[0]
+                                    .pictureUrl) as ImageProvider<Object>
+                                : FileImage(BlocProvider
+                                .of<EditPostGroupBloc>(context)
+                                .state
+                                .pictures[
+                            0 -
+                                BlocProvider
+                                    .of<EditPostGroupBloc>(context)
+                                    .state
+                                    .pictureNetworks
+                                    .length]) as ImageProvider<Object>,
+                          ),
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.topLeft,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (BlocProvider
+                                  .of<EditPostGroupBloc>(context)
+                                  .state
+                                  .pictureNetworks
+                                  .length >
+                                  0) {
+                                deletePictureNetwork(context, 0);
+                              } else {
+                                deletePicture(
+                                    context,
+                                    0 -
+                                        BlocProvider
+                                            .of<EditPostGroupBloc>(context)
+                                            .state
+                                            .pictureNetworks
+                                            .length);
+                              }
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  left: 15.w, top: 8.h, right: 15.w),
+                              padding: EdgeInsets.only(
+                                  left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.backgroundGrey,
+                              ),
+                              child: SvgPicture.asset(
+                                AppAssets.closeIconS,
+                                width: 12.w,
+                                height: 12.h,
+                                color: AppColors.background,
+                              ),
+                            ),
+                          )),
+                    ],
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictureNetworks
+                                      .length >
+                                      1
+                                      ? NetworkImage(
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks[1]
+                                          .pictureUrl) as ImageProvider<Object>
+                                      : FileImage(BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictures[
+                                  1 -
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks
+                                          .length]) as ImageProvider<Object>,
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topLeft,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (BlocProvider
+                                        .of<EditPostGroupBloc>(context)
+                                        .state
+                                        .pictureNetworks
+                                        .length >
+                                        1) {
+                                      deletePictureNetwork(context, 1);
+                                    } else {
+                                      deletePicture(
+                                          context,
+                                          1 -
+                                              BlocProvider
+                                                  .of<EditPostGroupBloc>(context)
+                                                  .state
+                                                  .pictureNetworks
+                                                  .length);
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AppAssets.closeIconS,
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: AppColors.background,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictureNetworks
+                                      .length >
+                                      2
+                                      ? NetworkImage(
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks[2]
+                                          .pictureUrl) as ImageProvider<Object>
+                                      : FileImage(BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictures[
+                                  2 -
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks
+                                          .length]) as ImageProvider<Object>,
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topLeft,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (BlocProvider
+                                        .of<EditPostGroupBloc>(context)
+                                        .state
+                                        .pictureNetworks
+                                        .length >
+                                        2) {
+                                      deletePictureNetwork(context, 2);
+                                    } else {
+                                      deletePicture(
+                                          context,
+                                          2 -
+                                              BlocProvider
+                                                  .of<EditPostGroupBloc>(context)
+                                                  .state
+                                                  .pictureNetworks
+                                                  .length);
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AppAssets.closeIconS,
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: AppColors.background,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            if (BlocProvider
+                .of<EditPostGroupBloc>(context)
+                .state
+                .pictures
+                .length +
+                BlocProvider
+                    .of<EditPostGroupBloc>(context)
+                    .state
+                    .pictureNetworks
+                    .length ==
+                4)
+              Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictureNetworks
+                                      .length >
+                                      0
+                                      ? NetworkImage(
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks[0]
+                                          .pictureUrl) as ImageProvider<Object>
+                                      : FileImage(BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictures[
                                   0 -
                                       BlocProvider
                                           .of<EditPostGroupBloc>(context)
                                           .state
                                           .pictureNetworks
-                                          .length);
-                            }
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(
-                                left: 15.w, top: 8.h, right: 15.w),
-                            padding: EdgeInsets.only(
-                                left: 2.w, right: 2.w, top: 2.h, bottom: 2.h),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.backgroundGrey,
-                            ),
-                            child: SvgPicture.asset(
-                              AppAssets.closeIconS,
-                              width: 12.w,
-                              height: 12.h,
-                              color: AppColors.background,
-                            ),
-                          ),
-                        )),
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictureNetworks
-                                    .length >
-                                    1
-                                    ? NetworkImage(
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks[1]
-                                        .pictureUrl) as ImageProvider<Object>
-                                    : FileImage(BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictures[
-                                1 -
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks
-                                        .length]) as ImageProvider<Object>,
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topLeft,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (BlocProvider
-                                      .of<EditPostGroupBloc>(context)
-                                      .state
-                                      .pictureNetworks
-                                      .length >
-                                      1) {
-                                    deletePictureNetwork(context, 1);
-                                  } else {
-                                    deletePicture(
-                                        context,
-                                        1 -
-                                            BlocProvider
-                                                .of<EditPostGroupBloc>(context)
-                                                .state
-                                                .pictureNetworks
-                                                .length);
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    AppAssets.closeIconS,
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: AppColors.background,
-                                  ),
+                                          .length]) as ImageProvider<Object>,
                                 ),
-                              )),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictureNetworks
-                                    .length >
-                                    2
-                                    ? NetworkImage(
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks[2]
-                                        .pictureUrl) as ImageProvider<Object>
-                                    : FileImage(BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictures[
-                                2 -
-                                    BlocProvider
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (BlocProvider
                                         .of<EditPostGroupBloc>(context)
                                         .state
                                         .pictureNetworks
-                                        .length]) as ImageProvider<Object>,
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topLeft,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (BlocProvider
-                                      .of<EditPostGroupBloc>(context)
-                                      .state
-                                      .pictureNetworks
-                                      .length >
-                                      2) {
-                                    deletePictureNetwork(context, 2);
-                                  } else {
-                                    deletePicture(
-                                        context,
-                                        2 -
-                                            BlocProvider
-                                                .of<EditPostGroupBloc>(context)
-                                                .state
-                                                .pictureNetworks
-                                                .length);
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
+                                        .length >
+                                        0) {
+                                      deletePictureNetwork(context, 0);
+                                    } else {
+                                      deletePicture(
+                                          context,
+                                          0 -
+                                              BlocProvider
+                                                  .of<EditPostGroupBloc>(context)
+                                                  .state
+                                                  .pictureNetworks
+                                                  .length);
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AppAssets.closeIconS,
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: AppColors.background,
+                                    ),
                                   ),
-                                  child: SvgPicture.asset(
-                                    AppAssets.closeIconS,
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: AppColors.background,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          if (BlocProvider
-              .of<EditPostGroupBloc>(context)
-              .state
-              .pictures
-              .length +
-              BlocProvider
-                  .of<EditPostGroupBloc>(context)
-                  .state
-                  .pictureNetworks
-                  .length ==
-              4)
-            Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictureNetworks
-                                    .length >
-                                    0
-                                    ? NetworkImage(
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks[0]
-                                        .pictureUrl) as ImageProvider<Object>
-                                    : FileImage(BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictures[
-                                0 -
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks
-                                        .length]) as ImageProvider<Object>,
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (BlocProvider
-                                      .of<EditPostGroupBloc>(context)
-                                      .state
-                                      .pictureNetworks
-                                      .length >
-                                      0) {
-                                    deletePictureNetwork(context, 0);
-                                  } else {
-                                    deletePicture(
-                                        context,
-                                        0 -
-                                            BlocProvider
-                                                .of<EditPostGroupBloc>(context)
-                                                .state
-                                                .pictureNetworks
-                                                .length);
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    AppAssets.closeIconS,
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: AppColors.background,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictureNetworks
-                                    .length >
-                                    1
-                                    ? NetworkImage(
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks[1]
-                                        .pictureUrl) as ImageProvider<Object>
-                                    : FileImage(BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictures[
-                                1 -
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks
-                                        .length]) as ImageProvider<Object>,
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (BlocProvider
-                                      .of<EditPostGroupBloc>(context)
-                                      .state
-                                      .pictureNetworks
-                                      .length >
-                                      1) {
-                                    deletePictureNetwork(context, 1);
-                                  } else {
-                                    deletePicture(
-                                        context,
-                                        1 -
-                                            BlocProvider
-                                                .of<EditPostGroupBloc>(context)
-                                                .state
-                                                .pictureNetworks
-                                                .length);
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    AppAssets.closeIconS,
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: AppColors.background,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictureNetworks
-                                    .length >
-                                    2
-                                    ? NetworkImage(
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks[2]
-                                        .pictureUrl) as ImageProvider<Object>
-                                    : FileImage(BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictures[
-                                2 -
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks
-                                        .length]) as ImageProvider<Object>,
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (BlocProvider
-                                      .of<EditPostGroupBloc>(context)
-                                      .state
-                                      .pictureNetworks
-                                      .length >
-                                      2) {
-                                    deletePictureNetwork(context, 2);
-                                  } else {
-                                    deletePicture(
-                                        context,
-                                        2 -
-                                            BlocProvider
-                                                .of<EditPostGroupBloc>(context)
-                                                .state
-                                                .pictureNetworks
-                                                .length);
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    AppAssets.closeIconS,
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: AppColors.background,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictureNetworks
-                                    .length >
-                                    3
-                                    ? NetworkImage(
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks[3]
-                                        .pictureUrl) as ImageProvider<Object>
-                                    : FileImage(BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictures[
-                                3 -
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks
-                                        .length]) as ImageProvider<Object>,
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (BlocProvider
-                                      .of<EditPostGroupBloc>(context)
-                                      .state
-                                      .pictureNetworks
-                                      .length >
-                                      3) {
-                                    deletePictureNetwork(context, 3);
-                                  } else {
-                                    deletePicture(
-                                        context,
-                                        3 -
-                                            BlocProvider
-                                                .of<EditPostGroupBloc>(context)
-                                                .state
-                                                .pictureNetworks
-                                                .length);
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    AppAssets.closeIconS,
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: AppColors.background,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          if (BlocProvider
-              .of<EditPostGroupBloc>(context)
-              .state
-              .pictures
-              .length +
-              BlocProvider
-                  .of<EditPostGroupBloc>(context)
-                  .state
-                  .pictureNetworks
-                  .length ==
-              5)
-            Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictureNetworks
-                                    .length >
-                                    0
-                                    ? NetworkImage(
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks[0]
-                                        .pictureUrl) as ImageProvider<Object>
-                                    : FileImage(BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictures[
-                                0 -
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks
-                                        .length]) as ImageProvider<Object>,
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (BlocProvider
-                                      .of<EditPostGroupBloc>(context)
-                                      .state
-                                      .pictureNetworks
-                                      .length >
-                                      0) {
-                                    deletePictureNetwork(context, 0);
-                                  } else {
-                                    deletePicture(
-                                        context,
-                                        0 -
-                                            BlocProvider
-                                                .of<EditPostGroupBloc>(context)
-                                                .state
-                                                .pictureNetworks
-                                                .length);
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    AppAssets.closeIconS,
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: AppColors.background,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictureNetworks
-                                    .length >
-                                    1
-                                    ? NetworkImage(
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks[1]
-                                        .pictureUrl) as ImageProvider<Object>
-                                    : FileImage(BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictures[
-                                1 -
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks
-                                        .length]) as ImageProvider<Object>,
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (BlocProvider
-                                      .of<EditPostGroupBloc>(context)
-                                      .state
-                                      .pictureNetworks
-                                      .length >
-                                      1) {
-                                    deletePictureNetwork(context, 1);
-                                  } else {
-                                    deletePicture(
-                                        context,
-                                        1 -
-                                            BlocProvider
-                                                .of<EditPostGroupBloc>(context)
-                                                .state
-                                                .pictureNetworks
-                                                .length);
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    AppAssets.closeIconS,
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: AppColors.background,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w),
-                  child: Row(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictureNetworks
-                                    .length >
-                                    2
-                                    ? NetworkImage(
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks[2]
-                                        .pictureUrl) as ImageProvider<Object>
-                                    : FileImage(BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictures[
-                                2 -
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks
-                                        .length]) as ImageProvider<Object>,
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (BlocProvider
-                                      .of<EditPostGroupBloc>(context)
-                                      .state
-                                      .pictureNetworks
-                                      .length >
-                                      2) {
-                                    deletePictureNetwork(context, 2);
-                                  } else {
-                                    deletePicture(
-                                        context,
-                                        2 -
-                                            BlocProvider
-                                                .of<EditPostGroupBloc>(context)
-                                                .state
-                                                .pictureNetworks
-                                                .length);
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
-                                  ),
-                                  child: SvgPicture.asset(
-                                    AppAssets.closeIconS,
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: AppColors.background,
-                                  ),
-                                ),
-                              )),
-                        ],
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 170.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictureNetworks
-                                    .length >
-                                    3
-                                    ? NetworkImage(
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks[3]
-                                        .pictureUrl) as ImageProvider<Object>
-                                    : FileImage(BlocProvider
-                                    .of<EditPostGroupBloc>(context)
-                                    .state
-                                    .pictures[
-                                3 -
-                                    BlocProvider
-                                        .of<EditPostGroupBloc>(context)
-                                        .state
-                                        .pictureNetworks
-                                        .length]) as ImageProvider<Object>,
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Container(
+                                )),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Container(
                               width: 170.w,
                               height: 120.h,
                               decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
-                                color: Color.fromARGB(255, 24, 59, 86)
-                                    .withOpacity(0.5),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '+1',
-                                  style: AppTextStyle.xLarge(context)
-                                      .size(32.sp, context)
-                                      .wSemiBold(),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  if (BlocProvider
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: BlocProvider
                                       .of<EditPostGroupBloc>(context)
                                       .state
                                       .pictureNetworks
                                       .length >
-                                      3) {
-                                    deletePictureNetwork(context, 3);
-                                  } else {
-                                    deletePicture(
-                                        context,
-                                        3 -
-                                            BlocProvider
-                                                .of<EditPostGroupBloc>(context)
-                                                .state
-                                                .pictureNetworks
-                                                .length);
-                                  }
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                      left: 5.w, top: 3.h, right: 5.w),
-                                  padding: EdgeInsets.only(
-                                      left: 2.w,
-                                      right: 2.w,
-                                      top: 2.h,
-                                      bottom: 2.h),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.backgroundGrey,
+                                      1
+                                      ? NetworkImage(
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks[1]
+                                          .pictureUrl) as ImageProvider<Object>
+                                      : FileImage(BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictures[
+                                  1 -
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks
+                                          .length]) as ImageProvider<Object>,
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (BlocProvider
+                                        .of<EditPostGroupBloc>(context)
+                                        .state
+                                        .pictureNetworks
+                                        .length >
+                                        1) {
+                                      deletePictureNetwork(context, 1);
+                                    } else {
+                                      deletePicture(
+                                          context,
+                                          1 -
+                                              BlocProvider
+                                                  .of<EditPostGroupBloc>(context)
+                                                  .state
+                                                  .pictureNetworks
+                                                  .length);
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AppAssets.closeIconS,
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: AppColors.background,
+                                    ),
                                   ),
-                                  child: SvgPicture.asset(
-                                    AppAssets.closeIconS,
-                                    width: 12.w,
-                                    height: 12.h,
-                                    color: AppColors.background,
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictureNetworks
+                                      .length >
+                                      2
+                                      ? NetworkImage(
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks[2]
+                                          .pictureUrl) as ImageProvider<Object>
+                                      : FileImage(BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictures[
+                                  2 -
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks
+                                          .length]) as ImageProvider<Object>,
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (BlocProvider
+                                        .of<EditPostGroupBloc>(context)
+                                        .state
+                                        .pictureNetworks
+                                        .length >
+                                        2) {
+                                      deletePictureNetwork(context, 2);
+                                    } else {
+                                      deletePicture(
+                                          context,
+                                          2 -
+                                              BlocProvider
+                                                  .of<EditPostGroupBloc>(context)
+                                                  .state
+                                                  .pictureNetworks
+                                                  .length);
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AppAssets.closeIconS,
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: AppColors.background,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictureNetworks
+                                      .length >
+                                      3
+                                      ? NetworkImage(
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks[3]
+                                          .pictureUrl) as ImageProvider<Object>
+                                      : FileImage(BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictures[
+                                  3 -
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks
+                                          .length]) as ImageProvider<Object>,
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (BlocProvider
+                                        .of<EditPostGroupBloc>(context)
+                                        .state
+                                        .pictureNetworks
+                                        .length >
+                                        3) {
+                                      deletePictureNetwork(context, 3);
+                                    } else {
+                                      deletePicture(
+                                          context,
+                                          3 -
+                                              BlocProvider
+                                                  .of<EditPostGroupBloc>(context)
+                                                  .state
+                                                  .pictureNetworks
+                                                  .length);
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AppAssets.closeIconS,
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: AppColors.background,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            if (BlocProvider
+                .of<EditPostGroupBloc>(context)
+                .state
+                .pictures
+                .length +
+                BlocProvider
+                    .of<EditPostGroupBloc>(context)
+                    .state
+                    .pictureNetworks
+                    .length ==
+                5)
+              Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictureNetworks
+                                      .length >
+                                      0
+                                      ? NetworkImage(
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks[0]
+                                          .pictureUrl) as ImageProvider<Object>
+                                      : FileImage(BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictures[
+                                  0 -
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks
+                                          .length]) as ImageProvider<Object>,
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (BlocProvider
+                                        .of<EditPostGroupBloc>(context)
+                                        .state
+                                        .pictureNetworks
+                                        .length >
+                                        0) {
+                                      deletePictureNetwork(context, 0);
+                                    } else {
+                                      deletePicture(
+                                          context,
+                                          0 -
+                                              BlocProvider
+                                                  .of<EditPostGroupBloc>(context)
+                                                  .state
+                                                  .pictureNetworks
+                                                  .length);
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AppAssets.closeIconS,
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: AppColors.background,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictureNetworks
+                                      .length >
+                                      1
+                                      ? NetworkImage(
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks[1]
+                                          .pictureUrl) as ImageProvider<Object>
+                                      : FileImage(BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictures[
+                                  1 -
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks
+                                          .length]) as ImageProvider<Object>,
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (BlocProvider
+                                        .of<EditPostGroupBloc>(context)
+                                        .state
+                                        .pictureNetworks
+                                        .length >
+                                        1) {
+                                      deletePictureNetwork(context, 1);
+                                    } else {
+                                      deletePicture(
+                                          context,
+                                          1 -
+                                              BlocProvider
+                                                  .of<EditPostGroupBloc>(context)
+                                                  .state
+                                                  .pictureNetworks
+                                                  .length);
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AppAssets.closeIconS,
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: AppColors.background,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10.w, right: 10.w),
+                    child: Row(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictureNetworks
+                                      .length >
+                                      2
+                                      ? NetworkImage(
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks[2]
+                                          .pictureUrl) as ImageProvider<Object>
+                                      : FileImage(BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictures[
+                                  2 -
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks
+                                          .length]) as ImageProvider<Object>,
+                                ),
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (BlocProvider
+                                        .of<EditPostGroupBloc>(context)
+                                        .state
+                                        .pictureNetworks
+                                        .length >
+                                        2) {
+                                      deletePictureNetwork(context, 2);
+                                    } else {
+                                      deletePicture(
+                                          context,
+                                          2 -
+                                              BlocProvider
+                                                  .of<EditPostGroupBloc>(context)
+                                                  .state
+                                                  .pictureNetworks
+                                                  .length);
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AppAssets.closeIconS,
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: AppColors.background,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              width: 170.w,
+                              height: 120.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictureNetworks
+                                      .length >
+                                      3
+                                      ? NetworkImage(
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks[3]
+                                          .pictureUrl) as ImageProvider<Object>
+                                      : FileImage(BlocProvider
+                                      .of<EditPostGroupBloc>(context)
+                                      .state
+                                      .pictures[
+                                  3 -
+                                      BlocProvider
+                                          .of<EditPostGroupBloc>(context)
+                                          .state
+                                          .pictureNetworks
+                                          .length]) as ImageProvider<Object>,
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Container(
+                                width: 170.w,
+                                height: 120.h,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  color: Color.fromARGB(255, 24, 59, 86)
+                                      .withOpacity(0.5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '+1',
+                                    style: AppTextStyle.xLarge(context)
+                                        .size(32.sp, context)
+                                        .wSemiBold(),
                                   ),
                                 ),
-                              )),
-                        ],
-                      ),
-                    ],
+                              ),
+                            ),
+                            Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (BlocProvider
+                                        .of<EditPostGroupBloc>(context)
+                                        .state
+                                        .pictureNetworks
+                                        .length >
+                                        3) {
+                                      deletePictureNetwork(context, 3);
+                                    } else {
+                                      deletePicture(
+                                          context,
+                                          3 -
+                                              BlocProvider
+                                                  .of<EditPostGroupBloc>(context)
+                                                  .state
+                                                  .pictureNetworks
+                                                  .length);
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        left: 5.w, top: 3.h, right: 5.w),
+                                    padding: EdgeInsets.only(
+                                        left: 2.w,
+                                        right: 2.w,
+                                        top: 2.h,
+                                        bottom: 2.h),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.backgroundGrey,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AppAssets.closeIconS,
+                                      width: 12.w,
+                                      height: 12.h,
+                                      color: AppColors.background,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-        ],
-      ));
+                ],
+              ),
+          ],
+        ),
+      )
+    ],
+  );
 }
 
 Widget header(BuildContext context) {

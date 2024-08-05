@@ -1401,6 +1401,9 @@ Widget postOption(BuildContext context, Post post) {
                 ),
               GestureDetector(
                 onTap: () async {
+                  if (BlocProvider.of<MyProfilePageBloc>(context).state.isLoading) {
+                    return;
+                  }
                   bool shouldDelete =
                       await MyProfilePageController(context: context)
                           .handleDeletePost(post.id);
@@ -1613,6 +1616,9 @@ Widget post(BuildContext context, Post post) {
                               value: post.votes[i].name,
                               groupValue: post.voteSelectedOne,
                               onChanged: (value) {
+                                if (BlocProvider.of<MyProfilePageBloc>(context).state.isLoading) {
+                                  return;
+                                }
                                 if (post.voteSelectedOne == "") {
                                   MyProfilePageController(context: context)
                                       .handleVote(post.id, post.votes[i].id);
@@ -1717,6 +1723,9 @@ Widget post(BuildContext context, Post post) {
                                 },
                               ),
                               onChanged: (value) {
+                                if (BlocProvider.of<MyProfilePageBloc>(context).state.isLoading) {
+                                  return;
+                                }
                                 if (value! == true) {
                                   MyProfilePageController(context: context)
                                       .handleVote(post.id, post.votes[i].id);
@@ -2269,6 +2278,9 @@ Widget post(BuildContext context, Post post) {
                         Center(
                           child: GestureDetector(
                             onTap: () {
+                              if (BlocProvider.of<MyProfilePageBloc>(context).state.isLoading) {
+                                return;
+                              }
                               MyProfilePageController(context: context)
                                   .handleLikePost(post.id);
                             },

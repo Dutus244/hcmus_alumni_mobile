@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_translate/flutter_translate.dart';
@@ -16,8 +17,40 @@ import 'bloc/edit_post_group_events.dart';
 
 class EditPostGroupController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const EditPostGroupController({required this.context});
+  EditPostGroupController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   List<Map<String, dynamic>> convertTagsToJson(List<String> tags) {
     return tags.map((tag) => {'name': tag}).toList();
@@ -53,6 +86,8 @@ class EditPostGroupController {
   }
 
   Future<void> handlePost(String id, String groupId) async {
+    context.read<EditPostGroupBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<EditPostGroupBloc>().state;
     String title = state.title;
     String content = state.content;
@@ -113,17 +148,24 @@ class EditPostGroupController {
           var response = await request.send();
           if (response.statusCode == 200) {
             context.read<EditPostGroupBloc>().add(EditPostGroupResetEvent());
+            context.read<EditPostGroupBloc>().add(IsLoadingEvent(false));
+            hideLoadingIndicator();
+            toastInfo(msg: "Chỉnh sửa bài viết thành công");
             Navigator.pop(context);
           } else {
+            context.read<EditPostGroupBloc>().add(IsLoadingEvent(false));
+            hideLoadingIndicator();
             toastInfo(msg: translate('error_edit_post'));
             return;
           }
         } catch (e) {
           // Exception occurred
-          toastInfo(msg: translate('error_edit_post'));
+          // toastInfo(msg: translate('error_edit_post'));
           return;
         }
       } else {
+        context.read<EditPostGroupBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         // Handle other status codes if needed
         toastInfo(msg: translate('error_edit_post'));
         return;
@@ -131,6 +173,9 @@ class EditPostGroupController {
     } catch (error) {
       // Handle errors
       // toastInfo(msg: translate('error_edit_post'));
+      print('fuck');
+      print(error);
+      hideLoadingIndicator();
       return;
     }
   }

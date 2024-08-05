@@ -30,6 +30,7 @@ class _GroupSearchState extends State<GroupSearch> {
     context.read<GroupSearchBloc>().add(NameEvent(''));
     context.read<GroupSearchBloc>().add(NameSearchEvent(''));
     context.read<GroupSearchBloc>().add(ClearResultEvent());
+    context.read<GroupSearchBloc>().add(IsLoadingEvent(false));
     GroupSearchController(context: context).handleLoadGroupData(0);
   }
 

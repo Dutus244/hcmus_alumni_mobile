@@ -54,3 +54,9 @@ class ReplyEvent extends PostGroupDetailEvent {
 
   const ReplyEvent(this.reply);
 }
+
+class IsLoadingEvent extends PostGroupDetailEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

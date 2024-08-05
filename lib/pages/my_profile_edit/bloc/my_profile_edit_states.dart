@@ -3,6 +3,7 @@ import 'dart:io';
 import '../../../model/achievement.dart';
 import '../../../model/education.dart';
 import '../../../model/job.dart';
+import '../../../model/user.dart';
 
 class MyProfileEditState {
   final String fullName;
@@ -26,6 +27,7 @@ class MyProfileEditState {
   final List<Achievement> achievements;
   final String status;
   final bool isLoading;
+  final User? user;
 
   MyProfileEditState(
       {this.fullName = "",
@@ -48,7 +50,8 @@ class MyProfileEditState {
       this.educations = const [],
       this.achievements = const [],
       this.status = "",
-      this.isLoading = false});
+      this.isLoading = false,
+      this.user = null});
 
   MyProfileEditState copyWith({
     String? fullName,
@@ -72,6 +75,7 @@ class MyProfileEditState {
     List<Achievement>? achievements,
     String? status,
     bool? isLoading,
+    User? user,
   }) {
     return MyProfileEditState(
         fullName: fullName ?? this.fullName,
@@ -94,6 +98,7 @@ class MyProfileEditState {
         educations: educations ?? this.educations,
         achievements: achievements ?? this.achievements,
         status: status ?? this.status,
-        isLoading: isLoading ?? this.isLoading);
+        isLoading: isLoading ?? this.isLoading,
+        user: user ?? this.user);
   }
 }

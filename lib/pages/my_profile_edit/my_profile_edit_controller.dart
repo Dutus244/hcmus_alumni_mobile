@@ -76,6 +76,7 @@ class MyProfileEditController {
       if (response.statusCode == 200) {
         var jsonMap = json.decode(responseBody);
         var user = User.fromJson(jsonMap["user"]);
+        context.read<MyProfileEditBloc>().add(UserEvent(user));
         context.read<MyProfileEditBloc>().add(UpdateProfileEvent(user));
         if (jsonMap["alumniVerification"] != null) {
           var alumniVerification =

@@ -156,9 +156,11 @@ class GroupPageController {
         var jsonMap = json.decode(responseBody);
         var groupResponse = GroupResponse.fromJson(jsonMap);
         if (groupResponse.groups.isEmpty) {
-          context
-              .read<GroupPageBloc>()
-              .add(GroupJoinedsEvent(groupResponse.groups));
+          if (page == 0) {
+            context
+                .read<GroupPageBloc>()
+                .add(GroupJoinedsEvent(groupResponse.groups));
+          }
           context
               .read<GroupPageBloc>()
               .add(HasReachedMaxGroupJoinedEvent(true));

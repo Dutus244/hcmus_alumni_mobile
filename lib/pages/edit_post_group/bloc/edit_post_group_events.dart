@@ -49,4 +49,10 @@ class PageEvent extends EditPostGroupEvent {
   const PageEvent(this.page);
 }
 
+class IsLoadingEvent extends EditPostGroupEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}
+
 class EditPostGroupResetEvent extends EditPostGroupEvent {}

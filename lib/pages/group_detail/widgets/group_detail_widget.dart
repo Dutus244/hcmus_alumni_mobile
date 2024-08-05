@@ -713,7 +713,7 @@ Widget group(
 
 Widget postOption(BuildContext context, Post post, String groupId) {
   return Container(
-    height: post.permissions.edit ? 90.h : 50.h,
+    height: (post.votes.length == 0 && post.permissions.edit) ? 90.h : 50.h,
     child: Stack(
       children: [
         SingleChildScrollView(
@@ -721,10 +721,10 @@ Widget postOption(BuildContext context, Post post, String groupId) {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              if (post.permissions.edit)
+              if (post.votes.length == 0 && post.permissions.edit)
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(
+                  onTap: () async {
+                    await Navigator.pushNamed(
                       context,
                       "/editPostGroup",
                       arguments: {
@@ -732,6 +732,8 @@ Widget postOption(BuildContext context, Post post, String groupId) {
                         "post": post,
                       },
                     );
+                    GroupDetailController(context: context)
+                        .handleLoadPostData(groupId, 0);
                   },
                   child: Container(
                     margin: EdgeInsets.only(left: 10.w, top: 10.h),
@@ -764,6 +766,11 @@ Widget postOption(BuildContext context, Post post, String groupId) {
               if (post.permissions.delete)
                 GestureDetector(
                   onTap: () async {
+                    if (BlocProvider.of<GroupDetailBloc>(context)
+                        .state
+                        .isLoading) {
+                      return;
+                    }
                     bool shouldDelete =
                         await GroupDetailController(context: context)
                             .handleDeletePost(post.id, groupId);
@@ -980,6 +987,11 @@ Widget post(BuildContext context, Post post, Group group) {
                               value: post.votes[i].name,
                               groupValue: post.voteSelectedOne,
                               onChanged: (value) {
+                                if (BlocProvider.of<GroupDetailBloc>(context)
+                                    .state
+                                    .isLoading) {
+                                  return;
+                                }
                                 if (post.voteSelectedOne == "") {
                                   GroupDetailController(context: context)
                                       .handleVote(
@@ -1089,6 +1101,11 @@ Widget post(BuildContext context, Post post, Group group) {
                                 },
                               ),
                               onChanged: (value) {
+                                if (BlocProvider.of<GroupDetailBloc>(context)
+                                    .state
+                                    .isLoading) {
+                                  return;
+                                }
                                 if (value! == true) {
                                   GroupDetailController(context: context)
                                       .handleVote(
@@ -1157,86 +1174,89 @@ Widget post(BuildContext context, Post post, Group group) {
                 ),
               ),
           if (post.votes.length > 0 && post.allowAddOptions && group.isJoined)
-            GestureDetector(
-              onTap: () {
-                if (post.votes.length >= 10) {
-                  toastInfo(msg: translate('option_above_10'));
-                  return;
-                }
-                TextEditingController textController = TextEditingController();
-
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text(translate('add_option')),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextField(
-                          controller: textController,
-                          decoration: InputDecoration(
-                            hintText: translate('add_option'),
-                          ),
-                        ),
-                      ],
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: Text(translate('cancel')),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, {
-                          'confirmed': true,
-                          'vote': textController.text,
-                        }),
-                        child: Text(translate('add')),
-                      ),
-                    ],
-                  ),
-                ).then((result) {
-                  if (result != null && result['confirmed'] == true) {
-                    String vote = result['vote'];
-                    GroupDetailController(context: context)
-                        .handleAddVote(group.id, post.id, vote);
-                  } else {}
-                });
-              },
+            Center(
               child: Container(
                 width: 350.w,
                 height: 35.h,
                 margin: EdgeInsets.only(
                     top: 5.h, bottom: 10.h, left: 10.w, right: 10.w),
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(10.w),
-                  border: Border.all(
-                    color: AppColors.primaryFourthElementText,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (post.votes.length >= 10) {
+                      toastInfo(msg: translate("option_above_10"));
+                      return;
+                    }
+                    if (BlocProvider.of<GroupDetailBloc>(context).state.isLoading) {
+                      return;
+                    }
+                    TextEditingController textController = TextEditingController();
+
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text(translate('add_option')),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextField(
+                              controller: textController,
+                              decoration: InputDecoration(
+                                hintText: translate('add_option'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: Text(translate('cancel')),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, {
+                              'confirmed': true,
+                              'vote': textController.text,
+                            }),
+                            child: Text(translate('add')),
+                          ),
+                        ],
+                      ),
+                    ).then((result) {
+                      if (result != null && result['confirmed'] == true) {
+                        String vote = result['vote'];
+                        GroupDetailController(context: context).handleAddVote(group.id, post.id, vote);
+                      }
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.transparent, backgroundColor: Colors.transparent, // Transparent background for pressed state
+                    shadowColor: Colors.transparent, // Remove shadow
+                    padding: EdgeInsets.zero, // Remove default padding
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.w),
+                      side: BorderSide(
+                        color: AppColors.primaryFourthElementText,
+                      ),
+                    ),
                   ),
-                ),
-                child: Container(
-                  margin: EdgeInsets.only(left: 10.w),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/add.svg",
-                        width: 14.w,
-                        height: 14.h,
-                        color: AppColors.textGrey,
-                      ),
-                      Container(
-                        width: 5.w,
-                      ),
-                      Text(
-                        translate('add_option'),
-                        style: TextStyle(
-                            fontFamily: AppFonts.Header,
-                            fontSize:
-                                12.sp / MediaQuery.of(context).textScaleFactor,
-                            fontWeight: FontWeight.normal,
-                            color: AppColors.textGrey),
-                      ),
-                    ],
+                  child: Container(
+                    width: 350.w,
+                    height: 35.h,
+                    margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          AppAssets.addIconS,
+                          width: 14.w,
+                          height: 14.h,
+                          color: AppColors.textGrey,
+                        ),
+                        SizedBox(width: 5.w),
+                        Text(
+                          translate('add_option'),
+                          style: AppTextStyle.small(context),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -1653,6 +1673,11 @@ Widget post(BuildContext context, Post post, Group group) {
                   Center(
                     child: GestureDetector(
                       onTap: () {
+                        if (BlocProvider.of<GroupDetailBloc>(context)
+                            .state
+                            .isLoading) {
+                          return;
+                        }
                         GroupDetailController(context: context)
                             .handleLikePost(post.id);
                       },
@@ -1722,6 +1747,7 @@ Widget post(BuildContext context, Post post, Group group) {
                           arguments: {
                             "id": post.id,
                             "groupId": group.id,
+                            "isJoined": group.isJoined,
                           },
                         );
                       },

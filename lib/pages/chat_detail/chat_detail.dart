@@ -32,6 +32,7 @@ class _ChatDetailState extends State<ChatDetail> {
     _scrollController.addListener(_onScroll);
     _scrollControllerDeviceImage.addListener(_onScrollDeviceImage);
     context.read<ChatDetailBloc>().add(ChatDetailResetEvent());
+    context.read<ChatDetailBloc>().add(IsLoadingEvent(false));
     ChatDetailController(context: context).handleLoadDeviceImages(0);
     socketService.messages.listen((message) {
       ChatDetailController(context: context).handleReceiveMessage(message);

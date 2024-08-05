@@ -15,8 +15,40 @@ import 'package:http_parser/http_parser.dart';
 
 class WritePostGroupController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const WritePostGroupController({required this.context});
+  WritePostGroupController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   List<Map<String, dynamic>> convertTagsToJson(List<String> tags) {
     return tags.map((tag) => {'name': tag}).toList();
@@ -55,6 +87,8 @@ class WritePostGroupController {
         ),
       );
       if (shouldPost != null && shouldPost) {
+        context.read<WritePostGroupBloc>().add(IsLoadingEvent(true));
+        showLoadingIndicator();
         var apiUrl = dotenv.env['API_URL'];
         var endpoint = '/groups/$groupId/posts';
 
@@ -116,20 +150,32 @@ class WritePostGroupController {
                 context
                     .read<WritePostGroupBloc>()
                     .add(WritePostGroupResetEvent());
+                context.read<WritePostGroupBloc>().add(IsLoadingEvent(false));
+                hideLoadingIndicator();
+                toastInfo(msg: "Đăng bài viết thành công");
                 Navigator.pop(context);
-              } else {}
+              } else {
+                context.read<WritePostGroupBloc>().add(IsLoadingEvent(false));
+                hideLoadingIndicator();
+              }
             } catch (e) {
               // Exception occurred
+              hideLoadingIndicator();
               print('Exception occurred: $e');
             }
           } else {
+            context.read<WritePostGroupBloc>().add(IsLoadingEvent(false));
+            hideLoadingIndicator();
             // Handle other status codes if needed
           }
         } catch (error) {
           // Handle errors
+          hideLoadingIndicator();
         }
       }
     } else {
+      context.read<WritePostGroupBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/groups/$groupId/posts';
 
@@ -189,18 +235,28 @@ class WritePostGroupController {
                   .read<WritePostGroupBloc>()
                   .add(WritePostGroupResetEvent());
               Navigator.pop(context);
-            } else {}
+              context.read<WritePostGroupBloc>().add(IsLoadingEvent(false));
+              hideLoadingIndicator();
+              toastInfo(msg: "Đăng bài viết thành công");
+            } else {
+              context.read<WritePostGroupBloc>().add(IsLoadingEvent(false));
+              hideLoadingIndicator();
+            }
           } catch (e) {
+            hideLoadingIndicator();
             // Exception occurred
-            toastInfo(msg: translate('error_post_article'));
+            // toastInfo(msg: translate('error_post_article'));
           }
         } else {
           // Handle other status codes if needed
+          context.read<WritePostGroupBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           toastInfo(msg: translate('error_post_article'));
         }
       } catch (error) {
+        hideLoadingIndicator();
         // Handle errors
-        toastInfo(msg: translate('error_post_article'));
+        // toastInfo(msg: translate('error_post_article'));
       }
     }
   }

@@ -32,6 +32,7 @@ class MyProfilePageState {
   final List<Achievement> achievements;
   final int friendCount;
   final List<Friend> friends;
+  final bool isLoading;
 
   MyProfilePageState(
       {this.user,
@@ -53,7 +54,8 @@ class MyProfilePageState {
       this.jobs = const [],
       this.achievements = const [],
       this.friendCount = 0,
-      this.friends = const []});
+      this.friends = const [],
+      this.isLoading = false});
 
   MyProfilePageState copyWith(
       {User? user,
@@ -75,7 +77,8 @@ class MyProfilePageState {
       List<Job>? jobs,
       List<Achievement>? achievements,
       int? friendCount,
-      List<Friend>? friends}) {
+      List<Friend>? friends,
+      bool? isLoading}) {
     return MyProfilePageState(
         user: user ?? this.user,
         alumniVerification: alumniVerification ?? this.alumniVerification,
@@ -97,6 +100,7 @@ class MyProfilePageState {
         jobs: jobs ?? this.jobs,
         achievements: achievements ?? this.achievements,
         friendCount: friendCount ?? this.friendCount,
-        friends: friends ?? this.friends);
+        friends: friends ?? this.friends,
+    isLoading: isLoading ?? this.isLoading);
   }
 }

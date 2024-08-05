@@ -8,6 +8,7 @@ import 'package:hcmus_alumni_mobile/pages/post_group_detail/post_group_detail_co
 import '../../common/values/colors.dart';
 import 'bloc/post_group_detail_blocs.dart';
 import 'bloc/post_group_detail_states.dart';
+import 'bloc/post_group_detail_events.dart';
 import 'widgets/post_group_detail_widget.dart';
 
 class PostGroupDetail extends StatefulWidget {
@@ -28,6 +29,7 @@ class _PostGroupDetailState extends State<PostGroupDetail> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
+    context.read<PostGroupDetailBloc>().add(IsLoadingEvent(false));
   }
 
   void _onScroll() {

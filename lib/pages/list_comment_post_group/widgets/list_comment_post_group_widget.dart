@@ -306,6 +306,11 @@ Widget buildCommentWidget(
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    if (BlocProvider.of<ListCommentPostGroupBloc>(context)
+                                        .state
+                                        .isLoading) {
+                                      return;
+                                    }
                                     ListCommentPostGroupController(context: context)
                                         .handleDeleteComment(id, comment.id);
                                   },
@@ -383,6 +388,11 @@ Widget buildCommentWidget(
                               children: [
                                 GestureDetector(
                                   onTap: () {
+                                    if (BlocProvider.of<ListCommentPostGroupBloc>(context)
+                                        .state
+                                        .isLoading) {
+                                      return;
+                                    }
                                     ListCommentPostGroupController(context: context)
                                         .handleDeleteComment(id, comment.id);
                                   },

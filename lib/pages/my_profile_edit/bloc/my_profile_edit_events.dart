@@ -12,6 +12,12 @@ class MyProfileEditEvent {
   const MyProfileEditEvent();
 }
 
+class UserEvent extends MyProfileEditEvent {
+  final User user;
+
+  const UserEvent(this.user);
+}
+
 class FullNameEvent extends MyProfileEditEvent {
   final String fullName;
 

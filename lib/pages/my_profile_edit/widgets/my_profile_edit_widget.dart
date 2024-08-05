@@ -20,6 +20,8 @@ import 'package:image_picker/image_picker.dart';
 import '../../../common/values/colors.dart';
 import '../../../common/values/fonts.dart';
 import '../../../common/widgets/flutter_toast.dart';
+import '../../../common/widgets/loading_widget.dart';
+import '../../../model/user.dart';
 import '../bloc/my_profile_edit_events.dart';
 
 AppBar buildAppBar(BuildContext context) {
@@ -45,7 +47,10 @@ AppBar buildAppBar(BuildContext context) {
   );
 }
 
-Widget myProfileEdit(BuildContext context) {
+Widget myProfileEdit(BuildContext context, User? user) {
+  if (user == null) {
+    return loadingWidget();
+  }
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,

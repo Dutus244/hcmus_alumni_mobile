@@ -54,3 +54,9 @@ class ReplyEvent extends PostAdviseDetailEvent {
 
   const ReplyEvent(this.reply);
 }
+
+class IsLoadingEvent extends PostAdviseDetailEvent {
+  final bool isLoading;
+
+  const IsLoadingEvent(this.isLoading);
+}

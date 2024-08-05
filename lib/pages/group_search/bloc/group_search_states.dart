@@ -11,6 +11,8 @@ class GroupSearchState {
   final int indexGroup;
   final bool hasReachedMaxGroup;
 
+  final bool isLoading;
+
   const GroupSearchState({
     this.name = "",
     this.nameSearch = "",
@@ -18,6 +20,7 @@ class GroupSearchState {
     this.groups = const [],
     this.indexGroup = 0,
     this.hasReachedMaxGroup = false,
+    this.isLoading = false,
   });
 
   GroupSearchState copyWith({
@@ -27,6 +30,7 @@ class GroupSearchState {
     List<Group>? groups,
     int? indexGroup,
     bool? hasReachedMaxGroup,
+    bool? isLoading,
   }) {
     return GroupSearchState(
       name: name ?? this.name,
@@ -35,6 +39,7 @@ class GroupSearchState {
       groups: groups ?? this.groups,
       indexGroup : indexGroup ?? this.indexGroup,
       hasReachedMaxGroup: hasReachedMaxGroup ?? this.hasReachedMaxGroup,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 }

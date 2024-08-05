@@ -162,6 +162,7 @@ class EditPostAdviseController {
         } catch (e) {
           // Exception occurred
           // toastInfo(msg: translate('error_edit_post'));
+          hideLoadingIndicator();
           return;
         }
       } else {

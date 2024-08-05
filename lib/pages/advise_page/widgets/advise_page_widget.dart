@@ -319,6 +319,11 @@ Widget postOption(BuildContext context, Post post) {
                 ),
               GestureDetector(
                 onTap: () async {
+                  if (BlocProvider.of<AdvisePageBloc>(context)
+                      .state
+                      .isLoading) {
+                    return;
+                  }
                   bool shouldDelete =
                       await AdvisePageController(context: context)
                           .handleDeletePost(post.id);

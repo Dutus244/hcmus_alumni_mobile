@@ -35,20 +35,26 @@ class _EditPostAdviseState extends State<EditPostAdvise> {
       post = args["post"];
       // Now you can use the passedValue in your widget
       EditPostAdviseController(context: context).handleLoad(post!.id);
-      context.read<EditPostAdviseBloc>().add(IsLoadingEvent(false));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EditPostAdviseBloc, EditPostAdviseState>(
-        builder: (context, state) {
-          return Scaffold(
-              appBar: buildAppBar(context),
-              backgroundColor: AppColors.background,
-              body: BlocProvider.of<EditPostAdviseBloc>(context).state.page == 0
-                  ? writePost(context, post)
-                  : editPicture(context));
-        });
+      builder: (context, state) {
+        return WillPopScope(
+          onWillPop: () async {
+            return !state.isLoading;
+          },
+          child: Scaffold(
+            appBar: buildAppBar(context),
+            backgroundColor: AppColors.background,
+            body: BlocProvider.of<EditPostAdviseBloc>(context).state.page == 0
+                ? writePost(context, post)
+                : editPicture(context),
+          ),
+        );
+      },
+    );
   }
 }

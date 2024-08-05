@@ -57,6 +57,8 @@ class FriendPageController {
   }
 
   Future<void> handleSearchFriend() async {
+    context.read<FriendPageBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<FriendPageBloc>().state;
     String name = state.name;
     context.read<FriendPageBloc>().add(NameSearchEvent(name));
@@ -116,6 +118,8 @@ class FriendPageController {
           context
               .read<FriendPageBloc>()
               .add(StatusSuggestionEvent(Status.success));
+          context.read<FriendPageBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           return;
         }
 
@@ -135,20 +139,27 @@ class FriendPageController {
               .read<FriendPageBloc>()
               .add(HasReachedMaxSuggestionEvent(true));
         }
+        context.read<FriendPageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         context
             .read<FriendPageBloc>()
             .add(StatusSuggestionEvent(Status.success));
       } else {
+        context.read<FriendPageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_get_user'));
       }
     } catch (error) {
       if (error.toString() != "Looking up a deactivated widget's ancestor is unsafe.\nAt this point the state of the widget's element tree is no longer stable.\nTo safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.") {
         // toastInfo(msg: translate('error_get_user'));
       }
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleSearchUser() async {
+    context.read<FriendPageBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<FriendPageBloc>().state;
     String nameUser = state.nameUser;
     context.read<FriendPageBloc>().add(NameUserSearchEvent(nameUser));
@@ -208,6 +219,8 @@ class FriendPageController {
           context
               .read<FriendPageBloc>()
               .add(StatusEvent(Status.success));
+          context.read<FriendPageBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           return;
         }
 
@@ -227,16 +240,22 @@ class FriendPageController {
               .read<FriendPageBloc>()
               .add(HasReachedMaxUserEvent(true));
         }
+        context.read<FriendPageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         context
             .read<FriendPageBloc>()
             .add(StatusEvent(Status.success));
       } else {
+        context.read<FriendPageBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_get_user'));
       }
     } catch (error) {
       if (error.toString() != "Looking up a deactivated widget's ancestor is unsafe.\nAt this point the state of the widget's element tree is no longer stable.\nTo safely refer to a widget's ancestor in its dispose() method, save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType() in the widget's didChangeDependencies() method.") {
         // toastInfo(msg: translate('error_get_user'));
+
       }
+      hideLoadingIndicator();
     }
   }
 

@@ -17,8 +17,40 @@ import '../../model/post.dart';
 
 class PostAdviseDetailController {
   final BuildContext context;
+  OverlayEntry? _overlayEntry;
 
-  const PostAdviseDetailController({required this.context});
+  PostAdviseDetailController({required this.context});
+
+  void showLoadingIndicator() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: MediaQuery.of(context).size.height * 0.5 - 30,
+        left: MediaQuery.of(context).size.width * 0.5 - 30,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingIndicator() {
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+      _overlayEntry = null;
+    }
+  }
 
   Future<void> handleLoadPostData(String id) async {
     var apiUrl = dotenv.env['API_URL'];
@@ -50,6 +82,8 @@ class PostAdviseDetailController {
   }
 
   Future<void> handleLikePost(String id) async {
+    context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var post = BlocProvider.of<PostAdviseDetailBloc>(context).state.post;
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel/$id/react';
@@ -68,23 +102,23 @@ class PostAdviseDetailController {
     if (post!.isReacted) {
       var response = await http.delete(url, headers: headers);
       if (response.statusCode == 200) {
-        handleLoadPostData(id);
-        return;
+        await handleLoadPostData(id);
       } else {
         // Handle other status codes if needed
         toastInfo(msg: translate('error_unlike_post'));
-        return;
       }
+      context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+      hideLoadingIndicator();
     } else {
       var response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 201) {
-        handleLoadPostData(id);
-        return;
+        await handleLoadPostData(id);
       } else {
         // Handle other status codes if needed
         toastInfo(msg: translate('error_like_post'));
-        return;
       }
+      context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+      hideLoadingIndicator();
     }
   }
 
@@ -107,6 +141,8 @@ class PostAdviseDetailController {
       ),
     );
     if (shouldDelete != null && shouldDelete) {
+      context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/counsel/$id';
 
@@ -121,16 +157,22 @@ class PostAdviseDetailController {
 
         var response = await http.delete(url, headers: headers);
         if (response.statusCode == 200) {
+          context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
+          toastInfo(msg: 'Xoá bài viết thành công');
           Navigator.pop(context);
           return true;
         } else {
+          context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           // Handle other status codes if needed
           toastInfo(msg: translate('error_delete_post'));
           return false;
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: translate('error_delete_post'));
+        // toastInfo(msg: translate('error_delete_post'));
+        hideLoadingIndicator();
         return false;
       }
     }
@@ -138,6 +180,8 @@ class PostAdviseDetailController {
   }
 
   Future<void> handleVote(String id, int newVoteId) async {
+    context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel/$id/votes/$newVoteId';
 
@@ -153,20 +197,27 @@ class PostAdviseDetailController {
 
       var response = await http.post(url, headers: headers);
       if (response.statusCode == 201) {
-        handleLoadPostData(id);
+        await handleLoadPostData(id);
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
       } else {
         // Handle other status codes if needed
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_choose_option'));
         return;
       }
     } catch (error) {
       // Handle errors
       // toastInfo(msg: translate('error_choose_option'));
+      hideLoadingIndicator();
       return;
     }
   }
 
   Future<void> handleDeleteVote(String id, int voteId) async {
+    context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel/$id/votes/$voteId';
 
@@ -182,20 +233,27 @@ class PostAdviseDetailController {
 
       var response = await http.delete(url, headers: headers);
       if (response.statusCode == 200) {
-        handleLoadPostData(id);
+        await handleLoadPostData(id);
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
       } else {
         // Handle other status codes if needed
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_not_choose_option'));
         return;
       }
     } catch (error) {
       // Handle errors
       // toastInfo(msg: translate('error_not_choose_option'));
+      hideLoadingIndicator();
       return;
     }
   }
 
   Future<void> handleUpdateVote(String id, int oldVoteId, int newVoteId) async {
+    context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel/$id/votes/$oldVoteId';
 
@@ -215,20 +273,27 @@ class PostAdviseDetailController {
 
       var response = await http.put(url, headers: headers, body: body);
       if (response.statusCode == 200) {
-        handleLoadPostData(id);
+        await handleLoadPostData(id);
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
       } else {
         // Handle other status codes if needed
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_change_option'));
         return;
       }
     } catch (error) {
       // Handle errors
       // toastInfo(msg: translate('error_change_option'));
+      hideLoadingIndicator();
       return;
     }
   }
 
   Future<void> handleAddVote(String id, String vote) async {
+    context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel/$id/votes';
 
@@ -248,15 +313,21 @@ class PostAdviseDetailController {
       var response =
       await http.post(url, headers: headers, body: json.encode(map));
       if (response.statusCode == 201) {
-        handleLoadPostData(id);
+        await handleLoadPostData(id);
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Thêm lựa chọn thành công');
       } else {
         // Handle other status codes if needed
         toastInfo(msg: translate('error_add_option'));
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         return;
       }
     } catch (error) {
       // Handle errors
       // toastInfo(msg: translate('error_add_option'));
+      hideLoadingIndicator();
       return;
     }
   }
@@ -337,6 +408,8 @@ class PostAdviseDetailController {
   }
 
   Future<void> handleGetChildrenComment(Comment comment) async {
+    context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/counsel/comments/${comment.id}/children';
     var pageSize = 10;
@@ -362,15 +435,19 @@ class PostAdviseDetailController {
         if (parentComment != null) {
           await parentComment.fetchChildrenComments(jsonMap);
         }
-
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         context
             .read<PostAdviseDetailBloc>()
             .add(CommentsEvent(currentList));
       } else {
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_get_comment'));
       }
     } catch (error) {
       // toastInfo(msg: translate('error_get_comment'));
+      hideLoadingIndicator();
     }
   }
 
@@ -390,6 +467,8 @@ class PostAdviseDetailController {
   }
 
   Future<void> handleLoadWriteComment(String id) async {
+    context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<PostAdviseDetailBloc>().state;
     String comment = state.content;
 
@@ -415,19 +494,27 @@ class PostAdviseDetailController {
         context
             .read<PostAdviseDetailBloc>()
             .add(ContentEvent(''));
-        handleGetComment(id, 0);
+        await handleGetComment(id, 0);
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Bình luận thành công');
       } else {
         // Handle other status codes if needed
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_send_comment'));
       }
     } catch (error) {
       // Handle errors
       // toastInfo(msg: translate('error_send_comment'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleLoadWriteChildrenComment(
       String id, String commentId) async {
+    context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<PostAdviseDetailBloc>().state;
     String comment = state.content;
 
@@ -452,18 +539,26 @@ class PostAdviseDetailController {
         context
             .read<PostAdviseDetailBloc>()
             .add(ContentEvent(''));
-        handleGetComment(id, 0);
+        await handleGetComment(id, 0);
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Bình luận thành công');
       } else {
         // Handle other status codes if needed
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_send_comment'));
       }
     } catch (error) {
       // Handle errors
       // toastInfo(msg: translate('error_send_comment'));
+      hideLoadingIndicator();
     }
   }
 
   Future<void> handleEditComment(String id, String commentId) async {
+    context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
     final state = context.read<PostAdviseDetailBloc>().state;
     String comment = state.content;
 
@@ -489,14 +584,20 @@ class PostAdviseDetailController {
         context
             .read<PostAdviseDetailBloc>()
             .add(ContentEvent(''));
-        handleGetComment(id, 0);
+        await handleGetComment(id, 0);
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
+        toastInfo(msg: 'Sửa bình luận thành công');
       } else {
         // Handle other status codes if needed
+        context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+        hideLoadingIndicator();
         toastInfo(msg: translate('error_edit_comment'));
       }
     } catch (error) {
       // Handle errors
       // toastInfo(msg: translate('error_edit_comment'));
+      hideLoadingIndicator();
     }
   }
 
@@ -519,6 +620,8 @@ class PostAdviseDetailController {
       ),
     );
     if (shouldDelete != null && shouldDelete) {
+      context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(true));
+      showLoadingIndicator();
       var apiUrl = dotenv.env['API_URL'];
       var endpoint = '/counsel/comments/$commentId';
 
@@ -535,14 +638,20 @@ class PostAdviseDetailController {
         var response = await http.delete(url, headers: headers);
 
         if (response.statusCode == 200) {
-          handleGetComment(id, 0);
+          await handleGetComment(id, 0);
+          context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
+          toastInfo(msg: 'Xoá bình luận thành công');
         } else {
           // Handle other status codes if needed
+          context.read<PostAdviseDetailBloc>().add(IsLoadingEvent(false));
+          hideLoadingIndicator();
           toastInfo(msg: translate('error_delete_comment'));
         }
       } catch (error) {
         // Handle errors
-        toastInfo(msg: translate('error_delete_comment'));
+        // toastInfo(msg: translate('error_delete_comment'));
+        hideLoadingIndicator();
       }
     }
     return shouldDelete ?? false;
