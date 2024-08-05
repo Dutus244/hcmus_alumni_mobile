@@ -166,7 +166,7 @@ Widget buildCreatePostButtonNot(BuildContext context) {
             child: Container(
               padding: EdgeInsets.only(left: 10.w),
               child: Text(
-                'Cần xét duyệt để đăng bài tư vấn',
+                'Xét duyệt để đăng bài tư vấn',
                 style: AppTextStyle.small(context).withColor(AppColors.textBlack.withOpacity(0.5)),
               ),
             ),

@@ -346,7 +346,7 @@ Widget listComment(
                   Text(
                     Global.storageService.permissionNewsCommentCreate()
                         ? translate('write_comment')
-                        : 'Cần xét duyệt để bình luận',
+                        : 'Xét duyệt để bình luận',
                     style: TextStyle(
                       fontFamily: AppFonts.Header,
                       fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
@@ -664,7 +664,7 @@ Widget buildCommentWidget(
                                     );
                                   },
                                   child: Text(
-                                    'Cần xét duyệt để bình luận',
+                                    'Xét duyệt để bình luận',
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.4),
                                       fontSize: 11.sp /

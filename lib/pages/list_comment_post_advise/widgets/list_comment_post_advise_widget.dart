@@ -167,7 +167,7 @@ Widget navigationNot(BuildContext context) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Cần xét duyệt để bình luận',
+              'Xét duyệt để bình luận',
               style: TextStyle(
                 fontFamily: AppFonts.Header,
                 fontSize: 14.sp / MediaQuery.of(context).textScaleFactor,
@@ -405,7 +405,7 @@ Widget buildCommentWidget(
                                     );
                                   },
                                   child: Text(
-                                    'Cần xét duyệt để bình luận',
+                                    'Xét duyệt để bình luận',
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.5),
                                       fontSize: 11.sp /

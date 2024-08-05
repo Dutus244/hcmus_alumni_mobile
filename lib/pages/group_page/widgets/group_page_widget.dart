@@ -615,10 +615,10 @@ Widget groupDiscover(BuildContext context, Group group) {
           if (!Global.storageService.permissionGroupJoin())
             Positioned(
               bottom: 5.h,
-              left: 5.w,
-              right: 5.w,
+              left: 10.w,
+              right: 10.w,
               child: Container(
-                width: 160.w,
+                width: 145.w,
                 height: 30.h,
                 child: ElevatedButton(
                   onPressed: () {
@@ -638,7 +638,7 @@ Widget groupDiscover(BuildContext context, Group group) {
                   ),
                   child: Center(
                     child: Text(
-                      'Cần xét duyệt để tham gia',
+                      'Xét duyệt để tham gia',
                       style: TextStyle(
                         fontFamily: AppFonts.Header,
                         fontSize:
