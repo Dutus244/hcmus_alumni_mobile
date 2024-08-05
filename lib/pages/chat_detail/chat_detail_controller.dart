@@ -234,7 +234,6 @@ class ChatDetailController {
           BlocProvider.of<ChatDetailBloc>(context).state.children;
       context.read<ChatDetailBloc>().add(IsLoadingEvent(true));
       showLoadingIndicator();
-      await Future.delayed(Duration(seconds: 5));
       if (mode == 0) {
         if (content != "") {
           try {
