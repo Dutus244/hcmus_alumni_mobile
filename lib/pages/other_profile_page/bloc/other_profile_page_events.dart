@@ -84,3 +84,5 @@ class IsLoadingEvent extends OtherProfilePageEvent {
 
   const IsLoadingEvent(this.isLoading);
 }
+
+class OtherProfileResetEvent extends OtherProfilePageEvent {}

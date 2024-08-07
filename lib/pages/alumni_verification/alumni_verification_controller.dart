@@ -97,22 +97,6 @@ class AlumniVerificationController {
       // Convert the streamed response to a regular HTTP response
       var response = await http.Response.fromStream(streamedResponse);
       if (response.statusCode == 201) {
-        var url = Uri.parse(
-            '${dotenv.env['API_URL']}/user/${Global.storageService.getUserId()}/profile');
-        try {
-          var response = await http.get(url, headers: headers);
-          var responseBody = utf8.decode(response.bodyBytes);
-          if (response.statusCode == 200) {
-            var jsonMap = json.decode(responseBody);
-            var user = User.fromJson(jsonMap["user"]);
-            Global.storageService
-                .setString(AppConstants.USER_FULL_NAME, user.fullName);
-            Global.storageService
-                .setString(AppConstants.USER_AVATAR_URL, user.avatarUrl);
-          }
-        } catch (error) {
-          print(error);
-        }
         context.read<AlumniVerificationBloc>().add(IsLoadingEvent(false));
         hideLoadingIndicator();
         toastInfo(msg: 'Đã nộp đơn xét duyệt cựu sinh viên thành công');

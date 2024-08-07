@@ -322,8 +322,6 @@ class MyProfileEditController {
   }
 
   Future<void> handleEditAlumniVerification() async {
-    context.read<MyProfileEditBloc>().add(IsLoadingEvent(true));
-    showLoadingIndicator();
     final state = context.read<MyProfileEditBloc>().state;
     String studentId = state.studentId;
     int beginningYear = state.startYear != "" ? int.parse(state.startYear) : 0;
@@ -335,6 +333,8 @@ class MyProfileEditController {
       toastInfo(msg: translate('must_fill_full_name'));
       return;
     }
+    context.read<MyProfileEditBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
 
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/alumni-verification';
@@ -360,6 +360,7 @@ class MyProfileEditController {
 
       // Convert the streamed response to a regular HTTP response
       var response = await http.Response.fromStream(streamedResponse);
+      print(response.body);
       if (response.statusCode == 201) {
         context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
         hideLoadingIndicator();

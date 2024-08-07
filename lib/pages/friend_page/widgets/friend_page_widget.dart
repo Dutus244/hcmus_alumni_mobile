@@ -154,7 +154,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
           onPressed: () => func!(0),
           style: TextButton.styleFrom(
             padding: EdgeInsets.zero,
-            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.35, 30.h),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: Column(
@@ -171,7 +171,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 Container(
                   margin: EdgeInsets.only(top: 5.h),
                   height: 2.h,
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.35,
                   color: AppColors.element,
                 ),
             ],
@@ -181,7 +181,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
           onPressed: () => func!(1),
           style: TextButton.styleFrom(
             padding: EdgeInsets.zero,
-            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.35, 30.h),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: Column(
@@ -198,7 +198,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 Container(
                   margin: EdgeInsets.only(top: 5.h),
                   height: 2.h,
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.35,
                   color: AppColors.element,
                 ),
             ],
@@ -208,7 +208,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
           onPressed: () => func!(2),
           style: TextButton.styleFrom(
             padding: EdgeInsets.zero,
-            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.35, 30.h),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: Column(
@@ -225,7 +225,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 Container(
                   margin: EdgeInsets.only(top: 5.h),
                   height: 2.h,
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.35,
                   color: AppColors.element,
                 ),
             ],
@@ -239,7 +239,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
           },
           style: TextButton.styleFrom(
             padding: EdgeInsets.zero,
-            minimumSize: Size(MediaQuery.of(context).size.width * 0.5, 30.h),
+            minimumSize: Size(MediaQuery.of(context).size.width * 0.35, 30.h),
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: Column(
@@ -256,7 +256,7 @@ Widget buildButtonChoose(BuildContext context, void Function(int value)? func) {
                 Container(
                   margin: EdgeInsets.only(top: 5.h),
                   height: 2.h,
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.35,
                   color: AppColors.element,
                 ),
             ],
