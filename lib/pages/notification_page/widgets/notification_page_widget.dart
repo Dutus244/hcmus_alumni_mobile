@@ -107,6 +107,11 @@ Widget notification(BuildContext context, Notifications notifications) {
             arguments: {"route": 4},
           );
           break;
+        case "friend":
+          Navigator.pushNamed(context, "/otherProfilePage", arguments: {
+            "id": notifications.entityId,
+          });
+          break;
         case "comment_event":
           Navigator.pushNamed(
             context,

@@ -109,7 +109,7 @@ class StatusEvent extends MyProfileEditEvent {
 }
 
 class AvatarEvent extends MyProfileEditEvent {
-  final File avatar;
+  final List<File> avatar;
 
   const AvatarEvent(this.avatar);
 }
