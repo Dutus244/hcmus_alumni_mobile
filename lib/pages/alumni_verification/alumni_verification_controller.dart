@@ -80,15 +80,17 @@ class AlumniVerificationController {
     request.fields['beginningYear'] = startYear;
     request.fields['socialMediaLink'] = socialMediaLink;
 
-    request.files.add(
-      http.MultipartFile(
-        'avatar',
-        avatar!.readAsBytes().asStream(),
-        avatar.lengthSync(),
-        filename: avatar.toString(),
-        contentType: MediaType('image', 'jpeg'),
-      ),
-    );
+    if (avatar != null) {
+      request.files.add(
+        http.MultipartFile(
+          'avatar',
+          avatar!.readAsBytes().asStream(),
+          avatar.lengthSync(),
+          filename: avatar.toString(),
+          contentType: MediaType('image', 'jpeg'),
+        ),
+      );
+    }
 
     try {
       // Send the request
