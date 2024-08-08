@@ -322,8 +322,6 @@ class MyProfileEditController {
   }
 
   Future<void> handleEditAlumniVerification() async {
-    context.read<MyProfileEditBloc>().add(IsLoadingEvent(true));
-    showLoadingIndicator();
     final state = context.read<MyProfileEditBloc>().state;
     String studentId = state.studentId;
     int beginningYear = state.startYear != "" ? int.parse(state.startYear) : 0;
@@ -336,6 +334,9 @@ class MyProfileEditController {
       return;
     }
 
+    context.read<MyProfileEditBloc>().add(IsLoadingEvent(true));
+    showLoadingIndicator();
+
     var apiUrl = dotenv.env['API_URL'];
     var endpoint = '/user/alumni-verification';
 
@@ -346,32 +347,37 @@ class MyProfileEditController {
       "Content-Type": "application/json" // Include bearer token in the headers
     };
 
-    var request = http.MultipartRequest('PUT', Uri.parse('$apiUrl$endpoint'));
-    request.headers.addAll(headers);
-    request.fields['fullName'] = fullName;
-    request.fields['facultyId'] = facultyId.toString();
-    request.fields['studentId'] = studentId;
-    request.fields['beginningYear'] = beginningYear.toString();
-    request.fields['socialMediaLink'] = socialMediaLink;
+    var body = jsonEncode({
+      'fullName': fullName,
+      'facultyId': facultyId,
+      'studentId': studentId,
+      'beginningYear': beginningYear,
+      'socialMediaLink': socialMediaLink,
+    });
 
     try {
-      // Send the request
-      var streamedResponse = await request.send();
+      var response = await http.put(
+        Uri.parse('$apiUrl$endpoint'),
+        headers: headers,
+        body: body,
+      );
 
-      // Convert the streamed response to a regular HTTP response
-      var response = await http.Response.fromStream(streamedResponse);
-      if (response.statusCode == 201) {
+      print(response.body);
+
+      if (response.statusCode == 200) {
         context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
         hideLoadingIndicator();
         toastInfo(msg: 'Đã thay đổi đơn xét duyệt cựu sinh viên thành công');
       } else {
         context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
         hideLoadingIndicator();
+        toastInfo(msg: 'Đã xảy ra lỗi, vui lòng thử lại sau.');
       }
     } catch (e) {
       // Exception occurred
-      // toastInfo(msg: translate('error_verify_alumni'));
+      context.read<MyProfileEditBloc>().add(IsLoadingEvent(false));
       hideLoadingIndicator();
+      toastInfo(msg: translate('error_verify_alumni'));
       return;
     }
   }
@@ -392,7 +398,7 @@ class MyProfileEditController {
     }
 
     var apiUrl = dotenv.env['API_URL'];
-    var endpoint = '/user/alumni-verification';
+      var endpoint = '/user/alumni-verification';
 
     var token = Global.storageService.getUserAuthToken();
 

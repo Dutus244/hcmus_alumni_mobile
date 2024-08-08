@@ -45,8 +45,8 @@ android {
         applicationId "com.fitus.alumverse"
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 3
-        versionName '1.0'
+        versionCode 5
+        versionName '1.1'
     }
 
     signingConfigs {

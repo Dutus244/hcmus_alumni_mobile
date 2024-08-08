@@ -20,7 +20,7 @@ class MyProfileEditState {
   final String endYear;
   final String networkAvatar;
   final String networkCover;
-  final File? avatar;
+  final List<File> avatar;
   final List<File> cover;
   final List<Job> jobs;
   final List<Education> educations;
@@ -44,7 +44,7 @@ class MyProfileEditState {
       this.endYear = "",
       this.networkAvatar = "",
       this.networkCover = "",
-      this.avatar = null,
+      this.avatar = const [],
       this.cover = const [],
       this.jobs = const [],
       this.educations = const [],
@@ -68,7 +68,7 @@ class MyProfileEditState {
     String? endYear,
     String? networkAvatar,
     String? networkCover,
-    File? avatar,
+    List<File>? avatar,
     List<File>? cover,
     List<Job>? jobs,
     List<Education>? educations,

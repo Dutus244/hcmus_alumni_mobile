@@ -78,7 +78,7 @@ Widget myProfileEdit(BuildContext context, User? user) {
   );
 }
 
-Widget editAvatar(BuildContext context, void Function(File value)? func) {
+Widget editAvatar(BuildContext context, void Function(List<File> value)? func) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
@@ -98,14 +98,20 @@ Widget editAvatar(BuildContext context, void Function(File value)? func) {
               ),
             ),
             GestureDetector(
-              onTap: () {
-                if (BlocProvider.of<MyProfileEditBloc>(context)
-                    .state
-                    .isLoading) {
+              onTap: () async {
+                if (BlocProvider.of<MyProfileEditBloc>(context).state.isLoading) {
                   return;
                 }
-                _showPickOptionsDialog(context, func);
+                final pickedFiles = await ImagePicker().pickMultiImage();
+                if (pickedFiles.length > 1) {
+                  toastInfo(msg: translate('picture_above_1'));
+                  return;
+                }
                 context.read<MyProfileEditBloc>().add(NetworkAvatarEvent(""));
+                func!(pickedFiles
+                    .map((pickedFile) => File(pickedFile.path))
+                    .toList());
+                MyProfileEditController(context: context).handleChangeAvatar(File(pickedFiles[0].path));
               },
               child: Text(
                 translate('edit'),
@@ -122,14 +128,20 @@ Widget editAvatar(BuildContext context, void Function(File value)? func) {
       ),
       if (BlocProvider.of<MyProfileEditBloc>(context).state.networkAvatar != "")
         GestureDetector(
-          onTap: () {
-            if (BlocProvider.of<MyProfileEditBloc>(context)
-                .state
-                .isLoading) {
+          onTap: () async {
+            if (BlocProvider.of<MyProfileEditBloc>(context).state.isLoading) {
               return;
             }
-            _showPickOptionsDialog(context, func);
+            final pickedFiles = await ImagePicker().pickMultiImage();
+            if (pickedFiles.length > 1) {
+              toastInfo(msg: translate('picture_above_1'));
+              return;
+            }
             context.read<MyProfileEditBloc>().add(NetworkAvatarEvent(""));
+            func!(pickedFiles
+                .map((pickedFile) => File(pickedFile.path))
+                .toList());
+            MyProfileEditController(context: context).handleChangeAvatar(File(pickedFiles[0].path));
           },
           child: Container(
             margin: EdgeInsets.only(top: 5.h),
@@ -144,16 +156,22 @@ Widget editAvatar(BuildContext context, void Function(File value)? func) {
             ),
           ),
         ),
-      if (BlocProvider.of<MyProfileEditBloc>(context).state.avatar != null)
+      if (BlocProvider.of<MyProfileEditBloc>(context).state.avatar.length != 0)
         GestureDetector(
-          onTap: () {
-            if (BlocProvider.of<MyProfileEditBloc>(context)
-                .state
-                .isLoading) {
+          onTap: () async {
+            if (BlocProvider.of<MyProfileEditBloc>(context).state.isLoading) {
               return;
             }
-            _showPickOptionsDialog(context, func);
+            final pickedFiles = await ImagePicker().pickMultiImage();
+            if (pickedFiles.length > 1) {
+              toastInfo(msg: translate('picture_above_1'));
+              return;
+            }
             context.read<MyProfileEditBloc>().add(NetworkAvatarEvent(""));
+            func!(pickedFiles
+                .map((pickedFile) => File(pickedFile.path))
+                .toList());
+            MyProfileEditController(context: context).handleChangeAvatar(File(pickedFiles[0].path));
           },
           child: Container(
             margin: EdgeInsets.only(top: 5.h),
@@ -161,7 +179,7 @@ Widget editAvatar(BuildContext context, void Function(File value)? func) {
               child: CircleAvatar(
                 radius: 65.w, // Đặt bán kính của CircleAvatar
                 backgroundImage: FileImage(
-                    BlocProvider.of<MyProfileEditBloc>(context).state.avatar ??
+                    BlocProvider.of<MyProfileEditBloc>(context).state.avatar[0] ??
                         File('')), // URL hình ảnh của CircleAvatar
               ),
             ),
@@ -169,16 +187,19 @@ Widget editAvatar(BuildContext context, void Function(File value)? func) {
         ),
       if (BlocProvider.of<MyProfileEditBloc>(context).state.networkAvatar ==
               "" &&
-          BlocProvider.of<MyProfileEditBloc>(context).state.avatar == null)
+          BlocProvider.of<MyProfileEditBloc>(context).state.avatar.length == 0)
         GestureDetector(
-          onTap: () {
-            if (BlocProvider.of<MyProfileEditBloc>(context)
-                .state
-                .isLoading) {
+          onTap: () async {
+            final pickedFiles = await ImagePicker().pickMultiImage();
+            if (pickedFiles.length > 1) {
+              toastInfo(msg: translate('picture_above_1'));
               return;
             }
-            _showPickOptionsDialog(context, func);
             context.read<MyProfileEditBloc>().add(NetworkAvatarEvent(""));
+            func!(pickedFiles
+                .map((pickedFile) => File(pickedFile.path))
+                .toList());
+            MyProfileEditController(context: context).handleChangeAvatar(File(pickedFiles[0].path));
           },
           child: Container(
             margin: EdgeInsets.only(top: 5.h),
@@ -240,6 +261,7 @@ Future<void> _cropImage(
 
     // Dispatch event with the cropped file
     func!(croppedFileAsFile);
+    print("hello");
     MyProfileEditController(context: context).handleChangeAvatar(croppedFileAsFile);
   }
 }

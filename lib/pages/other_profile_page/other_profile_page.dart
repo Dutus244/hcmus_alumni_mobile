@@ -28,6 +28,7 @@ class _OtherProfilePageState extends State<OtherProfilePage> {
     super.initState();
     // Khởi tạo pageController trong initState
     _scrollController.addListener(_onScroll);
+    context.read<OtherProfilePageBloc>().add(OtherProfileResetEvent());
     context.read<OtherProfilePageBloc>().add(IsLoadingEvent(false));
   }
 
